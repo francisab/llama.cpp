@@ -113,6 +113,8 @@ The source review and revised gates are in `PLAN.md` sections 3-5. The baseline 
 24. **Already-covered fork leads:** incremental QSA pooled keys already exist in deployed b11756 via upstream [ggml-org/llama.cpp#29751](https://github.com/ggml-org/llama.cpp/pull/29751), so the older pooled-cache draft is not a new port. Our FA scheduler also already uses the actual SM count rather than the power-of-two count fixed in [ikawrakow/ik_llama.cpp#2699](https://github.com/ikawrakow/ik_llama.cpp/pull/2699). Neither is a new local gain (section 2.43).
 25. **NVFP4 expert screen:** the unchanged CUDA backend gains +39.57% geometric mean on six real-shape prefill operators, but the shuffled four-token gate/up case loses 43.36% and some down cases also regress. Reject wholesale expert-only conversion at the predeclared regression guard. These are standalone synthetic operators, not model throughput or quality results; no model or runtime changes are deployed. The fixture, opposite-order results and hashes are retained in `results/nvfp4-expert-screen-20261021/` (section 2.44).
 
+26. **MMVQ row-tail correctness:** fixed expert-boundary writes and invalid tail reads, with 64 permanent regression cases and 100 additional checks passing against CPU. Actual-MTP Rust/JSON outputs match across both launch orders; no speed gain is claimed. Operator timing regressions remain unresolved, so the installed runtime is unchanged. The separate one-warp candidate is still unpromoted (section 2.45).
+
 The reviewed checkout already includes CUDA graphs, Blackwell NVFP4/MXFP4 MMQ, qwen4exp hyper-connection fusion, grouped MoE top-k, and PLE row prefetch. Do not port or reimplement those without identifying a target-specific gap.
 
 ### Reproducing the unweighted Q6_K experiment

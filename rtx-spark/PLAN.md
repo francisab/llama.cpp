@@ -922,6 +922,18 @@ Prefill gains +37.37% and +42.10% geometric mean in the two orders, +39.57% pool
 
 `results/nvfp4-expert-screen-20261021/` preserves the predeclared protocol, all case results, both launch orders, source fixture patch, binary hashes and applicability checks. The fixture builds against the owned b11756 source stack, including its existing benchmark repetition/error fixes. Owned test source, CPU build outputs and all previously recorded installed-runtime hashes are restored. NVFP4 kernels remain attributed to upstream; our contribution is the local fixture and feasibility evidence.
 
+### 2.45 MMVQ row-tail correctness correction [M]
+
+The independent IQ4_NL one-warp experiment exposed failures in its original control before candidate timing. Generic routed MMVQ used the output token stride, which spans all selected experts, as the row bound for one expert. An incomplete tile could write into the next expert's output. Generic and multi-token kernels also read unused weight rows past the end of a tile.
+
+The source correction passes the actual row count into generic MMVQ, bounds bias loads and output stores by that count, and maps unused tail reads to a valid row. Bounds-checked specializations are selected only for incomplete row tiles; aligned launches avoid dynamic row-offset checks. The same handling covers fused gates/shared experts and ordinary dense MMVQ. The permanent tests cover IQ4_NL, IQ3_S, Q4_K and Q8_0, odd row counts, dense batches with one/two/eight columns, both routed-input layouts, offset ID views and shared/gate fusion. The original control fails the regression suite; all 64 permanent cases and 100 existing/boundary/fusion checks pass with the correction.
+
+Three simpler implementations passed correctness but retained operator regressions. The specialized implementation also has unresolved operator wall-time regressions: the 22-case opposite-order geometric mean is -7.34%. Software tracing confirms matching launch geometry/register counts; the aligned IQ4_NL four-token kernel median is 57.888 versus 57.984 us, while the one-token median is 20.096 versus 20.832 us. These diagnostics do not clear the operator guard.
+
+A separate actual-MTP diagnostic uses the same target, Q4_K draft head, MTP3/ub512 and dynamic vocabulary 16384, with one warmup and five measured requests per case per launch. Rust median decode changes -0.014% and +0.696% in the two orders; JSON changes +0.333% and +1.388%. All paired generated token sequences match. This is limited evidence that the correctness correction preserves these workloads, not a speed gain or a substitute for broader release validation.
+
+**Retain the source-level correctness correction, but do not deploy it or claim a throughput improvement.** Operator-cost investigation remains open. The one-warp optimization remains a separate, unpromoted candidate and must use the same corrected baseline in both arms. `results/mmvq-rowtail-20261021/` contains the four implementation patches, measurements, binary hashes and paired output hashes. Original owned source/build files and the installed runtime remain unchanged. Superseded experimental binaries were removed during the requested disk cleanup; their source and measurement evidence were retained.
+
 ## 3. Source-verified feature status and reference lessons
 
 The following status is verified in this checkout. This table supersedes the porting assumptions in the initial reference inventory below.

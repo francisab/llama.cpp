@@ -1,0 +1,22 @@
+{
+  "hypothesis": "Keep explicit row-count bounds and safe tail reads. Select a bounds-checked specialization only when the row count is not divisible by the actual launch tile; fully aligned launches compile without dynamic row checks or clamped offsets.",
+  "previous_revision": "Three nonspecialized implementations passed correctness but retained aligned-shape regressions. Preserve all results. An additional private kernel specialization is now justified by measured overhead rather than speculative tuning.",
+  "control": "Recompile the original kernel with the same current toolchain and build objects before compiling the candidate. Both variants differ only in the CUDA DLL.",
+  "purpose": "Correctness fix, not a speed optimization.",
+  "correctness": {
+    "new_repository_cases": 48,
+    "fixed_repetitions": 2,
+    "required_baseline_result": "At least one permanent regression case fails.",
+    "inherited_serialized_cases": 34,
+    "original_iq4_boundaries": 54,
+    "original_gate_shared_fusion_cases": 12,
+    "nmse_limit": 0.0005
+  },
+  "performance_guard": {
+    "serialized_actual_projection_shapes": 22,
+    "order": ["base", "fixed", "fixed", "base"],
+    "no_speed_gain_required": true,
+    "investigate_any_pooled_case_regression_beyond_percent": 3
+  },
+  "installed_runtime_changed": false
+}

@@ -5857,12 +5857,13 @@ struct test_mul_mat_id_fusion : public test_case {
 struct test_mul_mat_id_shared : public test_case {
     const ggml_type type;
     const int64_t n;
+    const int64_t m;
     ggml_tensor * routed = nullptr;
     ggml_tensor * shared = nullptr;
 
-    test_mul_mat_id_shared(ggml_type type, int64_t n) : type(type), n(n) {}
+    test_mul_mat_id_shared(ggml_type type, int64_t n, int64_t m = 128) : type(type), n(n), m(m) {}
 
-    std::string vars() override { return VARS_TO_STR2(type, n); }
+    std::string vars() override { return VARS_TO_STR3(type, n, m); }
     std::string op_desc(ggml_tensor *) override { return "MUL_MAT_ID_SHARED"; }
     bool run_whole_graph() override { return true; }
     double max_nmse_err() override { return 5e-4; }
@@ -5873,13 +5874,13 @@ struct test_mul_mat_id_shared : public test_case {
         ggml_tensor * input_ids = ggml_reshape_3d(ctx, input, 512, 1, n);
         ggml_tensor * ids = ggml_new_tensor_2d(ctx, GGML_TYPE_I32, 3, n);
         ggml_set_name(ids, "ids");
-        ggml_tensor * up = ggml_new_tensor_3d(ctx, type, 512, 128, 8);
-        ggml_tensor * gate = ggml_new_tensor_3d(ctx, type, 512, 128, 8);
-        ggml_tensor * shared_up = ggml_new_tensor_2d(ctx, type, 512, 128);
-        ggml_tensor * shared_gate = ggml_new_tensor_2d(ctx, type, 512, 128);
+        ggml_tensor * up = ggml_new_tensor_3d(ctx, type, 512, m, 8);
+        ggml_tensor * gate = ggml_new_tensor_3d(ctx, type, 512, m, 8);
+        ggml_tensor * shared_up = ggml_new_tensor_2d(ctx, type, 512, m);
+        ggml_tensor * shared_gate = ggml_new_tensor_2d(ctx, type, 512, m);
         routed = ggml_swiglu_split(ctx, ggml_mul_mat_id(ctx, gate, input_ids, ids), ggml_mul_mat_id(ctx, up, input_ids, ids));
         shared = ggml_swiglu_split(ctx, ggml_mul_mat(ctx, shared_gate, input), ggml_mul_mat(ctx, shared_up, input));
-        return ggml_add(ctx, routed, ggml_reshape_3d(ctx, shared, 128, 1, n));
+        return ggml_add(ctx, routed, ggml_reshape_3d(ctx, shared, m, 1, n));
     }
 
     void initialize_tensors(ggml_context * ctx) override {
@@ -11417,6 +11418,20 @@ static std::vector<std::unique_ptr<test_case>> make_test_cases_eval() {
     for (ggml_type type : { GGML_TYPE_Q4_K, GGML_TYPE_Q8_0 }) {
         for (int64_t n : { 1, 2, 3, 4, 8, 9 }) {
             test_cases.emplace_back(new test_mul_mat_id_shared(type, n));
+        }
+    }
+
+    for (ggml_type type : {GGML_TYPE_IQ4_NL, GGML_TYPE_IQ3_S, GGML_TYPE_Q4_K, GGML_TYPE_Q8_0}) {
+        for (int64_t m : {127, 129}) {
+            for (int64_t n : {1, 2, 8}) {
+                test_cases.emplace_back(new test_mul_mat(type, GGML_TYPE_F32, m, n, 256, {2, 2}, {1, 1}));
+            }
+            test_cases.emplace_back(new test_mul_mat_id_shared(type, 1, m));
+            for (bool broadcast : {false, true}) {
+                for (bool ids_offset : {false, true}) {
+                    test_cases.emplace_back(new test_mul_mat_id(type, GGML_TYPE_F32, 8, 4, broadcast, m, 1, 256, 1.0f, 0, ids_offset));
+                }
+            }
         }
     }
 

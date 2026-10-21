@@ -1,0 +1,110 @@
+{
+  "arm": "base",
+  "label": "base-r1",
+  "command": [
+    "test-backend-ops.exe",
+    "perf",
+    "-b",
+    "CUDA0",
+    "--test-file",
+    "test-ops.txt",
+    "-p",
+    "name=moe_"
+  ],
+  "exit_code": 0,
+  "expected_cases": 22,
+  "cases": {
+    "MUL_MAT_ID(name=moe_iq3_s_e16_n1_b0,type=f32,ne=[640,10,1,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,10,1,1],i32[10,1,1,1]nb[4,64,64,64])": {
+      "runs": 45255,
+      "time_us": 23.15
+    },
+    "MUL_MAT_ID(name=moe_iq3_s_e16_n1_b1,type=f32,ne=[640,10,1,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,1,1,1],i32[10,1,1,1]nb[4,64,64,64])": {
+      "runs": 45615,
+      "time_us": 23.29
+    },
+    "MUL_MAT_ID(name=moe_iq3_s_e16_n3_b0,type=f32,ne=[640,10,3,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,10,3,1],i32[10,3,1,1]nb[4,64,192,192])": {
+      "runs": 20650,
+      "time_us": 56.28
+    },
+    "MUL_MAT_ID(name=moe_iq3_s_e16_n3_b1,type=f32,ne=[640,10,3,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,1,3,1],i32[10,3,1,1]nb[4,64,192,192])": {
+      "runs": 21154,
+      "time_us": 53.75
+    },
+    "MUL_MAT_ID(name=moe_iq3_s_e16_n4_b0,type=f32,ne=[640,10,4,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,10,4,1],i32[10,4,1,1]nb[4,64,256,256])": {
+      "runs": 14590,
+      "time_us": 77.94
+    },
+    "MUL_MAT_ID(name=moe_iq3_s_e16_n4_b1,type=f32,ne=[640,10,4,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,1,4,1],i32[10,4,1,1]nb[4,64,256,256])": {
+      "runs": 15065,
+      "time_us": 71.0
+    },
+    "MUL_MAT_ID(name=moe_iq3_s_e16_n5_b0,type=f32,ne=[640,10,5,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,10,5,1],i32[10,5,1,1]nb[4,64,320,320])": {
+      "runs": 11548,
+      "time_us": 88.65
+    },
+    "MUL_MAT_ID(name=moe_iq3_s_e16_n5_b1,type=f32,ne=[640,10,5,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,1,5,1],i32[10,5,1,1]nb[4,64,320,320])": {
+      "runs": 12012,
+      "time_us": 87.96
+    },
+    "MUL_MAT_ID(name=moe_iq3_s_e16_n8_b0,type=f32,ne=[640,10,8,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,10,8,1],i32[10,8,1,1]nb[4,64,512,512])": {
+      "runs": 8391,
+      "time_us": 138.03
+    },
+    "MUL_MAT_ID(name=moe_iq3_s_e16_n8_b1,type=f32,ne=[640,10,8,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,1,8,1],i32[10,8,1,1]nb[4,64,512,512])": {
+      "runs": 8925,
+      "time_us": 130.07
+    },
+    "MUL_MAT_ID(name=moe_iq3_s_e512_n4_b1,type=f32,ne=[640,10,4,1],op_params=[],sources=iq3_s[2560,640,512,1],f32[2560,1,4,1],i32[10,4,1,1]nb[4,2048,8192,8192])": {
+      "runs": 15168,
+      "time_us": 66.08
+    },
+    "MUL_MAT_ID(name=moe_iq4_nl_e16_n1_b0,type=f32,ne=[2560,10,1,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,10,1,1],i32[10,1,1,1]nb[4,64,64,64])": {
+      "runs": 41598,
+      "time_us": 24.41
+    },
+    "MUL_MAT_ID(name=moe_iq4_nl_e16_n1_b1,type=f32,ne=[2560,10,1,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,1,1,1],i32[10,1,1,1]nb[4,64,64,64])": {
+      "runs": 41652,
+      "time_us": 24.03
+    },
+    "MUL_MAT_ID(name=moe_iq4_nl_e16_n3_b0,type=f32,ne=[2560,10,3,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,10,3,1],i32[10,3,1,1]nb[4,64,192,192])": {
+      "runs": 20448,
+      "time_us": 52.04
+    },
+    "MUL_MAT_ID(name=moe_iq4_nl_e16_n3_b1,type=f32,ne=[2560,10,3,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,1,3,1],i32[10,3,1,1]nb[4,64,192,192])": {
+      "runs": 20538,
+      "time_us": 50.49
+    },
+    "MUL_MAT_ID(name=moe_iq4_nl_e16_n4_b0,type=f32,ne=[2560,10,4,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,10,4,1],i32[10,4,1,1]nb[4,64,256,256])": {
+      "runs": 15764,
+      "time_us": 68.0
+    },
+    "MUL_MAT_ID(name=moe_iq4_nl_e16_n4_b1,type=f32,ne=[2560,10,4,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,1,4,1],i32[10,4,1,1]nb[4,64,256,256])": {
+      "runs": 15862,
+      "time_us": 65.32
+    },
+    "MUL_MAT_ID(name=moe_iq4_nl_e16_n5_b0,type=f32,ne=[2560,10,5,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,10,5,1],i32[10,5,1,1]nb[4,64,320,320])": {
+      "runs": 13404,
+      "time_us": 79.66
+    },
+    "MUL_MAT_ID(name=moe_iq4_nl_e16_n5_b1,type=f32,ne=[2560,10,5,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,1,5,1],i32[10,5,1,1]nb[4,64,320,320])": {
+      "runs": 13506,
+      "time_us": 78.18
+    },
+    "MUL_MAT_ID(name=moe_iq4_nl_e16_n8_b0,type=f32,ne=[2560,10,8,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,10,8,1],i32[10,8,1,1]nb[4,64,512,512])": {
+      "runs": 8716,
+      "time_us": 124.31
+    },
+    "MUL_MAT_ID(name=moe_iq4_nl_e16_n8_b1,type=f32,ne=[2560,10,8,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,1,8,1],i32[10,8,1,1]nb[4,64,512,512])": {
+      "runs": 8820,
+      "time_us": 121.83
+    },
+    "MUL_MAT_ID(name=moe_iq4_nl_e512_n4_b0,type=f32,ne=[2560,10,4,1],op_params=[],sources=iq4_nl[640,2560,512,1],f32[640,10,4,1],i32[10,4,1,1]nb[4,2048,8192,8192])": {
+      "runs": 16425,
+      "time_us": 61.18
+    }
+  },
+  "passed": true,
+  "expected_failure": false,
+  "accepted": true,
+  "elapsed_seconds": 55.60900000001129
+}

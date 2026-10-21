@@ -1,0 +1,489 @@
+{
+  "comparisons": [
+    {
+      "case": "MUL_MAT_ID(name=moe_iq3_s_e16_n1_b0,type=f32,ne=[640,10,1,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,10,1,1],i32[10,1,1,1]nb[4,64,64,64])",
+      "base_us": [
+        23.15,
+        23.83
+      ],
+      "fixed_us": [
+        22.27,
+        24.71
+      ],
+      "throughput_ratio": 0.9999999999999999
+    },
+    {
+      "case": "MUL_MAT_ID(name=moe_iq3_s_e16_n1_b1,type=f32,ne=[640,10,1,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,1,1,1],i32[10,1,1,1]nb[4,64,64,64])",
+      "base_us": [
+        23.29,
+        23.26
+      ],
+      "fixed_us": [
+        22.04,
+        23.05
+      ],
+      "throughput_ratio": 1.0323796850742957
+    },
+    {
+      "case": "MUL_MAT_ID(name=moe_iq3_s_e16_n3_b0,type=f32,ne=[640,10,3,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,10,3,1],i32[10,3,1,1]nb[4,64,192,192])",
+      "base_us": [
+        56.28,
+        53.9
+      ],
+      "fixed_us": [
+        59.32,
+        54.47
+      ],
+      "throughput_ratio": 0.968274892345549
+    },
+    {
+      "case": "MUL_MAT_ID(name=moe_iq3_s_e16_n3_b1,type=f32,ne=[640,10,3,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,1,3,1],i32[10,3,1,1]nb[4,64,192,192])",
+      "base_us": [
+        53.75,
+        52.5
+      ],
+      "fixed_us": [
+        56.05,
+        54.19
+      ],
+      "throughput_ratio": 0.9638062409288825
+    },
+    {
+      "case": "MUL_MAT_ID(name=moe_iq3_s_e16_n4_b0,type=f32,ne=[640,10,4,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,10,4,1],i32[10,4,1,1]nb[4,64,256,256])",
+      "base_us": [
+        77.94,
+        71.73
+      ],
+      "fixed_us": [
+        79.28,
+        69.66
+      ],
+      "throughput_ratio": 1.004901302537935
+    },
+    {
+      "case": "MUL_MAT_ID(name=moe_iq3_s_e16_n4_b1,type=f32,ne=[640,10,4,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,1,4,1],i32[10,4,1,1]nb[4,64,256,256])",
+      "base_us": [
+        71.0,
+        68.9
+      ],
+      "fixed_us": [
+        79.67,
+        68.95
+      ],
+      "throughput_ratio": 0.9413268739066075
+    },
+    {
+      "case": "MUL_MAT_ID(name=moe_iq3_s_e16_n5_b0,type=f32,ne=[640,10,5,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,10,5,1],i32[10,5,1,1]nb[4,64,320,320])",
+      "base_us": [
+        88.65,
+        85.35
+      ],
+      "fixed_us": [
+        105.45,
+        89.55
+      ],
+      "throughput_ratio": 0.8923076923076924
+    },
+    {
+      "case": "MUL_MAT_ID(name=moe_iq3_s_e16_n5_b1,type=f32,ne=[640,10,5,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,1,5,1],i32[10,5,1,1]nb[4,64,320,320])",
+      "base_us": [
+        87.96,
+        86.64
+      ],
+      "fixed_us": [
+        99.6,
+        93.38
+      ],
+      "throughput_ratio": 0.904756969634159
+    },
+    {
+      "case": "MUL_MAT_ID(name=moe_iq3_s_e16_n8_b0,type=f32,ne=[640,10,8,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,10,8,1],i32[10,8,1,1]nb[4,64,512,512])",
+      "base_us": [
+        138.03,
+        135.76
+      ],
+      "fixed_us": [
+        186.4,
+        138.7
+      ],
+      "throughput_ratio": 0.8421716394955396
+    },
+    {
+      "case": "MUL_MAT_ID(name=moe_iq3_s_e16_n8_b1,type=f32,ne=[640,10,8,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,1,8,1],i32[10,8,1,1]nb[4,64,512,512])",
+      "base_us": [
+        130.07,
+        137.96
+      ],
+      "fixed_us": [
+        176.44,
+        139.87
+      ],
+      "throughput_ratio": 0.8473649268123042
+    },
+    {
+      "case": "MUL_MAT_ID(name=moe_iq3_s_e512_n4_b1,type=f32,ne=[640,10,4,1],op_params=[],sources=iq3_s[2560,640,512,1],f32[2560,1,4,1],i32[10,4,1,1]nb[4,2048,8192,8192])",
+      "base_us": [
+        66.08,
+        64.37
+      ],
+      "fixed_us": [
+        71.72,
+        65.3
+      ],
+      "throughput_ratio": 0.9520507955043059
+    },
+    {
+      "case": "MUL_MAT_ID(name=moe_iq4_nl_e16_n1_b0,type=f32,ne=[2560,10,1,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,10,1,1],i32[10,1,1,1]nb[4,64,64,64])",
+      "base_us": [
+        24.41,
+        22.53
+      ],
+      "fixed_us": [
+        30.19,
+        24.94
+      ],
+      "throughput_ratio": 0.8514420460729185
+    },
+    {
+      "case": "MUL_MAT_ID(name=moe_iq4_nl_e16_n1_b1,type=f32,ne=[2560,10,1,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,1,1,1],i32[10,1,1,1]nb[4,64,64,64])",
+      "base_us": [
+        24.03,
+        23.31
+      ],
+      "fixed_us": [
+        28.51,
+        23.05
+      ],
+      "throughput_ratio": 0.9181536074476339
+    },
+    {
+      "case": "MUL_MAT_ID(name=moe_iq4_nl_e16_n3_b0,type=f32,ne=[2560,10,3,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,10,3,1],i32[10,3,1,1]nb[4,64,192,192])",
+      "base_us": [
+        52.04,
+        51.26
+      ],
+      "fixed_us": [
+        56.12,
+        49.31
+      ],
+      "throughput_ratio": 0.9797970217205728
+    },
+    {
+      "case": "MUL_MAT_ID(name=moe_iq4_nl_e16_n3_b1,type=f32,ne=[2560,10,3,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,1,3,1],i32[10,3,1,1]nb[4,64,192,192])",
+      "base_us": [
+        50.49,
+        49.95
+      ],
+      "fixed_us": [
+        54.84,
+        51.81
+      ],
+      "throughput_ratio": 0.9417721518987341
+    },
+    {
+      "case": "MUL_MAT_ID(name=moe_iq4_nl_e16_n4_b0,type=f32,ne=[2560,10,4,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,10,4,1],i32[10,4,1,1]nb[4,64,256,256])",
+      "base_us": [
+        68.0,
+        64.86
+      ],
+      "fixed_us": [
+        72.1,
+        67.82
+      ],
+      "throughput_ratio": 0.949542595769011
+    },
+    {
+      "case": "MUL_MAT_ID(name=moe_iq4_nl_e16_n4_b1,type=f32,ne=[2560,10,4,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,1,4,1],i32[10,4,1,1]nb[4,64,256,256])",
+      "base_us": [
+        65.32,
+        64.92
+      ],
+      "fixed_us": [
+        77.61,
+        65.73
+      ],
+      "throughput_ratio": 0.9086089019115391
+    },
+    {
+      "case": "MUL_MAT_ID(name=moe_iq4_nl_e16_n5_b0,type=f32,ne=[2560,10,5,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,10,5,1],i32[10,5,1,1]nb[4,64,320,320])",
+      "base_us": [
+        79.66,
+        80.16
+      ],
+      "fixed_us": [
+        89.4,
+        84.92
+      ],
+      "throughput_ratio": 0.9168196420376319
+    },
+    {
+      "case": "MUL_MAT_ID(name=moe_iq4_nl_e16_n5_b1,type=f32,ne=[2560,10,5,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,1,5,1],i32[10,5,1,1]nb[4,64,320,320])",
+      "base_us": [
+        78.18,
+        79.72
+      ],
+      "fixed_us": [
+        92.35,
+        88.58
+      ],
+      "throughput_ratio": 0.8727132040015475
+    },
+    {
+      "case": "MUL_MAT_ID(name=moe_iq4_nl_e16_n8_b0,type=f32,ne=[2560,10,8,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,10,8,1],i32[10,8,1,1]nb[4,64,512,512])",
+      "base_us": [
+        124.31,
+        124.61
+      ],
+      "fixed_us": [
+        147.25,
+        138.42
+      ],
+      "throughput_ratio": 0.8713550600343055
+    },
+    {
+      "case": "MUL_MAT_ID(name=moe_iq4_nl_e16_n8_b1,type=f32,ne=[2560,10,8,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,1,8,1],i32[10,8,1,1]nb[4,64,512,512])",
+      "base_us": [
+        121.83,
+        125.4
+      ],
+      "fixed_us": [
+        139.67,
+        133.89
+      ],
+      "throughput_ratio": 0.9037505483257788
+    },
+    {
+      "case": "MUL_MAT_ID(name=moe_iq4_nl_e512_n4_b0,type=f32,ne=[2560,10,4,1],op_params=[],sources=iq4_nl[640,2560,512,1],f32[640,10,4,1],i32[10,4,1,1]nb[4,2048,8192,8192])",
+      "base_us": [
+        61.18,
+        61.97
+      ],
+      "fixed_us": [
+        63.96,
+        65.24
+      ],
+      "throughput_ratio": 0.9531733746130032
+    }
+  ],
+  "geomean_throughput_ratio": 0.9265858340484607,
+  "regressions_beyond_3_percent": [
+    {
+      "case": "MUL_MAT_ID(name=moe_iq3_s_e16_n3_b0,type=f32,ne=[640,10,3,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,10,3,1],i32[10,3,1,1]nb[4,64,192,192])",
+      "base_us": [
+        56.28,
+        53.9
+      ],
+      "fixed_us": [
+        59.32,
+        54.47
+      ],
+      "throughput_ratio": 0.968274892345549
+    },
+    {
+      "case": "MUL_MAT_ID(name=moe_iq3_s_e16_n3_b1,type=f32,ne=[640,10,3,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,1,3,1],i32[10,3,1,1]nb[4,64,192,192])",
+      "base_us": [
+        53.75,
+        52.5
+      ],
+      "fixed_us": [
+        56.05,
+        54.19
+      ],
+      "throughput_ratio": 0.9638062409288825
+    },
+    {
+      "case": "MUL_MAT_ID(name=moe_iq3_s_e16_n4_b1,type=f32,ne=[640,10,4,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,1,4,1],i32[10,4,1,1]nb[4,64,256,256])",
+      "base_us": [
+        71.0,
+        68.9
+      ],
+      "fixed_us": [
+        79.67,
+        68.95
+      ],
+      "throughput_ratio": 0.9413268739066075
+    },
+    {
+      "case": "MUL_MAT_ID(name=moe_iq3_s_e16_n5_b0,type=f32,ne=[640,10,5,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,10,5,1],i32[10,5,1,1]nb[4,64,320,320])",
+      "base_us": [
+        88.65,
+        85.35
+      ],
+      "fixed_us": [
+        105.45,
+        89.55
+      ],
+      "throughput_ratio": 0.8923076923076924
+    },
+    {
+      "case": "MUL_MAT_ID(name=moe_iq3_s_e16_n5_b1,type=f32,ne=[640,10,5,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,1,5,1],i32[10,5,1,1]nb[4,64,320,320])",
+      "base_us": [
+        87.96,
+        86.64
+      ],
+      "fixed_us": [
+        99.6,
+        93.38
+      ],
+      "throughput_ratio": 0.904756969634159
+    },
+    {
+      "case": "MUL_MAT_ID(name=moe_iq3_s_e16_n8_b0,type=f32,ne=[640,10,8,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,10,8,1],i32[10,8,1,1]nb[4,64,512,512])",
+      "base_us": [
+        138.03,
+        135.76
+      ],
+      "fixed_us": [
+        186.4,
+        138.7
+      ],
+      "throughput_ratio": 0.8421716394955396
+    },
+    {
+      "case": "MUL_MAT_ID(name=moe_iq3_s_e16_n8_b1,type=f32,ne=[640,10,8,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,1,8,1],i32[10,8,1,1]nb[4,64,512,512])",
+      "base_us": [
+        130.07,
+        137.96
+      ],
+      "fixed_us": [
+        176.44,
+        139.87
+      ],
+      "throughput_ratio": 0.8473649268123042
+    },
+    {
+      "case": "MUL_MAT_ID(name=moe_iq3_s_e512_n4_b1,type=f32,ne=[640,10,4,1],op_params=[],sources=iq3_s[2560,640,512,1],f32[2560,1,4,1],i32[10,4,1,1]nb[4,2048,8192,8192])",
+      "base_us": [
+        66.08,
+        64.37
+      ],
+      "fixed_us": [
+        71.72,
+        65.3
+      ],
+      "throughput_ratio": 0.9520507955043059
+    },
+    {
+      "case": "MUL_MAT_ID(name=moe_iq4_nl_e16_n1_b0,type=f32,ne=[2560,10,1,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,10,1,1],i32[10,1,1,1]nb[4,64,64,64])",
+      "base_us": [
+        24.41,
+        22.53
+      ],
+      "fixed_us": [
+        30.19,
+        24.94
+      ],
+      "throughput_ratio": 0.8514420460729185
+    },
+    {
+      "case": "MUL_MAT_ID(name=moe_iq4_nl_e16_n1_b1,type=f32,ne=[2560,10,1,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,1,1,1],i32[10,1,1,1]nb[4,64,64,64])",
+      "base_us": [
+        24.03,
+        23.31
+      ],
+      "fixed_us": [
+        28.51,
+        23.05
+      ],
+      "throughput_ratio": 0.9181536074476339
+    },
+    {
+      "case": "MUL_MAT_ID(name=moe_iq4_nl_e16_n3_b1,type=f32,ne=[2560,10,3,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,1,3,1],i32[10,3,1,1]nb[4,64,192,192])",
+      "base_us": [
+        50.49,
+        49.95
+      ],
+      "fixed_us": [
+        54.84,
+        51.81
+      ],
+      "throughput_ratio": 0.9417721518987341
+    },
+    {
+      "case": "MUL_MAT_ID(name=moe_iq4_nl_e16_n4_b0,type=f32,ne=[2560,10,4,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,10,4,1],i32[10,4,1,1]nb[4,64,256,256])",
+      "base_us": [
+        68.0,
+        64.86
+      ],
+      "fixed_us": [
+        72.1,
+        67.82
+      ],
+      "throughput_ratio": 0.949542595769011
+    },
+    {
+      "case": "MUL_MAT_ID(name=moe_iq4_nl_e16_n4_b1,type=f32,ne=[2560,10,4,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,1,4,1],i32[10,4,1,1]nb[4,64,256,256])",
+      "base_us": [
+        65.32,
+        64.92
+      ],
+      "fixed_us": [
+        77.61,
+        65.73
+      ],
+      "throughput_ratio": 0.9086089019115391
+    },
+    {
+      "case": "MUL_MAT_ID(name=moe_iq4_nl_e16_n5_b0,type=f32,ne=[2560,10,5,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,10,5,1],i32[10,5,1,1]nb[4,64,320,320])",
+      "base_us": [
+        79.66,
+        80.16
+      ],
+      "fixed_us": [
+        89.4,
+        84.92
+      ],
+      "throughput_ratio": 0.9168196420376319
+    },
+    {
+      "case": "MUL_MAT_ID(name=moe_iq4_nl_e16_n5_b1,type=f32,ne=[2560,10,5,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,1,5,1],i32[10,5,1,1]nb[4,64,320,320])",
+      "base_us": [
+        78.18,
+        79.72
+      ],
+      "fixed_us": [
+        92.35,
+        88.58
+      ],
+      "throughput_ratio": 0.8727132040015475
+    },
+    {
+      "case": "MUL_MAT_ID(name=moe_iq4_nl_e16_n8_b0,type=f32,ne=[2560,10,8,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,10,8,1],i32[10,8,1,1]nb[4,64,512,512])",
+      "base_us": [
+        124.31,
+        124.61
+      ],
+      "fixed_us": [
+        147.25,
+        138.42
+      ],
+      "throughput_ratio": 0.8713550600343055
+    },
+    {
+      "case": "MUL_MAT_ID(name=moe_iq4_nl_e16_n8_b1,type=f32,ne=[2560,10,8,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,1,8,1],i32[10,8,1,1]nb[4,64,512,512])",
+      "base_us": [
+        121.83,
+        125.4
+      ],
+      "fixed_us": [
+        139.67,
+        133.89
+      ],
+      "throughput_ratio": 0.9037505483257788
+    },
+    {
+      "case": "MUL_MAT_ID(name=moe_iq4_nl_e512_n4_b0,type=f32,ne=[2560,10,4,1],op_params=[],sources=iq4_nl[640,2560,512,1],f32[640,10,4,1],i32[10,4,1,1]nb[4,2048,8192,8192])",
+      "base_us": [
+        61.18,
+        61.97
+      ],
+      "fixed_us": [
+        63.96,
+        65.24
+      ],
+      "throughput_ratio": 0.9531733746130032
+    }
+  ],
+  "deployed": false,
+  "speed_gain_claimed": false
+}

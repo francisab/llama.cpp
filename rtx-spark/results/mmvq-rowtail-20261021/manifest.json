@@ -1,0 +1,27 @@
+{
+  "files": {
+    "base-r1.json": "ba3f2214cd03c1123dc281aa3cf527340bde1af11b575e64e0d76e86e17ee578",
+    "base-r2.json": "2e143cb80961dcbafb2fbcf300f17d14cf2f05a74d788d2f565d2951d485db14",
+    "build.json": "edfd5dc4cc2d25b20fdacf7f5f7d996054ac26618c9bb05e5edf47c21e2670bf",
+    "clamp.patch": "ce15debc6966bdcf1c5799f79a22c29f59c755c782a5fa684e0607a3599940e4",
+    "correctness.json": "a9cb7bfe5b64116d33f47068cb298ea50eaac081163dd49d77d162991ac05ee2",
+    "expanded-base.json": "025ab447131b9a818fb6322bbaf0ea4819c49e0d2ab1a06332bcd645516d9aaf",
+    "expanded-correctness.json": "4981e90fcf9110d0daa55eb71b0a15e5bcd0d27d6542da4ff47708a74c284978",
+    "expanded-fixed.json": "7fe0c31b780903edb1f3c8544d9a0dbf8236b453e6a1039a8c80d3d846ab8271",
+    "fix.patch": "391b0788977c61d8ab96a50df5b2d5c16453af4cf742370c5658b39cda41b318",
+    "fixed-r1.json": "9604a2565a730602ea8c3aafb2d5a5bf5e785bb85cc9cb7bdf170326f667ed52",
+    "fixed-r2.json": "dd24e05dbe32e1385ca1f3409b1b8f1918f541e7cda0386201c2fae62796364f",
+    "mtp-diagnostic-protocol.json": "49975a14c3465b4a74344b329d54f2b990d2a9d037bae4005bc36d3522302d23",
+    "mtp-identity.json": "494161e81a3c8cc7739cf0b2930ca02a8bf69f0f7bc001f729b211ea5466e9c2",
+    "mtp-summary.json": "c757458660c2e8070162f423be3af73a7482335df994b65c0d7d20b62e283ab5",
+    "performance.json": "f1cfbf49be0082d7ac0cfb1842f6cee2e750aa201b1585b44e0558f149946e43",
+    "profile.json": "4eb6e8393ec5a380fdeacc8f381c8e36a697ed91e84fbe5fec76da7e420093d0",
+    "protocol.json": "458de1bb1c613ab73b2110f0df68da4517929e6074885fae1f64da70ed5ff009",
+    "revisions.json": "ac397b101a00ed63ada7abf198cc78a55585ced519a3fe3ee5f499b2e1695da3",
+    "select.patch": "2cfaf8e68853da40e2d358dced7f308131a3a7cc747237518db4f5931401f190",
+    "specialized.patch": "25bc450b42f90c09bce0af37af10b2a7f00784abea0b81ad8ef5aea1c65cc080"
+  },
+  "installed_runtime_changed": false,
+  "earlier_runtime_copies_cleaned_at_user_request": true,
+  "raw_logs_retained_privately": true
+}

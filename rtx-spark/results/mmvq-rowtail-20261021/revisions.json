@@ -1,0 +1,34 @@
+[
+  {
+    "revision": "fix",
+    "geomean_ratio": 0.9131621058754684,
+    "cases_beyond_3_percent": 21,
+    "patch": "fix.patch",
+    "source_sha256": "198b6dc7b9859f5db9f708ae4aa0836175f46fa0326ad259210f23ffb248835c",
+    "correctness_checks_passed": 196
+  },
+  {
+    "revision": "clamp",
+    "geomean_ratio": 0.9916830422940685,
+    "cases_beyond_3_percent": 5,
+    "patch": "clamp.patch",
+    "source_sha256": "ac44cab1dd77a71200af6a5b2a73f30456bc25497ea95e626f88766cc26060e2",
+    "correctness_checks_passed": 196
+  },
+  {
+    "revision": "select",
+    "geomean_ratio": 0.9315830695011976,
+    "cases_beyond_3_percent": 12,
+    "patch": "select.patch",
+    "source_sha256": "7fe4c24751903b1198625f761516d85efabcbfd8c888b7347e668db131ed24d4",
+    "correctness_checks_passed": 196
+  },
+  {
+    "revision": "specialized",
+    "geomean_ratio": 0.9265858340484607,
+    "cases_beyond_3_percent": 18,
+    "patch": "specialized.patch",
+    "source_sha256": "50e745ff31ef107664d99978bda05947adac2b4eff3aba6fde1ecc6dbe1e72e3",
+    "correctness_checks_passed": 196
+  }
+]

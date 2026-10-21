@@ -1,0 +1,1106 @@
+{
+  "passed": true,
+  "fixed_checks": 196,
+  "results": [
+    {
+      "arm": "base",
+      "label": "baseline-regression-full",
+      "command": [
+        "test-rowtail-ops.exe",
+        "test",
+        "-b",
+        "CUDA0",
+        "-p",
+        "type_a=(iq4_nl|iq3_s|q4_K|q8_0),.*m=12[79],n=1,k=256|type=(iq4_nl|iq3_s|q4_K|q8_0),n=1,m=12[79]"
+      ],
+      "exit_code": 1,
+      "expected_cases": 48,
+      "cases": {
+        "MUL_MAT(type_a=iq4_nl,type_b=f32,m=127,n=1,k=256,bs=[2,2],nr=[1,1],per=[0,1,2,3],k_v=0,o=1,src_overlap=0,m_v=0,pad=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID_SHARED(type=iq4_nl,n=1,m=127)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=8,n_used=4,b=0,m=127,n=1,k=256,amax=1.000000,m_v=0,ids_offset=0)": {
+          "result": "FAIL",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=8,n_used=4,b=0,m=127,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1)": {
+          "result": "FAIL",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=8,n_used=4,b=1,m=127,n=1,k=256,amax=1.000000,m_v=0,ids_offset=0)": {
+          "result": "FAIL",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=8,n_used=4,b=1,m=127,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1)": {
+          "result": "FAIL",
+          "diagnostic": ""
+        },
+        "MUL_MAT(type_a=iq4_nl,type_b=f32,m=129,n=1,k=256,bs=[2,2],nr=[1,1],per=[0,1,2,3],k_v=0,o=1,src_overlap=0,m_v=0,pad=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID_SHARED(type=iq4_nl,n=1,m=129)": {
+          "result": "FAIL",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=8,n_used=4,b=0,m=129,n=1,k=256,amax=1.000000,m_v=0,ids_offset=0)": {
+          "result": "FAIL",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=8,n_used=4,b=0,m=129,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1)": {
+          "result": "FAIL",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=8,n_used=4,b=1,m=129,n=1,k=256,amax=1.000000,m_v=0,ids_offset=0)": {
+          "result": "FAIL",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=8,n_used=4,b=1,m=129,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1)": {
+          "result": "FAIL",
+          "diagnostic": ""
+        },
+        "MUL_MAT(type_a=iq3_s,type_b=f32,m=127,n=1,k=256,bs=[2,2],nr=[1,1],per=[0,1,2,3],k_v=0,o=1,src_overlap=0,m_v=0,pad=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID_SHARED(type=iq3_s,n=1,m=127)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq3_s,type_b=f32,n_mats=8,n_used=4,b=0,m=127,n=1,k=256,amax=1.000000,m_v=0,ids_offset=0)": {
+          "result": "FAIL",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq3_s,type_b=f32,n_mats=8,n_used=4,b=0,m=127,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1)": {
+          "result": "FAIL",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq3_s,type_b=f32,n_mats=8,n_used=4,b=1,m=127,n=1,k=256,amax=1.000000,m_v=0,ids_offset=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq3_s,type_b=f32,n_mats=8,n_used=4,b=1,m=127,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1)": {
+          "result": "FAIL",
+          "diagnostic": ""
+        },
+        "MUL_MAT(type_a=iq3_s,type_b=f32,m=129,n=1,k=256,bs=[2,2],nr=[1,1],per=[0,1,2,3],k_v=0,o=1,src_overlap=0,m_v=0,pad=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID_SHARED(type=iq3_s,n=1,m=129)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq3_s,type_b=f32,n_mats=8,n_used=4,b=0,m=129,n=1,k=256,amax=1.000000,m_v=0,ids_offset=0)": {
+          "result": "FAIL",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq3_s,type_b=f32,n_mats=8,n_used=4,b=0,m=129,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1)": {
+          "result": "FAIL",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq3_s,type_b=f32,n_mats=8,n_used=4,b=1,m=129,n=1,k=256,amax=1.000000,m_v=0,ids_offset=0)": {
+          "result": "FAIL",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq3_s,type_b=f32,n_mats=8,n_used=4,b=1,m=129,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1)": {
+          "result": "FAIL",
+          "diagnostic": ""
+        },
+        "MUL_MAT(type_a=q4_K,type_b=f32,m=127,n=1,k=256,bs=[2,2],nr=[1,1],per=[0,1,2,3],k_v=0,o=1,src_overlap=0,m_v=0,pad=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID_SHARED(type=q4_K,n=1,m=127)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=8,n_used=4,b=0,m=127,n=1,k=256,amax=1.000000,m_v=0,ids_offset=0)": {
+          "result": "FAIL",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=8,n_used=4,b=0,m=127,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1)": {
+          "result": "FAIL",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=8,n_used=4,b=1,m=127,n=1,k=256,amax=1.000000,m_v=0,ids_offset=0)": {
+          "result": "FAIL",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=8,n_used=4,b=1,m=127,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1)": {
+          "result": "FAIL",
+          "diagnostic": ""
+        },
+        "MUL_MAT(type_a=q4_K,type_b=f32,m=129,n=1,k=256,bs=[2,2],nr=[1,1],per=[0,1,2,3],k_v=0,o=1,src_overlap=0,m_v=0,pad=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID_SHARED(type=q4_K,n=1,m=129)": {
+          "result": "FAIL",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=8,n_used=4,b=0,m=129,n=1,k=256,amax=1.000000,m_v=0,ids_offset=0)": {
+          "result": "FAIL",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=8,n_used=4,b=0,m=129,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1)": {
+          "result": "FAIL",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=8,n_used=4,b=1,m=129,n=1,k=256,amax=1.000000,m_v=0,ids_offset=0)": {
+          "result": "FAIL",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=8,n_used=4,b=1,m=129,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1)": {
+          "result": "FAIL",
+          "diagnostic": ""
+        },
+        "MUL_MAT(type_a=q8_0,type_b=f32,m=127,n=1,k=256,bs=[2,2],nr=[1,1],per=[0,1,2,3],k_v=0,o=1,src_overlap=0,m_v=0,pad=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID_SHARED(type=q8_0,n=1,m=127)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=8,n_used=4,b=0,m=127,n=1,k=256,amax=1.000000,m_v=0,ids_offset=0)": {
+          "result": "FAIL",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=8,n_used=4,b=0,m=127,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1)": {
+          "result": "FAIL",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=8,n_used=4,b=1,m=127,n=1,k=256,amax=1.000000,m_v=0,ids_offset=0)": {
+          "result": "FAIL",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=8,n_used=4,b=1,m=127,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1)": {
+          "result": "FAIL",
+          "diagnostic": ""
+        },
+        "MUL_MAT(type_a=q8_0,type_b=f32,m=129,n=1,k=256,bs=[2,2],nr=[1,1],per=[0,1,2,3],k_v=0,o=1,src_overlap=0,m_v=0,pad=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID_SHARED(type=q8_0,n=1,m=129)": {
+          "result": "FAIL",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=8,n_used=4,b=0,m=129,n=1,k=256,amax=1.000000,m_v=0,ids_offset=0)": {
+          "result": "FAIL",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=8,n_used=4,b=0,m=129,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=8,n_used=4,b=1,m=129,n=1,k=256,amax=1.000000,m_v=0,ids_offset=0)": {
+          "result": "FAIL",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=8,n_used=4,b=1,m=129,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1)": {
+          "result": "FAIL",
+          "diagnostic": ""
+        }
+      },
+      "passed": false,
+      "expected_failure": true,
+      "accepted": true,
+      "elapsed_seconds": 1.625
+    },
+    {
+      "arm": "fixed",
+      "label": "fixed-regression-1",
+      "command": [
+        "test-rowtail-ops.exe",
+        "test",
+        "-b",
+        "CUDA0",
+        "-p",
+        "type_a=(iq4_nl|iq3_s|q4_K|q8_0),.*m=12[79],n=1,k=256|type=(iq4_nl|iq3_s|q4_K|q8_0),n=1,m=12[79]"
+      ],
+      "exit_code": 0,
+      "expected_cases": 48,
+      "cases": {
+        "MUL_MAT(type_a=iq4_nl,type_b=f32,m=127,n=1,k=256,bs=[2,2],nr=[1,1],per=[0,1,2,3],k_v=0,o=1,src_overlap=0,m_v=0,pad=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID_SHARED(type=iq4_nl,n=1,m=127)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=8,n_used=4,b=0,m=127,n=1,k=256,amax=1.000000,m_v=0,ids_offset=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=8,n_used=4,b=0,m=127,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=8,n_used=4,b=1,m=127,n=1,k=256,amax=1.000000,m_v=0,ids_offset=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=8,n_used=4,b=1,m=127,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT(type_a=iq4_nl,type_b=f32,m=129,n=1,k=256,bs=[2,2],nr=[1,1],per=[0,1,2,3],k_v=0,o=1,src_overlap=0,m_v=0,pad=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID_SHARED(type=iq4_nl,n=1,m=129)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=8,n_used=4,b=0,m=129,n=1,k=256,amax=1.000000,m_v=0,ids_offset=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=8,n_used=4,b=0,m=129,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=8,n_used=4,b=1,m=129,n=1,k=256,amax=1.000000,m_v=0,ids_offset=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=8,n_used=4,b=1,m=129,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT(type_a=iq3_s,type_b=f32,m=127,n=1,k=256,bs=[2,2],nr=[1,1],per=[0,1,2,3],k_v=0,o=1,src_overlap=0,m_v=0,pad=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID_SHARED(type=iq3_s,n=1,m=127)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq3_s,type_b=f32,n_mats=8,n_used=4,b=0,m=127,n=1,k=256,amax=1.000000,m_v=0,ids_offset=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq3_s,type_b=f32,n_mats=8,n_used=4,b=0,m=127,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq3_s,type_b=f32,n_mats=8,n_used=4,b=1,m=127,n=1,k=256,amax=1.000000,m_v=0,ids_offset=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq3_s,type_b=f32,n_mats=8,n_used=4,b=1,m=127,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT(type_a=iq3_s,type_b=f32,m=129,n=1,k=256,bs=[2,2],nr=[1,1],per=[0,1,2,3],k_v=0,o=1,src_overlap=0,m_v=0,pad=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID_SHARED(type=iq3_s,n=1,m=129)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq3_s,type_b=f32,n_mats=8,n_used=4,b=0,m=129,n=1,k=256,amax=1.000000,m_v=0,ids_offset=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq3_s,type_b=f32,n_mats=8,n_used=4,b=0,m=129,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq3_s,type_b=f32,n_mats=8,n_used=4,b=1,m=129,n=1,k=256,amax=1.000000,m_v=0,ids_offset=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq3_s,type_b=f32,n_mats=8,n_used=4,b=1,m=129,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT(type_a=q4_K,type_b=f32,m=127,n=1,k=256,bs=[2,2],nr=[1,1],per=[0,1,2,3],k_v=0,o=1,src_overlap=0,m_v=0,pad=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID_SHARED(type=q4_K,n=1,m=127)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=8,n_used=4,b=0,m=127,n=1,k=256,amax=1.000000,m_v=0,ids_offset=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=8,n_used=4,b=0,m=127,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=8,n_used=4,b=1,m=127,n=1,k=256,amax=1.000000,m_v=0,ids_offset=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=8,n_used=4,b=1,m=127,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT(type_a=q4_K,type_b=f32,m=129,n=1,k=256,bs=[2,2],nr=[1,1],per=[0,1,2,3],k_v=0,o=1,src_overlap=0,m_v=0,pad=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID_SHARED(type=q4_K,n=1,m=129)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=8,n_used=4,b=0,m=129,n=1,k=256,amax=1.000000,m_v=0,ids_offset=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=8,n_used=4,b=0,m=129,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=8,n_used=4,b=1,m=129,n=1,k=256,amax=1.000000,m_v=0,ids_offset=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=8,n_used=4,b=1,m=129,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT(type_a=q8_0,type_b=f32,m=127,n=1,k=256,bs=[2,2],nr=[1,1],per=[0,1,2,3],k_v=0,o=1,src_overlap=0,m_v=0,pad=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID_SHARED(type=q8_0,n=1,m=127)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=8,n_used=4,b=0,m=127,n=1,k=256,amax=1.000000,m_v=0,ids_offset=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=8,n_used=4,b=0,m=127,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=8,n_used=4,b=1,m=127,n=1,k=256,amax=1.000000,m_v=0,ids_offset=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=8,n_used=4,b=1,m=127,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT(type_a=q8_0,type_b=f32,m=129,n=1,k=256,bs=[2,2],nr=[1,1],per=[0,1,2,3],k_v=0,o=1,src_overlap=0,m_v=0,pad=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID_SHARED(type=q8_0,n=1,m=129)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=8,n_used=4,b=0,m=129,n=1,k=256,amax=1.000000,m_v=0,ids_offset=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=8,n_used=4,b=0,m=129,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=8,n_used=4,b=1,m=129,n=1,k=256,amax=1.000000,m_v=0,ids_offset=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=8,n_used=4,b=1,m=129,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1)": {
+          "result": "OK",
+          "diagnostic": ""
+        }
+      },
+      "passed": true,
+      "expected_failure": false,
+      "accepted": true,
+      "elapsed_seconds": 1.6090000000112923
+    },
+    {
+      "arm": "fixed",
+      "label": "fixed-regression-2",
+      "command": [
+        "test-rowtail-ops.exe",
+        "test",
+        "-b",
+        "CUDA0",
+        "-p",
+        "type_a=(iq4_nl|iq3_s|q4_K|q8_0),.*m=12[79],n=1,k=256|type=(iq4_nl|iq3_s|q4_K|q8_0),n=1,m=12[79]"
+      ],
+      "exit_code": 0,
+      "expected_cases": 48,
+      "cases": {
+        "MUL_MAT(type_a=iq4_nl,type_b=f32,m=127,n=1,k=256,bs=[2,2],nr=[1,1],per=[0,1,2,3],k_v=0,o=1,src_overlap=0,m_v=0,pad=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID_SHARED(type=iq4_nl,n=1,m=127)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=8,n_used=4,b=0,m=127,n=1,k=256,amax=1.000000,m_v=0,ids_offset=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=8,n_used=4,b=0,m=127,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=8,n_used=4,b=1,m=127,n=1,k=256,amax=1.000000,m_v=0,ids_offset=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=8,n_used=4,b=1,m=127,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT(type_a=iq4_nl,type_b=f32,m=129,n=1,k=256,bs=[2,2],nr=[1,1],per=[0,1,2,3],k_v=0,o=1,src_overlap=0,m_v=0,pad=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID_SHARED(type=iq4_nl,n=1,m=129)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=8,n_used=4,b=0,m=129,n=1,k=256,amax=1.000000,m_v=0,ids_offset=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=8,n_used=4,b=0,m=129,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=8,n_used=4,b=1,m=129,n=1,k=256,amax=1.000000,m_v=0,ids_offset=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=8,n_used=4,b=1,m=129,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT(type_a=iq3_s,type_b=f32,m=127,n=1,k=256,bs=[2,2],nr=[1,1],per=[0,1,2,3],k_v=0,o=1,src_overlap=0,m_v=0,pad=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID_SHARED(type=iq3_s,n=1,m=127)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq3_s,type_b=f32,n_mats=8,n_used=4,b=0,m=127,n=1,k=256,amax=1.000000,m_v=0,ids_offset=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq3_s,type_b=f32,n_mats=8,n_used=4,b=0,m=127,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq3_s,type_b=f32,n_mats=8,n_used=4,b=1,m=127,n=1,k=256,amax=1.000000,m_v=0,ids_offset=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq3_s,type_b=f32,n_mats=8,n_used=4,b=1,m=127,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT(type_a=iq3_s,type_b=f32,m=129,n=1,k=256,bs=[2,2],nr=[1,1],per=[0,1,2,3],k_v=0,o=1,src_overlap=0,m_v=0,pad=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID_SHARED(type=iq3_s,n=1,m=129)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq3_s,type_b=f32,n_mats=8,n_used=4,b=0,m=129,n=1,k=256,amax=1.000000,m_v=0,ids_offset=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq3_s,type_b=f32,n_mats=8,n_used=4,b=0,m=129,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq3_s,type_b=f32,n_mats=8,n_used=4,b=1,m=129,n=1,k=256,amax=1.000000,m_v=0,ids_offset=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq3_s,type_b=f32,n_mats=8,n_used=4,b=1,m=129,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT(type_a=q4_K,type_b=f32,m=127,n=1,k=256,bs=[2,2],nr=[1,1],per=[0,1,2,3],k_v=0,o=1,src_overlap=0,m_v=0,pad=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID_SHARED(type=q4_K,n=1,m=127)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=8,n_used=4,b=0,m=127,n=1,k=256,amax=1.000000,m_v=0,ids_offset=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=8,n_used=4,b=0,m=127,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=8,n_used=4,b=1,m=127,n=1,k=256,amax=1.000000,m_v=0,ids_offset=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=8,n_used=4,b=1,m=127,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT(type_a=q4_K,type_b=f32,m=129,n=1,k=256,bs=[2,2],nr=[1,1],per=[0,1,2,3],k_v=0,o=1,src_overlap=0,m_v=0,pad=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID_SHARED(type=q4_K,n=1,m=129)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=8,n_used=4,b=0,m=129,n=1,k=256,amax=1.000000,m_v=0,ids_offset=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=8,n_used=4,b=0,m=129,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=8,n_used=4,b=1,m=129,n=1,k=256,amax=1.000000,m_v=0,ids_offset=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=q4_K,type_b=f32,n_mats=8,n_used=4,b=1,m=129,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT(type_a=q8_0,type_b=f32,m=127,n=1,k=256,bs=[2,2],nr=[1,1],per=[0,1,2,3],k_v=0,o=1,src_overlap=0,m_v=0,pad=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID_SHARED(type=q8_0,n=1,m=127)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=8,n_used=4,b=0,m=127,n=1,k=256,amax=1.000000,m_v=0,ids_offset=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=8,n_used=4,b=0,m=127,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=8,n_used=4,b=1,m=127,n=1,k=256,amax=1.000000,m_v=0,ids_offset=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=8,n_used=4,b=1,m=127,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT(type_a=q8_0,type_b=f32,m=129,n=1,k=256,bs=[2,2],nr=[1,1],per=[0,1,2,3],k_v=0,o=1,src_overlap=0,m_v=0,pad=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID_SHARED(type=q8_0,n=1,m=129)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=8,n_used=4,b=0,m=129,n=1,k=256,amax=1.000000,m_v=0,ids_offset=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=8,n_used=4,b=0,m=129,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=8,n_used=4,b=1,m=129,n=1,k=256,amax=1.000000,m_v=0,ids_offset=0)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=q8_0,type_b=f32,n_mats=8,n_used=4,b=1,m=129,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1)": {
+          "result": "OK",
+          "diagnostic": ""
+        }
+      },
+      "passed": true,
+      "expected_failure": false,
+      "accepted": true,
+      "elapsed_seconds": 1.235000000000582
+    },
+    {
+      "arm": "fixed",
+      "label": "fixed-serialized",
+      "command": [
+        "test-backend-ops.exe",
+        "test",
+        "-b",
+        "CUDA0",
+        "--test-file",
+        "test-ops.txt"
+      ],
+      "exit_code": 0,
+      "expected_cases": 34,
+      "cases": {
+        "MUL_MAT_ID(name=moe_iq3_s_e16_n1_b0,type=f32,ne=[640,10,1,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,10,1,1],i32[10,1,1,1]nb[4,64,64,64])": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(name=moe_iq3_s_e16_n1_b1,type=f32,ne=[640,10,1,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,1,1,1],i32[10,1,1,1]nb[4,64,64,64])": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(name=moe_iq3_s_e16_n3_b0,type=f32,ne=[640,10,3,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,10,3,1],i32[10,3,1,1]nb[4,64,192,192])": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(name=moe_iq3_s_e16_n3_b1,type=f32,ne=[640,10,3,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,1,3,1],i32[10,3,1,1]nb[4,64,192,192])": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(name=moe_iq3_s_e16_n4_b0,type=f32,ne=[640,10,4,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,10,4,1],i32[10,4,1,1]nb[4,64,256,256])": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(name=moe_iq3_s_e16_n4_b1,type=f32,ne=[640,10,4,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,1,4,1],i32[10,4,1,1]nb[4,64,256,256])": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(name=moe_iq3_s_e16_n5_b0,type=f32,ne=[640,10,5,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,10,5,1],i32[10,5,1,1]nb[4,64,320,320])": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(name=moe_iq3_s_e16_n5_b1,type=f32,ne=[640,10,5,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,1,5,1],i32[10,5,1,1]nb[4,64,320,320])": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(name=moe_iq3_s_e16_n8_b0,type=f32,ne=[640,10,8,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,10,8,1],i32[10,8,1,1]nb[4,64,512,512])": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(name=moe_iq3_s_e16_n8_b1,type=f32,ne=[640,10,8,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,1,8,1],i32[10,8,1,1]nb[4,64,512,512])": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(name=moe_iq3_s_e512_n4_b1,type=f32,ne=[640,10,4,1],op_params=[],sources=iq3_s[2560,640,512,1],f32[2560,1,4,1],i32[10,4,1,1]nb[4,2048,8192,8192])": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(name=moe_iq4_nl_e16_n1_b0,type=f32,ne=[2560,10,1,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,10,1,1],i32[10,1,1,1]nb[4,64,64,64])": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(name=moe_iq4_nl_e16_n1_b1,type=f32,ne=[2560,10,1,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,1,1,1],i32[10,1,1,1]nb[4,64,64,64])": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(name=moe_iq4_nl_e16_n3_b0,type=f32,ne=[2560,10,3,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,10,3,1],i32[10,3,1,1]nb[4,64,192,192])": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(name=moe_iq4_nl_e16_n3_b1,type=f32,ne=[2560,10,3,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,1,3,1],i32[10,3,1,1]nb[4,64,192,192])": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(name=moe_iq4_nl_e16_n4_b0,type=f32,ne=[2560,10,4,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,10,4,1],i32[10,4,1,1]nb[4,64,256,256])": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(name=moe_iq4_nl_e16_n4_b1,type=f32,ne=[2560,10,4,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,1,4,1],i32[10,4,1,1]nb[4,64,256,256])": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(name=moe_iq4_nl_e16_n5_b0,type=f32,ne=[2560,10,5,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,10,5,1],i32[10,5,1,1]nb[4,64,320,320])": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(name=moe_iq4_nl_e16_n5_b1,type=f32,ne=[2560,10,5,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,1,5,1],i32[10,5,1,1]nb[4,64,320,320])": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(name=moe_iq4_nl_e16_n8_b0,type=f32,ne=[2560,10,8,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,10,8,1],i32[10,8,1,1]nb[4,64,512,512])": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(name=moe_iq4_nl_e16_n8_b1,type=f32,ne=[2560,10,8,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,1,8,1],i32[10,8,1,1]nb[4,64,512,512])": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(name=moe_iq4_nl_e512_n4_b0,type=f32,ne=[2560,10,4,1],op_params=[],sources=iq4_nl[640,2560,512,1],f32[640,10,4,1],i32[10,4,1,1]nb[4,2048,8192,8192])": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(name=tile_iq3_s_m638_b0,type=f32,ne=[638,10,4,1],op_params=[],sources=iq3_s[2560,638,16,1],f32[2560,10,4,1],i32[10,4,1,1]nb[4,64,256,256])": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(name=tile_iq3_s_m638_b1,type=f32,ne=[638,10,4,1],op_params=[],sources=iq3_s[2560,638,16,1],f32[2560,1,4,1],i32[10,4,1,1]nb[4,64,256,256])": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(name=tile_iq3_s_m640_b0,type=f32,ne=[640,10,4,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,10,4,1],i32[10,4,1,1]nb[4,64,256,256])": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(name=tile_iq3_s_m640_b1,type=f32,ne=[640,10,4,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,1,4,1],i32[10,4,1,1]nb[4,64,256,256])": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(name=tile_iq3_s_m642_b0,type=f32,ne=[642,10,4,1],op_params=[],sources=iq3_s[2560,642,16,1],f32[2560,10,4,1],i32[10,4,1,1]nb[4,64,256,256])": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(name=tile_iq3_s_m642_b1,type=f32,ne=[642,10,4,1],op_params=[],sources=iq3_s[2560,642,16,1],f32[2560,1,4,1],i32[10,4,1,1]nb[4,64,256,256])": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(name=tile_iq4_nl_m2558_b0,type=f32,ne=[2558,10,4,1],op_params=[],sources=iq4_nl[640,2558,16,1],f32[640,10,4,1],i32[10,4,1,1]nb[4,64,256,256])": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(name=tile_iq4_nl_m2558_b1,type=f32,ne=[2558,10,4,1],op_params=[],sources=iq4_nl[640,2558,16,1],f32[640,1,4,1],i32[10,4,1,1]nb[4,64,256,256])": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(name=tile_iq4_nl_m2560_b0,type=f32,ne=[2560,10,4,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,10,4,1],i32[10,4,1,1]nb[4,64,256,256])": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(name=tile_iq4_nl_m2560_b1,type=f32,ne=[2560,10,4,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,1,4,1],i32[10,4,1,1]nb[4,64,256,256])": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(name=tile_iq4_nl_m2562_b0,type=f32,ne=[2562,10,4,1],op_params=[],sources=iq4_nl[640,2562,16,1],f32[640,10,4,1],i32[10,4,1,1]nb[4,64,256,256])": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(name=tile_iq4_nl_m2562_b1,type=f32,ne=[2562,10,4,1],op_params=[],sources=iq4_nl[640,2562,16,1],f32[640,1,4,1],i32[10,4,1,1]nb[4,64,256,256])": {
+          "result": "OK",
+          "diagnostic": ""
+        }
+      },
+      "passed": true,
+      "expected_failure": false,
+      "accepted": true,
+      "elapsed_seconds": 35.937999999994645
+    },
+    {
+      "arm": "fixed",
+      "label": "fixed-boundaries",
+      "command": [
+        "test-backend-ops.exe",
+        "test",
+        "-b",
+        "CUDA0",
+        "-o",
+        "MUL_MAT_ID",
+        "-p",
+        "type_a=iq4_nl,.*m=12[789],n=[1-9],.*prefill_route=2"
+      ],
+      "exit_code": 0,
+      "expected_cases": 54,
+      "cases": {
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=127,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=1,m=127,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=128,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=1,m=128,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=129,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=1,m=129,n=1,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=127,n=2,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=1,m=127,n=2,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=128,n=2,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=1,m=128,n=2,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=129,n=2,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=1,m=129,n=2,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=127,n=3,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=1,m=127,n=3,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=128,n=3,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=1,m=128,n=3,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=129,n=3,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=1,m=129,n=3,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=127,n=4,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=1,m=127,n=4,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=128,n=4,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=1,m=128,n=4,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=129,n=4,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=1,m=129,n=4,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=127,n=5,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=1,m=127,n=5,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=128,n=5,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=1,m=128,n=5,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=129,n=5,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=1,m=129,n=5,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=127,n=6,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=1,m=127,n=6,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=128,n=6,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=1,m=128,n=6,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=129,n=6,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=1,m=129,n=6,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=127,n=7,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=1,m=127,n=7,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=128,n=7,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=1,m=128,n=7,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=129,n=7,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=1,m=129,n=7,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=127,n=8,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=1,m=127,n=8,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=128,n=8,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=1,m=128,n=8,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=129,n=8,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=1,m=129,n=8,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=127,n=9,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=1,m=127,n=9,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=128,n=9,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=1,m=128,n=9,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=129,n=9,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=1,m=129,n=9,k=256,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        }
+      },
+      "passed": true,
+      "expected_failure": false,
+      "accepted": true,
+      "elapsed_seconds": 17.89100000000326
+    },
+    {
+      "arm": "fixed",
+      "label": "fixed-fusion",
+      "command": [
+        "test-backend-ops.exe",
+        "test",
+        "-b",
+        "CUDA0",
+        "-o",
+        "MUL_MAT_ID_SHARED",
+        "-p",
+        "type=(iq3_s|iq4_nl),"
+      ],
+      "exit_code": 0,
+      "expected_cases": 12,
+      "cases": {
+        "MUL_MAT_ID_SHARED(type=iq3_s,n=1)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID_SHARED(type=iq3_s,n=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID_SHARED(type=iq3_s,n=3)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID_SHARED(type=iq3_s,n=4)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID_SHARED(type=iq3_s,n=8)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID_SHARED(type=iq3_s,n=9)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID_SHARED(type=iq4_nl,n=1)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID_SHARED(type=iq4_nl,n=2)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID_SHARED(type=iq4_nl,n=3)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID_SHARED(type=iq4_nl,n=4)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID_SHARED(type=iq4_nl,n=8)": {
+          "result": "OK",
+          "diagnostic": ""
+        },
+        "MUL_MAT_ID_SHARED(type=iq4_nl,n=9)": {
+          "result": "OK",
+          "diagnostic": ""
+        }
+      },
+      "passed": true,
+      "expected_failure": false,
+      "accepted": true,
+      "elapsed_seconds": 1.2810000000026776
+    }
+  ]
+}

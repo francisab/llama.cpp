@@ -1,0 +1,86 @@
+{
+  "base": [
+    {
+      "kernel": "void mul_mat_vec_q<(ggml_type)20, (int)1, (bool)0, (bool)1, (bool)0>(const void *, const void *, const int *, ggml_cuda_mm_fusion_args_device, float *, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, unsigned int)",
+      "grid": [
+        640,
+        10,
+        1
+      ],
+      "block": [
+        32,
+        4,
+        1
+      ],
+      "registers": 56,
+      "static_shared_bytes": 1536,
+      "dynamic_shared_bytes": 0,
+      "launches": 41599,
+      "median_us": 20.096,
+      "mean_us": 20.58338135532104,
+      "first_us": 34.752
+    },
+    {
+      "kernel": "void mul_mat_vec_q_moe<(ggml_type)20, (int)2, (bool)0>(const void *, const void *, const int *, ggml_cuda_mm_fusion_args_device, float *, unsigned int, uint3, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int)",
+      "grid": [
+        1280,
+        10,
+        1
+      ],
+      "block": [
+        32,
+        4,
+        1
+      ],
+      "registers": 40,
+      "static_shared_bytes": 0,
+      "dynamic_shared_bytes": 0,
+      "launches": 15765,
+      "median_us": 57.888,
+      "mean_us": 59.172714367269265,
+      "first_us": 68.96
+    }
+  ],
+  "fixed": [
+    {
+      "kernel": "void mul_mat_vec_q<(ggml_type)20, (int)1, (bool)0, (bool)1, (bool)0, (bool)0>(const void *, const void *, const int *, ggml_cuda_mm_fusion_args_device, float *, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, unsigned int)",
+      "grid": [
+        640,
+        10,
+        1
+      ],
+      "block": [
+        32,
+        4,
+        1
+      ],
+      "registers": 56,
+      "static_shared_bytes": 1536,
+      "dynamic_shared_bytes": 0,
+      "launches": 41599,
+      "median_us": 20.832,
+      "mean_us": 21.255901031274792,
+      "first_us": 35.232
+    },
+    {
+      "kernel": "void mul_mat_vec_q_moe<(ggml_type)20, (int)2, (bool)0, (bool)0>(const void *, const void *, const int *, ggml_cuda_mm_fusion_args_device, float *, unsigned int, uint3, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int)",
+      "grid": [
+        1280,
+        10,
+        1
+      ],
+      "block": [
+        32,
+        4,
+        1
+      ],
+      "registers": 40,
+      "static_shared_bytes": 0,
+      "dynamic_shared_bytes": 0,
+      "launches": 15765,
+      "median_us": 57.984,
+      "mean_us": 59.28337285125278,
+      "first_us": 67.712
+    }
+  ]
+}

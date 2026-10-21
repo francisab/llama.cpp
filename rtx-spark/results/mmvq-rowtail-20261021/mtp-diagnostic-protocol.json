@@ -1,0 +1,18 @@
+{
+  "purpose": "Diagnose the correctness fix on actual MTP requests; this does not waive the recorded operator regressions or promote the one-warp optimization.",
+  "reason": "Software tracing confirms identical launch geometry and register counts. The aligned IQ4_NL four-token GPU kernel median is nearly unchanged despite larger operator wall-time differences.",
+  "arms": ["base-r1", "fixed-r1", "fixed-r2", "base-r2"],
+  "configuration": "U1, MTP3, ub512, Q4_K draft output head, dynamic vocabulary 16384",
+  "suite": "en-us",
+  "cases": ["rust256", "json256"],
+  "case_name_correction": "The first invocation used informal labels and failed argument validation before starting a server or measuring anything. Use the existing suite's exact names.",
+  "warmups_per_case_per_launch": 1,
+  "measured_requests_per_case_per_launch": 5,
+  "requirements": {
+    "token_identity": true,
+    "investigate_per_case_regression_percent": 3,
+    "no_speed_gain_claimed": true
+  },
+  "installed_runtime_changed": false,
+  "new_model_files_created": false
+}
