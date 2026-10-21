@@ -1628,7 +1628,7 @@ struct test_case {
         }
 
         // build graph
-        ggml_cgraph * gf = ggml_new_graph_custom(ctx.get(), graph_nodes, false);
+        gf = ggml_new_graph_custom(ctx.get(), graph_nodes, false);
         ggml_build_forward_expand(gf, out);
 
         // warmup run
@@ -1639,6 +1639,11 @@ struct test_case {
         }
 
         // determine number of runs
+        const int n_nodes = ggml_graph_n_nodes(gf);
+        const bool whole_graph = run_whole_graph();
+        const int n_repeat_nodes = whole_graph ? n_nodes : 1;
+        GGML_ASSERT(n_repeat_nodes > 0);
+        const int max_repeats = (ggml_graph_size(gf) - n_nodes) / n_repeat_nodes;
         int n_runs;
         bool is_cpu = ggml_backend_dev_type(ggml_backend_get_device(backend)) == GGML_BACKEND_DEVICE_TYPE_CPU;
         if (op_flops(out) > 0) {
@@ -1647,19 +1652,21 @@ struct test_case {
             const uint64_t target_flops_cpu =   8ULL * GFLOP;
             const uint64_t target_flops_gpu = 100ULL * GFLOP;
             uint64_t target_flops = is_cpu ? target_flops_cpu : target_flops_gpu;
-            n_runs = (int)std::min<int64_t>(ggml_graph_size(gf) - ggml_graph_n_nodes(gf), target_flops / op_flops(out)) + 1;
+            n_runs = (int)std::min<int64_t>(max_repeats, target_flops / op_flops(out)) + 1;
         } else {
             // based on memory size
             const size_t GB = 1ULL << 30;
             const size_t target_size_cpu =  8 * GB;
             const size_t target_size_gpu = 32 * GB;
             size_t target_size = is_cpu ? target_size_cpu : target_size_gpu;
-            n_runs = (int)std::min<int64_t>(ggml_graph_size(gf) - ggml_graph_n_nodes(gf), target_size / op_size(out)) + 1;
+            n_runs = (int)std::min<int64_t>(max_repeats, target_size / op_size(out)) + 1;
         }
 
-        // duplicate the op
+        // repeat the measured work
         for (int i = 1; i < n_runs; i++) {
-            ggml_graph_add_node(gf, out);
+            for (int j = 0; j < n_repeat_nodes; ++j) {
+                ggml_graph_add_node(gf, whole_graph ? ggml_graph_node(gf, j) : out);
+            }
         }
 
         // calculate memory
@@ -2011,6 +2018,46 @@ struct test_case {
 // ## Section 2: GGML Op Definitions ##
 // ####################################
 
+
+struct test_perf_graph : public test_case {
+    const bool whole_graph;
+    const bool by_flops;
+    ggml_tensor * counter = nullptr;
+    ggml_tensor * increment = nullptr;
+    ggml_tensor * out = nullptr;
+
+    test_perf_graph(bool whole_graph, bool by_flops) : whole_graph(whole_graph), by_flops(by_flops) {}
+
+    std::string vars() override { return VARS_TO_STR2(whole_graph, by_flops); }
+    std::string op_desc(ggml_tensor *) override { return "PERF_GRAPH"; }
+    bool run_whole_graph() override { return whole_graph; }
+    uint64_t op_flops(ggml_tensor *) override { return by_flops ? (whole_graph ? 2 : 1) : 0; }
+
+    ggml_tensor * build_graph(ggml_context * ctx) override {
+        counter = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, 1);
+        increment = ggml_new_tensor_1d(ctx, GGML_TYPE_F32, 1);
+        out = ggml_sqr(ctx, ggml_add_inplace(ctx, counter, increment));
+        return out;
+    }
+
+    void initialize_tensors(ggml_context *) override {
+        const float initial = -1.0f; // cancel the untimed warmup increment
+        const float one = 1.0f;
+        ggml_backend_tensor_set(counter, &initial, 0, sizeof(initial));
+        ggml_backend_tensor_set(increment, &one, 0, sizeof(one));
+    }
+
+    void reinit_perf_iter(ggml_context *) override {
+        const int n_nodes = ggml_graph_n_nodes(gf);
+        GGML_ASSERT(!whole_graph || n_nodes % 2 == 0);
+        const float expected = whole_graph ? n_nodes / 2 : 1;
+        float result;
+        ggml_backend_tensor_get(out, &result, 0, sizeof(result));
+        GGML_ASSERT(result == expected * expected);
+        const float zero = 0.0f;
+        ggml_backend_tensor_set(counter, &zero, 0, sizeof(zero));
+    }
+};
 
 // The following is an example showing the bare minimum for creating a test for a GGML op.
 
@@ -12422,6 +12469,12 @@ static std::vector<std::unique_ptr<test_case>> make_test_cases_eval() {
 // Test cases for performance evaluation: should be representative of real-world use cases
 static std::vector<std::unique_ptr<test_case>> make_test_cases_perf() {
     std::vector<std::unique_ptr<test_case>> test_cases;
+
+    for (bool whole_graph : {false, true}) {
+        for (bool by_flops : {false, true}) {
+            test_cases.emplace_back(new test_perf_graph(whole_graph, by_flops));
+        }
+    }
 
     // SWIGLU at a 27B-class FFN width, fused [gate|up] vs split operands
     // note: same bytes either way, so a backend that indexes them differently shows it here

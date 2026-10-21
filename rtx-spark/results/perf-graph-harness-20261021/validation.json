@@ -1,0 +1,128 @@
+{
+  "completed": true,
+  "scope": "Benchmark measurement correctness, not an inference-speed improvement",
+  "compiler": "Native Windows ARM64 Clang 20.1.8, Release, armv8.7-a",
+  "backend": "CPU, native LLVM OpenMP runtime, from the current worktree",
+  "negative_control": {
+    "expected_failure_reproduced": true,
+    "repetition_logic": "Original output-node-only loop, with the same four-case numerical fixture",
+    "assertion": "result == expected * expected",
+    "output_only_cases_passed": 2,
+    "native_exit_code": "0xc0000409",
+    "exit_code": 8,
+    "elapsed_seconds": 16.406000000002678
+  },
+  "regression_cases": [
+    {
+      "whole_graph": false,
+      "by_flops": false
+    },
+    {
+      "whole_graph": false,
+      "by_flops": true
+    },
+    {
+      "whole_graph": true,
+      "by_flops": false
+    },
+    {
+      "whole_graph": true,
+      "by_flops": true
+    }
+  ],
+  "checks": [
+    {
+      "case": "ctest-final",
+      "matched_operator_cases": 4,
+      "command": [
+        "ctest.exe",
+        "--test-dir",
+        "<native-build>",
+        "-R",
+        "^test-backend-ops-perf-graph$",
+        "--output-on-failure",
+        "--timeout",
+        "45"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 4.1710000000020955
+    },
+    {
+      "case": "snake-correctness",
+      "matched_operator_cases": 8,
+      "command": [
+        "test-backend-ops.exe",
+        "test",
+        "-b",
+        "CPU",
+        "-o",
+        "SNAKE_FUSE",
+        "-p",
+        "type=f32,"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.4379999999946449
+    },
+    {
+      "case": "snake-perf",
+      "matched_operator_cases": 1,
+      "command": [
+        "test-backend-ops.exe",
+        "perf",
+        "-b",
+        "CPU",
+        "-o",
+        "SNAKE_FUSE",
+        "-p",
+        "type=f32,"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.6560000000026776
+    },
+    {
+      "case": "q8-correctness",
+      "matched_operator_cases": 1,
+      "command": [
+        "test-backend-ops.exe",
+        "test",
+        "-b",
+        "CPU",
+        "--test-file",
+        "rtx-spark\\results\\q8-fourcol-warps-20261021\\test-ops.txt",
+        "-p",
+        "name=q8_k320_m10240_n4,"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.0629999999946449
+    },
+    {
+      "case": "q8-perf",
+      "matched_operator_cases": 1,
+      "command": [
+        "test-backend-ops.exe",
+        "perf",
+        "-b",
+        "CPU",
+        "--test-file",
+        "rtx-spark\\results\\q8-fourcol-warps-20261021\\test-ops.txt",
+        "-p",
+        "name=q8_k320_m10240_n4,"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.0930000000080327
+    }
+  ],
+  "test_source_sha256": "d0aa9fc5ea68f8d1f8e8d047f81f68a523586c64200f2f1d8afffac592e17193",
+  "test_cmake_sha256": "84e7bb35a8bf644e36043fdb909ed73ff2ddf9cd0b1238dd061471644a82c034",
+  "test_executable_sha256": "079e88a1ddbf43b9fd2a2288ddf04748b9c352807499b575d599e9e999d0140b",
+  "build_preflight_issue": "CMake first selected an unavailable MSVC OpenMP DLL. The isolated build was relinked against the existing matching native LLVM OpenMP library; no runtime dependency was installed and no production build configuration changed.",
+  "commands_use_native_build_placeholder": true,
+  "preservation_audit": {
+    "installed_runtime_binaries_unchanged": 21,
+    "older_owned_source_diff_unchanged": true,
+    "older_owned_untracked_source_files_unchanged": 2,
+    "older_owned_build_dlls_unchanged": 2,
+    "older_owned_test_build_setting": "LLAMA_BUILD_TESTS:BOOL=OFF"
+  },
+  "deployment_changed": false
+}

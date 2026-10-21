@@ -811,6 +811,28 @@ Geometric mean: +0.93%, with unchanged acceptance and 4/4 identical token sequen
 
 The first diagnostic used a selector absent from its fixture file and ran zero cases; the corrected diagnostic requires one passed case and unambiguous effective settings. `results/openmp-blocktime-zero-20261021/` retains that limitation, the source gate, runtime engagement, measured pair and telemetry. Installed binaries, thread counts, model/draft recipe and global environment remain unchanged. Administrator authorization was unavailable, so this experiment did not retry hardware counters or elevate.
 
+### 2.40 Permanent whole-graph benchmark correction [M]
+
+The performance-loop defect found in section 2.38 is now fixed in `tests/test-backend-ops.cpp`, rather than only in an experiment patch. Cases with `run_whole_graph()` repeat all original graph nodes in order. Ordinary cases retain output-only repetition. Both the FLOP and memory budget paths account for the number of nodes per repetition before appending work to the fixed-capacity graph. Existing FLOP definitions, result formatting and runtime kernels are unchanged.
+
+A numerical regression increments an upstream in-place counter and squares it at the output. Its check and counter reset run outside the timed region. Four combinations cover whole-graph/output-only execution and FLOP/memory budgets, including capacity-limited batches. The original loop passes the two output-only cases, then fails the whole-graph numerical assertion; the corrected loop passes all four. The CPU CTest entry also requires a completed performance-result line so a zero-case invocation cannot pass silently. Assertions do not depend on a speed threshold.
+
+| Native Windows ARM64 CPU check | Result |
+|---|---|
+| Original repetition logic with the new fixture | Expected assertion failure; CTest exit 8 |
+| Corrected logic, four regression combinations | Passed; CTest invocation 4.171 seconds |
+| Existing F32 SNAKE whole-graph cases | 8/8 numerical cases and one performance case passed |
+| Existing Q8_0 `MUL_MAT` case | 1/1 numerical case and one performance case passed |
+
+Reproduce the regression in a CPU-enabled test build, with its matching OpenMP runtime available:
+
+```powershell
+cmake --build "<native-build>" --target test-backend-ops
+ctest --test-dir "<native-build>" -R "^test-backend-ops-perf-graph$" --output-on-failure --timeout 45
+```
+
+`results/perf-graph-harness-20261021/validation.json` records commands, actual case coverage, return codes and source/binary hashes. The isolated build initially linked an unavailable MSVC OpenMP DLL; selecting the already-installed matching native LLVM library resolved that dependency before the red/green regression. No new runtime dependency was installed. This validation is CPU-only; it does not claim CUDA coverage of the permanent fixture or an inference-speed gain. The live runtime, older owned build/source, model recipe and global settings remain unchanged.
+
 ## 3. Source-verified feature status and reference lessons
 
 The following status is verified in this checkout. This table supersedes the porting assumptions in the initial reference inventory below.
@@ -939,7 +961,7 @@ Screen decisions and partial measurements are retained. Errors and timeouts stop
 | 6 | Dense FFN MMQ fusion [ggml-org/llama.cpp#29948](https://github.com/ggml-org/llama.cpp/pull/29948) passes its backend-ops tests, but repeated 27B speed gains are small/noisy and its patch does not apply to b11756 + #30380 (section 2.16). Not deployed. | Rebase/integrate to a clean release base, then repeat matched prefill and decode tests before reconsidering. Grouped prefill still needs evidence that expert GEMMs dominate; NVFP4 remains separate. | No assumed 1.5-2x improvement, no double-counting overlapping fusions, and no swapping model precision inside a kernel-only comparison. |
 | 7 | Treat per-request speculative server controls as a separate serving/API decision, not an engine speed step. | Confirm the desired request semantics and server-scope fit; implement tests proving parameters are honored rather than merely echoed. | Do not combine this with speculation algorithm work or claim it improves single-request throughput. |
 
-The next kernel diagnostic is the bounded Q8 hardware-counter capture in section 2.28, which still requires human authorization for elevated execution. Do not change driver policy or clocks. Target backend sampling and zero OpenMP blocktime also missed their gates (sections 2.37 and 2.39); the deployed recipe remains unchanged.
+The next kernel diagnostic is the bounded Q8 hardware-counter capture in section 2.28, which still requires human authorization for elevated execution. Do not change driver policy or clocks. Target backend sampling and zero OpenMP blocktime also missed their gates (sections 2.37 and 2.39); the deployed recipe remains unchanged. The permanent whole-graph benchmark fix in section 2.40 protects future operator screens from timing only the terminal node; use it in matched control/candidate test builds.
 
 There is no defensible cumulative target or delivery timeline yet. Report each prototype's measured delta independently; add a combined projection only after combined measurements confirm interactions and no double counting.
 

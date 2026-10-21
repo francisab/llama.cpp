@@ -316,6 +316,10 @@ if (GGML_METAL AND NOT GGML_BACKEND_DL)
 endif()
 
 llama_build(test-backend-ops.cpp LINK ggml)
+if (GGML_CPU)
+    llama_test(test-backend-ops NAME test-backend-ops-perf-graph ARGS perf -b CPU -o PERF_GRAPH)
+    set_tests_properties(test-backend-ops-perf-graph PROPERTIES PASS_REGULAR_EXPRESSION "PERF_GRAPH\\(whole_graph=1,by_flops=1\\):[ ]+[1-9][0-9]* runs")
+endif()
 
 llama_build_and_test(test-tiled-mulmat.cpp  LABEL "main behavior backend"  LINK ggml)
 llama_build_and_test(test-model-load-cancel.cpp LABEL "model behavior")
