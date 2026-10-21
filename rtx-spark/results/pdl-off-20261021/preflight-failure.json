@@ -1,0 +1,10 @@
+{
+  "stage": "First control-side dispatch trace",
+  "control_correctness_cases_passed": 46,
+  "failed_filter": "name=q8_k512_m8192_n4$",
+  "cause": "The operator description continues with comma-separated fields after its name. The terminal anchor matches no tests, leaving the trace without a kernel table.",
+  "accepted_as_dispatch_evidence": false,
+  "candidate_speed_run_started": false,
+  "correction": "Use the trailing comma instead of an end anchor, first require exactly one passing unprofiled case, then repeat the diagnostic capture under a new filename",
+  "deployment_changed": false
+}

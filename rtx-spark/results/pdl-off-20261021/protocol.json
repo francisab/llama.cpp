@@ -1,0 +1,27 @@
+{
+  "hypothesis": "Disabling programmatic dependent launch may reduce scheduling or overlapping-kernel contention on this Windows ARM64 workload",
+  "scope": "Runtime configuration ablation only, not a new PDL implementation",
+  "runtime": "Identical installed b11756 plus 30380 and 30640 executable/DLL hashes in both arms",
+  "control_environment": {"GGML_CUDA_PDL": "1"},
+  "candidate_environment": {"GGML_CUDA_PDL": "0"},
+  "environment_scope": "Child processes only; no persistent user, machine, launcher or driver setting changes",
+  "source_contract": "The existing launch helper enables PDL by default for supported compiled kernels. The environment variable changes launch attributes, not compiled synchronization instructions or restrict annotations.",
+  "model": "Original Flash-Next target, Q4_K external draft, MTP3, ub512, dynamic draft vocabulary 16384",
+  "preflight": {
+    "correctness": "Both settings: 24 existing Q8 dense and 22 corrected routed CPU-reference cases",
+    "launch_proof": "Clean software traces of the same single Q8 operator must show extended launch API with PDL enabled and ordinary launch API with it disabled"
+  },
+  "speed_screen": {
+    "cases": ["rust256", "json256"],
+    "measured_samples_per_case_per_arm": 2,
+    "warmup": "Existing run_rebaseline U1 per-case warmup",
+    "minimum_gain_each_case": 0.03,
+    "require_nonoverlapping_ranges": true,
+    "maximum_regression": 0.03,
+    "reverse_order_only_if_first_pair_passes": true,
+    "operational_budget_seconds": 600,
+    "promotion": "Requires subsequent English quality checks and repeated release-stack confirmation"
+  },
+  "stop_rule": "Stop on the first failed speed pair; no other PDL flags or compiled-annotation variants in this screen",
+  "deployment_changed": false
+}

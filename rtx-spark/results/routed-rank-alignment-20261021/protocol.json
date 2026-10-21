@@ -1,0 +1,25 @@
+{
+  "purpose": "Screen ascending expert-ID work ordering inside the existing fused multi-token MMVQ kernel",
+  "hypothesis": "Matching experts at the same sorted rank could improve intra-block weight reuse without MMQ packing or loss of gate/up fusion",
+  "input": "Previously captured complete Rust and JSON routes from routed-overlap-20261021, not new or independent samples",
+  "transformation": "Sort each token's selected experts by ascending expert ID. A future kernel must retain the inverse permutation for original activation/output slots, preserving graph tensors and arithmetic order.",
+  "phase": "Four-token target verification only; exclude the initialization frame and both prefill frames, including the four-token prompt tail",
+  "opportunity_gate": {
+    "minimum_same_rank_duplicate_fraction": 0.20,
+    "requirement": "Both development prompts must meet the threshold before considering a CUDA prototype",
+    "meaning": "Logical reuse triage only, not a predicted speedup, DRAM-traffic estimate or proof of cache reuse"
+  },
+  "validation": [
+    "Reconcile records against original log lines and published phase/token counts",
+    "Reproduce published original same-rank and global overlap totals exactly",
+    "Verify each permutation is bijective and preserves the original expert-to-output-slot mapping",
+    "Check synthetic disjoint, already-aligned and differently-ranked identical expert sets"
+  ],
+  "stop_rule": "If either case fails, stop this ascending-ID ordering hypothesis without alternative order heuristics, per-layer subsets, CUDA builds or model runs",
+  "limitations": [
+    "Sorting instruction cost and physical cache behavior are not measured",
+    "Existing cache reuse may already capture the opportunity",
+    "The two single-sequence development prompts do not establish generality or multi-sequence correctness"
+  ],
+  "deployment_changed": false
+}

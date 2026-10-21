@@ -708,6 +708,34 @@ The geometric mean is **-14.81%**, with only 2/4 identical token sequences. **Re
 
 `results/routed-mmq-20261021/` retains the corrected protocol and patch, preflight mistake, correctness/dispatch proof, timing samples, telemetry and decision. Original source/build DLLs and the installed runtime remain unchanged. Further grouped work must preserve the useful existing fusion or otherwise remove overhead; overlap alone is insufficient.
 
+### 2.33 Fusion-preserving rank-alignment triage [M]
+
+A distinct alternative to MMQ packing is to order each token's expert work by ascending expert ID inside the fused MMVQ kernel, while mapping activations and results back to their original slots. This would retain the existing graph layout and arithmetic order. Before implementing that mapping, an offline replay of the captured routes measures how much same-rank overlap sorting would expose.
+
+| Development case | Original same-rank duplicates | Ascending-ID same-rank duplicates | Additional aligned selections |
+|---|---:|---:|---:|
+| Rust | 9.49% | 18.34% | 8.85 percentage points |
+| JSON | 7.04% | 15.23% | 8.19 percentage points |
+
+Neither case reaches the preregistered 20% logical-reuse triage gate. **Stop this ordering hypothesis before CUDA implementation**, without trying alternate ordering heuristics or layer subsets. The analysis reproduces the published original totals exactly, reconciles every record against the raw logs and phase/token accounting, and checks synthetic disjoint, aligned and permuted expert sets.
+
+These are reused development routes, not new samples. No kernel speed, sorting overhead, physical traffic or cache benefit was measured. Failing this heuristic gate does not establish that every fusion-preserving grouped design would fail. `results/routed-rank-alignment-20261021/` retains the protocol, per-layer counts and input/script hashes; raw routes remain private. No runtime or model changes were made.
+
+### 2.34 PDL-disabled runtime screen [M]
+
+The existing CUDA launch helper enables programmatic dependent launch by default on supported kernels. This screen changes only the child-process environment: control `GGML_CUDA_PDL=1`, candidate `GGML_CUDA_PDL=0`. Executable/DLL hashes, models, graphs, fusion and MTP settings are identical. Disabling the runtime flag does not remove compiled synchronization instructions or restore compile-time `restrict` annotations.
+
+Both settings pass 46 CPU-reference cases: 24 dense Q8 and 22 routed IQ3_S/IQ4_NL cases. Clean software traces of the same Q8 operator show the same kernels but two extended launch calls for control versus two ordinary launch calls for candidate. The first diagnostic filter matched no tests; that empty capture is preserved as a preflight failure, not accepted evidence.
+
+| Case | PDL-on decode median | PDL-off median | Change |
+|---|---:|---:|---:|
+| Rust | 53.73 tok/s | 54.86 tok/s | +2.09% |
+| JSON | 52.10 tok/s | 51.85 tok/s | -0.49% |
+
+The geometric mean is +0.79%, all four token sequences are identical, and both cases have overlapping ranges. **Stop after the first pair**: neither case meets the 3% gate. The run completed in 142.421 seconds. Keep PDL enabled; no reverse-order run, quality campaign, compiled-annotation variant or deployment follows.
+
+`results/pdl-off-20261021/` contains the preregistered protocol, preflight failure, numerical/launch proof, timing samples and telemetry. No user/machine environment, launcher, driver policy, binary or model was changed.
+
 ## 3. Source-verified feature status and reference lessons
 
 The following status is verified in this checkout. This table supersedes the porting assumptions in the initial reference inventory below.
