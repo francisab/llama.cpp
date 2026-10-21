@@ -1,0 +1,11 @@
+{
+  "case": "rust256",
+  "accepted": false,
+  "failure": "Core INFO messages map to TRACE verbosity in common_log_default_callback; verbosity 3 suppresses route records",
+  "corrective_action": "Repeat the same bounded capture at verbosity 4, without changing the diagnostic DLL",
+  "exit_code": 0,
+  "route_records": 0,
+  "prompt_sha256": "0628412d9ddb8282660ef6a868ba6398c05dc6b01ae132fcc2c971227fea5599",
+  "elapsed_seconds_instrumented": 38.812000000005355,
+  "application_summary": []
+}

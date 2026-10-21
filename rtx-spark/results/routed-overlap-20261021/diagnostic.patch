@@ -1,0 +1,32 @@
+--- a/src/llama-context.cpp
++++ b/src/llama-context.cpp
+@@ -234,0 +235,29 @@
++
++    GGML_ASSERT(params.cb_eval == nullptr);
++    cparams.cb_eval_user_data = this;
++    cparams.cb_eval = [](ggml_tensor * t, bool ask, void * user_data) {
++        const auto * context = static_cast<const llama_context *>(user_data);
++        const bool capture = !context->cparams.warmup && std::strncmp(t->name, "ffn_moe_topk-", 13) == 0;
++        if (ask) {
++            return capture;
++        }
++        GGML_ASSERT(capture && t->type == GGML_TYPE_I32);
++        GGML_ASSERT(t->ne[0] == 10 && t->ne[1] > 0 && t->ne[1] <= 512 && t->ne[2] == 1 && t->ne[3] == 1);
++        GGML_ASSERT(t->nb[0] == sizeof(int32_t) && t->nb[1] >= 10 * sizeof(int32_t) && t->nb[1] <= 512 * sizeof(int32_t));
++        const size_t nbytes = ggml_nbytes(t);
++        GGML_ASSERT(nbytes <= 1024 * 1024);
++        std::vector<uint8_t> data(nbytes);
++        ggml_backend_tensor_get(t, data.data(), 0, nbytes);
++        std::string line = "RTS_ROUTE ctx=" + std::to_string(context->cparams.ctx_type) + " tensor=" + t->name +
++            " tokens=" + std::to_string(t->ne[1]) + " nb0=" + std::to_string(t->nb[0]) + " nb1=" + std::to_string(t->nb[1]) + " ids=";
++        for (int64_t token = 0; token < t->ne[1]; ++token) {
++            for (int64_t rank = 0; rank < t->ne[0]; ++rank) {
++                int32_t id;
++                std::memcpy(&id, data.data() + token * t->nb[1] + rank * t->nb[0], sizeof(id));
++                GGML_ASSERT(id >= 0 && id < 512);
++                line += std::to_string(id) + ",";
++            }
++        }
++        LLAMA_LOG_INFO("%s\n", line.c_str());
++        return true;
++    };

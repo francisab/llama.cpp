@@ -1,0 +1,33 @@
+{
+  "completed": true,
+  "opportunity_gate_passed": true,
+  "four_token_verification": {
+    "rust256": {
+      "layer_evaluations": 1680,
+      "expert_selections": 67200,
+      "unique_experts_summed": 41530,
+      "same_rank_unique_experts_summed": 60826,
+      "duplicate_selection_fraction": 0.3819940476190476,
+      "same_rank_duplicate_selection_fraction": 0.09485119047619048
+    },
+    "json256": {
+      "layer_evaluations": 1536,
+      "expert_selections": 61440,
+      "unique_experts_summed": 41625,
+      "same_rank_unique_experts_summed": 57114,
+      "duplicate_selection_fraction": 0.322509765625,
+      "same_rank_duplicate_selection_fraction": 0.07041015625
+    }
+  },
+  "decision": "Consider a bounded existing grouped-kernel experiment, not a same-rank-only reuse kernel",
+  "source_evidence": "The current multi-token MMVQ kernel assigns one token per warp and an expert rank per block; it does not regroup matching experts across ranks",
+  "limitations": [
+    "The callback segments graph execution and synchronizes readback, so timings are not benchmark results",
+    "Expert-selection duplication is not measured DRAM traffic; cache reuse may already avoid physical reloads",
+    "These are two existing development prompts, not representative independent quality validation",
+    "Single-sequence observations do not validate rollback or multi-sequence execution"
+  ],
+  "warmup_note": "An additional two-token MTP initialization probe runs outside the model warmup flag. It is identified before request launch and excluded.",
+  "prefill_note": "The four-token prompt tail is excluded; full prompt and draft/accepted/generated token accounting reconciles exactly.",
+  "deployment_changed": false
+}

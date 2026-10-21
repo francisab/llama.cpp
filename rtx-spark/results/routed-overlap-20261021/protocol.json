@@ -1,0 +1,34 @@
+{
+  "purpose": "Measure actual routed-expert overlap before considering grouped MoE changes",
+  "runtime": "Installed b11756 plus upstream proposals 30380 and 30640; only a temporary diagnostic llama.dll differs",
+  "model": "Original Flash-Next UD-IQ4_XS target, Q4_K external draft, MTP3, ub512, dynamic draft vocabulary 16384",
+  "cases": ["rust256", "json256"],
+  "generation_tokens_per_case": 128,
+  "sampling": "Greedy, seed 1234, ignore EOS, reasoning off, naturally exiting single-turn CLI",
+  "capture": {
+    "mechanism": "Existing scheduler evaluation callback; request only ffn_moe_topk tensors, skip model warmup",
+    "context_identity": "Record the existing target/MTP context type",
+    "layout": "Record tensor name, token count and strides; copy all ten selected expert IDs per token with the actual row stride",
+    "bounds": "I32 tensors, ten selected experts, up to 512 tokens, up to 512 experts, at most 1 MiB readback",
+    "excluded": "No hardware counters, elevation, driver policy change, raw model weights or production deployment",
+    "timeout_per_capture_seconds": 180
+  },
+  "analysis": {
+    "separate": ["prefill", "target verification batches", "single-token target batches", "MTP draft batches"],
+    "metrics": [
+      "Actual batch-size counts",
+      "Unique experts per verification batch and layer",
+      "Duplicate expert selections across tokens irrespective of rank",
+      "Duplicate expert selections restricted to the same rank across tokens"
+    ],
+    "requirement": "Validate complete ordered layer groups and ID ranges; retain incomplete or failed captures as failures rather than filling missing records",
+    "opportunity_gate": "Consider global grouping only if cross-token duplicate selections reach 20% on both prompts' four-token target batches; this is triage, not a speed prediction"
+  },
+  "limitations": [
+    "The callback segments graph execution and synchronizes readback, so timings are not benchmark results",
+    "Expert-selection duplication is not measured DRAM traffic; cache reuse may already avoid physical reloads",
+    "These are two existing development prompts, not representative independent quality validation",
+    "Single-sequence observations do not validate rollback or multi-sequence execution"
+  ],
+  "deployment_changed": false
+}

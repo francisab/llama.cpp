@@ -1,0 +1,7 @@
+{
+  "case": "json256",
+  "exit_code": 0,
+  "route_records": 1863,
+  "prompt_sha256": "156cc73914cf2315908ca297cf147c2c5e551d2ce0009cfe6bc342835da13780",
+  "elapsed_seconds_instrumented": 36.75
+}

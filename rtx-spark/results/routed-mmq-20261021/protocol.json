@@ -1,0 +1,33 @@
+{
+  "hypothesis": "Existing expert-packed MMQ may exploit measured cross-token routing overlap enough to outweigh packing and lost gate/up fusion",
+  "evidence": "../routed-overlap-20261021/summary.json",
+  "change": "On sm_121 only, lower the existing IQ4_XS/IQ4_NL routed-MMVQ maximum from eight to three tokens. Four-to-eight-token routed work uses MMQ. Keep dense dispatch, other types, other architectures and one-to-three-token routed work unchanged.",
+  "source_contract": "The same host helper gates routed dispatch, MMVQ fusion eligibility and graph-sync eligibility; MMQ already supports both types and GPU-side expert packing",
+  "costs": ["Expert mapping and activation scatter", "Loss of existing routed gate/up MMVQ fusion", "Small per-expert column counts and partly unused MMQ tiles"],
+  "runtime": "Original installed release-like build with only candidate ggml-cuda.dll changed; no route callback in either arm",
+  "correctness": {
+    "runner": "Existing test-backend-ops CPU-reference comparison",
+    "nmse_limit": 0.0005,
+    "types_and_k_m": [["IQ4_XS", 2560, 640], ["IQ4_NL", 640, 2560]],
+    "tokens": [1, 3, 4, 5, 8],
+    "experts": 16,
+    "selected_experts": 10,
+    "both_rhs_broadcast_layouts": true,
+    "additional_cases": "Four-token, 512-expert IQ4_XS gate/up and IQ4_NL down shapes, with the observed 2048-byte ID row stride",
+    "generic_id_note": "Generated correctness fixtures permute the first ten experts and are not a model-routing performance proxy",
+    "dispatch": "Software trace must show IQ4_XS/IQ4_NL routed MMQ for four tokens and no trace warnings/errors"
+  },
+  "speed_gate": {
+    "workload": "Actual MTP3/ub512, original target, Q4_K draft, dynamic vocabulary 16384",
+    "cases": ["rust256", "json256"],
+    "samples_per_case_after_warmup": 2,
+    "minimum_gain_each_case_percent": 3,
+    "nonoverlapping_sample_ranges": true,
+    "maximum_regression_percent": 3,
+    "reverse_order_only_if_first_pair_survives": true,
+    "budget_seconds_including_loads": 600
+  },
+  "promotion": "Only a survivor advances to quality and repeated deployed-stack confirmation; changed outputs require explicit quality follow-up",
+  "stop_policy": "No type/subset/cutoff sweep after failure",
+  "deployment_changed": false
+}
