@@ -1,0 +1,6 @@
+--- a/ggml/src/ggml-cuda/mmvq.cu
++++ b/ggml/src/ggml-cuda/mmvq.cu
+@@ -285,0 +286,3 @@
++    if (cc == GGML_CUDA_CC_DGX_SPARK && (type == GGML_TYPE_IQ4_XS || type == GGML_TYPE_IQ4_NL)) {
++        return 3;
++    }

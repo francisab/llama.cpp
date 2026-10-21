@@ -1,0 +1,17 @@
+{
+  "accepted": false,
+  "stage": "Original-runtime correctness, before candidate execution",
+  "control_supported_cases_passed": 11,
+  "control_unsupported_cases": 11,
+  "cause": "The initial generator incorrectly assigned IQ4_XS enum 21 and a 144-byte block. Pinned enum 21 is IQ3_S with a 110-byte block; IQ4_XS is enum 23 with a 136-byte block. Invalid strides made all eleven mislabeled cases unsupported.",
+  "earlier_documentation_correction": "The 13.01% fused routed kernel is IQ3_S, not IQ4_XS. Raw trace symbols and timings are unchanged.",
+  "corrective_action": "Use enums/block sizes from gguf-py and assert agreement with the pinned C++ header. Target the original model's IQ3_S gate/up and IQ4_NL down tensors.",
+  "original_model_tensors": [
+    {"type": "IQ3_S", "shape": [2560, 640, 512], "count": 94, "example": "blk.0.ffn_gate_exps.weight"},
+    {"type": "IQ4_XS", "shape": [2560, 640, 512], "count": 2, "example": "blk.2.ffn_gate_exps.weight"},
+    {"type": "IQ4_NL", "shape": [640, 2560, 512], "count": 43, "example": "blk.0.ffn_down_exps.weight"},
+    {"type": "Q8_0", "shape": [640, 2560, 512], "count": 5, "example": "blk.2.ffn_down_exps.weight"}
+  ],
+  "candidate_speed_measured": false,
+  "deployment_changed": false
+}

@@ -601,7 +601,7 @@ This is a **full-lifetime diagnostic**, including model initialization, default 
 | Observed kernel variant | Calls | Summed duration | Share of summed kernel duration |
 |---|---:|---:|---:|
 | Q8_0 MMVQ, four-column variant | 18,397 | 660.247 ms | 31.08% |
-| IQ4_XS routed MMVQ, fused variant | 1,785 | 276.381 ms | 13.01% |
+| IQ3_S routed MMVQ, fused variant | 1,785 | 276.381 ms | 13.01% |
 | IQ4_NL routed MMVQ, unfused variant | 1,634 | 145.739 ms | 6.86% |
 | RHS `quantize_q8_1` | 25,123 | 47.451 ms | 2.23% |
 
@@ -688,6 +688,25 @@ Each case also ends with one three-token verification batch. Rust accepts 91/107
 These percentages count logical expert selections, not physical memory traffic or available speedup: caches can already reuse weights. Before adding a grouped kernel, screen the existing MMQ expert-packing path at the actual small verify batches. It introduces packing/quantization work and loses the existing MMVQ gate/up fusion, so it can still lose overall. No new grouped implementation or deployment is justified by overlap alone.
 
 `results/routed-overlap-20261021/` contains the diagnostic patch, capture provenance and sanitized per-layer aggregates. Raw IDs and logs remain private. The first logging pilot collected no records because core INFO maps to TRACE verbosity; it is retained as a failure. The same DLL captured both cases at verbosity four. Original source, original build DLL and installed binaries are restored/unchanged.
+
+The following grouped-kernel correctness preflight also caught a quantization-label error in the earlier kernel table: enum 21 is IQ3_S, not IQ4_XS (enum 23). Original GGUF headers confirm 94 IQ3_S gate/up tensors, two IQ4_XS gate/up tensors, 43 IQ4_NL down tensors and five Q8_0 down tensors. The table above is corrected; raw trace symbols and durations were already intact. The misattributed prototype and malformed fixtures are retained as a preflight failure, with no candidate speed measurement. The corrected experiment targets IQ3_S/IQ4_NL and derives fixture types/block sizes from pinned definitions.
+
+### 2.32 Existing routed MMQ screen [M]
+
+A three-line host dispatch change lowers the sm_121 routed-MMVQ cutoff from eight to three tokens for IQ3_S/IQ4_NL. Existing callers also use this helper for fusion and graph-sync eligibility. Thus the candidate uses the existing GPU expert-packing/MMQ path for four-to-eight-token work; one-to-three-token routed work, other types, other architectures and dense dispatch stay unchanged.
+
+Both runtimes pass 22 CPU-reference cases covering columns 1/3/4/5/8, both RHS broadcast layouts, and the actual 512-expert gate/up and down shapes with strided IDs. A clean software trace verifies both types reach MMQ for four tokens. Correctness fixtures have intentionally repeated expert sets and are not used as routing-performance proxies.
+
+The uninstrumented original-model MTP screen uses two warmed samples per case, not the route-capture DLL:
+
+| Case | Original decode median | Routed-MMQ median | Change |
+|---|---:|---:|---:|
+| Rust | 55.47 tok/s | 47.95 tok/s | -13.55% |
+| JSON | 52.14 tok/s | 43.76 tok/s | -16.06% |
+
+The geometric mean is **-14.81%**, with only 2/4 identical token sequences. **Reject after the first pair**, without reverse order, a quality campaign, type/cutoff/subset tuning or deployment. The bounded run completed in 150.188 seconds. The combination of expert packing, small MMQ tiles and lost gate/up fusion loses overall; this does not separately measure each cost.
+
+`results/routed-mmq-20261021/` retains the corrected protocol and patch, preflight mistake, correctness/dispatch proof, timing samples, telemetry and decision. Original source/build DLLs and the installed runtime remain unchanged. Further grouped work must preserve the useful existing fusion or otherwise remove overhead; overlap alone is insufficient.
 
 ## 3. Source-verified feature status and reference lessons
 
