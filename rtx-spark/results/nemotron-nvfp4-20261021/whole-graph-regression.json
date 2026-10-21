@@ -1,0 +1,47 @@
+{
+  "label": "whole-graph-regression",
+  "exit_code": 0,
+  "expected_cases": 4,
+  "cases": [
+    {
+      "op": "PERF_GRAPH",
+      "runs": 1711919,
+      "time_us": 0.59,
+      "whole_graph": 0,
+      "by_flops": 0
+    },
+    {
+      "op": "PERF_GRAPH",
+      "runs": 1949458,
+      "time_us": 0.51,
+      "whole_graph": 0,
+      "by_flops": 1
+    },
+    {
+      "op": "PERF_GRAPH",
+      "runs": 847872,
+      "time_us": 1.18,
+      "whole_graph": 1,
+      "by_flops": 0
+    },
+    {
+      "op": "PERF_GRAPH",
+      "runs": 819200,
+      "time_us": 1.22,
+      "whole_graph": 1,
+      "by_flops": 1
+    }
+  ],
+  "passed": true,
+  "elapsed_seconds": 5.075035599991679,
+  "correctness_summary": null,
+  "log_sha256": "30fd2c32c2a863209ea061a6f872e3e83f4ca12bbe02c07f385c798a04c19272",
+  "command": [
+    "test-backend-ops.exe",
+    "perf",
+    "-b",
+    "CUDA0",
+    "-o",
+    "PERF_GRAPH"
+  ]
+}

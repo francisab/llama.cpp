@@ -1,0 +1,18 @@
+{
+  "installed_binary_count": 41,
+  "installed_binary_hashes_unchanged": true,
+  "experimental_runtime_hashes_unchanged": true,
+  "protocol_fixture_runner_hashes_unchanged": true,
+  "original_test_source_restored": true,
+  "original_test_source_sha256": "4acbefb39b883224f7893d0d9f07e07f351da78692f6275eef0b6475e5a3aa43",
+  "original_test_executable_restored": true,
+  "original_test_executable_sha256": "16942913ec69a7c2db30f2905db50b801a96b84af282d189b2c9ed2f416e5e4e",
+  "control_test_object_rebuilt": true,
+  "test_build_setting_restored": "LLAMA_BUILD_TESTS=OFF",
+  "original_mmq_and_ssm_source_restored": true,
+  "original_owned_cuda_dll_restored": true,
+  "launcher_catalog_sha256": "a3f31617f52730959d75dc0cb61ba1aabadc680b16992c3c62b5604134ee3e66",
+  "launcher_catalog_unchanged": true,
+  "gpu_memory_released_mib": 2478,
+  "deployment_changed": false
+}

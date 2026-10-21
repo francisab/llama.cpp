@@ -1,0 +1,12 @@
+{
+  "removed_runtime_copies": [
+    "MMQ-copy candidate",
+    "SSD dispatch diagnostic",
+    "Nemotron NVFP4 tester"
+  ],
+  "removed_bytes": 946501616,
+  "removed_mib": 902.65,
+  "retained_control": "One pinned MMQ-copy base runtime for the unresolved Q8 counter diagnosis",
+  "raw_logs_and_source_evidence_retained": true,
+  "installed_runtime_and_models_deleted": false
+}

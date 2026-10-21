@@ -1,0 +1,140 @@
+{
+ "base": {
+  "name": "P7 q27 launcher dflash7",
+  "args": [
+   "llama-server.exe",
+   "-m",
+   "Qwen3.8-27B-UD-Q4_K_M.gguf",
+   "--mmproj",
+   "mmproj-F16.gguf",
+   "--host",
+   "127.0.0.1",
+   "--port",
+   "9949",
+   "--batch-size",
+   "4096",
+   "--ubatch-size",
+   "512",
+   "--ctx-size",
+   "262144",
+   "--parallel",
+   "1",
+   "-ngl",
+   "999",
+   "--spec-type",
+   "draft-dflash",
+   "--spec-draft-n-max",
+   "7",
+   "-md",
+   "Qwen3.8-27B-DFlash2-Q4_K_M.gguf",
+   "--spec-draft-backend-sampling",
+   "--temp",
+   "1.0",
+   "--top-p",
+   "0.95",
+   "--top-k",
+   "20",
+   "--min-p",
+   "0.0",
+   "--presence-penalty",
+   "0.0",
+   "--repeat-penalty",
+   "1.0",
+   "--metrics"
+  ],
+  "load_s": 14.658589400001802,
+  "gpu_memory_ready_mib": 38279
+ },
+ "cand": {
+  "name": "P4 q27 launcher dflash4",
+  "args": [
+   "llama-server.exe",
+   "-m",
+   "Qwen3.8-27B-UD-Q4_K_M.gguf",
+   "--mmproj",
+   "mmproj-F16.gguf",
+   "--host",
+   "127.0.0.1",
+   "--port",
+   "9949",
+   "--batch-size",
+   "4096",
+   "--ubatch-size",
+   "512",
+   "--ctx-size",
+   "262144",
+   "--parallel",
+   "1",
+   "-ngl",
+   "999",
+   "--spec-type",
+   "draft-dflash",
+   "--spec-draft-n-max",
+   "4",
+   "-md",
+   "Qwen3.8-27B-DFlash2-Q4_K_M.gguf",
+   "--spec-draft-backend-sampling",
+   "--temp",
+   "1.0",
+   "--top-p",
+   "0.95",
+   "--top-k",
+   "20",
+   "--min-p",
+   "0.0",
+   "--presence-penalty",
+   "0.0",
+   "--repeat-penalty",
+   "1.0",
+   "--metrics"
+  ],
+  "load_s": 14.565312499995343,
+  "gpu_memory_ready_mib": 37848
+ },
+ "cases": [
+  {
+   "case": "prose256",
+   "base_tg_median": 29.84811166109265,
+   "cand_tg_median": 34.59717283112329,
+   "ratio": 1.1591075919292106,
+   "base_tg_range": [
+    26.69599387353113,
+    33.00022944865417
+   ],
+   "cand_tg_range": [
+    34.56100342384341,
+    34.63334223840316
+   ],
+   "base_accept": 0.3682092555331992,
+   "cand_accept": 0.5403726708074534
+  },
+  {
+   "case": "prose512",
+   "base_tg_median": 36.31792256294547,
+   "cand_tg_median": 37.54797325931435,
+   "ratio": 1.0338689718344154,
+   "base_tg_range": [
+    35.75923218000596,
+    36.87661294588498
+   ],
+   "cand_tg_range": [
+    37.453872550848395,
+    37.6420739677803
+   ],
+   "base_accept": 0.41511500547645125,
+   "cand_accept": 0.6046901172529313
+  }
+ ],
+ "geomean_ratio": 1.0946987596198865,
+ "identical_outputs": [
+  4,
+  4
+ ],
+ "screen": {
+  "decision": "advance",
+  "reason": "Speed screen only; correctness and quality are not established",
+  "quality_checked": false,
+  "min_gain_pct": 3.0,
+  "max_regression_pct": 3.0
+ }
+}

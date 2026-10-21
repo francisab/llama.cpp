@@ -1,0 +1,31 @@
+{
+  "id": "nemotron-ssd-dispatch",
+  "scope": "Diagnostic only: observe existing Mamba2 CUDA dispatch with and without MTP rollback. No kernel algorithm, model precision, installed runtime or launcher changes.",
+  "source": {
+    "graph": "src/models/mamba-base.cpp",
+    "dispatch": "ggml/src/ggml-cuda/ssm-scan.cu",
+    "hypothesis": "MTP3 sets rollback K=4 even for long prompt batches, excluding the existing K=1 SSD path."
+  },
+  "runtime": {
+    "source_base": "b11756 plus the existing PR30380/30640 release stack",
+    "change": "One stderr diagnostic at the existing CUDA SSM dispatch",
+    "isolated_runtime": true,
+    "context": 8192,
+    "batch": 4096,
+    "ubatch": 4096,
+    "startup_warmup": false,
+    "arms": ["none", "draft-mtp depth3 p_min0.5"],
+    "prompt": "bench_server.text_of(1500, 1500)",
+    "generated_tokens": 1,
+    "requests_per_arm": 2,
+    "timings_are_performance_evidence": false
+  },
+  "checks": [
+    "Both arms complete their requests, stop normally and release GPU memory.",
+    "Capture every logged long-batch SSM dispatch, including dimensions, K, scalar-A status and selected path.",
+    "Observe eligible SSD in the no-speculation control and K-dependent exclusion with MTP3.",
+    "Host dispatch records are not GPU execution counts: CUDA graph capture/reuse can change their count.",
+    "Verify installed binaries unchanged and restore the owned CUDA source and DLL after capture."
+  ],
+  "stop": "Do not force K=1, remove the rollback guard or implement a new SSD algorithm in this diagnostic."
+}

@@ -533,7 +533,7 @@ The refreshed CUDA queue was filtered before spending more build or GPU time. Ex
 |---|---|
 | [ggml-org/llama.cpp#30918](https://github.com/ggml-org/llama.cpp/pull/30918), fused sampling penalties | Not selected for the current recipe, which does not enable backend sampling. The author's roughly 22 microsecond saving requires active penalties. |
 | [ggml-org/llama.cpp#30792](https://github.com/ggml-org/llama.cpp/pull/30792), native Q8 KV tile kernel | Not on Flash-Next's Blackwell dispatch path: its 256-wide heads return from the earlier Turing-MMA branch before the changed generic fallback. Do not transfer the reported gfx1151 gains to N1X. |
-| [ggml-org/llama.cpp#30493](https://github.com/ggml-org/llama.cpp/pull/30493), vectorized MMQ copy | Lower-priority prefill candidate, not a decode optimization. Reported gains on other hardware are small; no local failure or upper bound is claimed. |
+| [ggml-org/llama.cpp#30493](https://github.com/ggml-org/llama.cpp/pull/30493), vectorized MMQ copy | Subsequently screened in section 2.53: 64/64 correctness cases per arm, 27B prefill +1.28%, decode -0.82%. Parked at the first pair, not deployed. |
 
 No patch from this source-only triage was built, integrated or deployed. The independent generation-thread experiment is recorded below.
 
@@ -634,7 +634,7 @@ The official CUDA 13.4.3 manifest's Windows ARM64 Nsight Compute package was dow
 
 A bounded single-kernel probe used the original installed CUDA DLL and the Q8_0 `[320, 10240]`, four-column backend case. User configuration loading was disabled, clocks were left unmodified with `--clock-control none`, cache flushing was disabled, and collection was limited to one `mul_mat_vec_q` launch with the basic metric set. The numerical case passed, but the profiler returned **`ERR_NVGPUCTRPERM`**: this process lacks permission to access GPU performance counters. No counters were accepted and no bandwidth, occupancy or instruction bottleneck is inferred.
 
-The probe exited in 6.282 seconds and its process/GPU cleanup was verified. `results/native-counters-20261021/probe.json` preserves tool provenance, settings and the blocker. Further hardware-counter work requires a human-authorized elevated capture or an approved access-policy change following [NVIDIA's guidance](https://developer.nvidia.com/ERR_NVGPUCTRPERM). Do not silently change the driver security policy or retry with elevated privileges.
+The probe exited in 6.282 seconds and its process/GPU cleanup was verified. `results/native-counters-20261021/probe.json` preserves tool provenance, settings and the original blocker. At this point, further hardware-counter work required a human-authorized elevated capture or an approved access-policy change following [NVIDIA's guidance](https://developer.nvidia.com/ERR_NVGPUCTRPERM). Section 2.57 records the later explicitly approved capture and its different driver-resource failure. Do not silently change the driver security policy or escalate again.
 
 ### 2.29 Unprivileged Q8_0 MMQ dispatch screen [M]
 
@@ -1068,6 +1068,98 @@ All four paired prefixes match. Ready GPU memory increases from 78,558 to 79,660
 
 `results/lookup-rollback-capacity-20261021/` retains the preregistered protocol, runnable screen, four-line experimental source patch, actual-capacity/memory checks, measured request hashes and provenance. The original source and build DLLs are restored; temporary runtime copies are removed. The installed runtime, models and launcher are unchanged. Together with section 2.51 this finishes the bounded remaining Strata policy investigation, not the wider optimization roadmap or the unresolved MMVQ correctness-fix performance gate.
 
+### 2.53 Vectorized MMQ activation copy: parked at first pair [M/S]
+
+The complete diff of [ggml-org/llama.cpp#30493](https://github.com/ggml-org/llama.cpp/pull/30493), pinned at `9e37a8578f47936fb7f89cbb45f4e98affc134a9`, replaces scalar activation staging with aligned `int2` loads/stores and retains bounds checks when the work partition is not exact. The head commit alone is only an incremental int4-to-int2 change; this screen uses the complete PR diff against the original scalar implementation. This is an upstream integration experiment, not an original kernel optimization.
+
+Only the isolated candidate's `ggml-cuda.dll` changes. Both arms pass all 64 CPU-reference CUDA fixtures: eight quant types present in the 27B model, rows 65/128, columns 63/64/65/512 and inner dimension 256. The native 27B first pair gives:
+
+| Test | Control | Vectorized copy | Change |
+|---|---:|---:|---:|
+| pp2048 | 852.49 tok/s | 863.36 tok/s | +1.28% |
+| tg128 | 15.38 tok/s | 15.25 tok/s | -0.82% |
+
+**Park at the unchanged 3% prefill gate.** No reverse-order run, full quality campaign, other-model expansion or deployment follows. `results/mmq-copy-20261021/` retains the protocol, complete pinned patch, source/runtime hashes, generated fixtures, correctness records and native samples. The original owned source and DLL are restored and control objects rebuilt; installed binaries were not replaced.
+
+### 2.54 Actual 27B prose launcher profile: reverse order misses the gate [M]
+
+The selected 36 GB vision/DFlash launcher recipe uses b4096, ub512 and context 262144, unlike the earlier depth study's b2048/ub2048. This screen parses that actual launcher command, substitutes the corresponding local target/draft/projector paths, and compares depth seven with depth four on a private loopback port. Only draft depth differs between arms. The four existing launcher recipes remain untouched.
+
+| Case | First-pair depth7 / depth4 | First-pair change | Reverse-pair depth7 / depth4 | Reverse-pair change |
+|---|---:|---:|---:|---:|
+| prose256 | 29.85 / 34.60 tok/s | +15.91% | 32.43 / 33.40 tok/s | +2.98% |
+| prose512 | 36.32 / 37.55 tok/s | +3.39% | 35.70 / 36.72 tok/s | +2.88% |
+| Geometric mean | | +9.47% | | +2.93% |
+
+Each arm has one warmup and two measured requests per case. All eight paired measured sequences are identical; all four servers exit normally and release GPU memory. The first depth7 prose256 samples vary substantially (26.70-33.00 tok/s), and the reverse-order prose256 ranges overlap.
+
+**Park, without rounding 2.98% up to 3% or rerunning until it wins.** The prepared five-repeat confirmation and natural-EOS quality stages do not run; no separate prose recipe is added. Fixed-length requests use greedy sampling, not the launcher's stochastic defaults, so token agreement is not a general quality claim. `results/27b-profiles-20261021/` preserves the frozen protocol, exact catalog command/hash, runnable validator and both pair summaries.
+
+### 2.55 27B NVFP4 FFN eligibility: prefill gain fails decode/verify guards [M/S]
+
+The actual GGUF has 65 blocks including one appended MTP block. The screen excludes that block and inventories all 192 FFN tensors in the 64 target layers. Seven original quant types occur in both orientations: up/gate m17408/k5120 and down m5120/k17408. The filename does not imply uniform Q4_K weights.
+
+On the unchanged installed CUDA implementation, all nine selected native CPU-reference NVFP4 cases pass, including W4A8 and W4A4 fixtures. The pre-conversion speed screen uses synthetic tensors with the actual original type/shape mix: 42 original cases and six NVFP4 cases at columns 1, 8 and 512. Native operator timings are weighted by target-tensor counts:
+
+| Columns / role | Weighted geometric-mean throughput change | Worst individual change |
+|---|---:|---:|
+| 1 / decode guard | -0.30% | -24.51%, Q3_K down |
+| 8 / verification guard | **-9.69%** | **-29.57%, IQ4_NL up/gate** |
+| 512 / prefill | +67.82% | +26.28%, IQ3_S down |
+
+**Reject at the first pair.** The prefill result clears the preregistered 5% operator gate but does not override the 3% per-case regression guard. No reverse pair, favorable type-subset selection, activation-precision tuning, weight conversion or deployment follows. These are synthetic operator results, not model tok/s or quantized-model quality; native FP4 activation tolerances are not permission for model-quality loss.
+
+`results/27b-nvfp4-20261021/` retains the inventory, fixtures, runtime hashes, correctness result, parsed timings and full comparison. This confirms that existing NVFP4 kernels can accelerate dense prefill on this device, but a blanket FFN conversion does not qualify as a safe mixed-workload improvement.
+
+### 2.56 Nemotron SSD dispatch: MTP rollback exclusion observed [M/S]
+
+Chunked Mamba2 SSD is already implemented in `ggml/src/ggml-cuda/ssm-scan.cu`; it is not a missing port. Its long-sequence path requires scalar A, 128 < tokens <= 8192, suitable NVIDIA hardware/alignment and **K=1**. The graph caller in `src/models/mamba-base.cpp` instead passes `K = n_rs_seq + 1` when recurrent rollback is enabled.
+
+A logging-only CUDA build, isolated from the installed runtime, directly observes both paths. Each arm serves two identical synthetic requests, each with 1,565 prompt tokens and one generated token, at context 8192 and b4096/ub4096. Startup warmup is disabled. The logged long SSM batch is 1,561 tokens, not the aggregate prompt total:
+
+| Arm | Long-batch host dispatch records | Rollback K | Existing SSD selected |
+|---|---:|---:|---|
+| No speculation | 80 | 1 | Yes, all records |
+| MTP3, N4 diagnostic configuration | 80 | 4 | No, all records |
+
+Both use d_state128, head_dim64, 128 heads and one sequence. N4 retains its explicit p_min0.5 only as a diagnostic configuration; this is not a renewed recommendation for that previously rejected cutoff, and one-token requests do not measure its acceptance behavior. CUDA graph capture/reuse can alter host dispatch counts, so 80 records must not be interpreted as a GPU kernel count.
+
+**The rollback condition really excludes SSD for the observed long MTP prefill batches.** Timings are instrumentation-perturbed and are not a speed comparison. Removing the K guard or forcing K=1 would discard required recurrent snapshots. A separate rollback-preserving implementation needs CPU-reference and snapshot-equivalence tests, a bounded performance screen and model-quality evidence before adoption; none is implemented here.
+
+`results/ssm-ssd-dispatch-20261021/` contains the protocol, diagnostic patch, source/runtime hashes, trace parser and both observed records. The initial analyzer incorrectly equated aggregate prompt tokens with the long batch size; the corrected parser reuses the completed control capture without rerunning it, and a regression test covers checkpoint-tail accounting. Both servers stop normally and release GPU memory. The original source/DLL are restored after capture; nothing is deployed.
+
+### 2.57 Approved Q8 hardware counters: driver-resource blocker [M]
+
+The user subsequently approved the bounded Q8_0 hardware-counter diagnosis. The signed native ARM64 Nsight Compute executable and original runtime hashes were rechecked; the exact K320/M10240/N4 fixture again passed its one CPU-reference CUDA case before collection. One user-approved Windows elevation launched the same fixture with `Administrator=true`, one `mul_mat_vec_q` launch, kernel replay, six diagnostic sections, configuration files off, and no clock or cache control.
+
+The earlier permissions error was cleared, but collection failed after 3.148 seconds with **`Failed to create counter availability image (error = 20)` / `ResourceUnavailable`**. No counters or `.ncu-rep` report were produced. Read-only follow-up found no active Nsight/DCGM/test/server capture, an empty Nsight Systems session list, and the FrameView SDK service stopped. Normal NVIDIA container services were left running. These checks do not identify the unavailable resource or establish the cause; they do not prove that the platform is unsupported.
+
+**Blocked by the driver resource, not by missing authorization.** The collector exited 1 and cleanup was verified at 2,517 MiB GPU memory. Driver 617.42, access policy, services, clocks, installed binaries and launcher settings were not changed. No additional elevated retry or driver reset followed. `results/native-counters-20261021/elevated-protocol.json`, `capture-elevated.ps1` and `elevated-result.json` preserve the approved scope, runnable wrapper and sanitized outcome; the earlier `probe.json` remains the historical permission failure.
+
+### 2.58 Nemotron NVFP4 experts: prefill gain fails the MTP guard [M/S]
+
+The approved order continues with Nemotron after the Q8 capture attempt; the already-completed 27B result is retained rather than repeated. Both Nemotron GGUF shards contain 781 tensors. Model metadata lives in the first shard; the second contains only split metadata. Excluding the appended MTP block leaves 88 target blocks and 240 FFN tensors. The frozen conversion scope is all 80 routed expert tensors: 40 Q4_K up projections [1024,2688,512] and 40 IQ4_NL down projections [2688,1024,512]. Shared experts, latent projections, router, attention/SSM, output and MTP remain outside the candidate.
+
+This model has no separate gate projection. The up fixture includes `MUL_MAT_ID -> RELU -> SQR`; down includes `MUL_MAT_ID -> MUL` by expert weights. Both arms use the same native test executable, unchanged installed CUDA backend, and the section 2.40 whole-graph repetition fix. Four repetition-regression cases pass. All 18 CPU-reference graph cases per arm pass with actual matrix dimensions, 32 experts/top22, three routing patterns and n1/n4/n512. The reduced expert count bounds CPU-reference setup cost; it is not a full-512-expert correctness or model-quality campaign. Existing NMSE limits are unchanged, including the native FP4 activation tolerance.
+
+Performance uses all 512 experts/top22 and an offset ID view. Routes are seeded shuffled experts, the last 22 experts, and one-quarter spread/three-quarters concentrated. The fixed seed resets outside each timed iteration, preserving the same routes across formats. Complete local graphs are repeated, not only their terminal activation or multiplication. First-pair throughput changes:
+
+| Projection / routing | n1 decode | n4 verification | n512 prefill |
+|---|---:|---:|---:|
+| Up, shuffled | -2.05% | +1.67% | +38.44% |
+| Up, concentrated | +2.47% | -1.07% | +19.70% |
+| Up, mixed | +1.12% | +5.36% | +69.14% |
+| Down, shuffled | -1.62% | +0.08% | +38.84% |
+| Down, concentrated | +5.91% | **-31.97%** | +29.45% |
+| Down, mixed | +6.31% | +8.18% | +45.52% |
+| Equal-weight geometric mean | +1.97% | **-4.04%** | +39.38% |
+
+**Reject at the first pair.** Concentrated n4 down takes 164.92 us on IQ4_NL versus 242.41 us on NVFP4, exceeding the frozen 3% per-case regression guard. The +39.38% prefill result clears the 5% goal but cannot override that loss. No reverse pair, route/type-subset rescue, activation-precision tuning, conversion, quality campaign or deployment follows. These synthetic graphs omit shared/latent computation, routing-score computation, expert summation and full-model scheduling; they are not model tok/s or proof of preserved model precision.
+
+`results/nemotron-nvfp4-20261021/` retains the protocol, complete shard inventory, source/fixture patches, hashes, 36 reference checks and all 36 performance cases. The initial lowercase `q4_k` selector matched only the nine IQ4_NL cases; the count guard stopped before performance, and the corrected native `q4_K` selector ran the full frozen fixture. `execution-notes.json` preserves that setup error. The original owned test source, its 145 pre-existing added lines, control build objects, original executable and tests-off configuration are restored. Reproduce with the two patches listed in `source.json`, the unchanged CUDA runtime, and `screen.py --test-exe <isolated-test-backend-ops.exe> --model <first-original-shard.gguf> --work <new-private-directory>`. No original weights are converted.
+
+**Disposition of this pass:** no speed candidate qualified for full release/quality/stability promotion or runtime integration. The installed runtime and launcher defaults remain unchanged. Q8 counters remain driver-resource blocked; per-request speculation semantics and broader long-context/soak hardening remain separate work, not silently claimed as completed by these screens.
+
 ## 3. Source-verified feature status and reference lessons
 
 The following status is verified in this checkout. This table supersedes the porting assumptions in the initial reference inventory below.
@@ -1077,7 +1169,8 @@ The following status is verified in this checkout. This table supersedes the por
 | CUDA graphs, including MoE `MUL_MAT_ID` handling | Already implemented upstream; see `ggml/src/ggml-cuda/ggml-cuda.cu` and [#14753](https://github.com/ggml-org/llama.cpp/pull/14753) | Do not add generic graph support. Investigate only a reproducible issue on the current binary. |
 | Qwen4exp hyper-connection gate/post chain | Fused by [#30602](https://github.com/ggml-org/llama.cpp/pull/30602) | Remove this operation chain from K1. The reported ~3% gain was on RTX Pro 6000, not this device. |
 | Grouped-expert top-k routing | Added by [#29181](https://github.com/ggml-org/llama.cpp/pull/29181) | Verify its target-model effect; do not plan another routing-fusion port. |
-| Blackwell NVFP4/MXFP4 MMQ | Implemented in `ggml/src/ggml-cuda/mmq.cu`; see [#24364](https://github.com/ggml-org/llama.cpp/pull/24364) and [#29857](https://github.com/ggml-org/llama.cpp/pull/29857) | Test the model quantization, dispatch path, quality, and prefill speed separately. Kernel presence alone predicts no gain. |
+| Blackwell NVFP4/MXFP4 MMQ | Implemented in `ggml/src/ggml-cuda/mmq.cu`; see [#24364](https://github.com/ggml-org/llama.cpp/pull/24364) and [#29857](https://github.com/ggml-org/llama.cpp/pull/29857) | Sections 2.55 and 2.58: 27B dense FFN prefill gains 67.82% and Nemotron routed graphs gain 39.38%, but decode/verification guards reject both conversion scopes before model-quality work. Kernel presence alone predicts no mixed-workload gain. |
+| Chunked Mamba2 SSD prefill | Implemented in `ggml/src/ggml-cuda/ssm-scan.cu`, with a K=1 restriction. The graph caller requests extra snapshots when rollback is enabled. | Section 2.56 observes SSD selected without speculation and excluded at K=4 under MTP3. Investigate rollback-preserving execution, not another basic SSD port or an unsafe guard removal. |
 | Native MTP | Present for Nemotron-H and qwen4exp; see [#29018](https://github.com/ggml-org/llama.cpp/pull/29018), [#27836](https://github.com/ggml-org/llama.cpp/pull/27836), and [#29761](https://github.com/ggml-org/llama.cpp/pull/29761) | Already used in the recorded model results. |
 | DFlash/DSpark reduced vocabulary | DFlash/DSpark are implemented; `src/models/dflash.cpp` optionally reads `d2t` and scatters reduced-vocabulary logits. EAGLE-3 also has `d2t`. Generic MTP has no equivalent mapping in this checkout. See [#22105](https://github.com/ggml-org/llama.cpp/pull/22105) and [#25173](https://github.com/ggml-org/llama.cpp/pull/25173). | Do not describe `d2t` itself as missing from DFlash. The open dynamic-head proposal in [ggml-org/llama.cpp#30380](https://github.com/ggml-org/llama.cpp/pull/30380) is now the first alternative to assess before designing a static MTP export/mapping path. |
 | PLE row prefetch | `llama_prefetch_rows` landed in [#29599](https://github.com/ggml-org/llama.cpp/pull/29599). The direct-read proposal [#30772](https://github.com/ggml-org/llama.cpp/pull/30772) was closed in favor of prefetch. | Profile cold/warm rows before changing the existing implementation. Do not port raw disk reads without contrary local evidence. |
@@ -1196,8 +1289,10 @@ Screen decisions and partial measurements are retained. Errors and timeouts stop
 | 5 | Actual-MTP routes captured (section 2.31). Expert-packed MMQ, rank alignment and fusion-preserving row tiling failed their gates (sections 2.32-2.33 and 2.38). | New bottleneck evidence before another routed prototype; preserve fusion, numerical correctness and dispatch proof. Logical duplicates do not measure bytes saved. | No type-subset, row-count or rank-ordering sweep against the failed cases. Do not treat overlap as a speedup. |
 | 6 | Dense FFN MMQ fusion [ggml-org/llama.cpp#29948](https://github.com/ggml-org/llama.cpp/pull/29948) passes its backend-ops tests, but repeated 27B speed gains are small/noisy and its patch does not apply to b11756 + #30380 (section 2.16). Not deployed. | Rebase/integrate to a clean release base, then repeat matched prefill and decode tests before reconsidering. Grouped prefill still needs evidence that expert GEMMs dominate; NVFP4 remains separate. | No assumed 1.5-2x improvement, no double-counting overlapping fusions, and no swapping model precision inside a kernel-only comparison. |
 | 7 | Treat per-request speculative server controls as a separate serving/API decision, not an engine speed step. | Confirm the desired request semantics and server-scope fit; implement tests proving parameters are honored rather than merely echoed. | Do not combine this with speculation algorithm work or claim it improves single-request throughput. |
+| 8 | Fast follow-up completed: upstream MMQ-copy patch and actual 27B prose profile parked; 27B dense FFN and Nemotron expert NVFP4 scopes rejected before conversion (sections 2.53-2.55 and 2.58). | Reconsider only with new implementation/workload evidence. Existing source, model precision and launcher defaults remain the controls. | No marginal reruns, rounding a near miss up to the gate or choosing a favorable type/routing subset. |
+| 9 | Nemotron MTP3 long-prefill dispatch excludes the existing SSD path because K=4 (section 2.56). | A separate rollback-preserving design and snapshot-correctness tests, followed by operator and whole-model gates. No speed benefit has been measured. | Never force K=1 or drop snapshots to obtain a faster prefill result. |
 
-The next kernel diagnostic is the bounded Q8 hardware-counter capture in section 2.28, which still requires human authorization for elevated execution. Do not change driver policy or clocks. Target backend sampling and zero OpenMP blocktime also missed their gates (sections 2.37 and 2.39); the deployed recipe remains unchanged. The permanent whole-graph benchmark fix in section 2.40 protects future operator screens from timing only the terminal node; use it in matched control/candidate test builds.
+The bounded Q8 hardware-counter capture was explicitly approved and attempted after section 2.28; it is now blocked by `ResourceUnavailable` from the driver, not by authorization (section 2.57). Do not change driver policy, services or clocks, or repeat elevation to work around it without a separately agreed diagnosis. Target backend sampling and zero OpenMP blocktime also missed their gates (sections 2.37 and 2.39); the deployed recipe remains unchanged. The permanent whole-graph benchmark fix in section 2.40 protects future operator screens from timing only the terminal node; use it in matched control/candidate test builds.
 
 There is no defensible cumulative target or delivery timeline yet. Report each prototype's measured delta independently; add a combined projection only after combined measurements confirm interactions and no double counting.
 

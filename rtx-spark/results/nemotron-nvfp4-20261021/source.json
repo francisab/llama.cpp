@@ -1,0 +1,20 @@
+{
+  "source_base_commit": "d80619397c2ba5cf1366c29f7d43699ca3a159b9",
+  "source_prerequisites": "The owned b11756 plus PR30380/30640 release source. The two patches here reconstruct only its tester, not the release's core changes.",
+  "original_test_source_sha256": "4acbefb39b883224f7893d0d9f07e07f351da78692f6275eef0b6475e5a3aa43",
+  "compiled_test_source_sha256": "c2cee87b1b4b6beb3e55ce10240cc27da652558727cadb9c600a1e0e18b12a7c",
+  "original_test_exe_sha256": "16942913ec69a7c2db30f2905db50b801a96b84af282d189b2c9ed2f416e5e4e",
+  "base_harness_patch_sha256": "82d55d6da31ed4c8d037894df24285f7f819f666c7ca4c7bd8c20b2a8181ff79",
+  "patch_sequence": [
+    "base-harness.patch",
+    "fixture.patch"
+  ],
+  "fixture_apply_options": [
+    "--ignore-space-change",
+    "--whitespace=error-all"
+  ],
+  "patch_note": "The captured fixture uses CRLF and the source uses LF; ignore whitespace changes in context when applying. Added lines still undergo whitespace-error checks.",
+  "base_harness_note": "Preserves the owned source's 145 pre-existing added test lines, separately from the new experiment.",
+  "whole_graph_fix": "Reuse the section 2.40 repetition fix and four regression fixtures in both arms; no CUDA production code changes.",
+  "build": "Native ARM64 Clang 20.1.8 Release, owned CPU build, dynamic backends, target test-backend-ops only. LLAMA_BUILD_TESTS temporarily ON."
+}

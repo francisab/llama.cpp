@@ -1,0 +1,30 @@
+{
+  "authorization": "User explicitly approved Q8_0 hardware-counter diagnosis after the earlier permission blocker.",
+  "scope": "One elevated Nsight Compute capture of the original Q8_0 MMVQ kernel at K320, M10240, N4. No parameter sweep.",
+  "runtime": {
+    "profiler_sha256": "7c8b43d4012edf0ead1698d87d9a33713e7d28985b4b2128565567660898cfdc",
+    "test_exe_sha256": "16942913ec69a7c2db30f2905db50b801a96b84af282d189b2c9ed2f416e5e4e",
+    "control_cuda_sha256": "898fb56c5a64f75e945e0823efa9a773cbdec66e5de9f1f253a771911b172c9f",
+    "fixture": "q8-fourcol-warps-20261021/test-ops.txt: name=q8_k320_m10240_n4,",
+    "preflight": "The exact original-runtime fixture passes 1/1 CPU-reference CUDA tests."
+  },
+  "collection": {
+    "kernel_name": "mul_mat_vec_q",
+    "kernel_name_base": "function",
+    "launch_count": 1,
+    "replay_mode": "kernel",
+    "sections": ["LaunchStats", "Occupancy", "SpeedOfLight", "MemoryWorkloadAnalysis", "SchedulerStats", "WarpStateStats"],
+    "clock_control": "none",
+    "cache_control": "none",
+    "configuration_file": "off",
+    "timeout_seconds": 180
+  },
+  "invariants": [
+    "The user handles any Windows UAC prompt.",
+    "Do not change counter-access policy, driver settings, clocks, power settings or installed binaries.",
+    "Use only the known isolated test executable and terminate only owned process IDs if cleanup is needed.",
+    "Keep raw reports and local paths private; publish sanitized metrics and interpretation.",
+    "One synthetic cached/replayed kernel is not representative full-model DRAM bandwidth or a measured optimization."
+  ],
+  "follow_up_order": ["27B NVFP4 result already recorded", "Nemotron NVFP4 applicability and bounded screen"]
+}

@@ -1,0 +1,44 @@
+{
+  "candidate": "NVFP4 routed FFN experts for Nemotron, using the unchanged deployed CUDA backend",
+  "scope": "Pre-conversion operator screen for all 80 routed expert tensors in the 88 target blocks. Keep shared experts, latent projections, router, attention/SSM, output and appended MTP weights unchanged.",
+  "inventory": "Read both original GGUF shards. Require 40 Q4_K up tensors [1024,2688,512] and 40 IQ4_NL down tensors [2688,1024,512].",
+  "graphs": {
+    "up": "MUL_MAT_ID with broadcast activation, followed by RELU and SQR",
+    "down": "MUL_MAT_ID with per-expert activation, followed by multiplication by expert weights",
+    "repeat": "Repeat the complete graph with the already-published benchmark fix, not only its terminal activation or multiplication.",
+    "model_scope_limit": "Does not include routing-score computation, expert summation, shared experts, latent projections or full-model inference."
+  },
+  "routes": {
+    "experts": 512,
+    "experts_per_token": 22,
+    "ids_offset": 1,
+    "patterns": ["seeded shuffled experts", "last 22 experts", "one quarter spread and three quarters concentrated"],
+    "seed": 1234,
+    "reset_seed_each_iteration": true
+  },
+  "correctness": {
+    "reference": "Existing CPU backend on the same quantized tensors and complete local graphs",
+    "experts": 32,
+    "experts_per_token": 22,
+    "shapes": "Both actual matrix orientations at n=1,4,512 with all three route patterns",
+    "expected_cases_per_arm": 18,
+    "tolerances": "Existing test_mul_mat_id limits: 5e-4 normally, 2e-2 for native Blackwell FP4 activations. No relaxation.",
+    "limit": "The reduced expert count bounds reference initialization cost; the performance fixtures use all 512 experts.",
+    "whole_graph_regression_cases": 4
+  },
+  "performance": {
+    "columns": [1, 4, 512],
+    "expected_cases_per_arm": 18,
+    "minimum_prefill_geomean_gain_percent": 5,
+    "maximum_any_case_regression_percent": 3,
+    "weights": "Equal weight across both orientations and three routes; each orientation occurs in 40 target layers.",
+    "order": ["original-r1", "nvfp4-r1", "nvfp4-r2", "original-r2"],
+    "stop_weak_first_pair": true,
+    "require_each_pair": true,
+    "require_prefill_ranges_separated_after_second_pair": true,
+    "timeout_per_launch_seconds": 900
+  },
+  "promotion": "Only a survivor warrants original-weight provenance checks, separate conversion, independent precision/quality gates and matched full-model timing. No deployment from operator results.",
+  "stop": "Do not alter shapes, routing, activation precision, thresholds or tensor subsets after a weak result.",
+  "attribution": "Existing upstream NVFP4 kernels; local model-applicability and measurement work, not a new kernel."
+}

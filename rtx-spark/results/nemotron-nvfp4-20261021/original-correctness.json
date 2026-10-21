@@ -1,0 +1,20 @@
+{
+  "label": "original-correctness",
+  "exit_code": 0,
+  "expected_cases": 18,
+  "cases": [],
+  "passed": true,
+  "elapsed_seconds": 23.548661799999536,
+  "correctness_summary": "18/18 tests passed",
+  "log_sha256": "f32a49fb5503fc6d4f2b72627af96c84ec5faa6ff7d7028e2bc6cb2ed8a6c4e7",
+  "command": [
+    "test-backend-ops.exe",
+    "test",
+    "-b",
+    "CUDA0",
+    "-o",
+    "NEMOTRON_FFN",
+    "-p",
+    "type_a=(q4_K|iq4_nl),"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "observed_rollback_blocks_ssd": true,
+  "arms": {
+    "N1": {
+      "completed": true,
+      "matched_hypothesis": true,
+      "prompt_token_counts": [
+        1565
+      ],
+      "request_count": 2,
+      "stop": "ctrl+c",
+      "exit_code": 0,
+      "gpu_memory_ready_mib": 71031,
+      "gpu_memory_done_mib": 71244,
+      "gpu_memory_released_mib": 2443,
+      "request_dispatch_groups": [
+        {
+          "K": 1,
+          "ssd": 1,
+          "records": 80
+        }
+      ],
+      "profiling_perturbed": true,
+      "timings_are_performance_evidence": false
+    },
+    "N4": {
+      "completed": true,
+      "matched_hypothesis": true,
+      "prompt_token_counts": [
+        1565
+      ],
+      "request_count": 2,
+      "stop": "ctrl+c",
+      "exit_code": 0,
+      "gpu_memory_ready_mib": 73440,
+      "gpu_memory_done_mib": 73676,
+      "gpu_memory_released_mib": 2407,
+      "request_dispatch_groups": [
+        {
+          "K": 4,
+          "ssd": 0,
+          "records": 80
+        }
+      ],
+      "profiling_perturbed": true,
+      "timings_are_performance_evidence": false
+    }
+  },
+  "runtime_hashes_unchanged": true,
+  "speedup_measured": false,
+  "deployment_changed": false,
+  "prompt_accounting": "Response prompt_n aggregates batches; the long SSM dispatch need not equal that total."
+}

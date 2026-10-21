@@ -1,0 +1,20 @@
+{
+  "label": "nvfp4-correctness",
+  "exit_code": 0,
+  "expected_cases": 18,
+  "cases": [],
+  "passed": true,
+  "elapsed_seconds": 10.842841500008944,
+  "correctness_summary": "18/18 tests passed",
+  "log_sha256": "f4d99d17894c8a984e5bd44ce99f8e0fb521845a2f2c8344580cc70637c16959",
+  "command": [
+    "test-backend-ops.exe",
+    "test",
+    "-b",
+    "CUDA0",
+    "-o",
+    "NEMOTRON_FFN",
+    "-p",
+    "type_a=nvfp4,"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "command": [
+    "test-backend-ops.exe",
+    "test",
+    "-b",
+    "CUDA0",
+    "--test-file",
+    "test-ops.txt"
+  ],
+  "exit_code": 0,
+  "expected_cases": 64,
+  "summary": "64/64 tests passed",
+  "passed": true,
+  "elapsed_seconds": 0.9357577000046149,
+  "log_sha256": "9b050c558ba0170e132eb4bd29bf016ff5d4652eaf3afaf47436aa763bc01e1c"
+}

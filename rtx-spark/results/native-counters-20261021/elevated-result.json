@@ -1,0 +1,25 @@
+{
+  "decision": "blocked_driver_resource",
+  "authorization": "User-approved bounded administrative capture",
+  "elevated_admin": true,
+  "completed": false,
+  "exit_code": 1,
+  "elapsed_seconds": 3.1476668,
+  "error": "Failed to create counter availability image (error = 20); ResourceUnavailable",
+  "driver_message": "Profiling failed because a driver resource was unavailable.",
+  "driver_version": "617.42",
+  "counters_collected": false,
+  "report_created": false,
+  "conflict_checks": {
+    "active_ncu_nsys_dcgm_test_or_server_processes_found_after_capture": false,
+    "nsys_sessions": [],
+    "frameview_sdk_service_state": "Stopped",
+    "normal_nvidia_container_services": "Running, unchanged"
+  },
+  "interpretation": "Elevation cleared the previous permissions error, but counter collection still failed. Read-only checks did not identify the resource holder or establish the driver failure's cause.",
+  "cleanup_verified": true,
+  "gpu_memory_released_mib": 2517,
+  "driver_or_counter_access_policy_changed": false,
+  "deployment_changed": false,
+  "additional_elevated_attempts": 0
+}

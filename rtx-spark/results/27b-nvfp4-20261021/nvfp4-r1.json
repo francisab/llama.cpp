@@ -1,0 +1,65 @@
+{
+  "label": "nvfp4-r1",
+  "exit_code": 0,
+  "expected_cases": 6,
+  "cases": [
+    {
+      "type": "nvfp4",
+      "m": 5120,
+      "n": 1,
+      "k": 17408,
+      "runs": 5480,
+      "time_us": 197.95
+    },
+    {
+      "type": "nvfp4",
+      "m": 5120,
+      "n": 8,
+      "k": 17408,
+      "runs": 4056,
+      "time_us": 270.9
+    },
+    {
+      "type": "nvfp4",
+      "m": 5120,
+      "n": 512,
+      "k": 17408,
+      "runs": 714,
+      "time_us": 1425.78
+    },
+    {
+      "type": "nvfp4",
+      "m": 17408,
+      "n": 1,
+      "k": 5120,
+      "runs": 5480,
+      "time_us": 193.03
+    },
+    {
+      "type": "nvfp4",
+      "m": 17408,
+      "n": 8,
+      "k": 5120,
+      "runs": 4056,
+      "time_us": 284.85
+    },
+    {
+      "type": "nvfp4",
+      "m": 17408,
+      "n": 512,
+      "k": 5120,
+      "runs": 1428,
+      "time_us": 892.89
+    }
+  ],
+  "passed": true,
+  "elapsed_seconds": 8.79746200000227,
+  "command": [
+    "test-backend-ops.exe",
+    "perf",
+    "-b",
+    "CUDA0",
+    "--test-file",
+    "nvfp4-ops.txt"
+  ]
+}

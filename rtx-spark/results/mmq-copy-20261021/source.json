@@ -1,0 +1,8 @@
+{
+  "headRefOid": "9e37a8578f47936fb7f89cbb45f4e98affc134a9",
+  "state": "OPEN",
+  "url": "https://github.com/ggml-org/llama.cpp/pull/30493",
+  "patch_sha256": "347dcbb651add20afab90eed1540a664eb30e0ebbffcd1c806ea6809ab976027",
+  "original_source_sha256": "3bcba0b8cf5f1a21ea414937cdfc6c2d6ca24945a6f82d711ab73fa0abb3bbde",
+  "candidate_source_sha256": "edae629c093aac09adebfffbddd7f8d5f7eca60a2afd18a2bd925c84d3abc1ac"
+}

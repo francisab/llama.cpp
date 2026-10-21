@@ -1,0 +1,90 @@
+{
+  "model_shards": [
+    "NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-Q4_K_M-00001-of-00002.gguf",
+    "NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-Q4_K_M-00002-of-00002.gguf"
+  ],
+  "metadata": {
+    "block_count": 89,
+    "nextn_predict_layers": 1,
+    "expert_count": 512,
+    "expert_used_count": 22
+  },
+  "source_tensors": 781,
+  "target_layers": 88,
+  "target_ffn_tensors": 240,
+  "selected_expert_tensors": 80,
+  "tensors": [
+    {
+      "role": "down_exps",
+      "type": "iq4_nl",
+      "shape": [
+        2688,
+        1024,
+        512
+      ],
+      "count": 40,
+      "selected": true
+    },
+    {
+      "role": "down_shexp",
+      "type": "q4_k",
+      "shape": [
+        5376,
+        4096
+      ],
+      "count": 20,
+      "selected": false
+    },
+    {
+      "role": "down_shexp",
+      "type": "q6_k",
+      "shape": [
+        5376,
+        4096
+      ],
+      "count": 20,
+      "selected": false
+    },
+    {
+      "role": "latent_down",
+      "type": "q4_k",
+      "shape": [
+        4096,
+        1024
+      ],
+      "count": 40,
+      "selected": false
+    },
+    {
+      "role": "latent_up",
+      "type": "q4_k",
+      "shape": [
+        1024,
+        4096
+      ],
+      "count": 40,
+      "selected": false
+    },
+    {
+      "role": "up_exps",
+      "type": "q4_k",
+      "shape": [
+        1024,
+        2688,
+        512
+      ],
+      "count": 40,
+      "selected": true
+    },
+    {
+      "role": "up_shexp",
+      "type": "q4_k",
+      "shape": [
+        4096,
+        5376
+      ],
+      "count": 40,
+      "selected": false
+    }
+  ]
+}

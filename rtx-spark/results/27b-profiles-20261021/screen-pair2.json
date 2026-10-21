@@ -1,0 +1,140 @@
+{
+ "base": {
+  "name": "P7 q27 launcher dflash7",
+  "args": [
+   "llama-server.exe",
+   "-m",
+   "Qwen3.8-27B-UD-Q4_K_M.gguf",
+   "--mmproj",
+   "mmproj-F16.gguf",
+   "--host",
+   "127.0.0.1",
+   "--port",
+   "9949",
+   "--batch-size",
+   "4096",
+   "--ubatch-size",
+   "512",
+   "--ctx-size",
+   "262144",
+   "--parallel",
+   "1",
+   "-ngl",
+   "999",
+   "--spec-type",
+   "draft-dflash",
+   "--spec-draft-n-max",
+   "7",
+   "-md",
+   "Qwen3.8-27B-DFlash2-Q4_K_M.gguf",
+   "--spec-draft-backend-sampling",
+   "--temp",
+   "1.0",
+   "--top-p",
+   "0.95",
+   "--top-k",
+   "20",
+   "--min-p",
+   "0.0",
+   "--presence-penalty",
+   "0.0",
+   "--repeat-penalty",
+   "1.0",
+   "--metrics"
+  ],
+  "load_s": 14.60896810000122,
+  "gpu_memory_ready_mib": 38254
+ },
+ "cand": {
+  "name": "P4 q27 launcher dflash4",
+  "args": [
+   "llama-server.exe",
+   "-m",
+   "Qwen3.8-27B-UD-Q4_K_M.gguf",
+   "--mmproj",
+   "mmproj-F16.gguf",
+   "--host",
+   "127.0.0.1",
+   "--port",
+   "9949",
+   "--batch-size",
+   "4096",
+   "--ubatch-size",
+   "512",
+   "--ctx-size",
+   "262144",
+   "--parallel",
+   "1",
+   "-ngl",
+   "999",
+   "--spec-type",
+   "draft-dflash",
+   "--spec-draft-n-max",
+   "4",
+   "-md",
+   "Qwen3.8-27B-DFlash2-Q4_K_M.gguf",
+   "--spec-draft-backend-sampling",
+   "--temp",
+   "1.0",
+   "--top-p",
+   "0.95",
+   "--top-k",
+   "20",
+   "--min-p",
+   "0.0",
+   "--presence-penalty",
+   "0.0",
+   "--repeat-penalty",
+   "1.0",
+   "--metrics"
+  ],
+  "load_s": 14.570534400001634,
+  "gpu_memory_ready_mib": 37913
+ },
+ "cases": [
+  {
+   "case": "prose256",
+   "base_tg_median": 32.43010151026739,
+   "cand_tg_median": 33.396738563163964,
+   "ratio": 1.0298067846809094,
+   "base_tg_range": [
+    31.967125259106083,
+    32.8930777614287
+   ],
+   "cand_tg_range": [
+    32.70730273263742,
+    34.086174393690506
+   ],
+   "base_accept": 0.3682092555331992,
+   "cand_accept": 0.5403726708074534
+  },
+  {
+   "case": "prose512",
+   "base_tg_median": 35.695072696937686,
+   "cand_tg_median": 36.723574214916944,
+   "ratio": 1.0288135431663512,
+   "base_tg_range": [
+    35.39213761238822,
+    35.99800778148716
+   ],
+   "cand_tg_range": [
+    36.33777002572017,
+    37.10937840411372
+   ],
+   "base_accept": 0.41511500547645125,
+   "cand_accept": 0.6046901172529313
+  }
+ ],
+ "geomean_ratio": 1.0293100441190273,
+ "identical_outputs": [
+  4,
+  4
+ ],
+ "screen": {
+  "decision": "park",
+  "reason": "prose256 is below the minimum gain",
+  "quality_checked": false,
+  "min_gain_pct": 3.0,
+  "max_regression_pct": 3.0
+ }
+}

@@ -1,0 +1,13 @@
+{
+  "catalog_sha256": "a3f31617f52730959d75dc0cb61ba1aabadc680b16992c3c62b5604134ee3e66",
+  "recipe": "qwen/qwen3.8-27b/rtx-spark/windows/llama-cpp/36gb/q4-k-m/vision-dflash",
+  "serve": {
+    "label": "Launch DFlash \u00b7 n=7",
+    "target": "single-node",
+    "instructions": "Run in PowerShell with llama-server.exe on PATH. llama-server downloads and caches the named target and draft files from Hugging Face. The omitted load-mode flag retains default mmap behavior.",
+    "command": "llama-server.exe -hf \"unsloth/Qwen3.8-27B-GGUF\" `\n  -hff \"Qwen3.8-27B-UD-Q4_K_M.gguf\" `\n  --mmproj-url \"https://huggingface.co/unsloth/Qwen3.8-27B-GGUF/resolve/4ca720788d1e01f1bff70c033e0d0028fd02e502/mmproj-F16.gguf\" `\n  --host 127.0.0.1 `\n  --port 9931 `\n  --batch-size 4096 `\n  --ubatch-size 512 `\n  --ctx-size 262144 `\n  --parallel 1 `\n  -ngl 999 `\n  --spec-type draft-dflash `\n  --spec-draft-n-max 7 `\n  -hfrd \"incoai/Qwen3.8-27B-DFlash2-GGUF\" `\n  --spec-draft-model \"Qwen3.8-27B-DFlash2-Q4_K_M.gguf\" `\n  --spec-draft-backend-sampling `\n  --temp 1.0 `\n  --top-p 0.95 `\n  --top-k 20 `\n  --min-p 0.0 `\n  --presence-penalty 0.0 `\n  --repeat-penalty 1.0",
+    "port": 9931,
+    "api_model": "unsloth/Qwen3.8-27B-GGUF"
+  },
+  "protocol_sha256": "edbdec9f3a34814b11806cb2ab2a7f5530c13c5a92993f97d0fa3806c44d4892"
+}

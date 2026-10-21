@@ -1,0 +1,18 @@
+{
+  "label": "correctness",
+  "exit_code": 0,
+  "expected_cases": 9,
+  "cases": [],
+  "passed": true,
+  "elapsed_seconds": 1.371885000000475,
+  "command": [
+    "test-backend-ops.exe",
+    "test",
+    "-b",
+    "CUDA0",
+    "-o",
+    "MUL_MAT.*",
+    "-p",
+    "]"
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "candidate": "NVFP4 dense FFN feasibility on the unchanged deployed CUDA backend",
+  "primary_goal": "27B prefill",
+  "control": "The actual quantization types and matrix shapes of the 64 target layers' FFN weights",
+  "scope": "Synthetic operator screen before model conversion. Exclude the appended MTP layer, attention and output weights.",
+  "geometry": {
+    "up_gate": {"m": 17408, "k": 5120},
+    "down": {"m": 5120, "k": 17408},
+    "columns": [1, 8, 512]
+  },
+  "correctness": {
+    "reference": "Existing CPU-reference NVFP4 backend cases, including native activation precision where available",
+    "parameter_filter": "type_a=nvfp4,type_b=f32,m=(16|32|64),n=(1|8|16|32),k=(256|512),bs=\\[1,1\\],nr=\\[1,1\\],per=\\[0,1,2,3\\]",
+    "require": "All selected supported cases execute and pass; retain native FP4 activation tolerance, which is not a model-quality allowance."
+  },
+  "performance": {
+    "minimum_weighted_prefill_gain_percent": 5,
+    "maximum_any_case_regression_percent": 3,
+    "weights": "Number of target FFN tensors of each original type and shape",
+    "order": ["original-r1", "nvfp4-r1", "nvfp4-r2", "original-r2"],
+    "stop_weak_first_pair": true,
+    "require_each_pair": true,
+    "timeout_per_launch_seconds": 600
+  },
+  "promotion": "Only a passing operator screen may justify original-weight provenance checks, one separate conversion, precision and task-quality validation, and matched full-model timing.",
+  "stop": "Do not select a favorable type subset, change activation precision or retune shapes after a failed screen.",
+  "attribution": "NVFP4 kernels are existing upstream work; this is local format/applicability evidence, not an original kernel gain."
+}

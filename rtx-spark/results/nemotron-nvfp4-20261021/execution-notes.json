@@ -1,0 +1,15 @@
+{
+  "before_performance": [
+    "The owned CPU build had tests disabled. The initial build found no test target; enable LLAMA_BUILD_TESTS temporarily and restore OFF after the experiment.",
+    "Only the first GGUF shard carries model metadata. Validate that metadata there and split metadata/tensor coverage across both shards, rather than requiring duplicate architecture fields.",
+    "The first correctness selector spelled q4_k instead of the native label q4_K. Only the nine IQ4_NL down cases ran, all passing; the expected-count guard stopped the screen before NVFP4 or performance. Correct the selector without changing the fixture or thresholds."
+  ],
+  "initial_correctness": {
+    "expected_cases": 18,
+    "actual_passed": 9,
+    "actual_total": 9,
+    "process_exit_code": 0,
+    "screen_accepted": false,
+    "performance_started": false
+  }
+}

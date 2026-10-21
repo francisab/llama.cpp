@@ -1,0 +1,18 @@
+diff --git a/ggml/src/ggml-cuda/ssm-scan.cu b/ggml/src/ggml-cuda/ssm-scan.cu
+index dcc199f73..31ba85062 100644
+--- a/ggml/src/ggml-cuda/ssm-scan.cu
++++ b/ggml/src/ggml-cuda/ssm-scan.cu
+@@ -855,6 +855,13 @@ static void ggml_cuda_op_ssm_scan_impl(ggml_backend_cuda_context & ctx, ggml_ten
+                       && cc >= GGML_CUDA_CC_TURING
+                       && nr % 8 == 0;  // cuBLAS requires 8-element (16-byte) alignment
+ 
++    if (n_t > SSM_SSD_MIN_TOKENS) {
++        fprintf(stderr, "SPARK_SSM name=%s n_t=%lld K=%lld d_state=%lld head_dim=%lld n_head=%lld n_seq=%lld scalar_a=%d ssd=%d\n",
++                dst->name, (long long) n_t, (long long) K, (long long) nc, (long long) nr, (long long) nh, (long long) n_s,
++                (int) is_mamba2, (int) use_ssd);
++        fflush(stderr);
++    }
++
+     if (use_ssd) {
+         // ssm_ssd_init_state_kernel uses flat linear indexing within each sequence,
+         // so src0 must be fully contiguous across all inner dimensions.

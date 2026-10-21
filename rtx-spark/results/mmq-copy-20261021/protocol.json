@@ -1,0 +1,31 @@
+{
+  "candidate": "Upstream vectorized MMQ activation tile copy",
+  "upstream_url": "https://github.com/ggml-org/llama.cpp/pull/30493",
+  "upstream_head": "9e37a8578f47936fb7f89cbb45f4e98affc134a9",
+  "primary_goal": "27B prefill throughput",
+  "control": "Unchanged deployed b11756 + dynamic draft vocabulary + QSA mask release-like build",
+  "control_cuda_sha256": "898fb56c5a64f75e945e0823efa9a773cbdec66e5de9f1f253a771911b172c9f",
+  "change": "Only ggml-cuda.dll changes, built from the same owned source, compiler and flags with the complete pinned upstream patch.",
+  "correctness": {
+    "reference": "CPU backend on identical quantized weights",
+    "types": ["Q3_K", "Q4_K", "Q5_K", "Q6_K", "Q8_0", "IQ3_S", "IQ4_NL", "IQ4_XS"],
+    "rows": [65, 128],
+    "columns": [63, 64, 65, 512],
+    "inner": 256,
+    "cases_per_arm": 64,
+    "require": "All fixtures must execute and pass on both control and candidate."
+  },
+  "speed_screen": {
+    "runner": "rtx-spark/bench/ab_llamabench.py q27 --screen prefill",
+    "arguments": "-fa 1 -ngl 99 -ub 512 -p 2048 -n 128 -r 2",
+    "minimum_prefill_gain_percent": 3,
+    "maximum_any_case_regression_percent": 3,
+    "require_nonoverlapping_prefill_sample_ranges": true,
+    "order": ["control", "candidate", "candidate", "control"],
+    "stop_weak_first_pair": true,
+    "total_benchmark_budget_seconds": 600
+  },
+  "promotion": "Only a passing screen advances to repeated prefill, real speculative decode, task-quality and other-model regression checks, then release-like deployment with rollback.",
+  "stop": "Do not tune copy width, type subsets, tile geometry, workload or thresholds to rescue a failed screen.",
+  "attribution": "The CUDA change belongs to the upstream PR author. This work contributes local integration and validation, not an original kernel optimization."
+}

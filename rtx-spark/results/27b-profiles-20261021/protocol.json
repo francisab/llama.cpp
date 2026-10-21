@@ -1,0 +1,27 @@
+{
+  "candidate": "Explicit opt-in 27B prose launcher profile using DFlash4",
+  "control_recipe": "qwen/qwen3.8-27b/rtx-spark/windows/llama-cpp/36gb/q4-k-m/vision-dflash",
+  "control_depth": 7,
+  "candidate_depth": 4,
+  "scope": "Prose only. Keep the existing DFlash7 recipe and all other model recipes unchanged.",
+  "runtime": "Installed b11756 + dynamic draft vocabulary + QSA mask; no binary or model change",
+  "settings": "Use the actual launcher command, including b4096, ub512 and context 262144. Substitute local paths for the same checkpoints and use a private loopback port.",
+  "speed_screen": {
+    "cases": ["prose256", "prose512"],
+    "repetitions_per_case": 2,
+    "warmups_per_case": 1,
+    "minimum_each_case_gain_percent": 3,
+    "maximum_each_case_regression_percent": 3,
+    "require_nonoverlapping_ranges": true,
+    "order": ["depth7", "depth4", "depth4", "depth7"],
+    "stop_weak_first_pair": true,
+    "request_sampling": "Existing deterministic fixed-length benchmark overrides; not a claim about stochastic sampling."
+  },
+  "promotion": {
+    "speed": "Both opposite-order screens must pass, followed by five-repeat confirmation.",
+    "quality": "Both depths must pass the existing natural-EOS code, US-format JSON, identifier-copy and long-document retrieval checks.",
+    "integration": "Add a separate prose recipe only; preserve the existing coding/default recipe, back up the catalog and check all unrelated entries are unchanged."
+  },
+  "stop": "No threshold, draft-depth, fixture or context sweep after a weak result.",
+  "attribution": "Configuration/productization of existing upstream DFlash, not an original engine optimization."
+}
