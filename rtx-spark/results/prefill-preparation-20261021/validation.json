@@ -1,0 +1,10 @@
+{
+  "command": "python -m unittest discover -s rtx-spark\\results\\prefill-preparation-20261021 -p test_analyze_trace.py -v",
+  "return_code": 0,
+  "tests": 6,
+  "result": "passed",
+  "optimized_python_guard": "passed: -O refuses to disable capture checks",
+  "trace_reproduction": "All numeric fields reproduced exactly on a second read-only analysis.",
+  "initial_failure": "Six test cleanups failed with WinError 32 because sqlite connection context managers do not close handles. Explicit contextlib.closing fixes analyzer and fixtures; rerun passes and the six stale temporary databases were removed.",
+  "runtime_provenance": "All installed manifest files match the preserved capture."
+}

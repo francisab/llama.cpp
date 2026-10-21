@@ -1,0 +1,29 @@
+{
+  "candidate": "Resident routed-MMQ preparation reuse and Strata grouped-prefill applicability",
+  "kind": "Read-only reanalysis of an existing software trace, not a fresh timing experiment",
+  "trace": "profiling-tools/prefill-cli/prefill.sqlite",
+  "capture_prompt_sha256": "6b78ab566016519f9c66ab2910181a7a4809141734fdf07a8ed77032613f1925",
+  "capture_prompt_tokens": 2734,
+  "selection": {
+    "target_stream": 18,
+    "draft_stream_excluded": 20,
+    "target_layers": 48,
+    "routed_projections_per_layer": 3,
+    "target_mmq_microbatches": 6,
+    "target_mmq_tokens": 2730,
+    "remaining_tokens": "Four final small-batch tokens do not use the routed-MMQ helper and are excluded.",
+    "checks": "Require every target helper to be followed by quantization and MMQ on the same stream; require 144 triplets per microbatch, two broadcast quantizations and one non-broadcast quantization per layer, and consistent token counts."
+  },
+  "questions": [
+    "Does the selected resident path submit per-expert host copies, waits or release events?",
+    "How much target kernel time is spent in routing helpers, routed activation quantization, routed MMQ and the intervening GLU?",
+    "What optimistic GPU-work ceiling does sharing routing maps and gate/up activation preparation provide?",
+    "Do the actual expert types fit Strata's IQ4_XS gate/up and Q2_0 or IQ4_NL down implementation?"
+  ],
+  "decision": {
+    "preparation_reuse": "Do not implement if even the optimistic removable-work estimate is below 3% throughput-equivalent in the selected target GPU span. This is a complexity triage rule, not a measured end-to-end speed gate.",
+    "optimistic_estimate": "Remove two of three routing helpers and the second gate/up quantization in every layer, with zero replacement cost. Report separately the still looser removal of all routed preparation.",
+    "fusion": "Do not port the mismatched fused-IQ kernel or infer its performance. Record arithmetic changes and unsupported layers; a new IQ3_S kernel needs a separately scoped design and protocol.",
+    "timing_limits": "Use interval union for GPU busy time. CPU API durations overlap GPU execution and must not be added to kernel time. No hardware bandwidth, cache-miss, unprofiled throughput or deployment claim follows."
+  }
+}

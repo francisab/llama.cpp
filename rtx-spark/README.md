@@ -118,6 +118,7 @@ The source review and revised gates are in `PLAN.md` sections 3-5. The baseline 
 27. **IQ4_NL one-warp MoE CTAs:** rejected. With the row-tail correction in both arms, both pass 100 CPU-reference checks and traces confirm the intended geometry, but the changed operators lose 16.03% geometric mean, worst case -39.84%. No actual-MTP run or deployment follows (section 2.46).
 28. **Expert-first verify reuse (Strata-style):** stopped before a kernel. Realistic 4-token route overlap already runs within 7-10% of perfect same-rank sharing in the current MMVQ, so caches capture the reuse; projected headroom is negative (section 2.47).
 29. **Whole-batch PLE prefetch (Strata-style):** rejected. Lazy PLE costs 10.3% (2K) and 8.5% (8K) of cold prefill, but hinting the later ubatches' rows at decode start changes cold prefill by +0.15% and -1.34%, within noise; outputs match (section 2.48).
+30. **Resident grouped-prefill screen:** stopped before a kernel. The existing trace shows no per-expert copy/wait ring in routed MMQ; optimistic preparation reuse removes only 1.01% throughput-equivalent GPU work, not an end-to-end speed forecast. None of the 48 layers has the full type combination required by Strata's native fused-IQ path. The trace analyzer, guarded accounting and exact tensor types are retained (section 2.49).
 
 The reviewed checkout already includes CUDA graphs, Blackwell NVFP4/MXFP4 MMQ, qwen4exp hyper-connection fusion, grouped MoE top-k, and PLE row prefetch. Do not port or reimplement those without identifying a target-specific gap.
 

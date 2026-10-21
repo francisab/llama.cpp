@@ -1,0 +1,89 @@
+{
+  "trace_sha256": "159847b099b57a42c19655a0d59a986df14cfff7c808d5e12bb9ffa67b85c325",
+  "target_stream": 18,
+  "batches": [
+    {
+      "tokens": 512,
+      "projections": 144
+    },
+    {
+      "tokens": 512,
+      "projections": 144
+    },
+    {
+      "tokens": 512,
+      "projections": 144
+    },
+    {
+      "tokens": 512,
+      "projections": 144
+    },
+    {
+      "tokens": 170,
+      "projections": 144
+    },
+    {
+      "tokens": 512,
+      "projections": 144
+    }
+  ],
+  "mmq_type_counts": {
+    "IQ3_S": 564,
+    "IQ4_XS": 12,
+    "IQ4_NL": 258,
+    "Q8_0": 30
+  },
+  "selection": {
+    "first_routing_start_ns": 42026895719,
+    "last_routed_mmq_end_ns": 46453395202,
+    "target_kernel_count": 23324,
+    "gpu_busy_ms": 3689.51398,
+    "elapsed_span_ms": 4426.499483
+  },
+  "categories": {
+    "routing": {
+      "count": 864,
+      "gpu_ms": 32.83136,
+      "busy_share": 0.008898559587515101
+    },
+    "quantization": {
+      "count": 864,
+      "gpu_ms": 40.974656,
+      "busy_share": 0.01110570558130803
+    },
+    "routed_mmq": {
+      "count": 864,
+      "gpu_ms": 2372.809469,
+      "busy_share": 0.643122503902262
+    },
+    "glu": {
+      "count": 288,
+      "gpu_ms": 31.402496,
+      "busy_share": 0.008511282561937873
+    }
+  },
+  "cpu_api_calls_within_triplet_submission": {
+    "cuKernelGetName": 1728,
+    "cuLibraryGetKernel": 1,
+    "cuMemCreate": 1,
+    "cuMemMap": 1,
+    "cuMemRelease": 1,
+    "cuMemSetAccess": 1,
+    "cudaLaunchKernel_v7000": 2592
+  },
+  "sync_or_copy_calls_within_triplet_submission": {},
+  "optimistic_preparation_reuse": {
+    "removed_gpu_ms": 36.872128,
+    "throughput_equivalent": 0.010094646421414222,
+    "all_preparation_removed_equivalent": 0.020412604318394534,
+    "passes_3pct_triage": false
+  },
+  "limits": [
+    "Historical software-instrumented capture, not an independent new sample.",
+    "Selection starts at first routed helper and ends at last routed MMQ; it omits input and final tail work.",
+    "Target stream only; draft, startup, small-batch decode, CPU work and GPU idle time are excluded from the busy denominator.",
+    "GPU-work removal is an optimistic accounting exercise, not measured end-to-end acceleration.",
+    "The GPU-only estimate does not bound possible host-launch savings, nor gains from changing the matrix arithmetic.",
+    "Zero sync/copy calls within MMQ submission does not mean the full model has no synchronization."
+  ]
+}
