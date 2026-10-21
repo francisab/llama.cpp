@@ -893,6 +893,35 @@ A fresh full-model A/A calibration gives pp2048 +1.55% and pp8192 -1.48%. Before
 
 The compact-list idea is not claimed as novel: [ggml-org/llama.cpp#26159](https://github.com/ggml-org/llama.cpp/pull/26159) proposes compact NVFP4 scheduling. At the live check it is open, draft and unmerged at `f1694d2615e4f3fb78aa0d143beea9c1764c6394`; its `build_moe_job_map` and `mul_mat_q_moe_compact` functions are absent from both our worktree and deployed source. Our already-present [ggml-org/llama.cpp#30553](https://github.com/ggml-org/llama.cpp/pull/30553) Stream-K block cap is a different change. This experiment implements small/wide IQ3_S/IQ4_NL scheduling, not that NVFP4 patch.
 
+### 2.43 Two fork leads already covered by the deployed source [S]
+
+The live [ggml-org/llama.cpp#28699](https://github.com/ggml-org/llama.cpp/pull/28699) head `141f3f5646` is still an open, conflicting draft. It is not a new pooled-key-cache opportunity for this installation: upstream `66e0c17ee` ([ggml-org/llama.cpp#29751](https://github.com/ggml-org/llama.cpp/pull/29751)) is an ancestor of deployed b11756. That source already stores raw and pooled indexer keys, marks only touched or newly completed pools, and scatters their results back into the cache. Sequence edits invalidate the affected pools. The older patch fails to apply to both this checkout and the deployed source. No port or duplicate benchmark is justified, and no new local gain is attributed to this existing upstream work.
+
+Likewise, the merged [ikawrakow/ik_llama.cpp#2699](https://github.com/ikawrakow/ik_llama.cpp/pull/2699) removes power-of-two SM rounding in that fork's `fattn-new-mma.cu` for eligible prefill. Our deployed `fattn-common.cuh` already reads the actual `nsm` and uses it for both Stream-K capacity and non-Stream-K wave occupancy. Its optional whole-output-tile rounding, limited to 5% occupancy loss, is a different rule. This fork-specific fix is not an available drop-in gain here. The pinned checks are in `results/nvfp4-expert-screen-20261021/qsa-applicability.json` and `fa-grid-applicability.json`.
+
+### 2.44 NVFP4 expert-format feasibility screen [M]
+
+The next independent experiment compares existing upstream NVFP4 kernels with the actual IQ3_S gate/up and IQ4_NL down shapes, without changing the backend or converting a model. Both formats use the same newly built test executable and the unchanged deployed CUDA DLL. The routing fixture uses 512 experts, ten selections per token, an offset ID view, and three routing patterns: seeded shuffled experts, the last ten experts, and one-quarter spread/three-quarters concentrated. The shuffled IDs use the same seed across formats and change between timing iterations.
+
+Before measurement, the protocol requires at least 5% prefill geometric-mean gain in each launch order, separated prefill launch ranges, and no case slower by more than 3%, including a four-token decode/verification guard. Six actual-shape NVFP4 cases and eighteen boundary/layout/routing cases pass the existing CUDA-versus-CPU checks. The reference uses the same NVFP4 weights, and Blackwell native four-bit activations use the existing 0.02 NMSE tolerance: this is backend correctness, not preserved model precision or task quality.
+
+Original/NVFP4/NVFP4/original measurements give:
+
+| Projection and routing | n512 prefill throughput change | n4 small-batch throughput change |
+|---|---:|---:|
+| Gate/up, shuffled | +49.42% | -43.36% |
+| Gate/up, concentrated | +43.49% | +48.68% |
+| Gate/up, mixed | +45.96% | +46.15% |
+| Down, shuffled | +55.67% | -1.55% |
+| Down, concentrated | +8.37% | -3.43% |
+| Down, mixed | +40.03% | -6.02% |
+
+Prefill gains +37.37% and +42.10% geometric mean in the two orders, +39.57% pooled, with all six launch ranges separated. The small-batch aggregate is +1.60%, but it hides the shuffled gate/up regression: -40.83% and -45.88% in the two orders. Several down cases also exceed the regression limit.
+
+**Reject wholesale expert-only NVFP4 at the operator screen.** This provides a concrete prefill lead but not a safe general model-conversion recommendation. These are synthetic, standalone matmuls, not fused gate/up/GLU or end-to-end MTP measurements; the result does not prove that every NVFP4 model is slower. Do not promote a favorable routing subset or count the operator gain as delivered model speed. No model conversion, precision evaluation, whole-model speed claim or deployment follows this failed guard.
+
+`results/nvfp4-expert-screen-20261021/` preserves the predeclared protocol, all case results, both launch orders, source fixture patch, binary hashes and applicability checks. The fixture builds against the owned b11756 source stack, including its existing benchmark repetition/error fixes. Owned test source, CPU build outputs and all previously recorded installed-runtime hashes are restored. NVFP4 kernels remain attributed to upstream; our contribution is the local fixture and feasibility evidence.
+
 ## 3. Source-verified feature status and reference lessons
 
 The following status is verified in this checkout. This table supersedes the porting assumptions in the initial reference inventory below.

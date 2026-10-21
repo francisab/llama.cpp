@@ -1,0 +1,15 @@
+{
+  "inspected_pr": "https://github.com/ggml-org/llama.cpp/pull/28699",
+  "inspected_head": "141f3f5646aa15e88d53198610a7540f4f4b0d71",
+  "state": "open draft, conflicting",
+  "decision": "Do not port: incremental pooling already exists in our deployed source via a newer upstream implementation.",
+  "upstream_commit": "66e0c17ee1741fef493312e17fe60a5d2cf5f7d5",
+  "upstream_pr": "https://github.com/ggml-org/llama.cpp/pull/29751",
+  "evidence": [
+    "src/models/qwen4exp.cpp: indexer_kpool_row=2, indexer_pool_k_new, scatter_pooled",
+    "src/llama-memory-hybrid-idx.cpp: kpool_build_state marks only newly touched or completed pools, with seq-edit invalidation"
+  ],
+  "base_commit_checked": "d80619397",
+  "upstream_commit_is_deployed_source_ancestor": true,
+  "new_local_speed_gain": false
+}

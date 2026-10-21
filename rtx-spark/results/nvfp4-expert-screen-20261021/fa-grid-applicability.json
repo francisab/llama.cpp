@@ -1,0 +1,16 @@
+{
+  "inspected_pr": "https://github.com/ikawrakow/ik_llama.cpp/pull/2699",
+  "inspected_head": "9f5655464e2ccb4e2c64f116cb8f98e1f03be128",
+  "state": "merged",
+  "fork_change": "For eligible prefill, stop rounding the actual SM count down to a power of two in fattn-new-mma.cu.",
+  "deployed_source_commit_checked": "d80619397c2ba5cf1366c29f7d43699ca3a159b9",
+  "deployed_source_file": "ggml/src/ggml-cuda/fattn-common.cuh",
+  "deployed_behavior": [
+    "Reads nsm directly from ggml_cuda_info().devices[id].nsm.",
+    "Stream-K uses max_blocks_per_sm * nsm.",
+    "Non-stream-K uses nsm * max_blocks_per_sm for wave occupancy.",
+    "Stream-K may round to whole output tiles with at most 5 percent occupancy loss; this is not power-of-two SM rounding."
+  ],
+  "decision": "No equivalent power-of-two SM restriction found in our deployed scheduler. Do not port this fork-specific change or claim its reported gain.",
+  "new_local_speed_gain": false
+}

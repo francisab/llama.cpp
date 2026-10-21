@@ -1,0 +1,55 @@
+{
+  "candidate": "NVFP4 experts using the unchanged deployed b11756 CUDA backend",
+  "control": "IQ3_S gate/up and IQ4_NL down operators, not a different binary",
+  "purpose": "Decide whether expert-only NVFP4 warrants an expensive model conversion; not model quality or whole-model performance validation.",
+  "routing": {
+    "experts": 512,
+    "experts_per_token": 10,
+    "ids_offset": 1,
+    "patterns": [
+      "seeded shuffled experts",
+      "last ten experts",
+      "one quarter spread and three quarters concentrated"
+    ],
+    "shuffle_seed": 1234
+  },
+  "shapes": {
+    "gate_up": {
+      "m": 640,
+      "k": 2560,
+      "broadcast": true
+    },
+    "down": {
+      "m": 2560,
+      "k": 640,
+      "broadcast": false
+    },
+    "prefill_n": 512,
+    "decode_guard_n": 4
+  },
+  "correctness": {
+    "reference": "CPU operations on the same NVFP4-quantized tensors",
+    "expected_cases": 24,
+    "cases": "Six real-shape n512 cases plus m129/k256, n63/64/65, both broadcast layouts and all three routes",
+    "tolerance": "Existing test_mul_mat_id backend tolerance, including NMSE 0.02 for Blackwell native FP4 activation quantization",
+    "does_not_establish": "Equivalence to original model weights or preserved model quality"
+  },
+  "performance": {
+    "order": [
+      "original-r1",
+      "nvfp4-r1",
+      "nvfp4-r2",
+      "original-r2"
+    ],
+    "expected_cases_per_launch": 12,
+    "minimum_prefill_geomean_gain_percent": 5,
+    "maximum_any_case_regression_percent": 3,
+    "require_each_round": true,
+    "require_prefill_nonoverlapping_launch_ranges": true,
+    "correctness_timeout_seconds": 1200,
+    "performance_timeout_seconds_per_launch": 900
+  },
+  "stop": "Stop on correctness failure. Otherwise complete both performance orders and reject a candidate exceeding the regression limit; do not retune or select a favorable subset after measurement.",
+  "promotion": "Only a passing operator screen may proceed to model conversion, independent precision/task-quality checks, matched end-to-end MTP and prefill confirmation, and release validation. No deployment in this screen.",
+  "attribution": "NVFP4 CUDA kernels are existing upstream work. This experiment contributes local measurement and configuration/model feasibility evidence only."
+}

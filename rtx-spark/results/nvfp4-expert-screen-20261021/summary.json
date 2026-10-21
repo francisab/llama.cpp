@@ -1,0 +1,255 @@
+{
+  "decision": "reject",
+  "comparisons": [
+    {
+      "m": 640,
+      "n": 4,
+      "k": 2560,
+      "route": 0,
+      "original_us": [
+        87.9,
+        80.58
+      ],
+      "nvfp4_us": [
+        148.55,
+        148.9
+      ],
+      "per_round_throughput_ratios": [
+        0.591719959609559,
+        0.541168569509738
+      ],
+      "throughput_ratio": 0.5664145234493192,
+      "nonoverlapping_improvement": false
+    },
+    {
+      "m": 640,
+      "n": 4,
+      "k": 2560,
+      "route": 1,
+      "original_us": [
+        65.32,
+        63.33
+      ],
+      "nvfp4_us": [
+        42.68,
+        43.85
+      ],
+      "per_round_throughput_ratios": [
+        1.5304592314901593,
+        1.4442417331812998
+      ],
+      "throughput_ratio": 1.4867675950537382,
+      "nonoverlapping_improvement": true
+    },
+    {
+      "m": 640,
+      "n": 4,
+      "k": 2560,
+      "route": 2,
+      "original_us": [
+        66.18,
+        64.35
+      ],
+      "nvfp4_us": [
+        45.09,
+        44.22
+      ],
+      "per_round_throughput_ratios": [
+        1.4677312042581505,
+        1.4552238805970148
+      ],
+      "throughput_ratio": 1.4615384615384615,
+      "nonoverlapping_improvement": true
+    },
+    {
+      "m": 640,
+      "n": 512,
+      "k": 2560,
+      "route": 0,
+      "original_us": [
+        3559.28,
+        3373.66
+      ],
+      "nvfp4_us": [
+        2301.28,
+        2338.71
+      ],
+      "per_round_throughput_ratios": [
+        1.5466522978516304,
+        1.4425302837889262
+      ],
+      "throughput_ratio": 1.4941713236450942,
+      "nonoverlapping_improvement": true
+    },
+    {
+      "m": 640,
+      "n": 512,
+      "k": 2560,
+      "route": 1,
+      "original_us": [
+        594.02,
+        579.49
+      ],
+      "nvfp4_us": [
+        411.83,
+        406.03
+      ],
+      "per_round_throughput_ratios": [
+        1.4423912779544958,
+        1.4272098120828511
+      ],
+      "throughput_ratio": 1.4348543760545815,
+      "nonoverlapping_improvement": true
+    },
+    {
+      "m": 640,
+      "n": 512,
+      "k": 2560,
+      "route": 2,
+      "original_us": [
+        3742.07,
+        3519.25
+      ],
+      "nvfp4_us": [
+        2638.03,
+        2336.82
+      ],
+      "per_round_throughput_ratios": [
+        1.4185092663843852,
+        1.505999606302582
+      ],
+      "throughput_ratio": 1.4596058172608217,
+      "nonoverlapping_improvement": true
+    },
+    {
+      "m": 2560,
+      "n": 4,
+      "k": 640,
+      "route": 0,
+      "original_us": [
+        148.85,
+        136.4
+      ],
+      "nvfp4_us": [
+        145.37,
+        144.36
+      ],
+      "per_round_throughput_ratios": [
+        1.0239389144940496,
+        0.9448600720421169
+      ],
+      "throughput_ratio": 0.9845373278569702,
+      "nonoverlapping_improvement": false
+    },
+    {
+      "m": 2560,
+      "n": 4,
+      "k": 640,
+      "route": 1,
+      "original_us": [
+        62.54,
+        61.56
+      ],
+      "nvfp4_us": [
+        64.3,
+        64.21
+      ],
+      "per_round_throughput_ratios": [
+        0.9726283048211509,
+        0.9587291699112289
+      ],
+      "throughput_ratio": 0.9656836043887636,
+      "nonoverlapping_improvement": false
+    },
+    {
+      "m": 2560,
+      "n": 4,
+      "k": 640,
+      "route": 2,
+      "original_us": [
+        63.86,
+        60.2
+      ],
+      "nvfp4_us": [
+        63.59,
+        68.42
+      ],
+      "per_round_throughput_ratios": [
+        1.0042459506211667,
+        0.8798596901490793
+      ],
+      "throughput_ratio": 0.9397772895992729,
+      "nonoverlapping_improvement": false
+    },
+    {
+      "m": 2560,
+      "n": 512,
+      "k": 640,
+      "route": 0,
+      "original_us": [
+        4997.95,
+        4793.28
+      ],
+      "nvfp4_us": [
+        3130.2,
+        3159.62
+      ],
+      "per_round_throughput_ratios": [
+        1.5966871126445594,
+        1.5170431887378861
+      ],
+      "throughput_ratio": 1.5566788874721376,
+      "nonoverlapping_improvement": true
+    },
+    {
+      "m": 2560,
+      "n": 512,
+      "k": 640,
+      "route": 1,
+      "original_us": [
+        1488.17,
+        1429.17
+      ],
+      "nvfp4_us": [
+        1409.31,
+        1282.78
+      ],
+      "per_round_throughput_ratios": [
+        1.0559564609631664,
+        1.1141193345702303
+      ],
+      "throughput_ratio": 1.083671051116419,
+      "nonoverlapping_improvement": true
+    },
+    {
+      "m": 2560,
+      "n": 512,
+      "k": 640,
+      "route": 2,
+      "original_us": [
+        5149.09,
+        5300.14
+      ],
+      "nvfp4_us": [
+        4088.06,
+        3374.08
+      ],
+      "per_round_throughput_ratios": [
+        1.2595436466196681,
+        1.5708400512139606
+      ],
+      "throughput_ratio": 1.4002993779264394,
+      "nonoverlapping_improvement": true
+    }
+  ],
+  "prefill_per_round_geomean_ratios": [
+    1.3737187780392368,
+    1.4209644311991474
+  ],
+  "prefill_geomean_ratio": 1.3957046820650378,
+  "decode_geomean_ratio": 1.015967817303924,
+  "regression_limit_exceeded": true,
+  "prefill_ranges_separated": true,
+  "model_quality_checked": false,
+  "deployed": false
+}
