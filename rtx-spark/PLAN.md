@@ -569,7 +569,24 @@ Geometric mean: **+1.03%**, failing the unchanged 3% per-case gate. Stop after t
 
 The pair completed in 153.641 seconds. Its 140 telemetry samples include nine software power-cap flags and no hardware thermal-slowdown flag. Runtime DLL hashes were unchanged after correctness and timing runs. This remains upstream work evaluated locally, not a locally authored engine improvement.
 
-Next is one independent model-only hypothesis: a Q5_K draft output head, rebuilt from the original Q8_0 draft, versus the deployed Q4_K head. Higher draft precision may improve acceptance enough to offset its extra head cost; acceptance alone is not the promotion criterion. The target model, 33 other draft tensors and deployed runtime recipe must remain unchanged. The protocol is in `results/draft-head-q5-20261021/`.
+The independent Q5_K draft-head follow-up is recorded below.
+
+### 2.25 Higher-precision Q5_K draft head [M]
+
+One Q5_K `output.weight` revision was rebuilt from the original Q8_0 draft, not from the deployed Q4_K file. All metadata and all 33 non-head tensors match the original and the existing Q4_K control. Both original files and every installed runtime DLL were hash-verified unchanged. The candidate adds 75.78125 MiB to the Q4_K model; conversion and full verification took 108.594 seconds.
+
+The installed b11756 + #30380 + #30640 binaries, original target, MTP3, ub512, dynamic vocabulary 16384 and automatic threads remained unchanged. The first pair used two fixed-length samples per case after warmup:
+
+| Case | Q4_K median | Q5_K median | Change | Draft acceptance |
+|---|---|---|---|---|
+| Rust | 55.32 tok/s | 57.07 tok/s | +3.17% | 78.1% to 81.1% |
+| JSON | 51.88 tok/s | 52.84 tok/s | +1.85% | 71.6% to 71.6% |
+
+Geometric mean: **+2.51%**, with **4/4 identical output-token sequences**. JSON misses the predeclared 3% per-case gate, so stop without a reverse-order run, quality campaign or deployment. Higher precision improved Rust acceptance, but this pair does not establish a robust general improvement. Keep Q4_K and do not extend this into another head-precision sweep. Evidence is in `results/draft-head-q5-20261021/`.
+
+The screen took 157.781 seconds, including post-run binary/model verification. Its 143 telemetry samples contain four software power-cap flags and no hardware thermal-slowdown flag.
+
+The next priority is operator evidence rather than more marginal precision trials. The installed toolkit has no local CUPTI or Nsight CLI, but NVIDIA's current CUDA 13.4.3 redistributable manifest now lists native Windows ARM64 CUPTI, Nsight Systems and Nsight Compute packages. Validate a portable native profiler before treating the earlier local profiling blocker as resolved; do not infer kernel costs from the end-to-end screen results.
 
 ## 3. Source-verified feature status and reference lessons
 

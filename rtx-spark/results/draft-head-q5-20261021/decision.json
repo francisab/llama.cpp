@@ -1,0 +1,23 @@
+{
+  "decision": "Park Q5_K output head; retain deployed Q4_K",
+  "geomean_change_percent": 2.5062480988738756,
+  "case_change_percent": {
+    "json256": 1.8498101147128354,
+    "rust256": 3.166916928694463
+  },
+  "identical_outputs": [
+    4,
+    4
+  ],
+  "added_model_mib": 75.78125,
+  "opposite_order_run": false,
+  "reason": "JSON improves only 1.85%, below the unchanged 3% per-case gate; no further head-precision sweep",
+  "quality_gate_run": false,
+  "elapsed_seconds": 157.78100000000268,
+  "telemetry": {
+    "samples": 143,
+    "software_power_cap_samples": 4,
+    "hardware_thermal_slowdown_samples": 0
+  },
+  "deployment_changed": false
+}
