@@ -1,0 +1,7 @@
+{
+  "base_ggml_cuda_sha256": "898fb56c5a64f75e945e0823efa9a773cbdec66e5de9f1f253a771911b172c9f",
+  "decision": "park",
+  "note": "rebuilt from compact-prototype.patch; only ggml-cuda.dll differs between arms",
+  "cand_ggml_cuda_sha256": "c63ffd08d264e925609d42adc977625e9a2998260841a8ed036d5f6e363b38d0",
+  "source_restored_mmq_sha256": "513ed8c9f2d4f33dc41a5d9cc066148ac63a6e4772bb487b5c064af9086da22e"
+}

@@ -1,0 +1,9 @@
+{
+  "decision": "park",
+  "reason": "pp2048 is below the minimum gain",
+  "rounds_completed": 2,
+  "goal": "prefill",
+  "min_gain_pct": 5.0,
+  "max_regression_pct": 3.0,
+  "quality_checked": false
+}

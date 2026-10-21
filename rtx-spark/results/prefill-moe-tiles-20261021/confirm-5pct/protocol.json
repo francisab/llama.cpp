@@ -1,0 +1,14 @@
+{
+  "written_before_measurement": true,
+  "reason": "user asked to relax the prefill gate; fresh full-model A/A was +1.55% / -1.48%, so 10% was set from older, noisier 7-9% A/A",
+  "earlier_result": "stays parked; this is a fresh confirmation, not a reinterpretation",
+  "candidate": "compact IQ3_S/IQ4_NL MoE jobs (compact-prototype.patch), MMQ_MOE_COMPACT=1",
+  "control": "original ggml-cuda.dll 898fb56c",
+  "bench_args": "-fa 1 -ngl 99 -ub 512 -p 2048,8192 -n 0 -r 2",
+  "order": "round 1 base->cand, round 2 cand->base (harness reverse confirmation)",
+  "minimum_gain_percent": 5,
+  "maximum_regression_percent": 3,
+  "require_nonoverlapping_ranges": true,
+  "then": ["operator sizes n=64,128,256,1024,2048 no case worse than -3%", "MTP rust/json no regression >3% with token identity", "English quality gate", "release-stack check before deploy"],
+  "stop": "if any step fails, park; do not retune on these prompts"
+}

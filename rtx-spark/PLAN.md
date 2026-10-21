@@ -880,6 +880,15 @@ A fresh full-model A/A calibration gives pp2048 +1.55% and pp8192 -1.48%. Before
 
 **Park after the first pair.** pp2048 misses the predeclared 10% gate. Do not lower the threshold, select only pp8192, or describe this as a deployed improvement. The wrapper exits 2 with its explicit `park` decision. Reverse-order full-model confirmation, broader operator sizes, actual-MTP regression, English quality and final release promotion are deliberately not run after this gate failure.
 
+**Fresh 5% confirmation.** The 10% gate came from older 7-9% pp2048 A/A noise; the fresh A/A is about 1.5%. A new protocol with a 5% gain gate (same 3% regression limit, nonoverlapping ranges) was written before a fresh rebuilt-candidate run. The first pair is not reinterpreted.
+
+| Fresh pair | pp2048 change | pp8192 change |
+|---|---:|---:|
+| Round 1, base then compact | +6.16% | +15.71% |
+| Round 2, compact then base | +2.48% | +8.19% |
+
+**Park again.** pp2048 misses 5% in reverse order; the control drifts 797 to 845 tok/s between rounds. pp8192 gains in all three pairs (+8.2% to +15.7%), but selecting only long prompts after this result is not allowed. Evidence is in `results/prefill-moe-tiles-20261021/confirm-5pct/`; the candidate runtime is removed and the source and installed DLL are unchanged.
+
 `results/prefill-moe-tiles-20261021/` preserves the original cap probe, both prototype patches, routing-fixture patch, exact case results, binary hashes, A/A and full-model samples, protocol and disposition. The older owned source diff and untracked files, CPU build DLLs, CUDA build DLL and all recorded installed runtime hashes match their pre-experiment state. The two new candidate runtime directories are removed and the previous test executable is restored. No model, launcher, global environment or deployment is changed.
 
 The compact-list idea is not claimed as novel: [ggml-org/llama.cpp#26159](https://github.com/ggml-org/llama.cpp/pull/26159) proposes compact NVFP4 scheduling. At the live check it is open, draft and unmerged at `f1694d2615e4f3fb78aa0d143beea9c1764c6394`; its `build_moe_job_map` and `mul_mat_q_moe_compact` functions are absent from both our worktree and deployed source. Our already-present [ggml-org/llama.cpp#30553](https://github.com/ggml-org/llama.cpp/pull/30553) Stream-K block cap is a different change. This experiment implements small/wide IQ3_S/IQ4_NL scheduling, not that NVFP4 patch.
