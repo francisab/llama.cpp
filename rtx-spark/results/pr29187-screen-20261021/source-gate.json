@@ -1,0 +1,17 @@
+{
+  "candidate_production_files_unmodified": true,
+  "control_worktree_clean": true,
+  "test_only_patch_sha256": "b037c71e3fcccb3522f6367070808804a73a64b7b0358118efd20c8c6fbe2b38",
+  "ssm_head_size": 128,
+  "ssm_value_heads": 48,
+  "alpha_beta_projection_type": "F32",
+  "alpha_beta_projection_shape": [
+    2560,
+    48
+  ],
+  "matching_recurrent_layers": 36,
+  "dynamic_draft_vocabulary_supported_in_either_arm": false,
+  "cuda_graphs_and_fusion_disable_flags_unset": true,
+  "runtime_fusion_dispatch_traced": false,
+  "test_patch_format": "Zero-context unified diff; apply with git apply --unidiff-zero against the pinned candidate head"
+}

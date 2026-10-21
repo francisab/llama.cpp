@@ -1,0 +1,8 @@
+diff --git a/tests/test-backend-ops.cpp b/tests/test-backend-ops.cpp
+index 2fcc51a86..3dbe64065 100644
+--- a/tests/test-backend-ops.cpp
++++ b/tests/test-backend-ops.cpp
+@@ -11665,0 +11666,3 @@ static std::vector<std::unique_ptr<test_case>> make_test_cases_eval() {
++    for (int64_t n_tokens : {1, 4, 8}) {
++        test_cases.emplace_back(new test_gated_delta_net_ab_fusion(GGML_TYPE_F32, 48, 128, n_tokens, 2560));
++    }

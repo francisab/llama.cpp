@@ -535,7 +535,22 @@ The refreshed CUDA queue was filtered before spending more build or GPU time. Ex
 | [ggml-org/llama.cpp#30792](https://github.com/ggml-org/llama.cpp/pull/30792), native Q8 KV tile kernel | Not on Flash-Next's Blackwell dispatch path: its 256-wide heads return from the earlier Turing-MMA branch before the changed generic fallback. Do not transfer the reported gfx1151 gains to N1X. |
 | [ggml-org/llama.cpp#30493](https://github.com/ggml-org/llama.cpp/pull/30493), vectorized MMQ copy | Lower-priority prefill candidate, not a decode optimization. Reported gains on other hardware are small; no local failure or upper bound is claimed. |
 
-No patch from this source-only triage was built, integrated or deployed. A separate fixed four-generation-thread experiment tests host scheduling/polling overhead with original target weights, unchanged batch threads, and the deployed MTP recipe; its protocol is in `results/decode-threads4-20261021/`.
+No patch from this source-only triage was built, integrated or deployed. The independent generation-thread experiment is recorded below.
+
+### 2.23 Four generation threads [M]
+
+The installed MTP3 recipe was compared with four target/draft CPU generation threads instead of the automatically resolved 20. Target and draft batch threads remained at 20; original target weights, the Q4_K draft, ub512, lazy PLE, dynamic vocabulary 16384, affinity, priority and polling settings were unchanged.
+
+| Fixed 256-token case, two samples per arm | Control median | Four-thread median | Change |
+|---|---|---|---|
+| Rust | 55.39 tok/s | 54.54 tok/s | -1.53% |
+| JSON | 51.41 tok/s | 51.48 tok/s | +0.14% |
+
+Geometric mean: **-0.70%**, with all four output-token sequences identical and unchanged draft counts/acceptance. The first pair misses the predeclared 3% per-case gain, so no reverse-order run or thread-count sweep was performed. Keep automatic generation threads; no launcher change. The completed pair took 144.266 seconds and retained 130 telemetry samples, seven software power-cap samples and no hardware thermal-slowdown flag.
+
+The first harness attempt completed only a control run, then rejected an outdated startup-log format. That control and its telemetry are retained separately. The parser was corrected and the matched comparison restarted before any candidate measurement; the failed attempt was not silently discarded or used to select a favorable baseline. Evidence is in `results/decode-threads4-20261021/`.
+
+The next candidate is upstream [ggml-org/llama.cpp#29187](https://github.com/ggml-org/llama.cpp/pull/29187), GDN alpha/beta producer fusion. Source inspection found matching F32 `[2560, 48]` projections in all 36 recurrent layers. Its proposed benefit is small token batches, so the screen must use actual MTP, not a plain tg128 proxy. Pinned native control/candidate builds and three supplemental real-geometry tests are specified in `results/pr29187-screen-20261021/protocol.json`. This is upstream work under evaluation, not an integrated optimization or an established speedup.
 
 ## 3. Source-verified feature status and reference lessons
 

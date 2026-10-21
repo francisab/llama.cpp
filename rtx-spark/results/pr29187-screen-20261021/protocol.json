@@ -1,0 +1,48 @@
+{
+  "candidate": "CUDA GDN alpha/beta producer fusion",
+  "origin": "upstream proposal, not locally authored engine code",
+  "url": "https://github.com/ggml-org/llama.cpp/pull/29187",
+  "candidate_sha": "e75c82b7750ce2163acacf3b41232f385c758135",
+  "control_merge_base_sha": "1b43d311698269073fb4827db10f9d6f195d2e7d",
+  "base_resolution": "GitHub compare merge_base_commit, not the PR's baseRefOid",
+  "source_gate": {
+    "eligible_recurrent_layers": 36,
+    "alpha_and_beta_type": "F32",
+    "projection_shape": [2560, 48],
+    "dt_and_ssm_a_type": "F32",
+    "head_size": 128,
+    "maximum_fused_tokens": 8,
+    "conditions": "Matching contiguous alpha/beta weights and shared F32 activation; NVIDIA Turing or newer, CUDA graphs, main stream, expected producer chain and GDN consumer",
+    "state_ordering": "build_rs explicitly expands state gathers before the final GDN graph; source inspection does not replace a runtime dispatch trace",
+    "runtime_dispatch_traced": false
+  },
+  "build": {
+    "architecture": "Native Windows ARM64, sm_121 / 121a-real",
+    "configuration": "Release, CUDA 13.4.59, MSVC 19.44.35229.0, CCCL v3.4.3",
+    "script": "../../tools/build_native_cuda.ps1",
+    "targets": ["llama-server", "test-backend-ops"],
+    "parallel_build_jobs_per_arm": 8,
+    "candidate_local_modification": "Test-only addition of F32 [2560,48] projection cases with head size 128 and 1, 4 and 8 tokens; production files remain at the pinned head"
+  },
+  "correctness": {
+    "command": "test-backend-ops.exe -o GATED_DELTA_NET_AB_FUSION -b CUDA0",
+    "require_all_cases_pass": true,
+    "reference": "Existing CPU comparison; upstream test performs two CUDA warmup runs before checking the fusion outputs",
+    "supplemental_cases": 3
+  },
+  "performance": {
+    "workload": "Actual original-target MTP3 with the unchanged Q4_K external draft, ub512, lazy PLE, context 262144 and existing Rust/JSON 256-token requests",
+    "important_difference_from_deployment": "Matched upstream builds do not contain the separately deployed dynamic-draft-head patch; omit --spec-draft-vocab-dynamic in BOTH arms. This screen is not a comparison against the installed release stack.",
+    "repetitions_per_case_per_launch": 2,
+    "order": "Control then candidate; only a survivor proceeds to candidate then control",
+    "minimum_gain_percent_per_case": 3,
+    "maximum_regression_percent": 3,
+    "require_nonoverlapping_ranges": true,
+    "require_identical_prompts_and_fixed_output_lengths": true,
+    "token_equality": "Record exact output-token equality and draft acceptance; changed output needs numerical/task investigation before any promotion",
+    "operational_budget_seconds": 600,
+    "no_plain_decode_proxy": "The claimed opportunity is small verification batches; do not substitute plain tg128 for actual MTP"
+  },
+  "promotion": "Only a correctness/speed survivor proceeds to release-stack integration, unchanged-stack comparison, numerical and English task checks, five-repeat confirmation and rollback-safe deployment",
+  "deployment": "No installed binaries, models or launcher changes in this source/build screen"
+}

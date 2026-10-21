@@ -1,0 +1,29 @@
+{
+  "decision": "Reject four decode threads for this recipe; retain automatic 20-thread generation",
+  "geomean_change_percent": -0.700684957281883,
+  "case_change_percent": {
+    "json256": 0.1359811086079299,
+    "rust256": -1.5303604280023864
+  },
+  "identical_output_tokens": [
+    4,
+    4
+  ],
+  "identical_draft_counts_and_acceptance": true,
+  "actual_generation_threads": [
+    20,
+    4
+  ],
+  "batch_threads_both_arms": 20,
+  "opposite_order_run": false,
+  "reason": "First pair misses the predeclared per-case 3% gate; do not spend a reverse-order run on it",
+  "telemetry": {
+    "samples": 130,
+    "software_power_cap_samples": 7,
+    "hardware_thermal_slowdown_samples": 0,
+    "minimum_sm_mhz": 286.0,
+    "maximum_sm_mhz": 2470.0
+  },
+  "harness_recovery": "First attempt stopped after control due to an obsolete startup-log parser; preserved separately and restarted before any candidate result",
+  "deployment_changed": false
+}
