@@ -1569,7 +1569,7 @@ struct test_case {
         return test_passed ? test_status_t::OK : test_status_t::FAIL;
     }
 
-    bool eval_perf(ggml_backend_t backend, const char * op_names_filter, printer * output_printer) {
+    test_status_t eval_perf(ggml_backend_t backend, const char * op_names_filter, printer * output_printer) {
         mode = MODE_PERF;
 
         static const size_t graph_nodes = 8192;
@@ -1590,7 +1590,7 @@ struct test_case {
         current_op_name               = op_desc(out);
         if (!matches_filter(out, op_names_filter)) {
             //printf("  %s: skipping\n", op_desc(out).c_str());
-            return true;
+            return test_status_t::SKIPPED;
         }
 
         if (!ggml_backend_supports_op(backend, out)) {
@@ -1600,7 +1600,7 @@ struct test_case {
 
             output_printer->print_test_result(result);
 
-            return true;
+            return test_status_t::NOT_SUPPORTED;
         }
 
         ggml_backend_buffer_ptr buf_weights(nullptr);
@@ -1608,7 +1608,7 @@ struct test_case {
             buf_weights.reset(ggml_backend_alloc_ctx_tensors(ctx_weights.get(), backend));
             if (buf_weights == NULL) {
                 printf("failed to allocate weight tensors\n");
-                return false;
+                return test_status_t::FAIL;
             }
             ggml_backend_buffer_set_usage(buf_weights.get(), GGML_BACKEND_BUFFER_USAGE_WEIGHTS);
         }
@@ -1618,7 +1618,7 @@ struct test_case {
 
         if (buf == NULL) {
             printf("failed to allocate tensors\n");
-            return false;
+            return test_status_t::FAIL;
         }
 
         // randomize tensors
@@ -1635,7 +1635,7 @@ struct test_case {
         ggml_status status = ggml_backend_graph_compute(backend, gf);
         if (status != GGML_STATUS_SUCCESS) {
             fprintf(stderr, "%s: ggml_backend_graph_compute failed. status=%s \n", __func__, ggml_status_to_string(status));
-            return false;
+            return test_status_t::FAIL;
         }
 
         // determine number of runs
@@ -1697,7 +1697,7 @@ struct test_case {
             ggml_status status = ggml_backend_graph_compute(backend, gf);
             if (status != GGML_STATUS_SUCCESS) {
                 fprintf(stderr, "%s: ggml_backend_graph_compute failed. status=%s \n", __func__, ggml_status_to_string(status));
-                return false;
+                return test_status_t::FAIL;
             }
             int64_t end_time = ggml_time_us();
 
@@ -1723,7 +1723,7 @@ struct test_case {
             output_printer->print_test_result(result);
         }
 
-        return true;
+        return test_status_t::OK;
     }
 
     bool eval_support(ggml_backend_t backend, const char * op_names_filter, printer * output_printer) {
@@ -13317,10 +13317,18 @@ static bool test_backend(ggml_backend_t backend, ggml_backend_dev_t dev, test_mo
     }
 
     if (mode == MODE_PERF) {
+        bool matched = false;
         for (auto & test : test_cases) {
-            test->eval_perf(backend, op_names_filter, output_printer);
+            const test_status_t status = test->eval_perf(backend, op_names_filter, output_printer);
+            if (status == test_status_t::FAIL) {
+                return false;
+            }
+            matched |= status != test_status_t::SKIPPED;
         }
-        return true;
+        if (!matched) {
+            fprintf(stderr, "error: no performance tests matched the filters for backend '%s'\n", ggml_backend_name(backend));
+        }
+        return matched;
     }
 
     if (mode == MODE_SUPPORT) {
@@ -13445,7 +13453,7 @@ static void usage(char ** argv) {
     printf("Valid modes:\n");
     printf("  test     (default) compare with CPU backend for correctness\n");
     printf("  grad     compare gradients from backpropagation with method of finite differences\n");
-    printf("  perf     performance evaluation\n");
+    printf("  perf     performance evaluation (fails if no cases match on a selected backend)\n");
     printf("  support  probe backend operation support\n\n");
     printf("Options:\n");
     printf("  -o <op|regex,..>            comma separated list of exact op names (as given by ggml_op_desc()),\n");
@@ -13547,6 +13555,15 @@ int main(int argc, char ** argv) {
 
     // load and enumerate backends
     ggml_backend_load_all();
+
+    if (backend_filter != nullptr) {
+        ggml_backend_dev_t dev = ggml_backend_dev_by_name(backend_filter);
+        if (dev == nullptr) {
+            fprintf(stderr, "error: backend '%s' not found\n", backend_filter);
+            return 1;
+        }
+        backend_filter = ggml_backend_dev_name(dev);
+    }
 
     // Create printer for output format
     std::unique_ptr<printer> output_printer = create_printer(output_format);

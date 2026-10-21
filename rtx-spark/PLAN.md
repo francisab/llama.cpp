@@ -833,6 +833,23 @@ ctest --test-dir "<native-build>" -R "^test-backend-ops-perf-graph$" --output-on
 
 `results/perf-graph-harness-20261021/validation.json` records commands, actual case coverage, return codes and source/binary hashes. The isolated build initially linked an unavailable MSVC OpenMP DLL; selecting the already-installed matching native LLVM library resolved that dependency before the red/green regression. No new runtime dependency was installed. This validation is CPU-only; it does not claim CUDA coverage of the permanent fixture or an inference-speed gain. The live runtime, older owned build/source, model recipe and global settings remain unchanged.
 
+### 2.41 Fail-fast performance-runner exits [M]
+
+The earlier zero-case preflights exposed a second framework defect: `test-backend-ops perf` ignored execution failures, and unmatched selectors could report a successful backend without measuring anything. The runner now uses its existing `test_status_t` to distinguish filtered, unsupported, successful and failed cases. It stops a backend's performance loop on an execution failure and rejects a selection matching no cases. An unknown explicit backend fails before enumeration; a valid name is canonicalized so `-b cpu` actually runs CPU rather than silently skipping it.
+
+| Native CPU comparison | Original runner | Corrected runner |
+|---|---|---|
+| Missing operation, parameters or backend, each in console/CSV/SQL | Exit 0 in all nine scenarios | Exit 1 with a diagnostic |
+| Controlled warmup and timed graph aborts, each in console/CSV/SQL | Exit 0 in all six scenarios | Exit 1 |
+| Controlled unsupported operation, each in console/CSV/SQL | Nonfatal skip | Nonfatal skip retained |
+| Explicit lower-case `cpu` | Exit 0 without running the requested case | Exit 0 with the requested case executed |
+
+Five focused CTests pass: the whole-graph regression, three negative selections and case-insensitive backend selection. Valid console, CSV and SQL executions still succeed; CSV rows and SQL result fields are parsed, and the existing SNAKE fixture passes eight numerical cases plus one performance case. This is failure-handling validation, not a throughput comparison.
+
+The paired diagnostic builds use a private wrapper around the same runner source and native CPU library. Its abort callback fails either during warmup or after both warmup nodes; recorded graph statuses distinguish these paths. A separate controlled support response exercises the nonfatal skip path. The wrapper is retained in `results/perf-exit-status-20261021/` as evidence, not compiled into the normal runner. The final build is uninstrumented. Allocation failure was not injected, and no CUDA or model-speed claim is made.
+
+Run the focused suite with `ctest --test-dir "<native-build>" -R "^test-backend-ops-perf-" --output-on-failure --timeout 45`. The evidence records the initial diagnostic-parser correction and all final checks. Default backend-skipping behavior and numerical/gradient/support-mode selection semantics are unchanged, except that explicit backend names now resolve consistently or fail. No deployment, model, driver policy or global environment change is made.
+
 ## 3. Source-verified feature status and reference lessons
 
 The following status is verified in this checkout. This table supersedes the porting assumptions in the initial reference inventory below.

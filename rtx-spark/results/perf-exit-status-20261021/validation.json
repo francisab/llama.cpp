@@ -1,0 +1,854 @@
+{
+  "complete": true,
+  "baseline_commit": "fa652761142b8c494fd3187c34872ad5b3241f6d",
+  "backend": "Native Windows ARM64 CPU, Clang 20.1.8, Release",
+  "scope": "Performance CLI failure semantics; no inference-speed claim",
+  "checks": [
+    {
+      "label": "before-op-console",
+      "program": "control.exe",
+      "exit_code": 0,
+      "elapsed_seconds": 0.032,
+      "args": [
+        "perf",
+        "-b",
+        "CPU",
+        "-o",
+        "__NO_SUCH_OP__",
+        "-p",
+        "^whole_graph=",
+        "--output",
+        "console"
+      ],
+      "env": {}
+    },
+    {
+      "label": "before-params-console",
+      "program": "control.exe",
+      "exit_code": 0,
+      "elapsed_seconds": 0.031,
+      "args": [
+        "perf",
+        "-b",
+        "CPU",
+        "-o",
+        "PERF_GRAPH",
+        "-p",
+        "^whole_graph=2$",
+        "--output",
+        "console"
+      ],
+      "env": {}
+    },
+    {
+      "label": "before-backend-console",
+      "program": "control.exe",
+      "exit_code": 0,
+      "elapsed_seconds": 0.015,
+      "args": [
+        "perf",
+        "-b",
+        "__NO_SUCH_BACKEND__",
+        "-o",
+        "PERF_GRAPH",
+        "--output",
+        "console"
+      ],
+      "env": {}
+    },
+    {
+      "label": "before-op-csv",
+      "program": "control.exe",
+      "exit_code": 0,
+      "elapsed_seconds": 0.032,
+      "args": [
+        "perf",
+        "-b",
+        "CPU",
+        "-o",
+        "__NO_SUCH_OP__",
+        "-p",
+        "^whole_graph=",
+        "--output",
+        "csv"
+      ],
+      "env": {}
+    },
+    {
+      "label": "before-params-csv",
+      "program": "control.exe",
+      "exit_code": 0,
+      "elapsed_seconds": 0.031,
+      "args": [
+        "perf",
+        "-b",
+        "CPU",
+        "-o",
+        "PERF_GRAPH",
+        "-p",
+        "^whole_graph=2$",
+        "--output",
+        "csv"
+      ],
+      "env": {}
+    },
+    {
+      "label": "before-backend-csv",
+      "program": "control.exe",
+      "exit_code": 0,
+      "elapsed_seconds": 0.016,
+      "args": [
+        "perf",
+        "-b",
+        "__NO_SUCH_BACKEND__",
+        "-o",
+        "PERF_GRAPH",
+        "--output",
+        "csv"
+      ],
+      "env": {}
+    },
+    {
+      "label": "before-op-sql",
+      "program": "control.exe",
+      "exit_code": 0,
+      "elapsed_seconds": 0.031,
+      "args": [
+        "perf",
+        "-b",
+        "CPU",
+        "-o",
+        "__NO_SUCH_OP__",
+        "-p",
+        "^whole_graph=",
+        "--output",
+        "sql"
+      ],
+      "env": {}
+    },
+    {
+      "label": "before-params-sql",
+      "program": "control.exe",
+      "exit_code": 0,
+      "elapsed_seconds": 0.031,
+      "args": [
+        "perf",
+        "-b",
+        "CPU",
+        "-o",
+        "PERF_GRAPH",
+        "-p",
+        "^whole_graph=2$",
+        "--output",
+        "sql"
+      ],
+      "env": {}
+    },
+    {
+      "label": "before-backend-sql",
+      "program": "control.exe",
+      "exit_code": 0,
+      "elapsed_seconds": 0.016,
+      "args": [
+        "perf",
+        "-b",
+        "__NO_SUCH_BACKEND__",
+        "-o",
+        "PERF_GRAPH",
+        "--output",
+        "sql"
+      ],
+      "env": {}
+    },
+    {
+      "label": "before-backend-case",
+      "program": "control.exe",
+      "exit_code": 0,
+      "elapsed_seconds": 0.031,
+      "args": [
+        "perf",
+        "-b",
+        "cpu",
+        "-o",
+        "PERF_GRAPH",
+        "-p",
+        "^whole_graph=0,by_flops=0$"
+      ],
+      "env": {}
+    },
+    {
+      "label": "build-before-injected",
+      "program": "cmd.exe",
+      "exit_code": 0,
+      "elapsed_seconds": 14.906,
+      "args": [
+        "/c",
+        "<private-validation>\\build-before-injected.cmd"
+      ],
+      "env": {}
+    },
+    {
+      "label": "before-abort-warmup-console",
+      "program": "test-backend-ops.exe",
+      "exit_code": 0,
+      "elapsed_seconds": 0.063,
+      "args": [
+        "perf",
+        "-b",
+        "CPU",
+        "-o",
+        "PERF_GRAPH",
+        "-p",
+        "^whole_graph=0,by_flops=0$",
+        "--output",
+        "console"
+      ],
+      "env": {
+        "PERF_ABORT_AFTER": "0"
+      }
+    },
+    {
+      "label": "before-abort-timed-console",
+      "program": "test-backend-ops.exe",
+      "exit_code": 0,
+      "elapsed_seconds": 0.015,
+      "args": [
+        "perf",
+        "-b",
+        "CPU",
+        "-o",
+        "PERF_GRAPH",
+        "-p",
+        "^whole_graph=0,by_flops=0$",
+        "--output",
+        "console"
+      ],
+      "env": {
+        "PERF_ABORT_AFTER": "2"
+      }
+    },
+    {
+      "label": "before-unsupported-console",
+      "program": "test-backend-ops.exe",
+      "exit_code": 0,
+      "elapsed_seconds": 0.032,
+      "args": [
+        "perf",
+        "-b",
+        "CPU",
+        "-o",
+        "PERF_GRAPH",
+        "-p",
+        "^whole_graph=0,by_flops=0$",
+        "--output",
+        "console"
+      ],
+      "env": {
+        "PERF_UNSUPPORTED": "1"
+      }
+    },
+    {
+      "label": "before-abort-warmup-csv",
+      "program": "test-backend-ops.exe",
+      "exit_code": 0,
+      "elapsed_seconds": 0.031,
+      "args": [
+        "perf",
+        "-b",
+        "CPU",
+        "-o",
+        "PERF_GRAPH",
+        "-p",
+        "^whole_graph=0,by_flops=0$",
+        "--output",
+        "csv"
+      ],
+      "env": {
+        "PERF_ABORT_AFTER": "0"
+      }
+    },
+    {
+      "label": "before-abort-timed-csv",
+      "program": "test-backend-ops.exe",
+      "exit_code": 0,
+      "elapsed_seconds": 0.016,
+      "args": [
+        "perf",
+        "-b",
+        "CPU",
+        "-o",
+        "PERF_GRAPH",
+        "-p",
+        "^whole_graph=0,by_flops=0$",
+        "--output",
+        "csv"
+      ],
+      "env": {
+        "PERF_ABORT_AFTER": "2"
+      }
+    },
+    {
+      "label": "before-unsupported-csv",
+      "program": "test-backend-ops.exe",
+      "exit_code": 0,
+      "elapsed_seconds": 0.031,
+      "args": [
+        "perf",
+        "-b",
+        "CPU",
+        "-o",
+        "PERF_GRAPH",
+        "-p",
+        "^whole_graph=0,by_flops=0$",
+        "--output",
+        "csv"
+      ],
+      "env": {
+        "PERF_UNSUPPORTED": "1"
+      }
+    },
+    {
+      "label": "before-abort-warmup-sql",
+      "program": "test-backend-ops.exe",
+      "exit_code": 0,
+      "elapsed_seconds": 0.031,
+      "args": [
+        "perf",
+        "-b",
+        "CPU",
+        "-o",
+        "PERF_GRAPH",
+        "-p",
+        "^whole_graph=0,by_flops=0$",
+        "--output",
+        "sql"
+      ],
+      "env": {
+        "PERF_ABORT_AFTER": "0"
+      }
+    },
+    {
+      "label": "before-abort-timed-sql",
+      "program": "test-backend-ops.exe",
+      "exit_code": 0,
+      "elapsed_seconds": 0.016,
+      "args": [
+        "perf",
+        "-b",
+        "CPU",
+        "-o",
+        "PERF_GRAPH",
+        "-p",
+        "^whole_graph=0,by_flops=0$",
+        "--output",
+        "sql"
+      ],
+      "env": {
+        "PERF_ABORT_AFTER": "2"
+      }
+    },
+    {
+      "label": "before-unsupported-sql",
+      "program": "test-backend-ops.exe",
+      "exit_code": 0,
+      "elapsed_seconds": 0.031,
+      "args": [
+        "perf",
+        "-b",
+        "CPU",
+        "-o",
+        "PERF_GRAPH",
+        "-p",
+        "^whole_graph=0,by_flops=0$",
+        "--output",
+        "sql"
+      ],
+      "env": {
+        "PERF_UNSUPPORTED": "1"
+      }
+    },
+    {
+      "label": "build-after-injected",
+      "program": "cmd.exe",
+      "exit_code": 0,
+      "elapsed_seconds": 14.734,
+      "args": [
+        "/c",
+        "<private-validation>\\build-after-injected.cmd"
+      ],
+      "env": {}
+    },
+    {
+      "label": "after-abort-warmup-console",
+      "program": "test-backend-ops.exe",
+      "exit_code": 1,
+      "elapsed_seconds": 0.047,
+      "args": [
+        "perf",
+        "-b",
+        "CPU",
+        "-o",
+        "PERF_GRAPH",
+        "-p",
+        "^whole_graph=0,by_flops=0$",
+        "--output",
+        "console"
+      ],
+      "env": {
+        "PERF_ABORT_AFTER": "0"
+      }
+    },
+    {
+      "label": "after-abort-timed-console",
+      "program": "test-backend-ops.exe",
+      "exit_code": 1,
+      "elapsed_seconds": 0.063,
+      "args": [
+        "perf",
+        "-b",
+        "CPU",
+        "-o",
+        "PERF_GRAPH",
+        "-p",
+        "^whole_graph=0,by_flops=0$",
+        "--output",
+        "console"
+      ],
+      "env": {
+        "PERF_ABORT_AFTER": "2"
+      }
+    },
+    {
+      "label": "after-unsupported-console",
+      "program": "test-backend-ops.exe",
+      "exit_code": 0,
+      "elapsed_seconds": 0.015,
+      "args": [
+        "perf",
+        "-b",
+        "CPU",
+        "-o",
+        "PERF_GRAPH",
+        "-p",
+        "^whole_graph=0,by_flops=0$",
+        "--output",
+        "console"
+      ],
+      "env": {
+        "PERF_UNSUPPORTED": "1"
+      }
+    },
+    {
+      "label": "after-abort-warmup-csv",
+      "program": "test-backend-ops.exe",
+      "exit_code": 1,
+      "elapsed_seconds": 0.032,
+      "args": [
+        "perf",
+        "-b",
+        "CPU",
+        "-o",
+        "PERF_GRAPH",
+        "-p",
+        "^whole_graph=0,by_flops=0$",
+        "--output",
+        "csv"
+      ],
+      "env": {
+        "PERF_ABORT_AFTER": "0"
+      }
+    },
+    {
+      "label": "after-abort-timed-csv",
+      "program": "test-backend-ops.exe",
+      "exit_code": 1,
+      "elapsed_seconds": 0.031,
+      "args": [
+        "perf",
+        "-b",
+        "CPU",
+        "-o",
+        "PERF_GRAPH",
+        "-p",
+        "^whole_graph=0,by_flops=0$",
+        "--output",
+        "csv"
+      ],
+      "env": {
+        "PERF_ABORT_AFTER": "2"
+      }
+    },
+    {
+      "label": "after-unsupported-csv",
+      "program": "test-backend-ops.exe",
+      "exit_code": 0,
+      "elapsed_seconds": 0.015,
+      "args": [
+        "perf",
+        "-b",
+        "CPU",
+        "-o",
+        "PERF_GRAPH",
+        "-p",
+        "^whole_graph=0,by_flops=0$",
+        "--output",
+        "csv"
+      ],
+      "env": {
+        "PERF_UNSUPPORTED": "1"
+      }
+    },
+    {
+      "label": "after-abort-warmup-sql",
+      "program": "test-backend-ops.exe",
+      "exit_code": 1,
+      "elapsed_seconds": 0.032,
+      "args": [
+        "perf",
+        "-b",
+        "CPU",
+        "-o",
+        "PERF_GRAPH",
+        "-p",
+        "^whole_graph=0,by_flops=0$",
+        "--output",
+        "sql"
+      ],
+      "env": {
+        "PERF_ABORT_AFTER": "0"
+      }
+    },
+    {
+      "label": "after-abort-timed-sql",
+      "program": "test-backend-ops.exe",
+      "exit_code": 1,
+      "elapsed_seconds": 0.031,
+      "args": [
+        "perf",
+        "-b",
+        "CPU",
+        "-o",
+        "PERF_GRAPH",
+        "-p",
+        "^whole_graph=0,by_flops=0$",
+        "--output",
+        "sql"
+      ],
+      "env": {
+        "PERF_ABORT_AFTER": "2"
+      }
+    },
+    {
+      "label": "after-unsupported-sql",
+      "program": "test-backend-ops.exe",
+      "exit_code": 0,
+      "elapsed_seconds": 0.016,
+      "args": [
+        "perf",
+        "-b",
+        "CPU",
+        "-o",
+        "PERF_GRAPH",
+        "-p",
+        "^whole_graph=0,by_flops=0$",
+        "--output",
+        "sql"
+      ],
+      "env": {
+        "PERF_UNSUPPORTED": "1"
+      }
+    },
+    {
+      "label": "build-final-uninstrumented",
+      "program": "cmd.exe",
+      "exit_code": 0,
+      "elapsed_seconds": 14.734,
+      "args": [
+        "/c",
+        "<private-validation>\\build-final-uninstrumented.cmd"
+      ],
+      "env": {}
+    },
+    {
+      "label": "after-op-console",
+      "program": "test-backend-ops.exe",
+      "exit_code": 1,
+      "elapsed_seconds": 0.047,
+      "args": [
+        "perf",
+        "-b",
+        "CPU",
+        "-o",
+        "__NO_SUCH_OP__",
+        "-p",
+        "^whole_graph=",
+        "--output",
+        "console"
+      ],
+      "env": {}
+    },
+    {
+      "label": "after-params-console",
+      "program": "test-backend-ops.exe",
+      "exit_code": 1,
+      "elapsed_seconds": 0.031,
+      "args": [
+        "perf",
+        "-b",
+        "CPU",
+        "-o",
+        "PERF_GRAPH",
+        "-p",
+        "^whole_graph=2$",
+        "--output",
+        "console"
+      ],
+      "env": {}
+    },
+    {
+      "label": "after-backend-console",
+      "program": "test-backend-ops.exe",
+      "exit_code": 1,
+      "elapsed_seconds": 0.016,
+      "args": [
+        "perf",
+        "-b",
+        "__NO_SUCH_BACKEND__",
+        "-o",
+        "PERF_GRAPH",
+        "--output",
+        "console"
+      ],
+      "env": {}
+    },
+    {
+      "label": "after-op-csv",
+      "program": "test-backend-ops.exe",
+      "exit_code": 1,
+      "elapsed_seconds": 0.031,
+      "args": [
+        "perf",
+        "-b",
+        "CPU",
+        "-o",
+        "__NO_SUCH_OP__",
+        "-p",
+        "^whole_graph=",
+        "--output",
+        "csv"
+      ],
+      "env": {}
+    },
+    {
+      "label": "after-params-csv",
+      "program": "test-backend-ops.exe",
+      "exit_code": 1,
+      "elapsed_seconds": 0.031,
+      "args": [
+        "perf",
+        "-b",
+        "CPU",
+        "-o",
+        "PERF_GRAPH",
+        "-p",
+        "^whole_graph=2$",
+        "--output",
+        "csv"
+      ],
+      "env": {}
+    },
+    {
+      "label": "after-backend-csv",
+      "program": "test-backend-ops.exe",
+      "exit_code": 1,
+      "elapsed_seconds": 0.016,
+      "args": [
+        "perf",
+        "-b",
+        "__NO_SUCH_BACKEND__",
+        "-o",
+        "PERF_GRAPH",
+        "--output",
+        "csv"
+      ],
+      "env": {}
+    },
+    {
+      "label": "after-op-sql",
+      "program": "test-backend-ops.exe",
+      "exit_code": 1,
+      "elapsed_seconds": 0.031,
+      "args": [
+        "perf",
+        "-b",
+        "CPU",
+        "-o",
+        "__NO_SUCH_OP__",
+        "-p",
+        "^whole_graph=",
+        "--output",
+        "sql"
+      ],
+      "env": {}
+    },
+    {
+      "label": "after-params-sql",
+      "program": "test-backend-ops.exe",
+      "exit_code": 1,
+      "elapsed_seconds": 0.031,
+      "args": [
+        "perf",
+        "-b",
+        "CPU",
+        "-o",
+        "PERF_GRAPH",
+        "-p",
+        "^whole_graph=2$",
+        "--output",
+        "sql"
+      ],
+      "env": {}
+    },
+    {
+      "label": "after-backend-sql",
+      "program": "test-backend-ops.exe",
+      "exit_code": 1,
+      "elapsed_seconds": 0.032,
+      "args": [
+        "perf",
+        "-b",
+        "__NO_SUCH_BACKEND__",
+        "-o",
+        "PERF_GRAPH",
+        "--output",
+        "sql"
+      ],
+      "env": {}
+    },
+    {
+      "label": "ctest",
+      "program": "ctest.exe",
+      "exit_code": 0,
+      "elapsed_seconds": 5.281,
+      "args": [
+        "--test-dir",
+        "<native-build>",
+        "-R",
+        "^test-backend-ops-perf-",
+        "--output-on-failure",
+        "--timeout",
+        "45"
+      ],
+      "env": {}
+    },
+    {
+      "label": "after-backend-case",
+      "program": "test-backend-ops.exe",
+      "exit_code": 0,
+      "elapsed_seconds": 1.031,
+      "args": [
+        "perf",
+        "-b",
+        "cpu",
+        "-o",
+        "PERF_GRAPH",
+        "-p",
+        "^whole_graph=0,by_flops=0$"
+      ],
+      "env": {}
+    },
+    {
+      "label": "success-console",
+      "program": "test-backend-ops.exe",
+      "exit_code": 0,
+      "elapsed_seconds": 1.031,
+      "args": [
+        "perf",
+        "-b",
+        "CPU",
+        "-o",
+        "PERF_GRAPH",
+        "-p",
+        "^whole_graph=0,by_flops=0$",
+        "--output",
+        "console"
+      ],
+      "env": {}
+    },
+    {
+      "label": "success-csv",
+      "program": "test-backend-ops.exe",
+      "exit_code": 0,
+      "elapsed_seconds": 1.047,
+      "args": [
+        "perf",
+        "-b",
+        "CPU",
+        "-o",
+        "PERF_GRAPH",
+        "-p",
+        "^whole_graph=0,by_flops=0$",
+        "--output",
+        "csv"
+      ],
+      "env": {}
+    },
+    {
+      "label": "success-sql",
+      "program": "test-backend-ops.exe",
+      "exit_code": 0,
+      "elapsed_seconds": 1.031,
+      "args": [
+        "perf",
+        "-b",
+        "CPU",
+        "-o",
+        "PERF_GRAPH",
+        "-p",
+        "^whole_graph=0,by_flops=0$",
+        "--output",
+        "sql"
+      ],
+      "env": {}
+    },
+    {
+      "label": "snake-perf",
+      "program": "test-backend-ops.exe",
+      "exit_code": 0,
+      "elapsed_seconds": 1.703,
+      "args": [
+        "perf",
+        "-b",
+        "CPU",
+        "-o",
+        "SNAKE_FUSE",
+        "-p",
+        "type=f32,"
+      ],
+      "env": {}
+    },
+    {
+      "label": "snake-correctness",
+      "program": "test-backend-ops.exe",
+      "exit_code": 0,
+      "elapsed_seconds": 0.422,
+      "args": [
+        "test",
+        "-b",
+        "CPU",
+        "-o",
+        "SNAKE_FUSE",
+        "-p",
+        "type=f32,"
+      ],
+      "env": {}
+    }
+  ],
+  "candidate_source_sha256": "ce8f40d53cf77295a0693a493915d97568b95864f9b2e7164392fb864f938071",
+  "final_uninstrumented_executable_sha256": "fcc8fdd44d11b4792eae37740b9849b409887bd8df411c7feefea74f44c3c8af",
+  "fault_injection": "Private wrapper uses the CPU abort callback at warmup or after its two nodes, and a controlled unsupported response. No instrumentation is committed to the runner or deployed.",
+  "preflight_issue": "The first abort probe worked, but its validator expected an abbreviated ggml status string. The original log is retained privately; corrected checks verify the actual status messages and graph-call count. The plain build was restored after every diagnostic build campaign.",
+  "case_normalization": "Device lookup is case-insensitive; canonicalize its returned name before the existing case-sensitive enumeration filter. Lower-case cpu previously skipped silently and now runs the requested case.",
+  "allocation_failure_injected": false,
+  "runtime_changed": false
+}
