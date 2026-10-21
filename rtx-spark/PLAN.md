@@ -850,6 +850,40 @@ The paired diagnostic builds use a private wrapper around the same runner source
 
 Run the focused suite with `ctest --test-dir "<native-build>" -R "^test-backend-ops-perf-" --output-on-failure --timeout 45`. The evidence records the initial diagnostic-parser correction and all final checks. Default backend-skipping behavior and numerical/gradient/support-mode selection semantics are unchanged, except that explicit backend names now resolve consistently or fail. No deployment, model, driver policy or global environment change is made.
 
+### 2.42 Routed-prefill tile scheduling: correct prototypes and full-model screen [M]
+
+The earlier J16/grid-cap probe suggested substantial headroom, but a cap can omit work for hot experts. Its 38-41% lower operator times were a timing-only upper bound, not a valid general implementation or a deployed gain. The serialized generic operator loader also concentrates routes on the same experts; it must not stand in for shuffled routing. This screen uses registered `test_mul_mat_id` fixtures with explicit routing distributions.
+
+Two isolated IQ3_S/IQ4_NL prototypes reuse the existing MMQ tile arithmetic. The first launches four column tiles per expert and loops over additional tiles. The second builds compact tile lists: experts with at most 32 columns use J16; hotter experts use J128. Separate small/wide kernels avoid forcing hot experts through many narrow tiles. Other types, non-Blackwell devices and token counts below 64 keep the original path. These are experimental environment-gated patches, not changes to the compiled repository runtime.
+
+Both candidates and the original DLL pass 12/12 CPU-reference cases. These cover the actual gate/up shape (IQ3_S, m=640, k=2560, broadcast activations) and down shape (IQ4_NL, m=2560, k=640) at 512 tokens, each with shuffled, fully concentrated and mixed routes. Mixed routing sends three quarters of tokens to the same ten experts. Additional m=129, k=256 cases at 63/64/65 tokens cover the activation boundary and row tails. All fixtures use nonzero ID-view offsets, and concentrated routes include the final expert. The tolerance is the existing 5e-4 NMSE limit.
+
+Each operator screen runs base/candidate/candidate/base, with six n=512 cases per launch. The following are throughput deltas from the median of two whole-operator timings per arm, not kernel-only speedups:
+
+| Routing | Projection | Loop prototype | Compact prototype |
+|---|---|---:|---:|
+| Shuffled | IQ3_S gate/up | +12.42% | +57.59% |
+| Shuffled | IQ4_NL down | -13.44% | +87.83% |
+| Concentrated | IQ3_S gate/up | -58.16% | +18.25% |
+| Concentrated | IQ4_NL down | -16.33% | +105.77% |
+| Mixed | IQ3_S gate/up | -5.80% | +57.00% |
+| Mixed | IQ4_NL down | -19.18% | +78.11% |
+
+The loop is rejected at -20.14% geomean. The compact prototype clears the prefill operator gate at +64.95%, with no regressions and nonoverlapping ranges in these six cases. Control timings drift between launches, so these are screening results, not precise universal gains.
+
+A fresh full-model A/A calibration gives pp2048 +1.55% and pp8192 -1.48%. Before testing the candidate, the full-model gate is fixed at at least 10% higher throughput on both lengths, nonoverlapping sample ranges, and at most 3% regression. Both arms use the unchanged Flash-Next UD-IQ4_XS target and matched b11756 + dynamic-head + QSA-mask runtime; only `ggml-cuda.dll` differs. This is target-only `llama-bench`, not actual MTP serving.
+
+| First full-model pair | Base median | Compact median | Throughput change |
+|---|---:|---:|---:|
+| pp2048, ub512 | 761.93 tok/s | 832.09 tok/s | +9.21% |
+| pp8192, ub512 | 746.04 tok/s | 856.26 tok/s | +14.77% |
+
+**Park after the first pair.** pp2048 misses the predeclared 10% gate. Do not lower the threshold, select only pp8192, or describe this as a deployed improvement. The wrapper exits 2 with its explicit `park` decision. Reverse-order full-model confirmation, broader operator sizes, actual-MTP regression, English quality and final release promotion are deliberately not run after this gate failure.
+
+`results/prefill-moe-tiles-20261021/` preserves the original cap probe, both prototype patches, routing-fixture patch, exact case results, binary hashes, A/A and full-model samples, protocol and disposition. The older owned source diff and untracked files, CPU build DLLs, CUDA build DLL and all recorded installed runtime hashes match their pre-experiment state. The two new candidate runtime directories are removed and the previous test executable is restored. No model, launcher, global environment or deployment is changed.
+
+The compact-list idea is not claimed as novel: [ggml-org/llama.cpp#26159](https://github.com/ggml-org/llama.cpp/pull/26159) proposes compact NVFP4 scheduling. At the live check it is open, draft and unmerged at `f1694d2615e4f3fb78aa0d143beea9c1764c6394`; its `build_moe_job_map` and `mul_mat_q_moe_compact` functions are absent from both our worktree and deployed source. Our already-present [ggml-org/llama.cpp#30553](https://github.com/ggml-org/llama.cpp/pull/30553) Stream-K block cap is a different change. This experiment implements small/wide IQ3_S/IQ4_NL scheduling, not that NVFP4 patch.
+
 ## 3. Source-verified feature status and reference lessons
 
 The following status is verified in this checkout. This table supersedes the porting assumptions in the initial reference inventory below.

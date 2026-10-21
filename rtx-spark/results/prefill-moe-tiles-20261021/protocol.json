@@ -1,0 +1,41 @@
+{
+  "candidate": "compact IQ3_S/IQ4_NL MoE jobs, J16 for at most 32 columns per expert, J128 otherwise",
+  "runtime": "matched b11756 + dynamic draft vocabulary + QSA mask fusion",
+  "control": "original deployed ggml-cuda.dll",
+  "prefill": {
+    "tokens": [
+      2048,
+      8192
+    ],
+    "ubatch": 512,
+    "repetitions_per_arm_per_round": 2,
+    "rounds": 2,
+    "order": [
+      "base",
+      "compact",
+      "compact",
+      "base"
+    ],
+    "minimum_throughput_gain_percent": 10,
+    "maximum_case_regression_percent": 3,
+    "require_nonoverlapping_ranges_each_pair": true,
+    "fresh_aa_deltas_percent": {
+      "pp2048": 1.55,
+      "pp8192": -1.48
+    }
+  },
+  "mtp_regression": {
+    "draft": "Q4_K output head",
+    "draft_tokens": 3,
+    "dynamic_vocabulary": 16384,
+    "cases": [
+      "rust",
+      "json"
+    ],
+    "repetitions": 2,
+    "maximum_case_regression_percent": 3,
+    "require_token_identity": true
+  },
+  "promotion": "No deployment before performance, broader operator boundaries, English quality and final release-stack confirmation.",
+  "stop": "If either prefill pair misses the threshold, do not promote or tune thresholds on these prompts."
+}

@@ -1,0 +1,79 @@
+--- a/tests/test-backend-ops.cpp
++++ b/tests/test-backend-ops.cpp
+@@ -5596,6 +5596,46 @@
+     }
+ };
+
++struct test_mul_mat_id_prefill : public test_mul_mat_id {
++    const int route;
++
++    test_mul_mat_id_prefill(ggml_type type, bool broadcast, int64_t m, int64_t n, int64_t k, int route)
++        : test_mul_mat_id(type, GGML_TYPE_F32, 512, 10, broadcast, m, n, k, 1.0f, 0, true), route(route) {}
++
++    std::string vars() override {
++        return test_mul_mat_id::vars() + ",prefill_route=" + std::to_string(route);
++    }
++
++    void set_routes(ggml_context * ctx) {
++        if (route == 0) {
++            init_mul_mat_id_ids(ctx, n_mats);
++            return;
++        }
++        for (ggml_tensor * t = ggml_get_first_tensor(ctx); t; t = ggml_get_next_tensor(ctx, t)) {
++            if (t->type != GGML_TYPE_I32 || ggml_is_view_op(t->op)) {
++                continue;
++            }
++            std::vector<int32_t> data(t->ne[0]);
++            for (int64_t r = 0; r < ggml_nrows(t); ++r) {
++                const int offset = route == 2 && r % 4 == 0 ? (r*31) % n_mats : n_mats - n_used;
++                for (int64_t i = 0; i < t->ne[0]; ++i) {
++                    data[i] = (offset + i - int(ids_offset) + n_mats) % n_mats;
++                }
++                ggml_backend_tensor_set(t, data.data(), r*t->nb[1], data.size()*sizeof(int32_t));
++            }
++        }
++    }
++
++    void initialize_tensors(ggml_context * ctx) override {
++        test_mul_mat_id::initialize_tensors(ctx);
++        set_routes(ctx);
++    }
++
++    void reinit_perf_iter(ggml_context * ctx) override {
++        set_routes(ctx);
++    }
++};
++
+ // MUL_MAT_ID with expert ids repeated within a token's row
+ struct test_mul_mat_id_dup : public test_mul_mat_id {
+     using test_mul_mat_id::test_mul_mat_id;
+@@ -9867,6 +9907,15 @@
+     std::vector<std::unique_ptr<test_case>> test_cases;
+     std::default_random_engine rng(0);
+
++    for (int route : {0, 1, 2}) {
++        test_cases.emplace_back(new test_mul_mat_id_prefill(GGML_TYPE_IQ3_S, true, 640, 512, 2560, route));
++        test_cases.emplace_back(new test_mul_mat_id_prefill(GGML_TYPE_IQ4_NL, false, 2560, 512, 640, route));
++    }
++    for (int n : {63, 64, 65}) {
++        test_cases.emplace_back(new test_mul_mat_id_prefill(GGML_TYPE_IQ3_S, true, 129, n, 256, 2));
++        test_cases.emplace_back(new test_mul_mat_id_prefill(GGML_TYPE_IQ4_NL, false, 129, n, 256, 2));
++    }
++
+     // unary ops
+     for (ggml_type type : {GGML_TYPE_F16, GGML_TYPE_F32, GGML_TYPE_BF16}) {
+         for (int v : {0, 1}) {
+@@ -12308,6 +12357,13 @@
+ static std::vector<std::unique_ptr<test_case>> make_test_cases_perf() {
+     std::vector<std::unique_ptr<test_case>> test_cases;
+
++    for (int n : {64, 128, 256, 512, 1024, 2048}) {
++        for (int route : {0, 1, 2}) {
++            test_cases.emplace_back(new test_mul_mat_id_prefill(GGML_TYPE_IQ3_S, true, 640, n, 2560, route));
++            test_cases.emplace_back(new test_mul_mat_id_prefill(GGML_TYPE_IQ4_NL, false, 2560, n, 640, route));
++        }
++    }
++
+     // SWIGLU at a 27B-class FFN width, fused [gate|up] vs split operands
+     // note: same bytes either way, so a backend that indexes them differently shows it here
+     for (ggml_type type : {GGML_TYPE_F16, GGML_TYPE_F32, GGML_TYPE_BF16}) {

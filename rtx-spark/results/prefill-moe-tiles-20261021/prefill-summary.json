@@ -1,0 +1,43 @@
+{
+  "base_commit": "d80619397",
+  "cand_commit": "d80619397",
+  "model_type": "qwen4exp A3B IQ4_XS - 4.25 bpw",
+  "bench_args": "-fa 1 -ngl 99 -ub 512 -p 2048,8192 -n 0 -r 2",
+  "rounds": 1,
+  "tests": [
+    {
+      "test": "pp2048",
+      "base_median": 761.9304999999999,
+      "cand_median": 832.086,
+      "ratio": 1.092075983308189,
+      "base_range": [
+        737.526,
+        786.335
+      ],
+      "cand_range": [
+        828.84,
+        835.332
+      ],
+      "n_base": 2,
+      "n_cand": 2
+    },
+    {
+      "test": "pp8192",
+      "base_median": 746.0364999999999,
+      "cand_median": 856.2565,
+      "ratio": 1.147740760673238,
+      "base_range": [
+        730.174,
+        761.899
+      ],
+      "cand_range": [
+        846.09,
+        866.423
+      ],
+      "n_base": 2,
+      "n_cand": 2
+    }
+  ],
+  "base_model_filename": "Qwen3.8-Flash-Next-UD-IQ4_XS-00001-of-00003.gguf",
+  "cand_model_filename": "Qwen3.8-Flash-Next-UD-IQ4_XS-00001-of-00003.gguf"
+}

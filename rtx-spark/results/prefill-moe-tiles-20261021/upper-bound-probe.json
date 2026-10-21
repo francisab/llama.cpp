@@ -1,0 +1,41 @@
+{
+  "scope": "Timing-only uniform-routing cap. No CPU correctness check or general routing guarantee. Not a deployable candidate.",
+  "data": {
+    "pattern": "n_mats=512,.*,n=512,k=(2560|640),",
+    "labels": [
+      "base:",
+      "cand:",
+      "cand:MMQ_MOE_MODE=1",
+      "cand:MMQ_MOE_J=16",
+      "cand:MMQ_MOE_J=16,MMQ_MOE_NCOLS_CAP=64",
+      "cand:MMQ_MOE_J=32,MMQ_MOE_NCOLS_CAP=128"
+    ],
+    "results": {
+      "base:": {
+        "iq3_s-b1-n512": 3799.67,
+        "iq4_nl-b0-n512": 4701.94
+      },
+      "cand:": {
+        "iq3_s-b1-n512": 4044.95,
+        "iq4_nl-b0-n512": 4713.31
+      },
+      "cand:MMQ_MOE_MODE=1": {
+        "iq3_s-b1-n512": 3274.34,
+        "iq4_nl-b0-n512": 8319.02
+      },
+      "cand:MMQ_MOE_J=16": {
+        "iq3_s-b1-n512": 3248.58,
+        "iq4_nl-b0-n512": 8366.64
+      },
+      "cand:MMQ_MOE_J=16,MMQ_MOE_NCOLS_CAP=64": {
+        "iq3_s-b1-n512": 2341.72,
+        "iq4_nl-b0-n512": 2752.78
+      },
+      "cand:MMQ_MOE_J=32,MMQ_MOE_NCOLS_CAP=128": {
+        "iq3_s-b1-n512": 2680.12,
+        "iq4_nl-b0-n512": 2929.33
+      }
+    },
+    "elapsed_s": 163.95299999999406
+  }
+}
