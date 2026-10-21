@@ -1,0 +1,41 @@
+{
+  "base_commit": "8a1a9b512",
+  "cand_commit": "0ba2b5f2a",
+  "model_type": "qwen35 27B Q4_K - Medium",
+  "bench_args": "-fa 1 -ngl 99 -ub 512 -p 2048 -n 128 -r 5",
+  "rounds": 4,
+  "tests": [
+    {
+      "test": "tg128",
+      "base_median": 15.637550000000001,
+      "cand_median": 15.839,
+      "ratio": 1.0128824528138998,
+      "base_range": [
+        13.8459,
+        16.1592
+      ],
+      "cand_range": [
+        15.5817,
+        16.1854
+      ],
+      "n_base": 20,
+      "n_cand": 20
+    },
+    {
+      "test": "pp2048",
+      "base_median": 799.337,
+      "cand_median": 818.672,
+      "ratio": 1.0241887964650704,
+      "base_range": [
+        575.5,
+        877.425
+      ],
+      "cand_range": [
+        742.766,
+        913.91
+      ],
+      "n_base": 20,
+      "n_cand": 20
+    }
+  ]
+}

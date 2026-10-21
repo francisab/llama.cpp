@@ -1,0 +1,54 @@
+{
+  "pr": 30640,
+  "tested_head": "8a8621232",
+  "current_head_at_recording": "2961d5e5c",
+  "current_head_delta": "The two implementation commits are unchanged; the new head adds three lines to initialize test tensors in tests/test-backend-ops.cpp.",
+  "correctness": {
+    "command": "test-backend-ops -o KPOOL_MASK -b CUDA0",
+    "candidate_passed": "12/12"
+  },
+  "llama_bench": {
+    "control_commit": "5e03a1ff4",
+    "candidate_commit": "8a8621232",
+    "rounds": 2,
+    "repetitions_per_round": 3,
+    "qwen4exp_a3b_iq4_xs": {
+      "tg128_percent": 0.68,
+      "pp2048_percent": 3.98,
+      "pp8192_percent": 6.07
+    },
+    "detail": "summary.json"
+  },
+  "server_ab": {
+    "control_commit": "5e03a1ff4",
+    "candidate_commit": "8a8621232",
+    "suite": "en-us",
+    "repetitions": 5,
+    "geomean_percent": 1.42,
+    "identical_outputs": [20, 20],
+    "draft_acceptance_unchanged": true,
+    "detail": "compare_server.json"
+  },
+  "release_parity": {
+    "base": "b11756 + #30380 release-like build",
+    "candidate": "b11756 + #30380 + #30640 release-like build",
+    "files_in_each_build": 42,
+    "geomean_percent": 2.43,
+    "identical_outputs": [20, 20],
+    "draft_acceptance_unchanged": true,
+    "quality_passed": true,
+    "quality_checks": "8/8 across warm-up and measured outputs",
+    "detail": "deploy-parity/compare.json and deploy-parity/quality/quality_scores.json"
+  },
+  "deployment": {
+    "timestamp": "20261020-214931",
+    "backup": "Timestamped sibling directory retained for rollback",
+    "catalog_changed": false,
+    "smoke": {
+      "tok_s": 47.22,
+      "draft_accepted": [31, 42],
+      "response_marker_returned": true
+    }
+  },
+  "disposition": "Deployed. The A/B used head 8a8621232; the current PR head adds only a test initialization change, not runtime code."
+}

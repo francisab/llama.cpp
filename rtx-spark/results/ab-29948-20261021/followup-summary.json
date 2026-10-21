@@ -1,0 +1,48 @@
+{
+  "pr": 29948,
+  "base_commit": "8a1a9b512",
+  "candidate_commit": "0ba2b5f2a",
+  "model": "Qwen3.8-27B UD-Q4_K_M",
+  "correctness": {
+    "command": "test-backend-ops -o MUL_MAT_VEC_FUSION -b CUDA0",
+    "control_passed": "1265/1265",
+    "candidate_passed": "1270/1270"
+  },
+  "paired_llama_bench": [
+    {
+      "prompt_tokens": [512, 2048],
+      "generation_tokens": 128,
+      "rounds": 2,
+      "repetitions_per_round": 3,
+      "tg128_percent": -6.25,
+      "pp512_percent": 8.35,
+      "pp2048_percent": 4.28,
+      "detail": "summary.json"
+    },
+    {
+      "prompt_tokens": [512],
+      "generation_tokens": 128,
+      "rounds": 4,
+      "repetitions_per_round": 5,
+      "tg128_percent": -1.43,
+      "pp512_percent": 1.66,
+      "detail": "../ab-29948-20261021-r4/summary.json"
+    },
+    {
+      "prompt_tokens": [2048],
+      "generation_tokens": 128,
+      "rounds": 4,
+      "repetitions_per_round": 5,
+      "tg128_percent": 1.29,
+      "pp2048_percent": 2.42,
+      "detail": "../ab-29948-20261021-pp2048-r4/summary.json"
+    }
+  ],
+  "release_patch_check": {
+    "target": "b11756 + #30380",
+    "result": "Does not apply cleanly",
+    "file": "ggml/src/ggml-cuda/mmq.cuh",
+    "line": 1443
+  },
+  "disposition": "Not deployed. The repeated gains are small and noisy, and the patch needs a separate rebase/integration before it can target the current release."
+}
