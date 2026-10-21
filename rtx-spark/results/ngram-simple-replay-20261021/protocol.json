@@ -1,0 +1,16 @@
+{
+  "purpose": "Check whether the existing stateless ngram-simple mode has useful matches before running a hybrid MTP speed screen",
+  "input": "Four measured baseline completions from pdl-off-20261021, with exact original prompts tokenized by the installed vocabulary-only tool",
+  "lookup_tokens": 12,
+  "maximum_draft_tokens": 12,
+  "parameter_reason": "Keep the default 12-token lookup. The current implementation rejects copy lengths smaller than the lookup length, so a maximum draft length of three would silently produce no drafts. Twelve is the smallest useful maximum without changing that implementation.",
+  "replay": "Translate the pinned common_ngram_simple_draft search exactly. At every output position with 12 known future tokens, search only the prompt and earlier generated tokens; compare its proposal with the recorded future.",
+  "opportunity_gate": "Consider a hybrid speed screen on these standard cases only if each case has at least one fully correct 12-token proposal. Do not sweep lookup lengths or draft lengths if either case fails.",
+  "limitations": [
+    "This checks all possible output positions, not the actual MTP drafting boundaries",
+    "Recorded completions are development samples; repeated identical outputs are not independent evidence",
+    "Teacher-forced replay does not measure runtime latency, hybrid acceptance, numerical equivalence or quality",
+    "It cannot rule out benefits on separate copy-heavy or code-edit workloads"
+  ],
+  "deployment_changed": false
+}

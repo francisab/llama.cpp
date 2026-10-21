@@ -736,6 +736,21 @@ The geometric mean is +0.79%, all four token sequences are identical, and both c
 
 `results/pdl-off-20261021/` contains the preregistered protocol, preflight failure, numerical/launch proof, timing samples and telemetry. No user/machine environment, launcher, driver policy, binary or model was changed.
 
+### 2.35 Stateless prompt-lookup replay [M]
+
+The existing `ngram-simple` implementation runs before MTP and searches only the current request's token history, avoiding the previous-answer cache effect of stateful n-gram modes on repeated benchmarks. Its current search rejects a copied suffix shorter than the lookup length: setting maximum draft length three while retaining the default 12-token lookup would always return no draft. This replay therefore fixes both lengths at 12, the smallest usable maximum without a code change.
+
+The installed vocabulary-only tokenizer reproduces the 30-token Rust and 32-token JSON prompts from the PDL control. An offline translation of the pinned search examines every generated position with 12 known future tokens, not just actual MTP drafting boundaries:
+
+| Case, per 256-token completion | Positions checked | Proposals | Fully correct 12-token proposals | Accepted-prefix lengths |
+|---|---:|---:|---:|---|
+| Rust | 244 | 0 | 0 | None |
+| JSON | 244 | 3 | 0 | 0, 1, 2 tokens |
+
+Both measured repeats give the same result because their token sequences are identical; they are not independent evidence. Neither case passes the preregistered requirement of one fully correct proposal. **Stop before a hybrid model run on these standard cases**, without a lookup-length sweep.
+
+This is teacher-forced eligibility replay, not runtime acceptance, speed, quality or proof of hybrid equivalence. Copy-heavy code edits and structured-data transformations remain unmeasured and would need their own frozen fixtures and workload-scoped claims. `results/ngram-simple-replay-20261021/` contains the protocol, counts and source/input hashes. No model weights were loaded for replay and no source, runtime or deployment changed.
+
 ## 3. Source-verified feature status and reference lessons
 
 The following status is verified in this checkout. This table supersedes the porting assumptions in the initial reference inventory below.
