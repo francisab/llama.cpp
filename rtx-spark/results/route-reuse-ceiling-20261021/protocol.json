@@ -1,0 +1,31 @@
+{
+  "title": "Expert-first reuse ceiling: does the current routed MMVQ already reuse cross-rank expert overlap?",
+  "written_before_measurement": true,
+  "hypothesis": "Strata-style expert-first grouping (decode each distinct expert once per verify window) can only help if the current kernel pays nearly full cost for experts shared across ranks.",
+  "inputs": "Section 2.31 actual MTP3 captures: 4-token verify windows select 40 experts but only 24.7 (Rust) / 27.1 (JSON) distinct per layer.",
+  "runtime": "C:\\llama-builds\\mmvq-rowtail-specialized\\fixed (committed row-tail fix, unchanged ggml-cuda.dll); only a diagnostic test-backend-ops.exe is added",
+  "fixtures": {
+    "route0": "shuffled: about 40 distinct experts per 4 tokens",
+    "route1": "same ten experts at the same rank for every token: in-CTA reuse",
+    "route3": "same ten experts, rank rotated per token: reuse only across CTAs",
+    "route4": "each 4-token group draws ten of a 32-expert pool: expected 24.85 distinct, close to the captured overlap"
+  },
+  "primary_shapes": ["IQ3_S m640 n4 k2560 broadcast (gate/up)", "IQ4_NL m2560 n4 k640 (down)"],
+  "informational_shapes": ["n8 for both", "IQ4_NL m3072 n4 k512"],
+  "repeats": 2,
+  "statistic": "mean of the two run times per case",
+  "estimates": {
+    "ideal_grouped_us": "T1 + (T0 - T1) * (24.85 - 10) / 30",
+    "headroom": "1 - ideal_grouped_us / T4"
+  },
+  "gates": {
+    "correctness": "new route3/route4 eval cases pass on CUDA0",
+    "continue_to_prototype_if": "both primary shapes have headroom >= 15% AND T3/T1 >= 1.3",
+    "otherwise": "stop the expert-first reuse candidate at operator level; record result"
+  },
+  "limitations": [
+    "Operator headroom is an upper bound; routed MMVQ is only part of verify time",
+    "Unfused operator test; production uses fused gate/up GLU",
+    "Linear interpolation by distinct-expert count is a model, not a measured grouped kernel"
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "restored": true,
+  "hashes": {
+    "C:\\llama-builds\\src-b11756-30380\\tests\\test-backend-ops.cpp": "4acbefb39b883224f7893d0d9f07e07f351da78692f6275eef0b6475e5a3aa43",
+    "C:\\llama-builds\\rel-b11756-30380-30640\\cpu\\bin\\test-backend-ops.exe": "16942913ec69a7c2db30f2905db50b801a96b84af282d189b2c9ed2f416e5e4e"
+  },
+  "diagnostic_exe_sha256": "50c7b8fef9e7bdd547917138b0570835921b5a7189f5f28ab54a6e0d928ba55f",
+  "tests_cpp_sha256": "d71fae9b8bdbb3567390a05985a98497277ef368b9164a5bc866b2381554e112"
+}

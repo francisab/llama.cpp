@@ -949,6 +949,22 @@ Base/candidate/candidate/base operator screen (15 changed cases plus fused guard
 | Mixed | -13.67% | -20.69% | -11.32% | -23.12% | -39.84% |
 
 Changed-case geometric mean is -16.03% (gate: +5%, no case below -3%). **Reject.** Splitting token warps into separate CTAs hurts most when tokens share experts, which suggests the shared CTA already gets weight reuse through L1/L2. Per protocol, no warp-count, row-count or type sweep and no actual-MTP run follow. Evidence is in `results/iq4-singlewarp-20261021/`; source and installed runtime are unchanged.
+
+### 2.47 Expert-first verify reuse ceiling: stop [M]
+
+Strata decodes each distinct IQ expert once per verify window (`row_dot_multi`, groups of four tokens). Section 2.31 shows real 4-token MTP windows select 40 experts per layer but only 24.7 (Rust) / 27.1 (JSON) distinct ones. Question: does the current routed MMVQ already reuse experts shared across ranks? A diagnostic test build adds two fixtures to the section 2.42 routing test: route 3 uses the same ten experts for every token but rotates their rank, and route 4 draws each token's ten experts from a 32-expert pool per 4-token group (expected 24.85 distinct). The runtime is the committed row-tail build; `ggml-cuda.dll` is unchanged.
+
+All 8 new CPU-reference cases pass. Mean of two runs, us:
+
+| Shape | T0 shuffled (~40 distinct) | T1 same rank (10) | T3 rotated rank (10) | T4 realistic (~25) | Linear ideal at 24.85 | Headroom |
+|---|---:|---:|---:|---:|---:|---:|
+| IQ3_S gate/up n4 | 77.2 | 60.3 | 64.3 | 64.7 | 68.7 | -6.2% |
+| IQ4_NL down n4 | 131.5 | 58.3 | 61.2 | 64.4 | 94.6 | -46.9% |
+| IQ3_S gate/up n8 | 203.1 | 115.8 | 127.2 | 140.8 | 159.0 | -12.9% |
+| IQ4_NL down n8 | 271.2 | 112.7 | 119.1 | 191.5 | 191.2 | +0.2% |
+| IQ4_NL m3072 n4 | 128.1 | 47.1 | 50.1 | 51.4 | 87.2 | -69.5% |
+
+Cross-rank sharing costs only 5-10% more than same-rank sharing (T3/T1 1.05-1.10, gate 1.3), and realistic overlap at n4 is already within 7% (gate/up) and 10% (down) of perfect same-rank sharing. Caches already capture most cross-rank reuse. **Stop** the expert-first reuse candidate (S3) before a kernel prototype: even a perfect grouped kernel could save at most T4-T1 on these operators, and only part of verify time is routed MMVQ. This also explains the section 2.46 result. Evidence is in `results/route-reuse-ceiling-20261021/`; `fixture.patch` is relative to the section 2.42 routing test source, not repository HEAD.
 ## 3. Source-verified feature status and reference lessons
 
 The following status is verified in this checkout. This table supersedes the porting assumptions in the initial reference inventory below.
@@ -1137,7 +1153,7 @@ Everything below this notice in section 5 records the original v2 roadmap. It is
 |---|---|---|---|
 | S1 | **Adaptive speculation controller:** per slot, track rolling acceptance; pick n_draft 0–7 from the measured cost model (MoE ≈ 1.18 + 0.30·n, dense ≈ 1.1 + 0.06·n); turn speculation off below break-even; per-request override support | Strata acceptance gating | Nemotron low-predictability text 16–22 → **30** (+36–80%); +3–8% average elsewhere |
 | S2 | **Draft-vocabulary subsetting for MTP heads:** score a ~32K-token subset and map back to full ids, as EAGLE-3's `d2t` does. Interim: requantize the MTP head to Q4_K/NVFP4. | Strata `--draft-vocab` | Flash-Next speculative **+15–20%** (draft pass 0.79 → ~0.21 GB); Nemotron +6–9% |
-| S3 | **Expert-deduplicated grouped GEMV for verify batches**: read each unique expert once per layer for all k+1 tokens | Strata EXPDEC, GenerelSchwerz grouped decode | MoE verify +5–12% (only shared experts are saved) |
+| S3 | **Expert-deduplicated grouped GEMV for verify batches**: read each unique expert once per layer for all k+1 tokens | Strata EXPDEC, GenerelSchwerz grouped decode | MoE verify +5–12% (only shared experts are saved); **stopped, section 2.47**: caches already capture cross-rank reuse |
 | S4 | Content-aware draft source: n-gram drafting for code edits and repeated context; MTP/DFlash otherwise | Strata prompt-lookup; upstream `ngram-mod` | Code-edit turns +10–30% |
 
 ### Phase 3 — Flash-Next decode and prefill kernels (5–7 weeks)
