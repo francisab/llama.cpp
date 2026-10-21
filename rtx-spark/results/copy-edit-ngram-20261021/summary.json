@@ -1,0 +1,62 @@
+{
+  "completed": true,
+  "binary_manifest": {
+    "base": {
+      "llama-server.exe": "b575a9a6c70587568b97a9edbbe0c084d73cea067de40cb08091a5dd399528fd",
+      "cublas64_13.dll": "49e8fa23d88ac0cbae27e200fc092b894dd55b4de5cb4293993986e29fb9b65a",
+      "cublasLt64_13.dll": "daf579ae36bb3c85e2340c57a1994f634e07c6f55ef70dd4cdc26695de21c752",
+      "cudart64_13.dll": "bd927ddf03823eeead7c8b261a8669d96764b89109311f4ab6accde8b7d97ec2",
+      "ggml-base.dll": "78a8ee0bbfa83221d579166779edbb2bf81c1440e02185a17d83dbbd3a59bfc7",
+      "ggml-cpu.dll": "04540c35427ee8c8eddb867c048302120bce5a76732fb886054da31e579c26cc",
+      "ggml-cuda.dll": "898fb56c5a64f75e945e0823efa9a773cbdec66e5de9f1f253a771911b172c9f",
+      "ggml-rpc.dll": "62f5d72e6b1c909c1a8f05737acf7205a43f7ef9319cd53fdaea9f55b7e4bced",
+      "ggml.dll": "7444aa6d23f780f05230b4b2d71d2ef424853b2da302fe584afde956ef4d801e",
+      "libomp.dll": "b13ebedc0cff13097516f9d291a2414e1a97d6ab49269307e03c5df55a60d7fd",
+      "llama-batched-bench-impl.dll": "3f9ca458697e5c3e4afbfef4d8c468d71d5f094ab4c9d65fd8834dbbf7c582db",
+      "llama-bench-impl.dll": "9c9475ffdae8ec9865d7c227997ee1e940cfa0499f9a989f773cb14a32c4736f",
+      "llama-cli-impl.dll": "851561d7d1435dd1f6b7a341d0066c548e94ff6a6e41dd2cabab99c8d383110b",
+      "llama-common.dll": "b2fa9b52c99c9d77f7b964ba283ad1a1de5eaf59cd19252984e41d8e03775e1c",
+      "llama-completion-impl.dll": "fe1963907d4b8df1c36ca2419be924132f6b58c7f9ecafe4684be47314ed677c",
+      "llama-fit-params-impl.dll": "57b80a677aebfda1f236d72a62bec0682d71f228da39dedc3bccc9a0ec34c22c",
+      "llama-perplexity-impl.dll": "4ce712ee63f8522d82bfea0e7acdd93ab9e055b69ca6bfe24232539028154698",
+      "llama-quantize-impl.dll": "1877d61a18a47a8dd6cbf4544b17adc68cd3f9f9d24615d1362d16d84935c873",
+      "llama-server-impl.dll": "c5a14ce5f4fd040637f78a68aed59c6c7f414546d63596cd53eaef4b1c7d20f9",
+      "llama.dll": "d2eeb4d523556424f6ec643737fe7ac2cfbd1a2e61cdfc1bd6eb08be37b1231b",
+      "mtmd.dll": "0e066445858363e309ea6c4b1cf440e7f10c7079de79f55a468804853cafd54b"
+    },
+    "cand": {
+      "llama-server.exe": "b575a9a6c70587568b97a9edbbe0c084d73cea067de40cb08091a5dd399528fd",
+      "cublas64_13.dll": "49e8fa23d88ac0cbae27e200fc092b894dd55b4de5cb4293993986e29fb9b65a",
+      "cublasLt64_13.dll": "daf579ae36bb3c85e2340c57a1994f634e07c6f55ef70dd4cdc26695de21c752",
+      "cudart64_13.dll": "bd927ddf03823eeead7c8b261a8669d96764b89109311f4ab6accde8b7d97ec2",
+      "ggml-base.dll": "78a8ee0bbfa83221d579166779edbb2bf81c1440e02185a17d83dbbd3a59bfc7",
+      "ggml-cpu.dll": "04540c35427ee8c8eddb867c048302120bce5a76732fb886054da31e579c26cc",
+      "ggml-cuda.dll": "898fb56c5a64f75e945e0823efa9a773cbdec66e5de9f1f253a771911b172c9f",
+      "ggml-rpc.dll": "62f5d72e6b1c909c1a8f05737acf7205a43f7ef9319cd53fdaea9f55b7e4bced",
+      "ggml.dll": "7444aa6d23f780f05230b4b2d71d2ef424853b2da302fe584afde956ef4d801e",
+      "libomp.dll": "b13ebedc0cff13097516f9d291a2414e1a97d6ab49269307e03c5df55a60d7fd",
+      "llama-batched-bench-impl.dll": "3f9ca458697e5c3e4afbfef4d8c468d71d5f094ab4c9d65fd8834dbbf7c582db",
+      "llama-bench-impl.dll": "9c9475ffdae8ec9865d7c227997ee1e940cfa0499f9a989f773cb14a32c4736f",
+      "llama-cli-impl.dll": "851561d7d1435dd1f6b7a341d0066c548e94ff6a6e41dd2cabab99c8d383110b",
+      "llama-common.dll": "b2fa9b52c99c9d77f7b964ba283ad1a1de5eaf59cd19252984e41d8e03775e1c",
+      "llama-completion-impl.dll": "fe1963907d4b8df1c36ca2419be924132f6b58c7f9ecafe4684be47314ed677c",
+      "llama-fit-params-impl.dll": "57b80a677aebfda1f236d72a62bec0682d71f228da39dedc3bccc9a0ec34c22c",
+      "llama-perplexity-impl.dll": "4ce712ee63f8522d82bfea0e7acdd93ab9e055b69ca6bfe24232539028154698",
+      "llama-quantize-impl.dll": "1877d61a18a47a8dd6cbf4544b17adc68cd3f9f9d24615d1362d16d84935c873",
+      "llama-server-impl.dll": "c5a14ce5f4fd040637f78a68aed59c6c7f414546d63596cd53eaef4b1c7d20f9",
+      "llama.dll": "d2eeb4d523556424f6ec643737fe7ac2cfbd1a2e61cdfc1bd6eb08be37b1231b",
+      "mtmd.dll": "0e066445858363e309ea6c4b1cf440e7f10c7079de79f55a468804853cafd54b"
+    }
+  },
+  "deployment_changed": false,
+  "source_base_screen_only": false,
+  "operational_budget_seconds": 600,
+  "quality_followup_required": false,
+  "pair_1_identical_outputs": [
+    4,
+    4
+  ],
+  "decision": "stop after first pair",
+  "binary_hashes_verified_after": true,
+  "elapsed_seconds": 208.07799999999406
+}

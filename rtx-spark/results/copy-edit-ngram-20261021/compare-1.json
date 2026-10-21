@@ -1,0 +1,140 @@
+{
+ "base": {
+  "name": "U1 qfn mtp3 ub512",
+  "args": [
+   "llama-server.exe",
+   "-m",
+   "Qwen3.8-Flash-Next-UD-IQ4_XS-00001-of-00003.gguf",
+   "--mmproj",
+   "mmproj-BF16.gguf",
+   "-lzm",
+   "on",
+   "--host",
+   "127.0.0.1",
+   "--port",
+   "9940",
+   "-c",
+   "262144",
+   "-np",
+   "1",
+   "-fa",
+   "on",
+   "-ngl",
+   "999",
+   "-b",
+   "2048",
+   "-ub",
+   "512",
+   "--spec-type",
+   "draft-mtp",
+   "--spec-draft-n-max",
+   "3",
+   "-md",
+   "mtp-Qwen3.8-Flash-Next-Q8_0-output-Q4_K.gguf",
+   "--spec-draft-ngl",
+   "999",
+   "--spec-draft-vocab-dynamic",
+   "16384",
+   "--reasoning",
+   "off",
+   "--metrics"
+  ],
+  "load_s": 36.70452669999213,
+  "gpu_memory_ready_mib": 78653
+ },
+ "cand": {
+  "name": "U1 qfn mtp3 ub512",
+  "args": [
+   "llama-server.exe",
+   "-m",
+   "Qwen3.8-Flash-Next-UD-IQ4_XS-00001-of-00003.gguf",
+   "--mmproj",
+   "mmproj-BF16.gguf",
+   "-lzm",
+   "on",
+   "--host",
+   "127.0.0.1",
+   "--port",
+   "9940",
+   "-c",
+   "262144",
+   "-np",
+   "1",
+   "-fa",
+   "on",
+   "-ngl",
+   "999",
+   "-b",
+   "2048",
+   "-ub",
+   "512",
+   "--spec-type",
+   "draft-mtp",
+   "--spec-draft-n-max",
+   "3",
+   "-md",
+   "mtp-Qwen3.8-Flash-Next-Q8_0-output-Q4_K.gguf",
+   "--spec-draft-ngl",
+   "999",
+   "--spec-draft-vocab-dynamic",
+   "16384",
+   "--reasoning",
+   "off",
+   "--spec-type",
+   "ngram-simple",
+   "--spec-ngram-simple-size-n",
+   "12",
+   "--spec-ngram-simple-size-m",
+   "12",
+   "--metrics"
+  ],
+  "load_s": 36.70792669999355,
+  "gpu_memory_ready_mib": 78654
+ },
+ "cases": [
+  {
+   "case": "json_units512",
+   "base_tg_median": 63.7063534791362,
+   "cand_tg_median": 57.84171971038264,
+   "ratio": 0.9079427176651349,
+   "base_tg_range": [
+    63.60698402195051,
+    63.805722936321885
+   ],
+   "cand_tg_range": [
+    57.67866078050854,
+    58.004778640256745
+   ],
+   "base_accept": 1.0,
+   "cand_accept": 0.7638640429338104
+  },
+  {
+   "case": "python_rename512",
+   "base_tg_median": 63.857701060813156,
+   "cand_tg_median": 54.26432363664281,
+   "ratio": 0.8497694520033793,
+   "base_tg_range": [
+    63.77229471935448,
+    63.94310740227184
+   ],
+   "cand_tg_range": [
+    54.25183638750293,
+    54.27681088578269
+   ],
+   "base_accept": 1.0,
+   "cand_accept": 0.8559837728194726
+  }
+ ],
+ "geomean_ratio": 0.8783746271613044,
+ "identical_outputs": [
+  4,
+  4
+ ],
+ "screen": {
+  "decision": "reject",
+  "reason": "json_units512 exceeds the regression limit",
+  "quality_checked": false,
+  "min_gain_pct": 3.0,
+  "max_regression_pct": 3.0
+ }
+}

@@ -10,6 +10,7 @@ from unittest.mock import patch
 
 import ab_llamabench as bench
 import compare_speed
+import copy_edit_suite
 
 
 def rows(speed):
@@ -227,6 +228,43 @@ class ServerScreenTests(unittest.TestCase):
         for candidate in candidates:
             with self.subTest(candidate=candidate), self.assertRaises(ValueError):
                 compare_speed.check_screen_pair(self.base, candidate)
+
+
+class CopyEditFixtureTests(unittest.TestCase):
+    def response(self, text, stop="eos"):
+        return {"content": text, "stop_type": stop, "truncated": False, "request": {"prompt": "fixture"}}
+
+    def test_fixed_prefix_and_full_edit_limits(self):
+        for count in (512, 2048):
+            cases = copy_edit_suite.cases(count)
+            self.assertEqual(tuple(case[0] for case in cases), copy_edit_suite.CASE_NAMES)
+            self.assertTrue(all(case[2] == count for case in cases))
+            self.assertTrue(all(case[1]["messages"][0]["role"] == "user" for case in cases))
+
+    def test_exact_edits_pass_and_unchanged_inputs_fail(self):
+        for case, expected, unchanged in (
+            (copy_edit_suite.CASE_NAMES[0], copy_edit_suite.CODE_EXPECTED, copy_edit_suite.CODE_SOURCE),
+            (copy_edit_suite.CASE_NAMES[1], json.dumps(copy_edit_suite.JSON_EXPECTED), json.dumps(copy_edit_suite.JSON_SOURCE)),
+        ):
+            with self.subTest(case=case):
+                self.assertTrue(copy_edit_suite.score(case, self.response(expected))["passed"])
+                self.assertFalse(copy_edit_suite.score(case, self.response(unchanged))["passed"])
+                self.assertFalse(copy_edit_suite.score(case, self.response(expected, "limit"))["passed"])
+
+    def test_extra_python_changes_fail_without_execution(self):
+        case = copy_edit_suite.CASE_NAMES[0]
+        for text in (copy_edit_suite.CODE_EXPECTED.replace(", 100)", ", 101)"),
+                     copy_edit_suite.CODE_EXPECTED + "\nimport os\n"):
+            with self.subTest(text=text):
+                self.assertFalse(copy_edit_suite.score(case, self.response(text))["passed"])
+
+    def test_duplicate_or_missing_json_keys_fail(self):
+        case = copy_edit_suite.CASE_NAMES[1]
+        duplicate = json.dumps(copy_edit_suite.JSON_EXPECTED).replace(
+            '{"schema_version": 3,', '{"schema_version": 3, "schema_version": 3,')
+        for text in (duplicate, '{"schema_version":3}'):
+            with self.subTest(text=text):
+                self.assertFalse(copy_edit_suite.score(case, self.response(text))["passed"])
 
 
 if __name__ == "__main__":

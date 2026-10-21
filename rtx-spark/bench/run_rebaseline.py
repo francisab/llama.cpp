@@ -12,6 +12,7 @@ import urllib.request
 
 import heldout_suite
 import en_us_quality
+import copy_edit_suite
 import run_matrix as matrix
 
 
@@ -153,6 +154,8 @@ def run_server(tag, out, repetitions, suite, allow_eos=False, draft_model=None, 
         if not allow_eos:
             raise ValueError("en-us-quality requires --allow-eos")
         source_cases = en_us_quality.cases()
+    elif suite == "copy-edit":
+        source_cases = copy_edit_suite.cases(2048 if allow_eos else 512)
     elif suite == "novel":
         source_cases = matrix.SUITES["decode"][-1:]
     else:
@@ -270,7 +273,7 @@ def main():
     parser.add_argument("tags", nargs="+")
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--repetitions", type=int, default=5)
-    parser.add_argument("--suite", choices=["decode", "prefill", "novel", "heldout", "en-us", "en-us-quality"],
+    parser.add_argument("--suite", choices=["decode", "prefill", "novel", "heldout", "en-us", "en-us-quality", "copy-edit"],
                         default="decode")
     parser.add_argument("--allow-eos", action="store_true", help="Measure natural completion lengths instead")
     parser.add_argument("--draft-model", type=Path, help="Replace the selected external draft GGUF")
@@ -291,6 +294,8 @@ def main():
         parser.error("--cases requires server mode")
     if args.suite == "en-us-quality" and (args.mode != "server" or not args.allow_eos):
         parser.error("--suite en-us-quality requires server mode and --allow-eos")
+    if args.suite == "copy-edit" and args.mode != "server":
+        parser.error("--suite copy-edit requires server mode")
     if args.bench == "lazy" and args.tags != ["qfn"]:
         parser.error("--bench lazy applies only to qfn")
     args.out.mkdir(parents=True, exist_ok=True)

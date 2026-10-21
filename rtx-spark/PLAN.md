@@ -751,6 +751,21 @@ Both measured repeats give the same result because their token sequences are ide
 
 This is teacher-forced eligibility replay, not runtime acceptance, speed, quality or proof of hybrid equivalence. Copy-heavy code edits and structured-data transformations remain unmeasured and would need their own frozen fixtures and workload-scoped claims. `results/ngram-simple-replay-20261021/` contains the protocol, counts and source/input hashes. No model weights were loaded for replay and no source, runtime or deployment changed.
 
+### 2.36 Copy-heavy hybrid prompt-lookup screen [M]
+
+Two new frozen fixtures exercise whole-file Python symbol renaming and JSON timeout-unit conversion. Their expected answers contain 842 and 1,253 tokens, so the fixed 512-token timing requests remain prefixes of the edits. Thirteen validator self-checks pass before measurement. Both arms use the original target/Q4_K draft and MTP3/ub512/dynamic vocabulary 16384, with reasoning off. The candidate adds the existing stateless `ngram-simple` mode at lookup/draft lengths 12/12; this is configuration testing, not our implementation of a new speculator.
+
+| Copy-heavy case | MTP-only decode median | Hybrid median | Change |
+|---|---:|---:|---:|
+| Python rename | 63.86 tok/s | 54.26 tok/s | -15.02% |
+| JSON unit conversion | 63.71 tok/s | 57.84 tok/s | -9.21% |
+
+The geometric mean is **-12.16%**, with 4/4 identical measured prefixes. Control MTP acceptance is 100% on both cases; candidate aggregate acceptance falls to 85.60% and 76.39%. Candidate draft counters exceed what three-token MTP alone could generate in both cases, confirming that longer proposals were exercised. The changed draft lengths, acceptance and verification-kernel dispatch are not isolated latency attributions.
+
+**Reject after the first pair**, completed in 208.078 seconds. No reverse order, full-edit quality campaign, lookup/draft-length tuning or deployment follows. Identical 512-token prefixes do not establish correct complete edits.
+
+`results/copy-edit-ngram-20261021/` retains the protocol, fixture hash, preflight, samples and telemetry. The frozen fixture module and validators are in `bench/copy_edit_suite.py`; `run_rebaseline.py --suite copy-edit` selects fixed 512-token requests, or a 2,048-token cap with `--allow-eos`. The public suite selector was wired after the screen; the screen used the same hashed fixture function through the existing custom-suite path. Future use should preserve this distinction between throughput triage and complete-edit validation.
+
 ## 3. Source-verified feature status and reference lessons
 
 The following status is verified in this checkout. This table supersedes the porting assumptions in the initial reference inventory below.

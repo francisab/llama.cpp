@@ -1,0 +1,27 @@
+{
+  "scope": "New frozen copy-heavy Python rename and JSON unit-conversion fixtures; not a general decode-speed claim or default-setting promotion",
+  "hypothesis": "Stateless prompt lookup can avoid MTP model passes while copying unchanged portions of an edited document",
+  "runtime": "Identical installed b11756 plus 30380 and 30640 executables and DLLs",
+  "model": "Original Flash-Next target, Q4_K external draft, MTP3, ub512, dynamic draft vocabulary 16384",
+  "shared_extra_args": ["--reasoning", "off"],
+  "candidate_extra_args": ["--spec-type", "ngram-simple", "--spec-ngram-simple-size-n", "12", "--spec-ngram-simple-size-m", "12"],
+  "source_contract": "The additional speculative type is appended to MTP. Stateless n-gram lookup is tried first; all implementations receive target processing and MTP accepts other implementations' verified results. Maximum proposed n-gram length is 12, not three.",
+  "preflight": [
+    "Freeze fixture source hash and verify expected answers are longer than the 512-token speed prefix",
+    "Exercise fixture validators on correct answers, unchanged inputs, duplicate JSON keys and truncated responses",
+    "Verify installed binary hashes against the previous PDL correctness manifest"
+  ],
+  "screen": {
+    "output_tokens": 512,
+    "measured_samples_per_case_per_arm": 2,
+    "minimum_gain_each_case": 0.03,
+    "require_nonoverlapping_ranges": true,
+    "maximum_regression": 0.03,
+    "reverse_order_only_if_first_pair_passes": true,
+    "operational_budget_seconds": 600,
+    "meaning": "Fixed-prefix throughput triage, not successful completion of the edit"
+  },
+  "promotion": "Only after both speed orders pass, run full natural-EOS edits and exact AST/JSON validation. A passing result is an opt-in workload recipe; generic generation and long-context behavior require separate evidence.",
+  "stop_rule": "Stop at the first failing speed pair. Do not tune lookup length, draft length, fixture content or thresholds after seeing results.",
+  "deployment_changed": false
+}
