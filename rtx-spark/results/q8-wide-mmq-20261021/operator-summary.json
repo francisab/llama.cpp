@@ -1,0 +1,89 @@
+{
+  "completed": true,
+  "cases": [
+    {
+      "case": "q8_k2048_m12288_n4",
+      "base_us": [
+        98.27,
+        99.75
+      ],
+      "candidate_us": [
+        92.3,
+        91.2
+      ],
+      "throughput_ratio": 1.0791280653950952,
+      "nonoverlapping_improvement": true
+    },
+    {
+      "case": "q8_k2560_m12288_n4",
+      "base_us": [
+        125.79,
+        128.35
+      ],
+      "candidate_us": [
+        133.89,
+        131.39
+      ],
+      "throughput_ratio": 0.9580066344993969,
+      "nonoverlapping_improvement": false
+    },
+    {
+      "case": "q8_k2560_m6145_n4",
+      "base_us": [
+        31.73,
+        32.02
+      ],
+      "candidate_us": [
+        26.07,
+        27.91
+      ],
+      "throughput_ratio": 1.1809929603556872,
+      "nonoverlapping_improvement": true
+    },
+    {
+      "case": "q8_k4096_m8192_n4",
+      "base_us": [
+        138.38,
+        140.81
+      ],
+      "candidate_us": [
+        158.91,
+        161.97
+      ],
+      "throughput_ratio": 0.8700760408875592,
+      "nonoverlapping_improvement": false
+    },
+    {
+      "case": "q8_k512_m8192_n4",
+      "base_us": [
+        20.9,
+        20.5
+      ],
+      "candidate_us": [
+        19.72,
+        22.45
+      ],
+      "throughput_ratio": 0.9817405738676783,
+      "nonoverlapping_improvement": false
+    },
+    {
+      "case": "q8_k8192_m6144_n4",
+      "base_us": [
+        203.25,
+        204.3
+      ],
+      "candidate_us": [
+        223.51,
+        221.7
+      ],
+      "throughput_ratio": 0.9154107050605333,
+      "nonoverlapping_improvement": false
+    }
+  ],
+  "geomean_throughput_ratio": 0.9923003053249403,
+  "decision": "stop after operator screen",
+  "elapsed_seconds": 28.51600000000326,
+  "deployment_changed": false,
+  "scope": "Unprofiled, repeated same-tensor backend operations; cache-reuse diagnostic, not full-model throughput",
+  "binary_hashes_verified_after": true
+}

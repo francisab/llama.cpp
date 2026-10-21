@@ -1,0 +1,19 @@
+--- a/ggml/src/ggml-cuda/ggml-cuda.cu
++++ b/ggml/src/ggml-cuda/ggml-cuda.cu
+@@ -2001 +2001 @@
+-    if (ggml_cuda_should_use_mmvq(src0->type, cc, ne11)) {
++    if (ggml_cuda_should_use_mmvq(src0->type, cc, ggml_cuda_info().devices[ctx.device].nsm, ne01, ne11)) {
+--- a/ggml/src/ggml-cuda/mmvq.cu
++++ b/ggml/src/ggml-cuda/mmvq.cu
+@@ -318 +318 @@
+-bool ggml_cuda_should_use_mmvq(enum ggml_type type, int cc, int64_t ne11) {
++bool ggml_cuda_should_use_mmvq(enum ggml_type type, int cc, int nsm, int64_t ne01, int64_t ne11) {
+@@ -351,0 +352,3 @@
++            case GGML_TYPE_Q8_0:
++                // Q8 MMQ uses 128-row tiles; require one tile per SM.
++                return ne11 <= MMVQ_MAX_BATCH_SIZE && (ne11 != 4 || ne01 < 128LL * nsm);
+--- a/ggml/src/ggml-cuda/mmvq.cuh
++++ b/ggml/src/ggml-cuda/mmvq.cuh
+@@ -5 +5 @@
+-bool ggml_cuda_should_use_mmvq(enum ggml_type type, int cc, int64_t ne11);
++bool ggml_cuda_should_use_mmvq(enum ggml_type type, int cc, int nsm, int64_t ne01, int64_t ne11);

@@ -655,6 +655,23 @@ The +9.79% geometric mean does not rescue the regressions. **Stop after the oper
 
 The source uses 128-row Q8_0 MMQ tiles, and the accepted trace's device metadata reports 48 SMs and 24 MiB L2. One further hypothesis will restrict the switch to output rows sufficient for one SM wave. This is a new geometry-conditioned dispatch experiment, not a second measurement of the rejected blanket switch. Its selection shapes are development data; fresh shapes and threshold-boundary cases must be declared before measurement, followed by the unchanged full-model gate only if it survives.
 
+### 2.30 Geometry-conditioned Q8_0 MMQ revision [M]
+
+The preregistered revision selects MMQ only for sm_121/Q8_0/four columns when output rows reach 128 times the device SM count. It passes 45 supported candidate correctness cases: the original 21 and 24 fresh cases, including columns 1/4/8 and rows 6143/6144/6145. The original runtime also passes all 24 fresh cases. A clean software trace verifies MMVQ below the row boundary and MMQ at and above it.
+
+| Fresh input width K | Fresh output rows M | MMVQ median | Candidate median | Operator throughput change |
+|---:|---:|---:|---:|---:|
+| 512 | 8192 | 20.700 us | 21.085 us | -1.83% |
+| 4096 | 8192 | 139.595 us | 160.440 us | -12.99% |
+| 2048 | 12288 | 99.010 us | 91.750 us | +7.91% |
+| 2560 | 12288 | 127.070 us | 132.640 us | -4.20% |
+| 8192 | 6144 | 203.775 us | 222.605 us | -8.46% |
+| 2560 | 6145 | 31.875 us | 26.990 us | +18.10% |
+
+The fresh-shape operator geomean is **-0.77%**; three shapes exceed the 3% regression limit. **Stop after the operator screen.** The four timing processes took 28.516 seconds. There is no full-model run, cutoff search, further geometry-conditioned revision or deployment. This result rejects the proposed row-coverage rule, not every possible MMQ implementation. These remain cache-reuse operator measurements, not a hardware-counter attribution of the regressions.
+
+The candidate patch, preregistered protocol, generated test cases, correctness/dispatch audit and all timing samples are retained in `results/q8-wide-mmq-20261021/`. The owned source patch set and original build DLL were restored; installed binaries are unchanged. Q8 dispatch tuning is closed for this pass. Follow a distinct measured bottleneck rather than tuning against these same development shapes.
+
 ## 3. Source-verified feature status and reference lessons
 
 The following status is verified in this checkout. This table supersedes the porting assumptions in the initial reference inventory below.
