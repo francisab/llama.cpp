@@ -1,0 +1,7 @@
+diff --git a/ggml/src/ggml-cuda/mmvq.cu b/ggml/src/ggml-cuda/mmvq.cu
+index 930f1adc4..b8fea61d5 100644
+--- a/ggml/src/ggml-cuda/mmvq.cu
++++ b/ggml/src/ggml-cuda/mmvq.cu
+@@ -351,0 +352,2 @@ bool ggml_cuda_should_use_mmvq(enum ggml_type type, int cc, int64_t ne11) {
++            case GGML_TYPE_Q8_0:
++                return ne11 != 4 && ne11 <= MMVQ_MAX_BATCH_SIZE;

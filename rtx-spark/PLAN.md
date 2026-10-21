@@ -636,6 +636,25 @@ A bounded single-kernel probe used the original installed CUDA DLL and the Q8_0 
 
 The probe exited in 6.282 seconds and its process/GPU cleanup was verified. `results/native-counters-20261021/probe.json` preserves tool provenance, settings and the blocker. Further hardware-counter work requires a human-authorized elevated capture or an approved access-policy change following [NVIDIA's guidance](https://developer.nvidia.com/ERR_NVGPUCTRPERM). Do not silently change the driver security policy or retry with elevated privileges.
 
+### 2.29 Unprivileged Q8_0 MMQ dispatch screen [M]
+
+With administrator authorization unavailable, an ordinary backend timing experiment compared existing kernels instead of requesting hardware counters. A two-line dispatch revision selected MMQ rather than MMVQ for dense Q8_0 four-column work on sm_121. All other types, batches, architectures and routed MoE dispatch remained unchanged. The isolated candidate passes 21 supported correctness cases; a clean software trace confirms six MMQ launches and no MMVQ launches for the six selected four-column shapes.
+
+The existing backend perf runner measured each shape twice per arm, using repeated same-tensor graphs. These timings include backend/RHS-quantization work and favor cache reuse; they are not DRAM bandwidth or full-model measurements.
+
+| Input width K | Output rows M | MMVQ median | MMQ median | Operator throughput change |
+|---:|---:|---:|---:|---:|
+| 320 | 10240 | 29.150 us | 20.090 us | +45.10% |
+| 10240 | 320 | 16.025 us | 25.955 us | -38.26% |
+| 2560 | 10240 | 108.370 us | 104.410 us | +3.79% |
+| 2560 | 6144 | 32.450 us | 21.750 us | +49.20% |
+| 6144 | 2560 | 33.350 us | 25.480 us | +30.89% |
+| 2560 | 2560 | 18.275 us | 18.945 us | -3.54% |
+
+The +9.79% geometric mean does not rescue the regressions. **Stop after the operator screen**, without a full-model run, deployment or threshold change. The four timing processes completed in 27.594 seconds. The original source/build DLL and the installed runtime remain unchanged. Evidence is in `results/q8-fourcol-mmq-20261021/`.
+
+The source uses 128-row Q8_0 MMQ tiles, and the accepted trace's device metadata reports 48 SMs and 24 MiB L2. One further hypothesis will restrict the switch to output rows sufficient for one SM wave. This is a new geometry-conditioned dispatch experiment, not a second measurement of the rejected blanket switch. Its selection shapes are development data; fresh shapes and threshold-boundary cases must be declared before measurement, followed by the unchanged full-model gate only if it survives.
+
 ## 3. Source-verified feature status and reference lessons
 
 The following status is verified in this checkout. This table supersedes the porting assumptions in the initial reference inventory below.

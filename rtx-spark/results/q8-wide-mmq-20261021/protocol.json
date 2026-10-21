@@ -1,0 +1,52 @@
+{
+  "hypothesis": "Select existing MMQ for dense Q8_0 four-column work only when its 128-row tiles can cover at least one SM wave; retain MMVQ for narrower outputs",
+  "basis": {
+    "development_data": "../q8-fourcol-mmq-20261021/operator-summary.json",
+    "tile_source": "ggml/src/ggml-cuda/mmq-config-ampere.cuh Q8_0 J=8 entries, also used by Blackwell",
+    "tile_output_rows": 128,
+    "device_sm_count": 48,
+    "device_l2_bytes": 25165824,
+    "device_metadata_source": "Accepted native-profile-20261021 CLI trace",
+    "device_output_row_threshold": 6144,
+    "not_measured": "Hardware counters remain unavailable; no bandwidth or occupancy bottleneck is asserted"
+  },
+  "candidate": "Pass output-row count and SM count to the existing MMVQ dispatch helper. Only for sm_121/Q8_0/four columns, select MMQ at or above 128 times SM count. Preserve all other dispatch.",
+  "correctness": {
+    "original_cases": "../q8-fourcol-warps-20261021/test-ops.txt",
+    "fresh_cases": "test-ops.txt",
+    "nmse_limit": 0.0005,
+    "required": "Both original and fresh shapes pass CPU-reference comparison; trace both sides of the boundary and verify MMVQ below it and MMQ at/above it"
+  },
+  "fresh_timing_shapes_k_m": [
+    [512, 8192],
+    [4096, 8192],
+    [2048, 12288],
+    [2560, 12288],
+    [8192, 6144],
+    [2560, 6145]
+  ],
+  "fresh_correctness_shapes_k_m": [
+    [512, 8192],
+    [4096, 8192],
+    [2048, 12288],
+    [2560, 12288],
+    [8192, 6144],
+    [2560, 6143],
+    [2560, 6144],
+    [2560, 6145]
+  ],
+  "correctness_columns": [1, 4, 8],
+  "operator_gate": {
+    "samples_per_shape_per_arm": 2,
+    "order": ["base-1", "base-2", "cand-1", "cand-2"],
+    "minimum_geomean_throughput_gain_percent": 5,
+    "maximum_per_shape_throughput_regression_percent": 3,
+    "nonoverlapping_ranges_for_claimed_improvements": true,
+    "time_limit_per_process_seconds": 120,
+    "scope": "Unprofiled repeated same-tensor backend operations, not full-model speed or hardware counters"
+  },
+  "full_model_gate": "Only a survivor gets two warmed fixed-length samples each of Rust and JSON on MTP3/ub512/Q4_K/dynamic vocabulary 16384. Require >=3% gain in each case and nonoverlapping ranges. Reverse order only after first-pair survival, quality/repeated-stack confirmation before promotion.",
+  "stop_policy": "No cutoff search or further shape-conditioned revision if this predeclared candidate fails",
+  "deployment_changed": false,
+  "driver_or_counter_access_policy_changed": false
+}

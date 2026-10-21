@@ -1,0 +1,35 @@
+{
+  "hypothesis": "The existing tensor-core MMQ path may outperform MMVQ for dense Q8_0 four-column work on sm_121",
+  "reason_for_unprivileged_path": "Native hardware counters require unavailable administrator authorization. Ordinary backend timing does not require changing counter permissions.",
+  "scope": "Only the Q8_0, four-column decision in the existing sm_121 MMVQ dispatch branch. Leave routed MoE, all other types, batches and architectures unchanged. No new kernel or launch-parameter sweep.",
+  "source": {
+    "base_commit": "d80619397c2ba5cf1366c29f7d43699ca3a159b9",
+    "existing_patches": ["30380 dynamic draft vocabulary", "30640 KPOOL_MASK fusion"],
+    "original_mmvq_sha256": "63dda3d1b8ca90959d596e8d623f60cfed7ed45c0996be995c3bc6a20611dfa3",
+    "control_cuda_sha256": "898fb56c5a64f75e945e0823efa9a773cbdec66e5de9f1f253a771911b172c9f",
+    "build": "Incremental original Release build; isolate the candidate DLL and restore original source/build DLL before benchmarking"
+  },
+  "correctness": {
+    "test_file": "../q8-fourcol-warps-20261021/test-ops.txt",
+    "cases": 18,
+    "geometry": "Six original GGUF Q8_0 shapes, each with 1, 4 and 8 columns",
+    "nmse_limit": 0.0005,
+    "required": "All cases pass, plus the existing supported four-column Q8_0 backend cases",
+    "dispatch_proof": "An ordinary Nsight Systems software trace of a selected four-column case must show MMQ rather than MMVQ"
+  },
+  "operator_screen": {
+    "runner": "Existing test-backend-ops perf mode; no profiler or elevated process",
+    "cases": "The six original-shape four-column cases",
+    "samples_per_shape_per_arm": 2,
+    "order": ["base-1", "base-2", "cand-1", "cand-2"],
+    "minimum_geomean_throughput_gain_percent": 5,
+    "maximum_per_shape_throughput_regression_percent": 3,
+    "require_nonoverlap_for_shapes_claimed_as_improvements": true,
+    "per_process_timeout_seconds": 120,
+    "limitations": "Repeated same-tensor graphs favor cache reuse and include backend/RHS-quantization overhead. Not a DRAM-bandwidth measurement or full-model speed prediction."
+  },
+  "full_model_gate": "Only an operator-screen survivor receives the existing two-sample Rust/JSON MTP screen: >=3% gain in each case, nonoverlapping ranges, reverse order only after survival, then quality/repeated-stack confirmation before deployment",
+  "stop_policy": "Stop on correctness, dispatch or operator-screen failure; do not change thresholds after measurements",
+  "deployment_changed": false,
+  "driver_or_counter_access_policy_changed": false
+}
