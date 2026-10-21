@@ -1,0 +1,31 @@
+{
+  "hypothesis": "Two rather than four warps may reduce reduction/occupancy costs for the dominant Q8_0 four-column MMVQ variant on sm_121",
+  "basis": "The accepted full-lifetime CLI profile assigns 31.08% of summed kernel duration to this variant; this is prioritization evidence, not a predicted end-to-end gain",
+  "candidate": "Only calc_nwarps: return 2 for MMVQ_PARAMETERS_GB10, Q8_0 and ncols_dst=4. Preserve every other type, batch, architecture and kernel implementation.",
+  "source": {
+    "base_commit": "d80619397c2ba5cf1366c29f7d43699ca3a159b9",
+    "existing_patches": ["30380 dynamic draft vocabulary", "30640 KPOOL_MASK fusion"],
+    "original_mmvq_sha256": "63dda3d1b8ca90959d596e8d623f60cfed7ed45c0996be995c3bc6a20611dfa3",
+    "control_cuda_sha256": "898fb56c5a64f75e945e0823efa9a773cbdec66e5de9f1f253a771911b172c9f",
+    "build": "Reuse the pinned Release CUDA build and rebuild only ggml-cuda. Copy the candidate DLL into an isolated runtime, then restore the original source and build DLL. The installed runtime remains untouched."
+  },
+  "correctness": {
+    "existing_selector": "test-backend-ops -o MUL_MAT -p type_a=q8_0.*n=4, -b CUDA0",
+    "supplemental": "Existing generic-op file loader, with original GGUF Q8_0 hyper-connection and attention/SSM projection shapes at 1, 4 and 8 columns",
+    "threshold": "Existing MUL_MAT NMSE limit 5e-4; require every supported selected case to pass on the control and candidate",
+    "no_new_test_framework": true
+  },
+  "speed_screen": {
+    "recipe": "Installed original target, Q4_K draft, MTP3/ub512, dynamic vocabulary 16384; only candidate ggml-cuda.dll differs",
+    "cases": ["rust256", "json256"],
+    "samples_per_case_per_arm": 2,
+    "minimum_gain_each_case_percent": 3,
+    "nonoverlapping_sample_ranges_required": true,
+    "maximum_regression_percent": 3,
+    "reverse_order_only_after_first_pair_passes": true,
+    "budget_seconds": 600,
+    "promotion": "Requires subsequent quality and repeated deployed-stack confirmation; no automatic deployment from an initial screen"
+  },
+  "stop_policy": "Stop on correctness failure or first-pair speed failure; do not run a parameter sweep",
+  "deployment_changed": false
+}

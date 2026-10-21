@@ -609,6 +609,25 @@ The dominant Q8_0 variant uses 32 x 4 threads, 56 registers per thread and two o
 
 Evidence is in `results/native-profile-20261021/`: package provenance, all rejected pilots, accepted CLI metadata and complete symbol/launch-geometry aggregates. Raw traces, SQLite databases, response text and application logs remain private. Normal-exit CLI tracing is now usable within its stated scope; clean bounded server tracing and routed-ID collection remain open.
 
+### 2.27 Local Q8_0 four-column launch-geometry screen [M]
+
+The first profile-led local kernel experiment changed only three lines in the existing `MMVQ_PARAMETERS_GB10` table: Q8_0 with four output columns uses two warps instead of four. It adds no new kernel, quantization, cache or runtime control. The pinned release CUDA build rebuilt only `mmvq.cu.obj` and relinked `ggml-cuda.dll`; all other runtime binaries match the installed control byte-for-byte. The original source and build DLL were restored, and the candidate remained in a separate runtime directory.
+
+Both arms pass **21/21 supported CUDA correctness cases**: three existing four-column cases plus 18 generic-op cases using six original GGUF hyper-connection/attention/SSM shapes at 1/4/8 columns. Two unsupported Q8_0 x F16 cases are excluded, not counted as passes. A separate normal-exit software trace confirms six four-column Q8 launches with **32 x 2 threads**, versus the control profile's 32 x 4, with no diagnostic warnings/errors. The profiler omitted the final buffered stdout summary; the complete unprofiled run supplies the numerical results.
+
+The actual MTP3/ub512/Q4_K/dynamic-vocabulary-16384 first pair used two fixed-length samples per case:
+
+| Case | Installed control | Two-warp candidate | Change |
+|---|---|---|---|
+| Rust | 55.00 tok/s | 54.95 tok/s | -0.10% |
+| JSON | 51.57 tok/s | 52.16 tok/s | +1.14% |
+
+Geometric mean: **+0.52%**, failing the unchanged 3% per-case gate. Rust sample ranges overlap. Only **2/4** output-token sequences match across arms: JSON matches, while Rust changes despite unchanged aggregate acceptance. JSON acceptance increases from 71.6% to 73.2%. These results do not establish quality equivalence or a robust speed improvement.
+
+Stop after this first pair, without reverse order, task-quality campaign, integration, deployment or a launch-parameter sweep. The screen took 144.188 seconds; 133 telemetry samples contain five software power-cap flags and no hardware thermal-slowdown flag. Evidence and the reproducible three-line patch are in `results/q8-fourcol-warps-20261021/`; apply the patch with `git apply --unidiff-zero`. No production source change was retained.
+
+Next, determine whether the dominant Q8_0 kernels are bandwidth-, occupancy- or instruction-limited with a bounded native hardware-counter capture before proposing another kernel change. Their duration share alone does not explain the bottleneck.
+
 ## 3. Source-verified feature status and reference lessons
 
 The following status is verified in this checkout. This table supersedes the porting assumptions in the initial reference inventory below.

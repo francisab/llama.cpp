@@ -1,0 +1,19 @@
+{
+  "decision": "stop after first pair",
+  "reason": "Neither case meets the predeclared 3% minimum gain; Rust sample ranges overlap",
+  "rust_percent": -0.09629506194881499,
+  "json_percent": 1.137313195491973,
+  "geomean_percent": 0.5186166623362354,
+  "identical_outputs": [2, 4],
+  "token_identity": "JSON matches across arms; Rust changes. Both arms repeat their own outputs.",
+  "quality_checked": false,
+  "reverse_order_run": false,
+  "deployment_changed": false,
+  "production_source_change_retained": false,
+  "parameter_sweep": false,
+  "elapsed_screen_seconds": 144.188,
+  "telemetry_samples": 133,
+  "software_power_cap_samples": 5,
+  "hardware_thermal_slowdown_samples": 0,
+  "next": "Collect bounded hardware counters for the dominant Q8_0 kernels before another engine hypothesis"
+}

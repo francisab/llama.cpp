@@ -1,0 +1,167 @@
+{
+  "cases": [
+    {
+      "name": "q8_k320_m10240_n1",
+      "weight_shape": [
+        320,
+        10240
+      ],
+      "columns": 1,
+      "representative_tensor": "output_hc_up.weight"
+    },
+    {
+      "name": "q8_k320_m10240_n4",
+      "weight_shape": [
+        320,
+        10240
+      ],
+      "columns": 4,
+      "representative_tensor": "output_hc_up.weight"
+    },
+    {
+      "name": "q8_k320_m10240_n8",
+      "weight_shape": [
+        320,
+        10240
+      ],
+      "columns": 8,
+      "representative_tensor": "output_hc_up.weight"
+    },
+    {
+      "name": "q8_k10240_m320_n1",
+      "weight_shape": [
+        10240,
+        320
+      ],
+      "columns": 1,
+      "representative_tensor": "output_hc_down.weight"
+    },
+    {
+      "name": "q8_k10240_m320_n4",
+      "weight_shape": [
+        10240,
+        320
+      ],
+      "columns": 4,
+      "representative_tensor": "output_hc_down.weight"
+    },
+    {
+      "name": "q8_k10240_m320_n8",
+      "weight_shape": [
+        10240,
+        320
+      ],
+      "columns": 8,
+      "representative_tensor": "output_hc_down.weight"
+    },
+    {
+      "name": "q8_k2560_m10240_n1",
+      "weight_shape": [
+        2560,
+        10240
+      ],
+      "columns": 1,
+      "representative_tensor": "blk.0.attn_qkv.weight"
+    },
+    {
+      "name": "q8_k2560_m10240_n4",
+      "weight_shape": [
+        2560,
+        10240
+      ],
+      "columns": 4,
+      "representative_tensor": "blk.0.attn_qkv.weight"
+    },
+    {
+      "name": "q8_k2560_m10240_n8",
+      "weight_shape": [
+        2560,
+        10240
+      ],
+      "columns": 8,
+      "representative_tensor": "blk.0.attn_qkv.weight"
+    },
+    {
+      "name": "q8_k2560_m6144_n1",
+      "weight_shape": [
+        2560,
+        6144
+      ],
+      "columns": 1,
+      "representative_tensor": "blk.0.attn_gate.weight"
+    },
+    {
+      "name": "q8_k2560_m6144_n4",
+      "weight_shape": [
+        2560,
+        6144
+      ],
+      "columns": 4,
+      "representative_tensor": "blk.0.attn_gate.weight"
+    },
+    {
+      "name": "q8_k2560_m6144_n8",
+      "weight_shape": [
+        2560,
+        6144
+      ],
+      "columns": 8,
+      "representative_tensor": "blk.0.attn_gate.weight"
+    },
+    {
+      "name": "q8_k6144_m2560_n1",
+      "weight_shape": [
+        6144,
+        2560
+      ],
+      "columns": 1,
+      "representative_tensor": "blk.0.ssm_out.weight"
+    },
+    {
+      "name": "q8_k6144_m2560_n4",
+      "weight_shape": [
+        6144,
+        2560
+      ],
+      "columns": 4,
+      "representative_tensor": "blk.0.ssm_out.weight"
+    },
+    {
+      "name": "q8_k6144_m2560_n8",
+      "weight_shape": [
+        6144,
+        2560
+      ],
+      "columns": 8,
+      "representative_tensor": "blk.0.ssm_out.weight"
+    },
+    {
+      "name": "q8_k2560_m2560_n1",
+      "weight_shape": [
+        2560,
+        2560
+      ],
+      "columns": 1,
+      "representative_tensor": "blk.1.ple_value.weight"
+    },
+    {
+      "name": "q8_k2560_m2560_n4",
+      "weight_shape": [
+        2560,
+        2560
+      ],
+      "columns": 4,
+      "representative_tensor": "blk.1.ple_value.weight"
+    },
+    {
+      "name": "q8_k2560_m2560_n8",
+      "weight_shape": [
+        2560,
+        2560
+      ],
+      "columns": 8,
+      "representative_tensor": "blk.1.ple_value.weight"
+    }
+  ],
+  "test_file_sha256": "4dae6af772ea0ccf7111d0acb70a11ff6364eaead9fe6fda7a3add1d42cea2e3"
+}

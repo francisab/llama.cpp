@@ -1,0 +1,8 @@
+diff --git a/ggml/src/ggml-cuda/mmvq.cu b/ggml/src/ggml-cuda/mmvq.cu
+index 930f1adc4..b321810be 100644
+--- a/ggml/src/ggml-cuda/mmvq.cu
++++ b/ggml/src/ggml-cuda/mmvq.cu
+@@ -557,0 +558,3 @@ static constexpr __host__ __device__ int calc_nwarps(ggml_type type, int ncols_d
++        if (type == GGML_TYPE_Q8_0 && ncols_dst == 4) {
++            return 2;
++        }
