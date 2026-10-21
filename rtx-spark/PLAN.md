@@ -588,6 +588,27 @@ The screen took 157.781 seconds, including post-run binary/model verification. I
 
 The next priority is operator evidence rather than more marginal precision trials. The installed toolkit has no local CUPTI or Nsight CLI, but NVIDIA's current CUDA 13.4.3 redistributable manifest now lists native Windows ARM64 CUPTI, Nsight Systems and Nsight Compute packages. Validate a portable native profiler before treating the earlier local profiling blocker as resolved; do not infer kernel costs from the end-to-end screen results.
 
+### 2.26 Native CUDA profiling and the next kernel hypothesis [M]
+
+NVIDIA's portable Windows ARM64 Nsight Systems 2026.3.2.476 package was verified against its official SHA256 manifest and a valid Authenticode signature. Its actual profiler executable is ARM64, as are the profiled applications; the Python controller is x64. The package bundles the required CUPTI library. No installed model, runtime DLL, launcher recipe, CUDA installation, PATH, driver or power policy changed.
+
+The backend-test smoke capture contains 195 CUDA kernels, including 22 GDN alpha/beta fusion kernels, and all 14 selected cases passed. It also reports 30 graph clone-ID lookup errors, so this proves execution in the backend test, not clean production graph metadata. The initial hardware-mode server capture and subsequent software-mode capture both report `Not all CUDA events might have been collected.` A separate console-launcher attempt did not fix server shutdown. These pilots are retained and excluded from kernel ranking; only their uniquely identified processes were stopped.
+
+The bounded alternative succeeded: the installed MTP-enabled `llama-cli` completed one 128-token Rust chat request and exited normally under software CUDA tracing. It used the same original target, Q4_K draft, MTP3/ub512, dynamic vocabulary 16384 and runtime DLLs. The report contains **145,262 CUDA kernel records**, including **127,304 graph-node records**, from one GPU process and no diagnostic warnings/errors. The application reports 41 prompt tokens, 128 generated tokens and 91 accepted of 107 draft tokens. Runtime hashes and GPU/process cleanup were verified afterward.
+
+This is a **full-lifetime diagnostic**, including model initialization, default warmup, chat prefill, generation and teardown. It is not the earlier cached raw-completion workload, pure decode, an uninstrumented speed comparison or routed-expert overlap evidence. Summed kernel duration is 2,124.425 ms, while the union of kernel execution intervals is 2,031.877 ms; overlap and idle time prevent interpreting the sum as wall time.
+
+| Observed kernel variant | Calls | Summed duration | Share of summed kernel duration |
+|---|---:|---:|---:|
+| Q8_0 MMVQ, four-column variant | 18,397 | 660.247 ms | 31.08% |
+| IQ4_XS routed MMVQ, fused variant | 1,785 | 276.381 ms | 13.01% |
+| IQ4_NL routed MMVQ, unfused variant | 1,634 | 145.739 ms | 6.86% |
+| RHS `quantize_q8_1` | 25,123 | 47.451 ms | 2.23% |
+
+The dominant Q8_0 variant uses 32 x 4 threads, 56 registers per thread and two output rows per block in the inspected source. Its leading observed grid is 5120 x 1 x 1 (4,895 calls, 212.488 ms). Kernel names and grids do not uniquely identify tensors. The next narrow hypothesis is a Q8_0 small-batch launch-geometry screen on this device, with matched source/builds, backend correctness, then the unchanged first-pair Rust/JSON gate. Do not add a cross-call RHS cache on the strength of its 2.23% kernel share; even that share includes work a cache could not remove.
+
+Evidence is in `results/native-profile-20261021/`: package provenance, all rejected pilots, accepted CLI metadata and complete symbol/launch-geometry aggregates. Raw traces, SQLite databases, response text and application logs remain private. Normal-exit CLI tracing is now usable within its stated scope; clean bounded server tracing and routed-ID collection remain open.
+
 ## 3. Source-verified feature status and reference lessons
 
 The following status is verified in this checkout. This table supersedes the porting assumptions in the initial reference inventory below.

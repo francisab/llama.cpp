@@ -1,0 +1,23 @@
+{
+  "cli_version": "2026.3.2.476-263238834031v0",
+  "cli_native_arm64": true,
+  "cli_signature_valid": true,
+  "backend_tests_all_passed_in_trace": true,
+  "kernel_records": 195,
+  "kernel_records_with_graph_node_id": 88,
+  "gdn_ab_fused_kernel_records": 22,
+  "production_fusion_trace": false,
+  "raw_trace_published": false,
+  "backend_cases_observed": 14,
+  "diagnostic_errors": [
+    {
+      "message": "GetGraphId(data.originalGraph, &originalGraphId) returned 1: CUPTI_ERROR_INVALID_PARAMETER",
+      "count": 15
+    },
+    {
+      "message": "GetGraphNodeId(data.originalNode, &originalNodeId) returned 1: CUPTI_ERROR_INVALID_PARAMETER",
+      "count": 15
+    }
+  ],
+  "limitation": "CUDA graph clone-ID metadata lookup errors are retained; real kernel activity was observed, but this is not proof of flawless graph metadata."
+}

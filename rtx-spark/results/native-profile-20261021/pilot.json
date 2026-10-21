@@ -1,0 +1,18 @@
+{
+  "capture_completed": true,
+  "capture_accepted_for_operator_ranking": false,
+  "profiled_tokens": 128,
+  "profiled_prompt_tokens": 4,
+  "kernel_records": 148518,
+  "diagnostics": [
+    {
+      "severity": 2,
+      "message": "Not all CUDA events might have been collected.",
+      "count": 1
+    }
+  ],
+  "shutdown": "The profiler-launched server did not stop with the usual console event; the specifically owned PID was stopped after 45 seconds. No profiler session or owned server remains.",
+  "gpu_memory_released": true,
+  "next_attempt": "Use a native console launcher to give the server its own console, stop it gracefully while collection is still active, then let process exit finalize and flush the trace. Preserve this attempt rather than silently replacing it.",
+  "deployment_changed": false
+}

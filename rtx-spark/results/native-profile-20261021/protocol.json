@@ -1,0 +1,40 @@
+{
+  "purpose": "Obtain actual CUDA kernel costs before selecting more engine changes",
+  "tool": {
+    "manifest_url": "https://developer.download.nvidia.com/compute/cuda/redist/redistrib_13.4.3.json",
+    "archive_url": "https://developer.download.nvidia.com/compute/cuda/redist/nsight_systems/windows-arm64/nsight_systems-windows-arm64-2026.3.2.476-archive.zip",
+    "archive_bytes": 648406716,
+    "archive_sha256": "b8cdc498d17efe461032ad8fc6f029f62dd8bb4dfaa2804d48429999dbfebc3c",
+    "version": "2026.3.2.476-263238834031v0",
+    "cli_pe_machine": "ARM64 / 0xAA64",
+    "cli_authenticode_status": "Valid",
+    "installation": "Portable package; no CUDA, PATH, driver, power-policy or operating-system changes"
+  },
+  "preflight": "Native Nsight CLI runs and a bounded backend test produced 195 real CUDA kernel records, including the candidate's GDN alpha/beta fusion kernel",
+  "capture": {
+    "runtime": "Unchanged installed b11756 + #30380 + #30640",
+    "target": "Original Flash-Next UD-IQ4_XS",
+    "draft": "Deployed Q4_K output head",
+    "recipe": "MTP3, ub512, dynamic vocabulary 16384, lazy PLE, context 262144 and automatic threads",
+    "request": "Existing Rust case; 128-token warmup, then a 128-token cached-prompt request",
+    "expected_profiled_prompt_tokens_maximum": 4,
+    "collection": "Start only after readiness and warmup, then stop and finalize the trace after the single measured request. Explicitly stop only the uniquely marked profiling server PID afterward; do not rely on Ctrl+C under the profiler.",
+    "profiler_flags": ["--trace=cuda-sw", "--cuda-graph-trace=node:host-only", "--cuda-trace-scope=process-tree", "--sample=none", "--cpuctxsw=none", "--start-later=true", "--kill=false"],
+    "readiness_timeout_seconds": 180,
+    "request_timeout_seconds": 60,
+    "scope": "Kernel-duration diagnostic, not a speed comparison. Graph-node tracing can perturb execution; summed kernel durations need not equal wall time or isolated operator latency.",
+    "routed_expert_ids": "Not captured by this trace; routed-ID overlap remains unmeasured"
+  },
+  "publication": "Only sanitized provenance, capture metadata and aggregate kernel statistics; raw responses, traces and SQLite exports stay private",
+  "recovery": "The hardware-trace pilot's incomplete-event warning and failed native-console cleanup attempt are retained separately. Software tracing with explicit owned-PID cleanup also reported incomplete events. Do not accept these captures for kernel ranking.",
+  "natural_exit_followup": {
+    "reason": "Test normal application exit rather than another console-control or interactive-stop workaround",
+    "application": "Installed llama-cli with the same runtime DLLs and MTP3/Q4_K/ub512/dynamic-vocabulary-16384 model recipe",
+    "workload": "Single-turn, 128-token Rust chat request, greedy sampling, ignore EOS, reasoning off",
+    "capture": "Full application lifetime, software CUDA tracing, host-only graph nodes, stop-on-exit",
+    "timeout_seconds": 180,
+    "scope": "Includes initialization, default model warmup, chat prompt, generation and teardown. Not the cached raw-completion server workload, not pure decode and not a speed comparison.",
+    "acceptance": "Normal zero exit, positive MTP activity, requested output length, nonzero CUDA kernel records, no diagnostic warning/error about incomplete or dropped events, unchanged runtime hashes and complete process/GPU cleanup"
+  },
+  "deployment": "No installed binary, model or deployment launcher changes"
+}
