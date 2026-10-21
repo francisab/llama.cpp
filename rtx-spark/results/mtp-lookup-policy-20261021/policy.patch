@@ -1,0 +1,116 @@
+--- a/common/speculative.cpp
++++ b/common/speculative.cpp
+@@ -9,6 +9,7 @@
+ #include "ngram-map.h"
+ #include "ngram-mod.h"
+ #include "sampling.h"
++#include "spark-cost-policy.h"
+ 
+ #include "../src/llama-ext.h" // staging API: llama_set_embeddings_nextn / llama_get_embeddings_nextn_ith (used by MTP)
+ 
+@@ -16,6 +17,7 @@
+ #include <cassert>
+ #include <cmath>
+ #include <cstring>
++#include <cstdlib>
+ #include <iomanip>
+ #include <map>
+ #include <cinttypes>
+@@ -2296,7 +2298,17 @@
+     std::vector<common_speculative_impl *> impl_last;
+ 
+     std::vector<double> synth_probs;
++    bool cost_policy_enabled = false;
++    std::vector<spark_cost_policy> cost_policy = {};
+ };
++
++static void print_cost_policy(const spark_cost_policy & policy, llama_seq_id seq_id) {
++    if (policy.mtp_rounds > 0) {
++        LOG_INF("cost_policy summary slot=%d selected=%u bypassed=%u mtp_rounds=%u mtp_us_per_token=%.3f lookup_us_per_token=%.3f\n",
++                seq_id, policy.selected_lookup, policy.bypassed_lookup, policy.mtp_rounds,
++                policy.mtp_us_per_token, policy.lookup_us_per_token);
++    }
++}
+ 
+ static common_ngram_map get_common_ngram_map(
+         common_speculative_type type,
+@@ -2848,6 +2860,14 @@
+         /* .synth_probs = */ {},
+     });
+ 
++    result->cost_policy_enabled = std::getenv("LLAMA_SPARK_COST_POLICY") != nullptr;
++    result->cost_policy.resize(n_seq);
++    if (result->cost_policy_enabled) {
++        GGML_ASSERT(result->impls.size() == 2);
++        GGML_ASSERT(result->impls[0]->type == COMMON_SPECULATIVE_TYPE_NGRAM_SIMPLE);
++        GGML_ASSERT(result->impls[1]->type == COMMON_SPECULATIVE_TYPE_DRAFT_MTP);
++    }
++
+     const int32_t n_max_configured = common_speculative_n_max(&params);
+     const int32_t n_max_effective  = common_speculative_n_max(result.get());
+     const auto rates = common_speculative_synth_rates_resolve(&params, n_max_effective);
+@@ -2881,6 +2901,11 @@
+         return;
+     }
+ 
++    if (spec->cost_policy_enabled) {
++        for (llama_seq_id seq_id = 0; seq_id < (llama_seq_id) spec->cost_policy.size(); ++seq_id) {
++            print_cost_policy(spec->cost_policy[seq_id], seq_id);
++        }
++    }
+     delete spec;
+ }
+ 
+@@ -2898,6 +2923,11 @@
+         return;
+     }
+ 
++    if (spec->cost_policy_enabled) {
++        print_cost_policy(spec->cost_policy[seq_id], seq_id);
++        spec->cost_policy[seq_id] = {};
++    }
++
+     for (auto & impl : spec->impls) {
+         common_time_meas tm(impl->t_begin_us, !impl->gen_perf);
+         impl->begin(seq_id, prompt);
+@@ -2925,6 +2955,14 @@
+     }
+ 
+     auto & dparams = spec->dparams;
++
++    if (spec->cost_policy_enabled) {
++        for (llama_seq_id seq_id = 0; seq_id < (llama_seq_id) dparams.size(); ++seq_id) {
++            if (dparams[seq_id].drafting) {
++                spec->cost_policy[seq_id].started_us = ggml_time_us();
++            }
++        }
++    }
+ 
+     {
+         int n_drafting = 0;
+@@ -2960,6 +2998,11 @@
+ 
+             auto & result = *dp.result;
+ 
++            if (spec->cost_policy_enabled && impl->type == COMMON_SPECULATIVE_TYPE_NGRAM_SIMPLE &&
++                    !result.empty() && !spec->cost_policy[seq_id].use_lookup()) {
++                result.clear();
++            }
++
+             // a new draft has been sampled
+             if (dp.drafting && !result.empty()) {
+                 dp.drafting = false;
+@@ -3015,6 +3058,13 @@
+     if (impl == nullptr) {
+         GGML_ASSERT(n_accepted == 0);
+         return;
++    }
++
++    if (spec->cost_policy_enabled) {
++        auto & policy = spec->cost_policy[seq_id];
++        const int64_t elapsed_us = ggml_time_us() - policy.started_us;
++        GGML_ASSERT(policy.started_us > 0 && elapsed_us > 0);
++        policy.observe(impl->type == COMMON_SPECULATIVE_TYPE_NGRAM_SIMPLE, elapsed_us, uint32_t(n_accepted) + 1);
+     }
+ 
+     {

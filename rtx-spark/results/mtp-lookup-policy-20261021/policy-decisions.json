@@ -1,0 +1,44 @@
+[
+  {
+    "selected_lookup": 10,
+    "bypassed_lookup": 60,
+    "mtp_rounds": 106,
+    "mtp_us_per_token": 15145.459,
+    "lookup_us_per_token": 38156.36
+  },
+  {
+    "selected_lookup": 8,
+    "bypassed_lookup": 81,
+    "mtp_rounds": 110,
+    "mtp_us_per_token": 16188.867,
+    "lookup_us_per_token": 44503.306
+  },
+  {
+    "selected_lookup": 11,
+    "bypassed_lookup": 56,
+    "mtp_rounds": 102,
+    "mtp_us_per_token": 15767.109,
+    "lookup_us_per_token": 45437.298
+  },
+  {
+    "selected_lookup": 8,
+    "bypassed_lookup": 81,
+    "mtp_rounds": 110,
+    "mtp_us_per_token": 16475.369,
+    "lookup_us_per_token": 43012.576
+  },
+  {
+    "selected_lookup": 8,
+    "bypassed_lookup": 81,
+    "mtp_rounds": 110,
+    "mtp_us_per_token": 21120.504,
+    "lookup_us_per_token": 41779.571
+  },
+  {
+    "selected_lookup": 13,
+    "bypassed_lookup": 50,
+    "mtp_rounds": 96,
+    "mtp_us_per_token": 15832.441,
+    "lookup_us_per_token": 38185.213
+  }
+]

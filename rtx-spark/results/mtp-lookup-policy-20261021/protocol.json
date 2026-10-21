@@ -1,0 +1,35 @@
+{
+  "hypothesis": "Choosing prompt lookup only when its expected committed tokens per elapsed millisecond exceeds MTP3 may beat the already rejected unconditional hybrid.",
+  "scope": "The frozen Python rename and JSON unit-conversion development fixtures from section 2.36. Standard Rust/JSON generation already failed lookup eligibility in section 2.35.",
+  "fixed_choices": {
+    "mtp_draft_length": 3,
+    "lookup_match_length": 12,
+    "lookup_draft_length": 12,
+    "generated_tokens": 512,
+    "models_and_settings": "Original target, Q4_K draft head, dynamic vocabulary 16384, ub512, installed runtime configuration.",
+    "forbidden_retuning": "No length, fixture, layer, type or performance-threshold sweep."
+  },
+  "steps": [
+    "Replay the pinned stateless lookup algorithm on saved output tokens. Verify source/tokenizer/input hashes and reconcile native prompt token counts.",
+    "Capture a bounded diagnostic with compact per-round start, selected-source and acceptance records. Include rejected-draft rollback/replay in the originating round, and reconcile drafted/accepted counters with responses.",
+    "Compare measured full-length lookup-round cost with the MTP3 committed-token rate. Report costs and acceptance separately; do not price verification from an unrelated target-only batch benchmark.",
+    "Screen an optimistic selection oracle before building an online controller. Any replay uses development outputs and measured cost estimates, not unseen counterfactual runtime measurements.",
+    "Implement a bounded causal policy only if the oracle clears at least 3% on both frozen cases. Otherwise stop, retaining the evidence. A surviving implementation still needs uninstrumented opposite-order performance and output/quality checks."
+  ],
+  "capture": {
+    "arm_order": ["instrumented MTP3", "instrumented lookup-first plus MTP3"],
+    "warmups_per_case_per_arm": 1,
+    "measured_samples_per_case_per_arm": 2,
+    "request_order": "Python, JSON warmups; Python, JSON, JSON, Python measured requests",
+    "instrumentation": "Four compact log sites: round start, source selection, checkpoint rollback and final acceptance. Monotonic ggml_time_us timestamps; source selection is after draft generation; acceptance is before response-token rendering.",
+    "pricing": "Report both median cost by source/acceptance and an optimistic minimum observed full-length lookup cost. Keep terminal truncated proposals separate.",
+    "oracle": "Dynamic programming on the fixed generated token stream. MTP always commits four tokens at the measured baseline cost; lookup commits its exact replayed acceptance plus a bonus token, at the minimum measured full-length lookup cost, with free selection and no exploration overhead. This deliberately optimistic model is not a literal end-to-end bound."
+  },
+  "limits": [
+    "Diagnostic instrumentation is not promotion-quality throughput evidence.",
+    "100% MTP acceptance in recorded runs does not prove acceptance at unobserved future boundaries.",
+    "Skipping bad lookup rounds cannot be counted as improvement over pure MTP unless useful lookup rounds actually beat that baseline.",
+    "No upstream engine or model feature is attributed as a new local gain."
+  ],
+  "deployment_changed": false
+}

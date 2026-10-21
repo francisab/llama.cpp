@@ -1,0 +1,36 @@
+--- a/common/speculative.cpp
++++ b/common/speculative.cpp
+@@ -2977,6 +2977,7 @@
+                 }
+ 
+                 if (!result.empty()) {
++                    LOG_INF("spec_cost select slot=%d t_us=%" PRId64 " type=%s hist=%zu drafted=%zu\n", seq_id, ggml_time_us(), common_speculative_type_to_str(impl->type).c_str(), dp.prompt->size(), result.size());
+                     SPC_DBG("called impl %s, hist size = %zu, call_count = %zu, gen = %zu\n",
+                             common_speculative_type_to_str(impl.get()->type).c_str(), dp.prompt->size(),
+                             impl.get()->n_call_draft, result.size());
+--- a/tools/server/server-context.cpp
++++ b/tools/server/server-context.cpp
+@@ -535,6 +535,7 @@
+         }
+ 
+         SLT_DBG(*this, "max possible draft: %d\n", n_draft_max);
++        LOG_INF("spec_cost start slot=%d task=%d t_us=%" PRId64 " gen=%d n_max=%d\n", id, task->id, ggml_time_us(), stats.n_gen, n_draft_max);
+ 
+         return n_draft_max;
+     }
+@@ -4563,6 +4564,7 @@
+                         }
+ 
+                         // partial acceptance is not supported by the context -> truncate the draft and restore the state
++                        LOG_INF("spec_cost rollback slot=%d task=%d t_us=%" PRId64 " accepted=%zu drafted=%zu\n", slot.id, slot.task->id, ggml_time_us(), accepted.size() - 1, slot.spec_draft.size());
+                         slot.spec_is_replay = true;
+                         slot.spec_draft = std::move(accepted);
+ 
+@@ -4607,6 +4609,7 @@
+             // update how many tokens out of those tested were accepted
+             slot.stats.n_draft_accepted += n_accepted;
+             slot.stats.n_draft_verif_steps += 1;
++            LOG_INF("spec_cost end slot=%d task=%d t_us=%" PRId64 " gen=%d accepted=%zu verified=%zu emitted=%zu\n", slot.id, slot.task->id, ggml_time_us(), slot.stats.n_gen, n_accepted, n_draft, ids.size());
+ 
+             auto & n_accepted_per_pos = slot.n_accepted_per_pos;
+             if (n_accepted_per_pos.empty()) {

@@ -1,0 +1,146 @@
+{
+  "diagnostic_preflight": {
+    "installed": {
+      "llama-cli.exe": "4837bd989efebc8a4895a34067ac958f2aa472506818df4ab5f62338297db72f",
+      "llama-server.exe": "b575a9a6c70587568b97a9edbbe0c084d73cea067de40cb08091a5dd399528fd",
+      "cublas64_13.dll": "49e8fa23d88ac0cbae27e200fc092b894dd55b4de5cb4293993986e29fb9b65a",
+      "cublasLt64_13.dll": "daf579ae36bb3c85e2340c57a1994f634e07c6f55ef70dd4cdc26695de21c752",
+      "cudart64_13.dll": "bd927ddf03823eeead7c8b261a8669d96764b89109311f4ab6accde8b7d97ec2",
+      "ggml-base.dll": "78a8ee0bbfa83221d579166779edbb2bf81c1440e02185a17d83dbbd3a59bfc7",
+      "ggml-cpu.dll": "04540c35427ee8c8eddb867c048302120bce5a76732fb886054da31e579c26cc",
+      "ggml-cuda.dll": "898fb56c5a64f75e945e0823efa9a773cbdec66e5de9f1f253a771911b172c9f",
+      "ggml-rpc.dll": "62f5d72e6b1c909c1a8f05737acf7205a43f7ef9319cd53fdaea9f55b7e4bced",
+      "ggml.dll": "7444aa6d23f780f05230b4b2d71d2ef424853b2da302fe584afde956ef4d801e",
+      "libomp.dll": "b13ebedc0cff13097516f9d291a2414e1a97d6ab49269307e03c5df55a60d7fd",
+      "llama-batched-bench-impl.dll": "3f9ca458697e5c3e4afbfef4d8c468d71d5f094ab4c9d65fd8834dbbf7c582db",
+      "llama-bench-impl.dll": "9c9475ffdae8ec9865d7c227997ee1e940cfa0499f9a989f773cb14a32c4736f",
+      "llama-cli-impl.dll": "851561d7d1435dd1f6b7a341d0066c548e94ff6a6e41dd2cabab99c8d383110b",
+      "llama-common.dll": "b2fa9b52c99c9d77f7b964ba283ad1a1de5eaf59cd19252984e41d8e03775e1c",
+      "llama-completion-impl.dll": "fe1963907d4b8df1c36ca2419be924132f6b58c7f9ecafe4684be47314ed677c",
+      "llama-fit-params-impl.dll": "57b80a677aebfda1f236d72a62bec0682d71f228da39dedc3bccc9a0ec34c22c",
+      "llama-perplexity-impl.dll": "4ce712ee63f8522d82bfea0e7acdd93ab9e055b69ca6bfe24232539028154698",
+      "llama-quantize-impl.dll": "1877d61a18a47a8dd6cbf4544b17adc68cd3f9f9d24615d1362d16d84935c873",
+      "llama-server-impl.dll": "c5a14ce5f4fd040637f78a68aed59c6c7f414546d63596cd53eaef4b1c7d20f9",
+      "llama.dll": "d2eeb4d523556424f6ec643737fe7ac2cfbd1a2e61cdfc1bd6eb08be37b1231b",
+      "mtmd.dll": "0e066445858363e309ea6c4b1cf440e7f10c7079de79f55a468804853cafd54b"
+    },
+    "diagnostic": {
+      "llama-cli.exe": "4837bd989efebc8a4895a34067ac958f2aa472506818df4ab5f62338297db72f",
+      "llama-server.exe": "b575a9a6c70587568b97a9edbbe0c084d73cea067de40cb08091a5dd399528fd",
+      "cublas64_13.dll": "49e8fa23d88ac0cbae27e200fc092b894dd55b4de5cb4293993986e29fb9b65a",
+      "cublasLt64_13.dll": "daf579ae36bb3c85e2340c57a1994f634e07c6f55ef70dd4cdc26695de21c752",
+      "cudart64_13.dll": "bd927ddf03823eeead7c8b261a8669d96764b89109311f4ab6accde8b7d97ec2",
+      "ggml-base.dll": "78a8ee0bbfa83221d579166779edbb2bf81c1440e02185a17d83dbbd3a59bfc7",
+      "ggml-cpu.dll": "04540c35427ee8c8eddb867c048302120bce5a76732fb886054da31e579c26cc",
+      "ggml-cuda.dll": "898fb56c5a64f75e945e0823efa9a773cbdec66e5de9f1f253a771911b172c9f",
+      "ggml-rpc.dll": "62f5d72e6b1c909c1a8f05737acf7205a43f7ef9319cd53fdaea9f55b7e4bced",
+      "ggml.dll": "7444aa6d23f780f05230b4b2d71d2ef424853b2da302fe584afde956ef4d801e",
+      "libomp.dll": "b13ebedc0cff13097516f9d291a2414e1a97d6ab49269307e03c5df55a60d7fd",
+      "llama-batched-bench-impl.dll": "3f9ca458697e5c3e4afbfef4d8c468d71d5f094ab4c9d65fd8834dbbf7c582db",
+      "llama-bench-impl.dll": "9c9475ffdae8ec9865d7c227997ee1e940cfa0499f9a989f773cb14a32c4736f",
+      "llama-cli-impl.dll": "851561d7d1435dd1f6b7a341d0066c548e94ff6a6e41dd2cabab99c8d383110b",
+      "llama-common.dll": "63a490ac07c9cf4b57966e8a155ee590c5d3686f935bd2bec056c5d1e8989b65",
+      "llama-completion-impl.dll": "fe1963907d4b8df1c36ca2419be924132f6b58c7f9ecafe4684be47314ed677c",
+      "llama-fit-params-impl.dll": "57b80a677aebfda1f236d72a62bec0682d71f228da39dedc3bccc9a0ec34c22c",
+      "llama-perplexity-impl.dll": "4ce712ee63f8522d82bfea0e7acdd93ab9e055b69ca6bfe24232539028154698",
+      "llama-quantize-impl.dll": "1877d61a18a47a8dd6cbf4544b17adc68cd3f9f9d24615d1362d16d84935c873",
+      "llama-server-impl.dll": "a80275d72cbfba998523346d1749a50c234fc8ed41456d3f6ff2680b08ecafff",
+      "llama.dll": "d2eeb4d523556424f6ec643737fe7ac2cfbd1a2e61cdfc1bd6eb08be37b1231b",
+      "mtmd.dll": "0e066445858363e309ea6c4b1cf440e7f10c7079de79f55a468804853cafd54b"
+    },
+    "source": {
+      "common\\speculative.cpp": {
+        "before": "c27a25e3b04f34d5a330c4a6ba54a3fd1250fe8b25137c1cf86d977a19f93cb3",
+        "diagnostic": "c001e414a6441b8c2fa3a3a9352b4d518aece0f2cb5928b0934b932880d59f64"
+      },
+      "tools\\server\\server-context.cpp": {
+        "before": "dd1de0f26536ce3e115e39110f2f0719427f2796885c2a1ea2db071b603c2329",
+        "diagnostic": "84967735b4a689129875799758303573a755d240936384d3353299c1eefbf858"
+      }
+    },
+    "fixture_sha256": "1e527f7dc8636f4bc95f1ce952e51b6943cfc19727d41bd0bc63ead817959be9",
+    "protocol_sha256": "cac4b74953e751a0600936a876638af97cf2a34718f755f690878332ce308eb6",
+    "capture_script_sha256": "d98684f9a06af05317dfe7af0b623ed9de0264b25e895f6c0a53888202e7e5a2",
+    "reference_sha256": {
+      "base-1": "713bbda8a095f3b8d7f257ee3664165e196f6df3794c0b81a9fc51f97d7b668c",
+      "cand-1": "f177d590b136a78f319ff60096742dbccd95f1441ed1343b3d73132ef51704c4"
+    },
+    "prompt_tokens_sha256": "595da7d75bc503799712269527cf9f005a56d5e096be5535420acdcd1f64fcb7",
+    "tokenizer_sha256": "6e36d63fc3f304d470e1546370ed1835c3bf8ca9386fd030ed1bcab3e0eeb0d7",
+    "ngram_source_sha256": "e216b3a607204e75d1c9a2e9c61473b5d3abdc95c794d55c6e62ced7f7f1aed7"
+  },
+  "policy_preflight": {
+    "protocol_sha256": "072e636c4cc6c3be712058d3fed45e89197421daacc02b2c88babd593501a926",
+    "policy_sha256": "22145beaaaa7c97bcef4e020544e9f50a5684634ff8d84c8366ce65b7c4e81bd",
+    "patch_sha256": "bfebefe27cc664358a49ad8dcfb632c64456ba560602f35d64d79e5576eff707",
+    "candidate_common_sha256": "5281ac9c34b12c18320f7c6105576a23c2b8e4ee793c317795450690879c2599",
+    "installed": {
+      "llama-cli.exe": "4837bd989efebc8a4895a34067ac958f2aa472506818df4ab5f62338297db72f",
+      "llama-server.exe": "b575a9a6c70587568b97a9edbbe0c084d73cea067de40cb08091a5dd399528fd",
+      "cublas64_13.dll": "49e8fa23d88ac0cbae27e200fc092b894dd55b4de5cb4293993986e29fb9b65a",
+      "cublasLt64_13.dll": "daf579ae36bb3c85e2340c57a1994f634e07c6f55ef70dd4cdc26695de21c752",
+      "cudart64_13.dll": "bd927ddf03823eeead7c8b261a8669d96764b89109311f4ab6accde8b7d97ec2",
+      "ggml-base.dll": "78a8ee0bbfa83221d579166779edbb2bf81c1440e02185a17d83dbbd3a59bfc7",
+      "ggml-cpu.dll": "04540c35427ee8c8eddb867c048302120bce5a76732fb886054da31e579c26cc",
+      "ggml-cuda.dll": "898fb56c5a64f75e945e0823efa9a773cbdec66e5de9f1f253a771911b172c9f",
+      "ggml-rpc.dll": "62f5d72e6b1c909c1a8f05737acf7205a43f7ef9319cd53fdaea9f55b7e4bced",
+      "ggml.dll": "7444aa6d23f780f05230b4b2d71d2ef424853b2da302fe584afde956ef4d801e",
+      "libomp.dll": "b13ebedc0cff13097516f9d291a2414e1a97d6ab49269307e03c5df55a60d7fd",
+      "llama-batched-bench-impl.dll": "3f9ca458697e5c3e4afbfef4d8c468d71d5f094ab4c9d65fd8834dbbf7c582db",
+      "llama-bench-impl.dll": "9c9475ffdae8ec9865d7c227997ee1e940cfa0499f9a989f773cb14a32c4736f",
+      "llama-cli-impl.dll": "851561d7d1435dd1f6b7a341d0066c548e94ff6a6e41dd2cabab99c8d383110b",
+      "llama-common.dll": "b2fa9b52c99c9d77f7b964ba283ad1a1de5eaf59cd19252984e41d8e03775e1c",
+      "llama-completion-impl.dll": "fe1963907d4b8df1c36ca2419be924132f6b58c7f9ecafe4684be47314ed677c",
+      "llama-fit-params-impl.dll": "57b80a677aebfda1f236d72a62bec0682d71f228da39dedc3bccc9a0ec34c22c",
+      "llama-perplexity-impl.dll": "4ce712ee63f8522d82bfea0e7acdd93ab9e055b69ca6bfe24232539028154698",
+      "llama-quantize-impl.dll": "1877d61a18a47a8dd6cbf4544b17adc68cd3f9f9d24615d1362d16d84935c873",
+      "llama-server-impl.dll": "c5a14ce5f4fd040637f78a68aed59c6c7f414546d63596cd53eaef4b1c7d20f9",
+      "llama.dll": "d2eeb4d523556424f6ec643737fe7ac2cfbd1a2e61cdfc1bd6eb08be37b1231b",
+      "mtmd.dll": "0e066445858363e309ea6c4b1cf440e7f10c7079de79f55a468804853cafd54b"
+    },
+    "changed_runtime_files": [
+      "llama-common.dll"
+    ],
+    "screen_script_sha256": "a4889906be3728958792de806b3bd2af27f127c618e425fd1d821d7ec6b84bfc"
+  },
+  "raw_artifact_sha256": {
+    "mtp": {
+      "response": "8140487e1e52c91d4fab5d45fa5972dbeb35758d02ed1524387a58dc6e0dd162",
+      "log": "fa0ea0f07380973447fc6d4e4b010ef11a1720c90245433827869e195408162c"
+    },
+    "hybrid": {
+      "response": "5a38168fd5c122ef97785b9f4160da54af4f9c21f49abf66ce3444912a0f83f4",
+      "log": "f3a7fab61735fef13355ba95ba13e22f56ff14ec456e84f876702ce956d04794"
+    },
+    "policy-base": {
+      "response": "0fcb0602fe4863726a8c62b8c32ce728362917aa941a8439dfb35481e994038b",
+      "log": "cfae423fbcc23b9b6aff25f6deefb5e1e3483bca544587b1c22d102d49c32031"
+    },
+    "policy-cand": {
+      "response": "33759b4aa6c231dfaf7462ddeee914d6d8e76278b5c9d31e551043d55add2848",
+      "log": "c00796eba690e7fee82b8b65627aef76056ccf56d34b6a9ebba13eccc15ba9d6"
+    }
+  },
+  "owned_server_pids": [
+    34396,
+    48768,
+    2304,
+    28600
+  ],
+  "owned_processes_exited": true,
+  "test_port_closed": true,
+  "installed_runtime_unchanged": true,
+  "owned_sources_restored": true,
+  "owned_common_server_dlls_restored": true,
+  "analysis_sha256": "0b3511bf73dd5b7d6813b2e59f32752192cd338869bf97472ffccb6eeecc9456",
+  "final_screen_script_sha256": "89ccef2dbf72dd105f5f35a545d10479d7f245d50d2dcfdb5913247f1e40bd10",
+  "source_rollback_rule_sha256": "9e57bc38d7434b0e7bcc2592cf2ca8eafbcc5a9f49a1eec5e22dbe7cc1e7c406",
+  "publication_note": "The final screen script additionally asserts the already observed 4/4 prefix equality; no performance run was repeated.",
+  "temporary_runtime_copies_removed": true,
+  "published_patch_sha256": {
+    "diagnostic.patch": "f3e2068cee964ae4340aa7725c140ba1fe37dba2ab8cdac2c08d78155c52a88a",
+    "policy.patch": "a50068608360d99d64371a95a89117149026d9aace981a385b17c5dd06ba43c4"
+  },
+  "patch_line_ending_note": "Published patches and final patch writers use LF for direct git apply against the LF owned sources; captured CRLF originals remain private. Patch content is unchanged.",
+  "final_capture_script_sha256": "23a9416b4e4a6ccea8f3ec9bbc1b155040e722967df31195d2522cb3fa6e8e61"
+}

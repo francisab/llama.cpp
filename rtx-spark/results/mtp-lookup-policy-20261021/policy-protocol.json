@@ -1,0 +1,31 @@
+{
+  "parent_protocol_sha256": "cac4b74953e751a0600936a876638af97cf2a34718f755f690878332ce308eb6",
+  "opportunity": "The optimistic oracle clears 3% on both development cases. This is permission for one bounded causal prototype, not a speed claim.",
+  "oracle_accounting_correction": "The initial protocol described acceptance plus one bonus. Source and exact traces show checkpoint replay adds a second bonus when 12 - accepted exceeds the three retained recurrent states. The analyzer uses that actual transition, and prices it optimistically at the minimum observed lookup cost.",
+  "policy": {
+    "scope": "Experimental opt-in for exactly ngram-simple plus draft-mtp, one state record per sequence; no target sampling, draft-length, checkpoint-capacity or fixture changes.",
+    "reset": "Reset on common_speculative_begin; do not transfer learning across requests.",
+    "warmup": "Four observed MTP rounds before lookup can be selected.",
+    "initial_lookup": "Try the first eligible proposal after the warmup to initialize its cost.",
+    "cost": "Elapsed monotonic time from speculative drafting entry to final accept callback divided by committed tokens. Replayed rejection remains part of the original round; accept callback length plus one includes its extra token.",
+    "estimate": "EWMA of microseconds per committed token, alpha 0.25, separately for each source.",
+    "selection": "Use lookup only when its estimated cost is at most MTP cost / 1.03.",
+    "exploration": "When lookup is estimated unprofitable, bypass fifteen eligible proposals and probe the sixteenth. No parameter sweep after observing results.",
+    "limitations": "An action's estimate includes its own measured round, but not a separately predicted downstream switching penalty. No claim of optimality or workload generality."
+  },
+  "screen": {
+    "control": "Installed files, which match the original owned-build common/server DLL hashes.",
+    "candidate": "Same installed files except freshly built llama-common.dll with the opt-in policy; no per-round diagnostic logging.",
+    "fixed_configuration": "Original target, Q4_K draft head, MTP3, ngram-simple n=m=12, ub512, dynamic vocabulary 16384, reasoning off.",
+    "order": ["control MTP", "candidate cost policy"],
+    "warmups_per_case": 1,
+    "repetitions_per_case": 2,
+    "generated_tokens": 512,
+    "minimum_gain_each_case": 0.03,
+    "require_nonoverlapping_ranges": true,
+    "require_identical_prefix_tokens": true,
+    "stop": "Stop at the first failed pair; retain source patch, policy and measurement evidence without deployment.",
+    "survivor": "Require reversed order, complete natural-EOS AST/JSON edits, and release gates before any promotion."
+  },
+  "deployment_changed": false
+}

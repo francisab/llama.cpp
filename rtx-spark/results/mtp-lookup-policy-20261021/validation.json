@@ -1,0 +1,14 @@
+{
+  "python_command": "python -m unittest discover -s rtx-spark\\results\\mtp-lookup-policy-20261021 -p test_analyze.py -v",
+  "python_result": "passed: 10 tests, including eight malformed-trace subcases",
+  "native_command": "With the native ARM64 vcvarsall.bat environment: cl /nologo /EHsc /std:c++17 /UNDEBUG rtx-spark\\results\\mtp-lookup-policy-20261021\\test-policy.cpp /Fe:<private>\\test-policy.exe /Fo:<private>\\test-policy.obj && <private>\\test-policy.exe",
+  "native_result": "passed: warmup, bootstrap, EWMA, probe cadence, reset and 3% threshold",
+  "build_command": "cmake --build C:\\llama-builds\\rel-b11756-30380-30640\\cpu --target llama-server --parallel 8",
+  "build_result": "passed for compact tracing, causal policy and restored sources",
+  "diagnostic_reconciliation": "All twelve responses match saved prefixes and every draft/accept counter reconciles. Final analyzer reproduces summary.json and rounds.json exactly.",
+  "uninstrumented_policy_screen": "completed; compare_speed.py --screen exits 3 (rejected), not an execution failure",
+  "prefix_identity": "4/4 measured paired outputs match",
+  "not_run": "Reversed-order performance, full natural-EOS edit quality and release promotion were stopped by the first failed speed pair.",
+  "restoration": "Original owned sources and common/server DLLs restored; installed runtime hashes unchanged; owned servers exited; temporary runtime copies removed.",
+  "scope": "A rejected development-set controller and diagnostic evidence, not a deployed feature or a general adaptive-policy result"
+}

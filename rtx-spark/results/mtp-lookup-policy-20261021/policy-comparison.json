@@ -1,0 +1,144 @@
+{
+ "base": {
+  "name": "U1 qfn mtp3 ub512",
+  "args": [
+   "llama-server.exe",
+   "-m",
+   "Qwen3.8-Flash-Next-UD-IQ4_XS-00001-of-00003.gguf",
+   "--mmproj",
+   "mmproj-BF16.gguf",
+   "-lzm",
+   "on",
+   "--host",
+   "127.0.0.1",
+   "--port",
+   "9940",
+   "-c",
+   "262144",
+   "-np",
+   "1",
+   "-fa",
+   "on",
+   "-ngl",
+   "999",
+   "-b",
+   "2048",
+   "-ub",
+   "512",
+   "--spec-type",
+   "draft-mtp",
+   "--spec-draft-n-max",
+   "3",
+   "-md",
+   "mtp-Qwen3.8-Flash-Next-Q8_0-output-Q4_K.gguf",
+   "--spec-draft-ngl",
+   "999",
+   "--port",
+   "9949",
+   "--spec-draft-vocab-dynamic",
+   "16384",
+   "--reasoning",
+   "off",
+   "--metrics"
+  ],
+  "load_s": 34.67178699999931,
+  "gpu_memory_ready_mib": 78375
+ },
+ "cand": {
+  "name": "U1 qfn mtp3 ub512",
+  "args": [
+   "llama-server.exe",
+   "-m",
+   "Qwen3.8-Flash-Next-UD-IQ4_XS-00001-of-00003.gguf",
+   "--mmproj",
+   "mmproj-BF16.gguf",
+   "-lzm",
+   "on",
+   "--host",
+   "127.0.0.1",
+   "--port",
+   "9940",
+   "-c",
+   "262144",
+   "-np",
+   "1",
+   "-fa",
+   "on",
+   "-ngl",
+   "999",
+   "-b",
+   "2048",
+   "-ub",
+   "512",
+   "--spec-type",
+   "draft-mtp",
+   "--spec-draft-n-max",
+   "3",
+   "-md",
+   "mtp-Qwen3.8-Flash-Next-Q8_0-output-Q4_K.gguf",
+   "--spec-draft-ngl",
+   "999",
+   "--port",
+   "9949",
+   "--spec-draft-vocab-dynamic",
+   "16384",
+   "--reasoning",
+   "off",
+   "--spec-type",
+   "ngram-simple",
+   "--spec-ngram-simple-size-n",
+   "12",
+   "--spec-ngram-simple-size-m",
+   "12",
+   "--metrics"
+  ],
+  "load_s": 39.09745810000459,
+  "gpu_memory_ready_mib": 78466
+ },
+ "cases": [
+  {
+   "case": "json_units512",
+   "base_tg_median": 63.62006917060839,
+   "cand_tg_median": 55.730525835812045,
+   "ratio": 0.875989708316111,
+   "base_tg_range": [
+    63.53806558048489,
+    63.702072760731895
+   ],
+   "cand_tg_range": [
+    54.465023435947856,
+    56.996028235676235
+   ],
+   "base_accept": 1.0,
+   "cand_accept": 0.9154929577464789
+  },
+  {
+   "case": "python_rename512",
+   "base_tg_median": 62.84126999652509,
+   "cand_tg_median": 52.9325116846486,
+   "ratio": 0.8423208456413371,
+   "base_tg_range": [
+    62.83327920982049,
+    62.849260783229695
+   ],
+   "cand_tg_range": [
+    51.82615176015709,
+    54.03887160914012
+   ],
+   "base_accept": 1.0,
+   "cand_accept": 0.891156462585034
+  }
+ ],
+ "geomean_ratio": 0.8589903328221656,
+ "identical_outputs": [
+  4,
+  4
+ ],
+ "screen": {
+  "decision": "reject",
+  "reason": "json_units512 exceeds the regression limit",
+  "quality_checked": false,
+  "min_gain_pct": 3.0,
+  "max_regression_pct": 3.0
+ }
+}
