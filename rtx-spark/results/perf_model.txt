@@ -1,0 +1,20 @@
+theoretical BW            :  300.8 GB/s
+dense bytes/token         :   4.73 GB
+routed bytes/token        :   2.72 GB  (22 of 512 experts, 3.10 MB each, 40 layers)
+total bytes/token (no spec):   7.45 GB -> ceiling  40.4 tok/s at 100% BW
+
+Inferred no-spec decode from observed 90 ms spec step:
+  routing corr=0.0: uniq experts@6=118.6  cost ratio=2.61  t_base= 31.5 ms ->  31.8 tok/s  (eff BW   237 GB/s =  79%)
+  routing corr=0.3: uniq experts@6= 91.8  cost ratio=2.16  t_base= 38.0 ms ->  26.3 tok/s  (eff BW   196 GB/s =  65%)
+  routing corr=0.5: uniq experts@6= 73.0  cost ratio=1.85  t_base= 44.4 ms ->  22.5 tok/s  (eff BW   168 GB/s =  56%)
+
+Throughput vs draft length n_max (tok/s), corr=0.3 model:
+  n_max  random/novel text a=0.35               code a=0.73              prose a=0.79        agent turns a=0.86
+      0                      26.3                      26.3                      26.3                      26.3
+      1                      24.4                      31.3                      32.4                      33.6
+      2                      22.9                      35.1                      37.5                      40.4
+      3                      20.7                      36.2                      39.7                      44.2
+      4                      18.7                      35.9                      40.3                      46.3
+      5                      17.1                      34.9                      40.0                      47.3
+      6                      15.7                      33.6                      39.2                      47.5
+      7                      14.5                      32.2                      38.2                      47.3

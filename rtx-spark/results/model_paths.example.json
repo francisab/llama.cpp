@@ -1,0 +1,11 @@
+{
+ "qfn": "<models>/Qwen3.8-Flash-Next-UD-IQ4_XS-00001-of-00003.gguf",
+ "qfn_mtp": "<models>/mtp-Qwen3.8-Flash-Next-Q8_0.gguf",
+ "qfn_mmproj": "<models>/qwen3.8-flash-next/mmproj-BF16.gguf",
+ "nem": "<models>/NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-Q4_K_M-00001-of-00002.gguf",
+ "nem_dfl": "<models>/lilicorr-NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-NVFP4.gguf",
+ "nem_mmproj": "<models>/nemotron-3.5-super-vl/mmproj-BF16.gguf",
+ "d27": "<models>/Qwen3.8-27B-UD-Q4_K_M.gguf",
+ "d27_dfl": "<models>/Qwen3.8-27B-DFlash2-Q4_K_M.gguf",
+ "d27_mmproj": "<models>/qwen3.8-27b/mmproj-F16.gguf"
+}

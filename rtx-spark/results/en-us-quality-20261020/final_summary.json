@@ -1,0 +1,280 @@
+{
+  "quality_passed": true,
+  "quality": {
+    "q8": [
+      {
+        "case": "code",
+        "phase": "warmups",
+        "source": "q8-code-retry",
+        "prompt_tokens": 163,
+        "generated_tokens": 1516,
+        "passed": true,
+        "assertions": 231
+      },
+      {
+        "case": "locale_json",
+        "phase": "warmups",
+        "source": "q8",
+        "prompt_tokens": 158,
+        "generated_tokens": 546,
+        "passed": true,
+        "assertions": 6
+      },
+      {
+        "case": "identifiers",
+        "phase": "warmups",
+        "source": "q8",
+        "prompt_tokens": 226,
+        "generated_tokens": 201,
+        "passed": true,
+        "assertions": 4
+      },
+      {
+        "case": "document",
+        "phase": "warmups",
+        "source": "q8",
+        "prompt_tokens": 17225,
+        "generated_tokens": 284,
+        "passed": true,
+        "assertions": 4
+      },
+      {
+        "case": "code",
+        "phase": "rows",
+        "source": "q8-code-retry",
+        "prompt_tokens": 163,
+        "generated_tokens": 1516,
+        "passed": true,
+        "assertions": 231
+      },
+      {
+        "case": "locale_json",
+        "phase": "rows",
+        "source": "q8",
+        "prompt_tokens": 158,
+        "generated_tokens": 546,
+        "passed": true,
+        "assertions": 6
+      },
+      {
+        "case": "identifiers",
+        "phase": "rows",
+        "source": "q8",
+        "prompt_tokens": 226,
+        "generated_tokens": 201,
+        "passed": true,
+        "assertions": 4
+      },
+      {
+        "case": "document",
+        "phase": "rows",
+        "source": "q8",
+        "prompt_tokens": 17225,
+        "generated_tokens": 277,
+        "passed": true,
+        "assertions": 4
+      }
+    ],
+    "q4": [
+      {
+        "case": "code",
+        "phase": "warmups",
+        "source": "q4-code-retry",
+        "prompt_tokens": 163,
+        "generated_tokens": 1516,
+        "passed": true,
+        "assertions": 231
+      },
+      {
+        "case": "locale_json",
+        "phase": "warmups",
+        "source": "q4",
+        "prompt_tokens": 158,
+        "generated_tokens": 546,
+        "passed": true,
+        "assertions": 6
+      },
+      {
+        "case": "identifiers",
+        "phase": "warmups",
+        "source": "q4",
+        "prompt_tokens": 226,
+        "generated_tokens": 201,
+        "passed": true,
+        "assertions": 4
+      },
+      {
+        "case": "document",
+        "phase": "warmups",
+        "source": "q4",
+        "prompt_tokens": 17225,
+        "generated_tokens": 277,
+        "passed": true,
+        "assertions": 4
+      },
+      {
+        "case": "code",
+        "phase": "rows",
+        "source": "q4-code-retry",
+        "prompt_tokens": 163,
+        "generated_tokens": 1516,
+        "passed": true,
+        "assertions": 231
+      },
+      {
+        "case": "locale_json",
+        "phase": "rows",
+        "source": "q4",
+        "prompt_tokens": 158,
+        "generated_tokens": 546,
+        "passed": true,
+        "assertions": 6
+      },
+      {
+        "case": "identifiers",
+        "phase": "rows",
+        "source": "q4",
+        "prompt_tokens": 226,
+        "generated_tokens": 201,
+        "passed": true,
+        "assertions": 4
+      },
+      {
+        "case": "document",
+        "phase": "rows",
+        "source": "q4",
+        "prompt_tokens": 17225,
+        "generated_tokens": 281,
+        "passed": true,
+        "assertions": 4
+      }
+    ]
+  },
+  "retry": "The initial Q8 measured code response exhausted 1536 tokens while still completing the function. Both heads were rerun on code only at 2048 tokens; the prompt and scorer were unchanged. Original failure evidence is preserved in quality_scores.json.",
+  "speed": {
+    "rust256": {
+      "q8": {
+        "median_tps": 49.49311288777369,
+        "cv_percent": 1.160699487843607,
+        "samples": [
+          50.06750277432869,
+          49.49311288777369,
+          48.74974119622688,
+          48.93569657565267,
+          49.876160427550175
+        ]
+      },
+      "q4": {
+        "median_tps": 51.07953082950153,
+        "cv_percent": 1.1807770136062803,
+        "samples": [
+          50.66059428254466,
+          50.77512711702412,
+          52.06953958479544,
+          51.68768396001441,
+          51.07953082950153
+        ]
+      },
+      "speedup_percent": 3.205330699899722,
+      "identical_tokens_across_heads_and_repeats": true
+    },
+    "sqlpy256": {
+      "q8": {
+        "median_tps": 47.39399913910194,
+        "cv_percent": 0.3061556541191564,
+        "samples": [
+          47.561165990894,
+          47.20137494828673,
+          47.39399913910194,
+          47.33793717977277,
+          47.52244084201565
+        ]
+      },
+      "q4": {
+        "median_tps": 49.224663293651176,
+        "cv_percent": 1.0087312055222943,
+        "samples": [
+          49.27170621542285,
+          49.82012979413736,
+          49.224663293651176,
+          48.63441245147764,
+          48.648738366512724
+        ]
+      },
+      "speedup_percent": 3.8626496767580454,
+      "identical_tokens_across_heads_and_repeats": true
+    },
+    "json256": {
+      "q8": {
+        "median_tps": 44.90168643690855,
+        "cv_percent": 1.132220034361555,
+        "samples": [
+          44.90168643690855,
+          45.66150357422134,
+          45.79203520276174,
+          44.887704166441495,
+          44.65338727462516
+        ]
+      },
+      "q4": {
+        "median_tps": 47.7015075359964,
+        "cv_percent": 1.112038743188432,
+        "samples": [
+          47.7015075359964,
+          47.10498315304132,
+          47.78951025872116,
+          46.60677969633216,
+          47.79045068081714
+        ]
+      },
+      "speedup_percent": 6.235447532737748,
+      "identical_tokens_across_heads_and_repeats": true
+    },
+    "chat256": {
+      "q8": {
+        "median_tps": 48.9441499264878,
+        "cv_percent": 1.202395901637471,
+        "samples": [
+          48.24329148653473,
+          48.9441499264878,
+          49.23667703790606,
+          48.89480484070072,
+          49.86883518525979
+        ]
+      },
+      "q4": {
+        "median_tps": 51.25605474709459,
+        "cv_percent": 0.899616456338837,
+        "samples": [
+          51.25605474709459,
+          50.40736066071201,
+          51.65659666893956,
+          51.305906335937394,
+          51.093030189368804
+        ]
+      },
+      "speedup_percent": 4.723557001355982,
+      "identical_tokens_across_heads_and_repeats": true
+    }
+  },
+  "geomean_speedup_percent": 4.5006137326607965,
+  "counts": {
+    "launches": 6,
+    "measured": 50,
+    "warmups": 18
+  },
+  "source_artifacts": {
+    "q4\\server_U1_en-us-quality.json": "cc6cad1c91411eee9cc774094f8119a860b5d27bc200b661d3164ff7b6c9a8d7",
+    "q4-code-retry\\server_U1_en-us-quality.json": "de1e84b829a4013e19cfbe01f34cb5b9fe9ad22f4b3c9e5e5dc99421ddf45149",
+    "q4-speed\\server_U1_en-us.json": "0aef23874adda9172e03f1007ebfc57f0e7938b407ec497bce777e3b2f1adf88",
+    "q8\\server_U1_en-us-quality.json": "b1d21e2d0d5c2cf148f286aa5e04ada613edcac107fa8aa733ca6a116190934d",
+    "q8-code-retry\\server_U1_en-us-quality.json": "9dac720471f9df6a148dd4161e61b0adc24a0a60f8136ac0d523d79ec49ac454",
+    "q8-speed\\server_U1_en-us.json": "43d2e23503e1d4bd6d184b290e40b5ae3bef6313687fee409f2b6c07710a18f4"
+  },
+  "limitations": [
+    "Four deterministic English tasks, not a general quality benchmark or certification at 262K context.",
+    "Thinking was enabled; natural completion lengths and intermediate reasoning can differ even within a head.",
+    "The speed comparison is one sequential Q8/Q4 pair, not a new reload or thermal soak campaign.",
+    "No reduced-vocabulary MTP implementation, operator/routing profile, or deployment change."
+  ]
+}

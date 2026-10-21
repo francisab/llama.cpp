@@ -1,0 +1,31 @@
+{
+  "command": [
+    "C:\\llama.cpp\\llama-bench.exe",
+    "-m",
+    "<hf_home>\\hub\\models--unsloth--Qwen3.8-Flash-Next-GGUF\\snapshots\\766911a6b7369840a91dbcd95f9f997acaab6cd6\\UD-IQ4_XS\\Qwen3.8-Flash-Next-UD-IQ4_XS-00001-of-00003.gguf",
+    "-fa",
+    "on",
+    "-ub",
+    "2048",
+    "-p",
+    "2048",
+    "-n",
+    "32,128",
+    "-d",
+    "0,16384",
+    "-r",
+    "5",
+    "-ngl",
+    "99",
+    "-o",
+    "json",
+    "--progress",
+    "-lzm",
+    "on"
+  ],
+  "repetitions": 5,
+  "completed": true,
+  "wall_s": 128.2692734000011,
+  "started_at_utc": "2026-10-20T19:31:56.696035+00:00",
+  "finished_at_utc": "2026-10-20T19:34:04.965964+00:00"
+}

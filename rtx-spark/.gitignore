@@ -1,0 +1,5 @@
+# local-only data: chat transcript, raw logs, full responses, local model paths
+CHAT_LOG.md
+results/logs/
+results/**/server_*.json
+results/model_paths.json

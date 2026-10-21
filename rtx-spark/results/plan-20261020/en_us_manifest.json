@@ -1,0 +1,75 @@
+{
+  "created_at": "2026-10-20T23:02:40.786050+00:00",
+  "scope": "en-US chat/prose, code, structured output and English documents; other languages are non-gating",
+  "changes": [
+    "English/code benchmark selection (--suite en-us); original heldout suite unchanged",
+    "Offline token analyzer selection (--scope en-us) with required-case validation",
+    "Existing evidence re-scored for four English/code cases; no new GPU benchmarks",
+    "PLAN v6 and README prioritize English draft-head work while retaining full target vocabulary/fallback"
+  ],
+  "source_head": "23e9d007c30e2ea0c63a8d63c3826a7703bcba4f",
+  "files": {
+    "rtx-spark\\PLAN.md": {
+      "bytes": 63304,
+      "sha256": "aff64b08b9a9ba094ff86c3bf7218aa02398b617b8b438a0cd2966c17d692554"
+    },
+    "rtx-spark\\README.md": {
+      "bytes": 15309,
+      "sha256": "4e228dfcbe4d8c610be7b1280c59acd2ad02b6be2c492ede57ce604e5545788f"
+    },
+    "rtx-spark\\bench\\heldout_suite.py": {
+      "bytes": 2314,
+      "sha256": "d9e71b09d703adc0c03b9b5f2f9cf9c28a578f8fcb0b7a046e11c726d3f492dc"
+    },
+    "rtx-spark\\bench\\run_rebaseline.py": {
+      "bytes": 14565,
+      "sha256": "5ab3c670551700c98cb28ede549655e363778dfd77212a3b316c4245474e77c1"
+    },
+    "rtx-spark\\bench\\analyze_mtp_tokens.py": {
+      "bytes": 4596,
+      "sha256": "8c647a73c026669fb5fc5c3141b32c187291a091cab1457a3664c33a0d45741c"
+    },
+    "rtx-spark\\results\\plan-20261020\\execution_manifest.json": {
+      "bytes": 15377,
+      "sha256": "4b03744b716d1b5d1e92aab12d00620dc1e53edded1f8900f5d43cdcaa087d87"
+    },
+    "rtx-spark\\results\\plan-20261020\\execution_summary.json": {
+      "bytes": 146170,
+      "sha256": "180cd4ae87989a4007b7d7503eb61da52f650498ae59a83d29138a5a0991ecf7"
+    },
+    "rtx-spark\\results\\plan-20261020\\en_us_summary.json": {
+      "bytes": 76085,
+      "sha256": "ac3122fd585ea7a1c53cc931d387d755283bfcc9822f374d03e8523ba57143b7"
+    },
+    "rtx-spark\\results\\plan-20261020\\en_us_tokens.json": {
+      "bytes": 42103,
+      "sha256": "07c22ebac4a1838a0b1b9910773c35477105bbe6bf6a344af31c1d6774971660"
+    },
+    "<work>\\summarize_en_us.py": {
+      "bytes": 3559,
+      "sha256": "5c594bab8c2ad0ee475eb319c3d9cdea7d4a7d8a6b8ca41bbfa0de9bcf31fb24"
+    }
+  },
+  "previous_provenance": "execution_manifest.json is preserved as the earlier validation snapshot; its source hashes predate this scope change. Its 62 recorded evidence artifacts were rechecked unchanged.",
+  "validation": {
+    "status": "passed",
+    "type_check": "ty 0.0.86; three changed benchmark modules",
+    "checks": [
+      "Mocked end-to-end runner: one launch, four warmups, four measured requests, chat template, natural EOS and metric deltas; no real inference",
+      "Original seven prompts preserved, including their raw prompt hashes; en-us never loads the invalid long fixture",
+      "Missing selected case, incomplete input, failed run and result overwrite rejected",
+      "12 scoped files / 240 selected measured requests; report tables and statistics match audited source",
+      "All result JSON parsed strictly; scripts pass syntax/ASCII/whitespace checks",
+      "CLI help exposes new options; git diff --check passed"
+    ]
+  },
+  "limitations": [
+    "Only four existing code-heavy cases were re-scored; this is not complete en-US quality/locale validation",
+    "Q4 draft remains experimental, not deployed",
+    "English-selected reduced draft vocabulary is a proposed next optimization, not implemented",
+    "Actual operator/routing profiling and a compatible instrumented build remain prerequisites for engine/kernel work"
+  ],
+  "new_gpu_runs": 0,
+  "deployed_settings_changed": false,
+  "committed_or_pushed": false
+}

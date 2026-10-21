@@ -1,0 +1,22 @@
+[
+ {
+  "prompt_n": 6152,
+  "pp_tps": 984.0,
+  "gen_n": 128,
+  "tg_tps": 31.01,
+  "draft_n": null,
+  "draft_acc": null,
+  "wall_s": 10.79,
+  "case": "decode128@~6152"
+ },
+ {
+  "prompt_n": 20483,
+  "pp_tps": 934.3,
+  "gen_n": 1,
+  "tg_tps": 0.0,
+  "draft_n": null,
+  "draft_acc": null,
+  "wall_s": 22.22,
+  "case": "decode128@~20483"
+ }
+]

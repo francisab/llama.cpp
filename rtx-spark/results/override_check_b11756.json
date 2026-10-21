@@ -1,0 +1,42 @@
+[
+ {
+  "prompt_n": 19,
+  "pp_tps": 67.0,
+  "gen_n": 256,
+  "tg_tps": 45.48,
+  "draft_n": 258,
+  "draft_acc": 169,
+  "wall_s": 6.26,
+  "case": "default"
+ },
+ {
+  "prompt_n": 19,
+  "pp_tps": 75.3,
+  "gen_n": 256,
+  "tg_tps": 43.64,
+  "draft_n": 264,
+  "draft_acc": 167,
+  "wall_s": 6.11,
+  "case": "req n_max=0"
+ },
+ {
+  "prompt_n": 19,
+  "pp_tps": 77.7,
+  "gen_n": 256,
+  "tg_tps": 43.87,
+  "draft_n": 264,
+  "draft_acc": 167,
+  "wall_s": 6.08,
+  "case": "req types=none"
+ },
+ {
+  "prompt_n": 19,
+  "pp_tps": 91.2,
+  "gen_n": 256,
+  "tg_tps": 44.43,
+  "draft_n": 264,
+  "draft_acc": 167,
+  "wall_s": 5.96,
+  "case": "req n_max=1"
+ }
+]

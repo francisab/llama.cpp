@@ -1,0 +1,62 @@
+[
+ {
+  "prompt_n": 6146,
+  "pp_tps": 974.1,
+  "gen_n": 128,
+  "tg_tps": 31.89,
+  "draft_n": null,
+  "draft_acc": null,
+  "wall_s": 10.36,
+  "case": "lowdiv-8K",
+  "disk_read_mb": 0.0,
+  "read_ops": 3
+ },
+ {
+  "prompt_n": 6315,
+  "pp_tps": 877.2,
+  "gen_n": 2,
+  "tg_tps": 15.26,
+  "draft_n": null,
+  "draft_acc": null,
+  "wall_s": 7.48,
+  "case": "stdlib-code-8K#1",
+  "disk_read_mb": 0.0,
+  "read_ops": 0
+ },
+ {
+  "prompt_n": 6338,
+  "pp_tps": 873.3,
+  "gen_n": 128,
+  "tg_tps": 31.0,
+  "draft_n": null,
+  "draft_acc": null,
+  "wall_s": 11.58,
+  "case": "stdlib-code-8K#2",
+  "disk_read_mb": 0.0,
+  "read_ops": 0
+ },
+ {
+  "prompt_n": 8713,
+  "pp_tps": 941.9,
+  "gen_n": 128,
+  "tg_tps": 31.66,
+  "draft_n": null,
+  "draft_acc": null,
+  "wall_s": 13.5,
+  "case": "randwords-8K",
+  "disk_read_mb": 0.0,
+  "read_ops": 0
+ },
+ {
+  "prompt_n": 6315,
+  "pp_tps": 957.9,
+  "gen_n": 2,
+  "tg_tps": 15.96,
+  "draft_n": null,
+  "draft_acc": null,
+  "wall_s": 6.96,
+  "case": "stdlib-code-8K#1-again",
+  "disk_read_mb": 0.0,
+  "read_ops": 0
+ }
+]

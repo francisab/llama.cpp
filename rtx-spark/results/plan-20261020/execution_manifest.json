@@ -1,0 +1,337 @@
+{
+  "finished_at": "2026-10-20T22:56:14.549225+00:00",
+  "source_head": "23e9d007c30e2ea0c63a8d63c3826a7703bcba4f",
+  "installed_build": "version: 0.7.0-dev (build 11756, commit d80619397)\nbuilt with Clang 20.1.8 for Windows arm64",
+  "baseline_manifest": "..\\rebaseline-20261020\\manifest.json",
+  "counts": {
+    "server_runs": 12,
+    "measured_requests": 420,
+    "warmups": 84,
+    "native_samples": 25
+  },
+  "source_files": {
+    "rtx-spark\\bench\\run_rebaseline.py": {
+      "sha256": "116ec8478e7899e021439758a1a5afda42906624c6e67d503cc5d6c4d5adb19c",
+      "bytes": 14523
+    },
+    "rtx-spark\\bench\\heldout_suite.py": {
+      "sha256": "35a316756ce03bab9db711c25c8dfba13820121d0d1fd64cdeba083c8f89ec49",
+      "bytes": 2141
+    },
+    "rtx-spark\\bench\\analyze_mtp_tokens.py": {
+      "sha256": "92b914657128c0a1efa44080231d08f3aa9e2750d83387b3eb4c6efd3e486bcd",
+      "bytes": 3991
+    },
+    "rtx-spark\\bench\\run_matrix.py": {
+      "sha256": "de1fc4fb208b79ef68fc43d8a10f9a0f55e4790595f019cc79d415182002b2fe",
+      "bytes": 8108
+    },
+    "rtx-spark\\bench\\bench_server.py": {
+      "sha256": "d40798a643f8bfba846d0cc90ee1bd1fcdf45ed00447e07aa2b9aa1b181374f5",
+      "bytes": 2566
+    },
+    "rtx-spark\\PLAN.md": {
+      "sha256": "f5567674a975cc2493c7899e3f3b47070bac1b13a5e289476f6726f13ee22084",
+      "bytes": 58848
+    },
+    "rtx-spark\\README.md": {
+      "sha256": "02ba5cabd3a56a5d27e7a0079ecac10b29aae72318eec932b2aa2e79e7550c9c",
+      "bytes": 13633
+    }
+  },
+  "summary_generator": {
+    "path": "<work>\\audit_plan_results.py",
+    "sha256": "f2e75057e2518ff2dcc7b2a4f3e09f8c7ab9245e98d2a5200d1ac3233c8e0bf7"
+  },
+  "runner_provenance_note": "Final hashes describe the final scripts, not every earlier invocation. The native ubatch profile was narrowed before its first execution. Saved commands, requests, and environment overrides are authoritative for individual runs.",
+  "integrity": {
+    "initial_binary_and_model_sizes_and_mtimes_unchanged": true,
+    "binaries_rehashed_unchanged": true,
+    "original_and_candidate_draft_rehashed_unchanged": true,
+    "original_draft_sha256": "6be8a94e2d94107b7f38fdc957c3460ffeb6ff6302edef92c50738682f9dc0e0",
+    "candidate_draft_sha256": "ee2207b567710b4f73035b83ed214ba470ee17a94355c678e17fd3c58e7ccd84"
+  },
+  "validation": {
+    "python_type_check": "passed: ty 0.0.86; CI-pinned 0.0.88 unavailable from configured index",
+    "commands": [
+      "python -m ty check rtx-spark\\bench\\run_rebaseline.py rtx-spark\\bench\\heldout_suite.py rtx-spark\\bench\\analyze_mtp_tokens.py --exit-zero-on-warning",
+      "git -c core.whitespace=cr-at-eol diff --check"
+    ],
+    "script_syntax_ascii_whitespace": "passed",
+    "mocked_checks": "passed: metrics parsing/deltas, natural EOS and fixed counts, native profile/environment propagation, overwrite protection, incomplete-input rejection, coverage and per-position arithmetic",
+    "evidence_audit": "passed: 12 complete/clean server runs, output token/content hashes, per-request counters, single-variable command controls, five samples in each native row, reported tables and strict JSON"
+  },
+  "scope_change": "After the user questioned excessive benchmarking, the waiting all-model verify/lazy/ubatch chain was stopped before launch. Only the already-running depth sweep plus Flash-Next decode, graph-off, fusion-off, and two-batch prefill diagnostics were completed. No more GPU jobs are queued.",
+  "decisions": {
+    "q4_head": "retain separately, not promoted; short-case +1.70% geometric mean across reloads, +3.46% in separate natural-EOS pair; long fixture fails quality gate",
+    "nemotron": "default MTP3; p_min=0.5 slower in every held-out case in both modes",
+    "flash_depth": "keep MTP3 conservative default; no universally best depth and outputs differ",
+    "graphs_fusion": "keep enabled; already implemented and beneficial",
+    "ubatch": "keep 512; 2048 median difference within run variation",
+    "adaptive_controller": "not justified; hindsight oracle +2.87% over best fixed before overhead, no policy test",
+    "reduced_vocab": "naive low-ID prefix not suitable for multilingual output; no trained subset implemented",
+    "grouped_moe": "gate blocked by absent measured route overlap and operator profile"
+  },
+  "remaining_gates": [
+    "Repair/chat-template and score the long-context fixture before claiming long-context correctness.",
+    "Task/rare-identifier accuracy and uninterrupted long soak not validated.",
+    "No operator GPU trace, routed-ID overlap, controlled cold-PLE or lazy-off result; compatible instrumentation/profiling needed before kernel development.",
+    "Depth and head results include sequential launch-order and output-length/content confounders; no cumulative forecast."
+  ],
+  "cleanup": {
+    "active_inference_or_telemetry_processes": 0,
+    "gpu": "name, memory.used [MiB], power.draw [W], temperature.gpu\nNVIDIA RTX Spark N1X (6144-core Blackwell RTX GPU), 1854 MiB, 2.22 W, 54\n",
+    "deployed_settings_changed": false,
+    "committed_or_pushed": false
+  },
+  "artifacts": {
+    "bench-targeted\\plain_qfn_decode.json": {
+      "bytes": 1555,
+      "sha256": "40da575b62f567e24868ea57f55737750d9eebcc678ebab6f69a4d2062f42190"
+    },
+    "bench-targeted\\plain_qfn_decode.log": {
+      "bytes": 707,
+      "sha256": "7e43c8350ee33d5a69352b4d5f8a7da467e324a11d3b177b964283eee11b4535"
+    },
+    "bench-targeted\\plain_qfn_decode.meta.json": {
+      "bytes": 577,
+      "sha256": "4ae8855efca3db0247cc092814bab7b74a887004cbe1dd7229105cd9ef5d77d1"
+    },
+    "bench-targeted\\plain_qfn_nofusion.json": {
+      "bytes": 1556,
+      "sha256": "6d09432e7ca9400f58c2fb5eaaa26a0dda86545c7062daa0bdfbf3f76d9840f7"
+    },
+    "bench-targeted\\plain_qfn_nofusion.log": {
+      "bytes": 707,
+      "sha256": "7e43c8350ee33d5a69352b4d5f8a7da467e324a11d3b177b964283eee11b4535"
+    },
+    "bench-targeted\\plain_qfn_nofusion.meta.json": {
+      "bytes": 617,
+      "sha256": "df4b0f1c1cdf78f2374609c45aabe47425c82127545684541c7b89ff93d52b12"
+    },
+    "bench-targeted\\plain_qfn_nographs.json": {
+      "bytes": 1556,
+      "sha256": "d6ccfa97f6824d5540683b7e133332630ad790400494d4a73925bf8255afb1e5"
+    },
+    "bench-targeted\\plain_qfn_nographs.log": {
+      "bytes": 707,
+      "sha256": "7e43c8350ee33d5a69352b4d5f8a7da467e324a11d3b177b964283eee11b4535"
+    },
+    "bench-targeted\\plain_qfn_nographs.meta.json": {
+      "bytes": 616,
+      "sha256": "2d6dccf552686caa0f6821f08cac2f48a86ba82d5bb18a417a7dcbe7866749fc"
+    },
+    "bench-targeted\\plain_qfn_ubatch.json": {
+      "bytes": 3116,
+      "sha256": "c22ada051338d64c06c93f07aa384167e39f749661df7389cd9a1f5430af1874"
+    },
+    "bench-targeted\\plain_qfn_ubatch.log": {
+      "bytes": 988,
+      "sha256": "a29feccaf254418ab12f081b4478bf70e0da0235d0fc0f4630281308b605c8fb"
+    },
+    "bench-targeted\\plain_qfn_ubatch.meta.json": {
+      "bytes": 583,
+      "sha256": "406ab70809db760561a19e794d9df59f039251d76b674d786a57fab81624bc8e"
+    },
+    "bench-targeted\\telemetry_plain_decode_qfn.csv": {
+      "bytes": 813,
+      "sha256": "898dbc5e768010bd7f0d535c992e41481039eba6a7029b6a3d7e24a4890a6066"
+    },
+    "bench-targeted\\telemetry_plain_nofusion_qfn.csv": {
+      "bytes": 818,
+      "sha256": "d5d13d64131b4be6c8a60ec5bdf633f32324233dd638dd2c231db186ee8cf9da"
+    },
+    "bench-targeted\\telemetry_plain_nographs_qfn.csv": {
+      "bytes": 1075,
+      "sha256": "4fb2a943dec63ab8f05b17f145990891221842646eda50e74961b3c25c827d30"
+    },
+    "bench-targeted\\telemetry_plain_ubatch_qfn.csv": {
+      "bytes": 942,
+      "sha256": "178acb7a748a71b48e73bbad48db4125278a18837c3d6f373d0f3f2609a7f908"
+    },
+    "depth-q4\\server_U2_heldout.json": {
+      "bytes": 1200182,
+      "sha256": "0e63d5915c6a0099b29cb3703091bcc303d0fb347e53fdc4eb7bed5a6de29a7b"
+    },
+    "depth-q4\\server_U2_heldout.log": {
+      "bytes": 59667,
+      "sha256": "a1d687b57797eb77ea97db885e6ceec5a155cd5d76f4284d48b308c4470617b1"
+    },
+    "depth-q4\\server_U4_heldout.json": {
+      "bytes": 1208865,
+      "sha256": "1313c067d0772d905f023d8158183ff7e2139790b1344079bff02b05299fc790"
+    },
+    "depth-q4\\server_U4_heldout.log": {
+      "bytes": 59356,
+      "sha256": "f2fe10c4c554ea68e17152fa1847124efedcd8432e4d8c591375a2eede423b58"
+    },
+    "depth-q4\\telemetry_server_heldout_U2.csv": {
+      "bytes": 5949,
+      "sha256": "f2ee8ba2c3913ca7f6f6cbbca06b5d673d0f136ac13bbfacc90803ee6a6f9339"
+    },
+    "depth-q4\\telemetry_server_heldout_U4.csv": {
+      "bytes": 5945,
+      "sha256": "5275cfb809cc3ce2c4ce383860ebc0869009febe9d7b67a36d3d55930f5ff6fe"
+    },
+    "depth_u3_u2.json": {
+      "bytes": 16839,
+      "sha256": "4c6aaabbbe67b83495948779eeb72f6f0b4138fe274f6e21d38ce87492d74a00"
+    },
+    "depth_u3_u4.json": {
+      "bytes": 17193,
+      "sha256": "107938fbb526229558a5f430317ee29604c2967b0db9e13107f6bc5ba64d86c2"
+    },
+    "execution_summary.json": {
+      "bytes": 146170,
+      "sha256": "180cd4ae87989a4007b7d7503eb61da52f650498ae59a83d29138a5a0991ecf7"
+    },
+    "head_heldout_eos_summary.json": {
+      "bytes": 11855,
+      "sha256": "bde32c71a145e1b319e74c39f54961ee0432342caa049a60799c45fcee006dcc"
+    },
+    "head_heldout_summary.json": {
+      "bytes": 21865,
+      "sha256": "485bc653567b33f025ae3695f180142d3ec53c6d85d7cbc0e8e47e8fd8d191a0"
+    },
+    "heldout-eos-q4\\server_U1_heldout.json": {
+      "bytes": 1157224,
+      "sha256": "09c664280f194a7a50d4edec4e7ce8999fbe205339b4961065b2847dbada050e"
+    },
+    "heldout-eos-q4\\server_U1_heldout.log": {
+      "bytes": 58164,
+      "sha256": "31c1baec6ef2bddafe906ad29c816c8f78de279aa99ff41a88bc0125a5dc25a7"
+    },
+    "heldout-eos-q4\\telemetry_server_heldout_U1.csv": {
+      "bytes": 5497,
+      "sha256": "8a3959ca5e3286ce0e4c112bdf827daa2dad1b577c25cee4c8f122896095ed50"
+    },
+    "heldout-eos-q8\\server_U1_heldout.json": {
+      "bytes": 1157353,
+      "sha256": "36ae5c3452de09508262bc21ed64ab5a0120419b3f69b927a60b9290ce18ce16"
+    },
+    "heldout-eos-q8\\server_U1_heldout.log": {
+      "bytes": 58292,
+      "sha256": "c5d16a549235f784809c7a1fb22178402d8a47988fb901fe5eff1c92ba106411"
+    },
+    "heldout-eos-q8\\telemetry_server_heldout_U1.csv": {
+      "bytes": 5628,
+      "sha256": "afed824a3b092b7a3b41f4a170f75394a2e7494404209f4b48735744f5fcc3c0"
+    },
+    "heldout-q4-b1\\server_U1_heldout.json": {
+      "bytes": 1206202,
+      "sha256": "fe507fa4e74286323d9c6040e6e8d2b3579e0e5a3b6edf8ddef4422a6e9f4350"
+    },
+    "heldout-q4-b1\\server_U1_heldout.log": {
+      "bytes": 60032,
+      "sha256": "450e628f781a4f29a71f41d141f8a595ce8cba8c7a142473f158e89604e4bc4d"
+    },
+    "heldout-q4-b1\\telemetry_server_heldout_U1.csv": {
+      "bytes": 5884,
+      "sha256": "a2b85eab00046c3ea1f3d2b816a152314ce08bfb703a0e3383b6cb557404fcf3"
+    },
+    "heldout-q4-b2\\server_U1_heldout.json": {
+      "bytes": 1206260,
+      "sha256": "c51cf5edf3ca58f71be53b8752acd588e872ab6c5e1d51eecad59aaff672a709"
+    },
+    "heldout-q4-b2\\server_U1_heldout.log": {
+      "bytes": 59712,
+      "sha256": "b1718b375e027e53a3381c64bad7972cd44e47da9e4669167946c7259709c6f9"
+    },
+    "heldout-q4-b2\\telemetry_server_heldout_U1.csv": {
+      "bytes": 5950,
+      "sha256": "fa9e525e2669984e81448965fa16ebf8506cc5b6cfa4590db7c16ca35d3b9f0e"
+    },
+    "heldout-q8-a1\\server_U1_heldout.json": {
+      "bytes": 1206155,
+      "sha256": "e89357a814acfb7b63f5fe4aa0aaeb13c8b7f4fb2328e5bbd640fcde9c8e306e"
+    },
+    "heldout-q8-a1\\server_U1_heldout.log": {
+      "bytes": 59859,
+      "sha256": "902c0edf2bf1d46f9cdc4d6548d03dcaa7b7a9b248e5d15246d1fd99c1fac13f"
+    },
+    "heldout-q8-a1\\telemetry_server_heldout_U1.csv": {
+      "bytes": 6010,
+      "sha256": "d7fdec97c1563961a8d65ab6b122f60b9b26542d088e6eda2a5268d3947d654b"
+    },
+    "heldout-q8-a2\\server_U1_heldout.json": {
+      "bytes": 1206148,
+      "sha256": "98b0b28dcaed8c10135a3d1b4b7334bbe416edb1cdf814d844754b911d0e0ced"
+    },
+    "heldout-q8-a2\\server_U1_heldout.log": {
+      "bytes": 60010,
+      "sha256": "fc63db39b43d3ae9c18531f89a83bc24f13d28436b07b623d89c8f818191838f"
+    },
+    "heldout-q8-a2\\telemetry_server_heldout_U1.csv": {
+      "bytes": 5947,
+      "sha256": "55e524d447d5837de0bf9cd9eb04466f08e6f30a28253644c2d302def4fc4a88"
+    },
+    "mtp_depth_acceptance.json": {
+      "bytes": 12847,
+      "sha256": "d92eb15c20e87998dcf7b5a52f0d9de6ef5eee0781ac2b493ab2a9129fe57534"
+    },
+    "mtp_token_coverage_heldout_qfn.json": {
+      "bytes": 25527,
+      "sha256": "6883789116aa01e90ad29fe1e0d43c9c324fc359444f8d73cc626f84fac1d68e"
+    },
+    "mtp_token_coverage_rebaseline.json": {
+      "bytes": 13467,
+      "sha256": "31d338fe1e9a8f88e7cd8b348b47abfdf32d190f572b6cb3a565c78a120b57c7"
+    },
+    "nem-heldout\\server_N2_heldout.json": {
+      "bytes": 1193269,
+      "sha256": "8c17ddfff3c4a1b54e648673c77f8fa26912d120f5e915077d0ec5c1088fece9"
+    },
+    "nem-heldout\\server_N2_heldout.log": {
+      "bytes": 53564,
+      "sha256": "64527d3ef933a66cdb158c56826d5b053b8bfde40fd392aaf46e50551eba2bfd"
+    },
+    "nem-heldout\\server_N4_heldout.json": {
+      "bytes": 1193615,
+      "sha256": "0ad45ecf1c515518892840b739d870c4fc22d376c47cbbe0d947941487a0d18e"
+    },
+    "nem-heldout\\server_N4_heldout.log": {
+      "bytes": 54853,
+      "sha256": "87d2f9a23b48f849288f5952f3a499895ab2246676faec96391899811a17a271"
+    },
+    "nem-heldout\\telemetry_server_heldout_N2.csv": {
+      "bytes": 5557,
+      "sha256": "ecdd205f68343cb99e410c29b2680462d38cd5a9de206d88a808f64d86f83de0"
+    },
+    "nem-heldout\\telemetry_server_heldout_N4.csv": {
+      "bytes": 5688,
+      "sha256": "11bae75e09ea6b6cf4db26e46ffb03cb6772422a883bd28f1bd2f0ad62d4cfc4"
+    },
+    "nem-heldout-eos\\server_N2_heldout.json": {
+      "bytes": 1185747,
+      "sha256": "894bc446227f47301262b2355fea61f40ca95d872e7fef28d83737d6ea57efe5"
+    },
+    "nem-heldout-eos\\server_N2_heldout.log": {
+      "bytes": 53884,
+      "sha256": "a0380c2f64c1458c8cf0ed0f01ffad0c2e8846ef27d376285f2cd350c026afb4"
+    },
+    "nem-heldout-eos\\server_N4_heldout.json": {
+      "bytes": 1185993,
+      "sha256": "2ee3f71d83c930630c7d8cef42ac4b01c213015f5bca600606de16381ea4c3ce"
+    },
+    "nem-heldout-eos\\server_N4_heldout.log": {
+      "bytes": 54853,
+      "sha256": "7f053fcbbd94f189ba4d5374fbb7d84da1bc839e440491a267b7773e063ee0eb"
+    },
+    "nem-heldout-eos\\telemetry_server_heldout_N2.csv": {
+      "bytes": 5490,
+      "sha256": "2a526f779a01ea03b6f1e954b0bcf8a876a02c404aefafc4a56ee5a39a0a632a"
+    },
+    "nem-heldout-eos\\telemetry_server_heldout_N4.csv": {
+      "bytes": 5814,
+      "sha256": "a8c4b3c9513ac3a812985f67ecddd03097d155e74ad63a66277cddef9b4d1304"
+    },
+    "nem_heldout_eos_summary.json": {
+      "bytes": 12255,
+      "sha256": "dfcd38e9bd9ae09358589c875e15505b7c166d8d60a4e4b59fde3b028cfda7d6"
+    },
+    "nem_heldout_summary.json": {
+      "bytes": 12264,
+      "sha256": "0e88fc2e69225df32c456ed71dd374b02e4644e950964c4d9a11f3f27ab8277e"
+    }
+  }
+}

@@ -1,0 +1,312 @@
+{
+  "purpose": "Feasibility screen only; no MTP mapping or serving changes.",
+  "scope": "Qwen3.8-Flash-Next MTP draft vocabulary; English/code frequency shortlist.",
+  "tokenizer": {
+    "model_path": "<hf_home>\\hub\\models--ggml-org--Qwen3.8-Flash-Next-GGUF\\snapshots\\92796c044d1e70d66a373598709092f2989f4155\\mtp-Qwen3.8-Flash-Next-Q8_0.gguf",
+    "vocab_size": 248320,
+    "special_token_count": 276,
+    "special_token_id_min": 248044,
+    "special_token_id_max": 248319,
+    "special_token_types": {
+      "1": 248044,
+      "3": 27,
+      "4": 6,
+      "5": 243
+    },
+    "vocabulary_sha256": "6d8afc30d32560a9bf5c707343ae4c419eff86da69b0fbed7fd2519b73abee1f"
+  },
+  "selection": {
+    "method": "equal-weight normalized frequency from disjoint code and prose corpora; stable token-ID tie-break; include every non-normal token ID",
+    "code_corpus": {
+      "files": 1311,
+      "bytes": 25358238,
+      "tokens": 8241158,
+      "sha256": "724d7fc823572c0c33ea81c227e35d3d1e82edf00e1c2886c2f490e5d924d978"
+    },
+    "prose_corpus": {
+      "files": 53,
+      "bytes": 476448,
+      "tokens": 143363,
+      "sha256": "16f80654f763542609e2411a28f117b079135371879ab1cc8dc88217fa43ba17"
+    },
+    "excluded_evaluation_sources": [
+      "docs/build.md",
+      "docs/speculative.md",
+      "rtx-spark/bench/*",
+      "rtx-spark/results/*"
+    ],
+    "special_tokens_included": 276,
+    "candidate_budgets_ordinary_tokens": [
+      16384,
+      32768,
+      65536
+    ]
+  },
+  "head_cost": {
+    "baseline_output_weight_bytes": 675430400,
+    "row_bytes_q8_0": 2720,
+    "full_vocab_peak_bandwidth_floor_ms_at_300_8_GB_s": 2.2454468085106383,
+    "note": "The 4.50% Q4_K end-to-end gain was measured separately; this bandwidth floor is theoretical and does not isolate the output-head operator."
+  },
+  "heldout": {
+    "en_us_speed": {
+      "source_files": [
+        "rtx-spark/results/en-us-quality-20261020/q8-speed/server_U1_en-us.json",
+        "rtx-spark/results/en-us-quality-20261020/q4-speed/server_U1_en-us.json"
+      ],
+      "responses": 40,
+      "coverage_by_shortlist": {
+        "16384": {
+          "overall": {
+            "responses_tokens": 10240,
+            "distinct_tokens": 349,
+            "coverage": 0.8251953125,
+            "misses": 87,
+            "special_coverage": 1.0
+          },
+          "cases": {
+            "chat256": {
+              "responses_tokens": 2560,
+              "distinct_tokens": 60,
+              "coverage": 0.8984375,
+              "misses": 8,
+              "special_coverage": 1.0
+            },
+            "json256": {
+              "responses_tokens": 2560,
+              "distinct_tokens": 106,
+              "coverage": 0.81640625,
+              "misses": 25,
+              "special_coverage": 1.0
+            },
+            "rust256": {
+              "responses_tokens": 2560,
+              "distinct_tokens": 129,
+              "coverage": 0.796875,
+              "misses": 21,
+              "special_coverage": 1.0
+            },
+            "sqlpy256": {
+              "responses_tokens": 2560,
+              "distinct_tokens": 116,
+              "coverage": 0.7890625,
+              "misses": 33,
+              "special_coverage": 1.0
+            }
+          }
+        },
+        "32768": {
+          "overall": {
+            "responses_tokens": 10240,
+            "distinct_tokens": 349,
+            "coverage": 0.9287109375,
+            "misses": 46,
+            "special_coverage": 1.0
+          },
+          "cases": {
+            "chat256": {
+              "responses_tokens": 2560,
+              "distinct_tokens": 60,
+              "coverage": 0.98828125,
+              "misses": 2,
+              "special_coverage": 1.0
+            },
+            "json256": {
+              "responses_tokens": 2560,
+              "distinct_tokens": 106,
+              "coverage": 0.86328125,
+              "misses": 18,
+              "special_coverage": 1.0
+            },
+            "rust256": {
+              "responses_tokens": 2560,
+              "distinct_tokens": 129,
+              "coverage": 0.96484375,
+              "misses": 8,
+              "special_coverage": 1.0
+            },
+            "sqlpy256": {
+              "responses_tokens": 2560,
+              "distinct_tokens": 116,
+              "coverage": 0.8984375,
+              "misses": 18,
+              "special_coverage": 1.0
+            }
+          }
+        },
+        "65536": {
+          "overall": {
+            "responses_tokens": 10240,
+            "distinct_tokens": 349,
+            "coverage": 0.9912109375,
+            "misses": 8,
+            "special_coverage": 1.0
+          },
+          "cases": {
+            "chat256": {
+              "responses_tokens": 2560,
+              "distinct_tokens": 60,
+              "coverage": 0.99609375,
+              "misses": 1,
+              "special_coverage": 1.0
+            },
+            "json256": {
+              "responses_tokens": 2560,
+              "distinct_tokens": 106,
+              "coverage": 0.99609375,
+              "misses": 1,
+              "special_coverage": 1.0
+            },
+            "rust256": {
+              "responses_tokens": 2560,
+              "distinct_tokens": 129,
+              "coverage": 0.99609375,
+              "misses": 1,
+              "special_coverage": 1.0
+            },
+            "sqlpy256": {
+              "responses_tokens": 2560,
+              "distinct_tokens": 116,
+              "coverage": 0.9765625,
+              "misses": 5,
+              "special_coverage": 1.0
+            }
+          }
+        }
+      }
+    },
+    "en_us_quality": {
+      "source_files": [
+        "rtx-spark/results/en-us-quality-20261020/q8/server_U1_en-us-quality.json",
+        "rtx-spark/results/en-us-quality-20261020/q8-code-retry/server_U1_en-us-quality.json",
+        "rtx-spark/results/en-us-quality-20261020/q4/server_U1_en-us-quality.json",
+        "rtx-spark/results/en-us-quality-20261020/q4-code-retry/server_U1_en-us-quality.json"
+      ],
+      "responses": 8,
+      "coverage_by_shortlist": {
+        "16384": {
+          "overall": {
+            "responses_tokens": 5084,
+            "distinct_tokens": 463,
+            "coverage": 0.923682140047207,
+            "misses": 83,
+            "special_coverage": 1.0
+          },
+          "cases": {
+            "code": {
+              "responses_tokens": 3032,
+              "distinct_tokens": 282,
+              "coverage": 0.9386543535620053,
+              "misses": 39,
+              "special_coverage": 1.0
+            },
+            "document": {
+              "responses_tokens": 558,
+              "distinct_tokens": 93,
+              "coverage": 0.9498207885304659,
+              "misses": 10,
+              "special_coverage": 1.0
+            },
+            "identifiers": {
+              "responses_tokens": 402,
+              "distinct_tokens": 83,
+              "coverage": 0.9601990049751243,
+              "misses": 7,
+              "special_coverage": 1.0
+            },
+            "locale_json": {
+              "responses_tokens": 1092,
+              "distinct_tokens": 171,
+              "coverage": 0.8553113553113553,
+              "misses": 35,
+              "special_coverage": 1.0
+            }
+          }
+        },
+        "32768": {
+          "overall": {
+            "responses_tokens": 5084,
+            "distinct_tokens": 463,
+            "coverage": 0.9728560188827695,
+            "misses": 31,
+            "special_coverage": 1.0
+          },
+          "cases": {
+            "code": {
+              "responses_tokens": 3032,
+              "distinct_tokens": 282,
+              "coverage": 0.9861477572559367,
+              "misses": 10,
+              "special_coverage": 1.0
+            },
+            "document": {
+              "responses_tokens": 558,
+              "distinct_tokens": 93,
+              "coverage": 0.989247311827957,
+              "misses": 3,
+              "special_coverage": 1.0
+            },
+            "identifiers": {
+              "responses_tokens": 402,
+              "distinct_tokens": 83,
+              "coverage": 0.9800995024875622,
+              "misses": 3,
+              "special_coverage": 1.0
+            },
+            "locale_json": {
+              "responses_tokens": 1092,
+              "distinct_tokens": 171,
+              "coverage": 0.924908424908425,
+              "misses": 17,
+              "special_coverage": 1.0
+            }
+          }
+        },
+        "65536": {
+          "overall": {
+            "responses_tokens": 5084,
+            "distinct_tokens": 463,
+            "coverage": 0.995279307631786,
+            "misses": 7,
+            "special_coverage": 1.0
+          },
+          "cases": {
+            "code": {
+              "responses_tokens": 3032,
+              "distinct_tokens": 282,
+              "coverage": 0.9967018469656992,
+              "misses": 2,
+              "special_coverage": 1.0
+            },
+            "document": {
+              "responses_tokens": 558,
+              "distinct_tokens": 93,
+              "coverage": 0.989247311827957,
+              "misses": 3,
+              "special_coverage": 1.0
+            },
+            "identifiers": {
+              "responses_tokens": 402,
+              "distinct_tokens": 83,
+              "coverage": 0.9950248756218906,
+              "misses": 1,
+              "special_coverage": 1.0
+            },
+            "locale_json": {
+              "responses_tokens": 1092,
+              "distinct_tokens": 171,
+              "coverage": 0.9945054945054945,
+              "misses": 3,
+              "special_coverage": 1.0
+            }
+          }
+        }
+      }
+    }
+  },
+  "caveats": [
+    "Repository source frequency is a proxy, not a representative external en-US/code training corpus.",
+    "Token coverage is not draft acceptance, output quality, or an exact speculative-decoding speed prediction.",
+    "Output-head operator time remains unmeasured because a compatible profiler/instrumented build is unavailable."
+  ]
+}

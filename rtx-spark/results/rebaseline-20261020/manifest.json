@@ -1,0 +1,258 @@
+{
+  "created_at": "2026-10-20T19:31:17.284544+00:00",
+  "source_commit": "23e9d007c30e2ea0c63a8d63c3826a7703bcba4f",
+  "server_version": "version: 0.7.0-dev (build 11756, commit d80619397)\nbuilt with Clang 20.1.8 for Windows arm64",
+  "platform": "Windows-11-ARM64",
+  "models": {
+    "nem_mmproj": [
+      "<launcher_data>\\projectors\\unsloth--NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-GGUF\\main\\mmproj-BF16.gguf"
+    ],
+    "nem": [
+      "<hf_home>\\hub\\models--lmstudio-community--NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-GGUF\\snapshots\\716398014e94528b38bf58871dbd6eb996bd7ad9\\NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-Q4_K_M-00001-of-00002.gguf",
+      "<hf_home>\\hub\\models--lmstudio-community--NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-GGUF\\snapshots\\716398014e94528b38bf58871dbd6eb996bd7ad9\\NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-Q4_K_M-00002-of-00002.gguf"
+    ],
+    "qfn_mtp": [
+      "<hf_home>\\hub\\models--ggml-org--Qwen3.8-Flash-Next-GGUF\\snapshots\\92796c044d1e70d66a373598709092f2989f4155\\mtp-Qwen3.8-Flash-Next-Q8_0.gguf"
+    ],
+    "qfn_mmproj": [
+      "<launcher_data>\\projectors\\unsloth--Qwen3.8-Flash-Next-GGUF\\38bb39ee97821de2c9009abb7e93950eec396e66\\mmproj-BF16.gguf"
+    ],
+    "nem_dfl": [
+      "<hf_home>\\hub\\models--unsloth--NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-GGUF\\snapshots\\75a5829055f69a0359085ae6bbd0a81b60bc05c6\\LiLiCorr\\lilicorr-NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-NVFP4.gguf"
+    ],
+    "qfn": [
+      "<hf_home>\\hub\\models--unsloth--Qwen3.8-Flash-Next-GGUF\\snapshots\\766911a6b7369840a91dbcd95f9f997acaab6cd6\\UD-IQ4_XS\\Qwen3.8-Flash-Next-UD-IQ4_XS-00001-of-00003.gguf",
+      "<hf_home>\\hub\\models--unsloth--Qwen3.8-Flash-Next-GGUF\\snapshots\\766911a6b7369840a91dbcd95f9f997acaab6cd6\\UD-IQ4_XS\\Qwen3.8-Flash-Next-UD-IQ4_XS-00002-of-00003.gguf",
+      "<hf_home>\\hub\\models--unsloth--Qwen3.8-Flash-Next-GGUF\\snapshots\\766911a6b7369840a91dbcd95f9f997acaab6cd6\\UD-IQ4_XS\\Qwen3.8-Flash-Next-UD-IQ4_XS-00003-of-00003.gguf"
+    ],
+    "d27": [
+      "<hf_home>\\hub\\models--unsloth--Qwen3.8-27B-GGUF\\snapshots\\4ca720788d1e01f1bff70c033e0d0028fd02e502\\Qwen3.8-27B-UD-Q4_K_M.gguf"
+    ],
+    "d27_dfl": [
+      "<hf_home>\\hub\\models--incoai--Qwen3.8-27B-DFlash2-GGUF\\snapshots\\51962825493a48b846b40126d35c799ac4093ad0\\Qwen3.8-27B-DFlash2-Q4_K_M.gguf"
+    ],
+    "d27_mmproj": [
+      "<launcher_data>\\projectors\\unsloth--Qwen3.8-27B-GGUF\\4ca720788d1e01f1bff70c033e0d0028fd02e502\\mmproj-F16.gguf"
+    ]
+  },
+  "files": {
+    "C:\\llama.cpp\\cublas64_13.dll": {
+      "size": 24207984,
+      "mtime_ns": 1786433244000000000,
+      "sha256": "49e8fa23d88ac0cbae27e200fc092b894dd55b4de5cb4293993986e29fb9b65a",
+      "resolved_path": "C:\\llama.cpp\\cublas64_13.dll"
+    },
+    "C:\\llama.cpp\\cublasLt64_13.dll": {
+      "size": 193128560,
+      "mtime_ns": 1786433246000000000,
+      "sha256": "daf579ae36bb3c85e2340c57a1994f634e07c6f55ef70dd4cdc26695de21c752",
+      "resolved_path": "C:\\llama.cpp\\cublasLt64_13.dll"
+    },
+    "C:\\llama.cpp\\cudart64_13.dll": {
+      "size": 606832,
+      "mtime_ns": 1785542970000000000,
+      "sha256": "bd927ddf03823eeead7c8b261a8669d96764b89109311f4ab6accde8b7d97ec2",
+      "resolved_path": "C:\\llama.cpp\\cudart64_13.dll"
+    },
+    "C:\\llama.cpp\\ggml-base.dll": {
+      "size": 667136,
+      "mtime_ns": 1792526172000000000,
+      "sha256": "1ec767849b8bd1abf1ee81f538e0e2254c617aed0070701e69566910e3f642e9",
+      "resolved_path": "C:\\llama.cpp\\ggml-base.dll"
+    },
+    "C:\\llama.cpp\\ggml-cpu.dll": {
+      "size": 835072,
+      "mtime_ns": 1792526176000000000,
+      "sha256": "ce0be367a52d366260a5b9ce63a737e6c233754d2505344ffd758891fee8c8bb",
+      "resolved_path": "C:\\llama.cpp\\ggml-cpu.dll"
+    },
+    "C:\\llama.cpp\\ggml-cuda.dll": {
+      "size": 147294208,
+      "mtime_ns": 1792520908000000000,
+      "sha256": "a3336e4fb10bbea46643bcbd38ae9a8f1f185f7c26674ed4dfecefd5dfee36b3",
+      "resolved_path": "C:\\llama.cpp\\ggml-cuda.dll"
+    },
+    "C:\\llama.cpp\\ggml-rpc.dll": {
+      "size": 215040,
+      "mtime_ns": 1792526176000000000,
+      "sha256": "c5ba457c479d1126ba87db0d7c41dfcae867c76395741deb61bfcf67ef25b209",
+      "resolved_path": "C:\\llama.cpp\\ggml-rpc.dll"
+    },
+    "C:\\llama.cpp\\ggml.dll": {
+      "size": 69120,
+      "mtime_ns": 1792526178000000000,
+      "sha256": "8151b72ac028674e9f93b8dcc3cf5836332a1edf808c726ee52fa73708f7e5cd",
+      "resolved_path": "C:\\llama.cpp\\ggml.dll"
+    },
+    "C:\\llama.cpp\\libomp.dll": {
+      "size": 764928,
+      "mtime_ns": 1792526164000000000,
+      "sha256": "26caae17f29aaf2238f664375b663cd306d596bc9e36e780fa88356c51fe876a",
+      "resolved_path": "C:\\llama.cpp\\libomp.dll"
+    },
+    "C:\\llama.cpp\\llama-batched-bench-impl.dll": {
+      "size": 47104,
+      "mtime_ns": 1792526184000000000,
+      "sha256": "f0d0805f1972a75416a52413b3c529627ff7dbc2b77e12d2cf66f4e976f6f894",
+      "resolved_path": "C:\\llama.cpp\\llama-batched-bench-impl.dll"
+    },
+    "C:\\llama.cpp\\llama-bench-impl.dll": {
+      "size": 339456,
+      "mtime_ns": 1792526184000000000,
+      "sha256": "b414d1fe41c2fb496f91c383b596dd434ad48ea21d0385c81a7415a91208d1bf",
+      "resolved_path": "C:\\llama.cpp\\llama-bench-impl.dll"
+    },
+    "C:\\llama.cpp\\llama-bench.exe": {
+      "size": 9728,
+      "mtime_ns": 1792526186000000000,
+      "sha256": "45383f5ec41954e2671513735a770429b5d1553f5f6b9864b76a5a12356d5560",
+      "resolved_path": "C:\\llama.cpp\\llama-bench.exe"
+    },
+    "C:\\llama.cpp\\llama-cli-impl.dll": {
+      "size": 3043328,
+      "mtime_ns": 1792526196000000000,
+      "sha256": "cd2f043da86b39a30a86e8bebf0df43f992541d791df4699b77e0ccc078e00ce",
+      "resolved_path": "C:\\llama.cpp\\llama-cli-impl.dll"
+    },
+    "C:\\llama.cpp\\llama-common.dll": {
+      "size": 7239680,
+      "mtime_ns": 1792526184000000000,
+      "sha256": "92ab9b9ac6b211c28405633a1d2fb406ea8dade3aec81794f51ae991b014361a",
+      "resolved_path": "C:\\llama.cpp\\llama-common.dll"
+    },
+    "C:\\llama.cpp\\llama-completion-impl.dll": {
+      "size": 125440,
+      "mtime_ns": 1792526184000000000,
+      "sha256": "0ee0f8275d177edffa9e2aad6d5ada4504b9cf558d2fae298342be97f82c51f3",
+      "resolved_path": "C:\\llama.cpp\\llama-completion-impl.dll"
+    },
+    "C:\\llama.cpp\\llama-fit-params-impl.dll": {
+      "size": 33792,
+      "mtime_ns": 1792526186000000000,
+      "sha256": "393b14fe6a934ca958dce03e1b7a52149bbc50ed0665ee8e785190e26ba7adf5",
+      "resolved_path": "C:\\llama.cpp\\llama-fit-params-impl.dll"
+    },
+    "C:\\llama.cpp\\llama-perplexity-impl.dll": {
+      "size": 153088,
+      "mtime_ns": 1792526186000000000,
+      "sha256": "cfa93a4bb70b25349ae06957bee5a57ccf9eda81c30d4d3cb4760403fb5a04be",
+      "resolved_path": "C:\\llama.cpp\\llama-perplexity-impl.dll"
+    },
+    "C:\\llama.cpp\\llama-quantize-impl.dll": {
+      "size": 125952,
+      "mtime_ns": 1792526186000000000,
+      "sha256": "86e213064f26f69d6cef61688985cfd5f9b023a5c96c65ad3b1956d340a98c00",
+      "resolved_path": "C:\\llama.cpp\\llama-quantize-impl.dll"
+    },
+    "C:\\llama.cpp\\llama-server-impl.dll": {
+      "size": 8595456,
+      "mtime_ns": 1792526196000000000,
+      "sha256": "742b3543fc6def77343208a6925418319fe719a518e7135afd2395cd7f625396",
+      "resolved_path": "C:\\llama.cpp\\llama-server-impl.dll"
+    },
+    "C:\\llama.cpp\\llama-server.exe": {
+      "size": 9728,
+      "mtime_ns": 1792526196000000000,
+      "sha256": "c22684c54dec8b95efbebb72407e107d138723a7a3cca0978bd2b9da07f9a2a8",
+      "resolved_path": "C:\\llama.cpp\\llama-server.exe"
+    },
+    "C:\\llama.cpp\\llama.dll": {
+      "size": 3140096,
+      "mtime_ns": 1792526180000000000,
+      "sha256": "ea1958b4f95f68529ee7c44ca4ac22987b7e9a9e9422d20fd8956586077cbef3",
+      "resolved_path": "C:\\llama.cpp\\llama.dll"
+    },
+    "C:\\llama.cpp\\mtmd.dll": {
+      "size": 1577472,
+      "mtime_ns": 1792526184000000000,
+      "sha256": "ef81558b439f84312d6540c6281f1cab7c15da8675bb1e1b033c2f6d92c32570",
+      "resolved_path": "C:\\llama.cpp\\mtmd.dll"
+    },
+    "<hf_home>\\hub\\models--ggml-org--Qwen3.8-Flash-Next-GGUF\\snapshots\\92796c044d1e70d66a373598709092f2989f4155\\mtp-Qwen3.8-Flash-Next-Q8_0.gguf": {
+      "size": 4137429280,
+      "mtime_ns": 1792262835590795900,
+      "sha256": "6be8a94e2d94107b7f38fdc957c3460ffeb6ff6302edef92c50738682f9dc0e0",
+      "resolved_path": "<hf_home>\\hub\\models--ggml-org--Qwen3.8-Flash-Next-GGUF\\snapshots\\92796c044d1e70d66a373598709092f2989f4155\\mtp-Qwen3.8-Flash-Next-Q8_0.gguf"
+    },
+    "<hf_home>\\hub\\models--incoai--Qwen3.8-27B-DFlash2-GGUF\\snapshots\\51962825493a48b846b40126d35c799ac4093ad0\\Qwen3.8-27B-DFlash2-Q4_K_M.gguf": {
+      "size": 1143006816,
+      "mtime_ns": 1792131953756380300,
+      "sha256": "1a25c56858e1ebe93f2718ac1d49d1151f9323325c1bbfd6209370f4db131ebd",
+      "resolved_path": "<hf_home>\\hub\\models--incoai--Qwen3.8-27B-DFlash2-GGUF\\blobs\\1a25c56858e1ebe93f2718ac1d49d1151f9323325c1bbfd6209370f4db131ebd"
+    },
+    "<hf_home>\\hub\\models--lmstudio-community--NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-GGUF\\snapshots\\716398014e94528b38bf58871dbd6eb996bd7ad9\\NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-Q4_K_M-00001-of-00002.gguf": {
+      "size": 39730340416,
+      "mtime_ns": 1792265252513995400,
+      "sha256": "7e8ccf2ec6290679294b6940aa1f4e3e93808f714879446db5086e7eee0fb214",
+      "resolved_path": "<hf_home>\\hub\\models--lmstudio-community--NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-GGUF\\blobs\\7e8ccf2ec6290679294b6940aa1f4e3e93808f714879446db5086e7eee0fb214"
+    },
+    "<hf_home>\\hub\\models--lmstudio-community--NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-GGUF\\snapshots\\716398014e94528b38bf58871dbd6eb996bd7ad9\\NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-Q4_K_M-00002-of-00002.gguf": {
+      "size": 30372951904,
+      "mtime_ns": 1792265086485914200,
+      "sha256": "6d256028e7feebe04bdf2d3bb423cc2528f060d2334f021917d2b4d73628ed02",
+      "resolved_path": "<hf_home>\\hub\\models--lmstudio-community--NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-GGUF\\blobs\\6d256028e7feebe04bdf2d3bb423cc2528f060d2334f021917d2b4d73628ed02"
+    },
+    "<hf_home>\\hub\\models--unsloth--NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-GGUF\\snapshots\\75a5829055f69a0359085ae6bbd0a81b60bc05c6\\LiLiCorr\\lilicorr-NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-NVFP4.gguf": {
+      "size": 1290795104,
+      "mtime_ns": 1792264577012298200,
+      "sha256": "d5c0c5f22f8889ae0c0e068ea775cb641cd944a571aa65b00975cbdcdf96c806",
+      "resolved_path": "<hf_home>\\hub\\models--unsloth--NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-GGUF\\blobs\\d5c0c5f22f8889ae0c0e068ea775cb641cd944a571aa65b00975cbdcdf96c806"
+    },
+    "<hf_home>\\hub\\models--unsloth--Qwen3.8-27B-GGUF\\snapshots\\4ca720788d1e01f1bff70c033e0d0028fd02e502\\Qwen3.8-27B-UD-Q4_K_M.gguf": {
+      "size": 16464440224,
+      "mtime_ns": 1792132087828629600,
+      "sha256": "322e194ff79741c7baa497c240f677f54b201b0efab44ca8e50f122b39123482",
+      "resolved_path": "<hf_home>\\hub\\models--unsloth--Qwen3.8-27B-GGUF\\blobs\\322e194ff79741c7baa497c240f677f54b201b0efab44ca8e50f122b39123482"
+    },
+    "<hf_home>\\hub\\models--unsloth--Qwen3.8-Flash-Next-GGUF\\snapshots\\766911a6b7369840a91dbcd95f9f997acaab6cd6\\UD-IQ4_XS\\Qwen3.8-Flash-Next-UD-IQ4_XS-00001-of-00003.gguf": {
+      "size": 10946624,
+      "mtime_ns": 1792262743099553600,
+      "sha256": "5ce89370720f8bf90890f439361282104c1aa1482d4013bb9a50923e758e71a4",
+      "resolved_path": "<hf_home>\\hub\\models--unsloth--Qwen3.8-Flash-Next-GGUF\\blobs\\5ce89370720f8bf90890f439361282104c1aa1482d4013bb9a50923e758e71a4"
+    },
+    "<hf_home>\\hub\\models--unsloth--Qwen3.8-Flash-Next-GGUF\\snapshots\\766911a6b7369840a91dbcd95f9f997acaab6cd6\\UD-IQ4_XS\\Qwen3.8-Flash-Next-UD-IQ4_XS-00002-of-00003.gguf": {
+      "size": 49835229856,
+      "mtime_ns": 1792263660948718000,
+      "sha256": "577a38a2392b40ca2193cea502e1d92f60b8cd370675d308e0ec21885d9daaa7",
+      "resolved_path": "<hf_home>\\hub\\models--unsloth--Qwen3.8-Flash-Next-GGUF\\blobs\\577a38a2392b40ca2193cea502e1d92f60b8cd370675d308e0ec21885d9daaa7"
+    },
+    "<hf_home>\\hub\\models--unsloth--Qwen3.8-Flash-Next-GGUF\\snapshots\\766911a6b7369840a91dbcd95f9f997acaab6cd6\\UD-IQ4_XS\\Qwen3.8-Flash-Next-UD-IQ4_XS-00003-of-00003.gguf": {
+      "size": 43836407744,
+      "mtime_ns": 1792263541967561800,
+      "sha256": "d4634e6d84f0ebb0940be15c90d3790bf6464e3dea3a1cddc567dc0e83ad8833",
+      "resolved_path": "<hf_home>\\hub\\models--unsloth--Qwen3.8-Flash-Next-GGUF\\blobs\\d4634e6d84f0ebb0940be15c90d3790bf6464e3dea3a1cddc567dc0e83ad8833"
+    },
+    "<launcher_data>\\projectors\\unsloth--NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-GGUF\\main\\mmproj-BF16.gguf": {
+      "size": 1733695840,
+      "mtime_ns": 1792306102542649200,
+      "sha256": "9c09381a5744d0ea9a30048c94922f6f25ee0d63842de9c45779eca4fb5924d9",
+      "resolved_path": "<launcher_data>\\projectors\\unsloth--NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-GGUF\\main\\mmproj-BF16.gguf"
+    },
+    "<launcher_data>\\projectors\\unsloth--Qwen3.8-27B-GGUF\\4ca720788d1e01f1bff70c033e0d0028fd02e502\\mmproj-F16.gguf": {
+      "size": 927607488,
+      "mtime_ns": 1792131944112853800,
+      "sha256": "cbb841a9ee0636b2ec172f5bb8df2ea8dfeb01e90fe7c6126581d662a0b4e43e",
+      "resolved_path": "<launcher_data>\\projectors\\unsloth--Qwen3.8-27B-GGUF\\4ca720788d1e01f1bff70c033e0d0028fd02e502\\mmproj-F16.gguf"
+    },
+    "<launcher_data>\\projectors\\unsloth--Qwen3.8-Flash-Next-GGUF\\38bb39ee97821de2c9009abb7e93950eec396e66\\mmproj-BF16.gguf": {
+      "size": 907542944,
+      "mtime_ns": 1792303691135287700,
+      "sha256": "2e788f8c511d8093c7b43cb87b2fd7e14228340318057f8fb20c86df2efe2355",
+      "resolved_path": "<launcher_data>\\projectors\\unsloth--Qwen3.8-Flash-Next-GGUF\\38bb39ee97821de2c9009abb7e93950eec396e66\\mmproj-BF16.gguf"
+    }
+  },
+  "power_plan": "Power Scheme GUID: 381b4222-f694-41f0-9685-ff5bb260df2e  (Balanced)",
+  "gpu": "name, driver_version, memory.total [MiB], memory.used [MiB], memory.free [MiB], power.draw [W], temperature.gpu\nNVIDIA RTX Spark N1X (6144-core Blackwell RTX GPU), <driver>, 98304 MiB, 2236 MiB, 96055 MiB, 2.24 W, 58\n",
+  "notes": [
+    "No install or model conversion; existing b11756 binaries and cached GGUFs.",
+    "Hashing reads model files before the benchmark; cold OS page-cache state is not controlled.",
+    "Five repetitions, exact command and raw samples saved per benchmark."
+  ],
+  "benchmark_runner_sha256": "0ceb6d6679d38c3aaa71633e84ec3d99e54a61ae1ab662f63fbd39be41299075",
+  "server_benchmark_runner_sha256": "9a2c2457831dcae671fd30e0bb43ee31e1cd3fed9e6130093fb970490aa196f2",
+  "runner_checks": {
+    "type_checker": "ty 0.0.86",
+    "result": "passed",
+    "limitation": "CI-pinned ty 0.0.88 was not available from the configured package index."
+  }
+}

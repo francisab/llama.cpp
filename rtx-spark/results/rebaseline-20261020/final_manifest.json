@@ -1,0 +1,271 @@
+{
+  "finished_at": "2026-10-20T20:36:22.504002+00:00",
+  "python": "3.12.10",
+  "source_head": "23e9d007c30e2ea0c63a8d63c3826a7703bcba4f",
+  "counts": {
+    "server_processes": 13,
+    "fixed_length_measured_requests": 200,
+    "natural_eos_measured_requests": 15,
+    "warmup_requests": 43,
+    "native_samples": 90
+  },
+  "source_files": {
+    "rtx-spark\\bench\\run_rebaseline.py": {
+      "sha256": "575aaf9c11a0f921e657c620acfe851355bb31886705c289362b0b597085c76a",
+      "bytes": 10275
+    },
+    "rtx-spark\\bench\\run_matrix.py": {
+      "sha256": "de1fc4fb208b79ef68fc43d8a10f9a0f55e4790595f019cc79d415182002b2fe",
+      "bytes": 8108
+    },
+    "rtx-spark\\bench\\bench_server.py": {
+      "sha256": "d40798a643f8bfba846d0cc90ee1bd1fcdf45ed00447e07aa2b9aa1b181374f5",
+      "bytes": 2566
+    },
+    "rtx-spark\\PLAN.md": {
+      "sha256": "e377cbeed6ebd17ba6fb26c53eb620c33af1af97dd8da6026baf860081c53658",
+      "bytes": 48804
+    },
+    "rtx-spark\\README.md": {
+      "sha256": "8d8e7492db0e605fb12126596b99f6380d8598a406c9a3ed3cb876d3468838d2",
+      "bytes": 10181
+    }
+  },
+  "runner_provenance": {
+    "initial_native_sha256": "0ceb6d6679d38c3aaa71633e84ec3d99e54a61ae1ab662f63fbd39be41299075",
+    "initial_server_sha256": "9a2c2457831dcae671fd30e0bb43ee31e1cd3fed9e6130093fb970490aa196f2",
+    "latest_sha256": "575aaf9c11a0f921e657c620acfe851355bb31886705c289362b0b597085c76a",
+    "note": "The runner gained natural-EOS and external-draft options between phases. The latest hash is not attributed retroactively to earlier runs. Request bodies and exact commands are retained in every server result."
+  },
+  "integrity_checks": {
+    "initial_file_sizes_and_write_times_unchanged": true,
+    "installed_binaries_rehashed_and_unchanged": true,
+    "original_draft_rehashed_and_unchanged": true,
+    "candidate_rehashed_and_unchanged": true,
+    "candidate_metadata_unchanged": true,
+    "byte_identical_non_head_tensors": 33
+  },
+  "validation": {
+    "runner_syntax_and_whitespace": "passed",
+    "mocked_response_counts_eos_failure_and_overwrite_guards": "passed",
+    "report_tables_against_raw_statistics": "passed",
+    "git_diff_check": "passed with core.whitespace=cr-at-eol for the migrated CRLF documents",
+    "type_check_command": "python -m ty check rtx-spark\\bench\\run_rebaseline.py --exit-zero-on-warning",
+    "type_checker": "ty 0.0.86",
+    "type_check_result": "passed",
+    "type_check_limitation": "CI-pinned ty 0.0.88 was unavailable from the configured package index; the checker was installed only in session artifacts."
+  },
+  "cleanup": {
+    "active_inference_or_telemetry_processes": 0,
+    "gpu": "name, driver_version, memory.total [MiB], memory.used [MiB], temperature.gpu, power.draw [W]\nNVIDIA RTX Spark N1X (6144-core Blackwell RTX GPU), <driver>, 98304 MiB, 2224 MiB, 59, 2.06 W\n"
+  },
+  "limitations": [
+    "Only four raw-completion cases; no held-out quality, perplexity/KL, multimodal, or long-context server quality evaluation.",
+    "Five repetitions within each loaded configuration; configuration order was sequential, not randomized across independent model reloads.",
+    "Cold OS page-cache state was not controlled.",
+    "No operator-level GPU profile or dedicated sustained soak test was collected.",
+    "The draft-head candidate is retained separately; no deployed configuration, original model, or engine binary was changed."
+  ],
+  "artifacts": {
+    "head-q4k\\quantization.json": {
+      "bytes": 17625,
+      "sha256": "a58518639743cae656c8d235d03c528e930732698f29c81e30b2ea284ac40e83"
+    },
+    "head-q4k\\quantize-dry-run.log": {
+      "bytes": 11063,
+      "sha256": "31943e0d3ef87b33c02ec3b00e05fd134f6c78aa7ff58492c3a6a657fa922efc"
+    },
+    "head-q4k\\quantize.log": {
+      "bytes": 11206,
+      "sha256": "18c1f1434bca281a246178261afb113ca157a33c6088b4250551b00484536d2b"
+    },
+    "head-q4k\\server_U1_decode.json": {
+      "bytes": 368648,
+      "sha256": "1c9f7c3c3f73d49e2e526ee1e7891ec8ba0fa1161978726e8ef8711789e7bb92"
+    },
+    "head-q4k\\server_U1_decode.log": {
+      "bytes": 30864,
+      "sha256": "42a797b1cc4d1b7f06393cc57454d5b5718d239d328569fa3d80355b779d48fd"
+    },
+    "head-q4k\\telemetry_server_decode_U1.csv": {
+      "bytes": 2701,
+      "sha256": "ae292fa55559b39029e7baf0344e81839b99dc57146a9022347947c5a5899464"
+    },
+    "head-q8-repeat\\server_U1_decode.json": {
+      "bytes": 368683,
+      "sha256": "8632600da15ec422b5b1b27aa8cafbb1d8979d5fec84b0f0f8703a431b7d0870"
+    },
+    "head-q8-repeat\\server_U1_decode.log": {
+      "bytes": 31206,
+      "sha256": "54a522e2c70b01124ee08ed6a0bf0beba0dc41948c33455be4b3c4dd2c8e85f0"
+    },
+    "head-q8-repeat\\telemetry_server_decode_U1.csv": {
+      "bytes": 2826,
+      "sha256": "a6d6089abc1cf4a20bc5beeac58e4a554071a9b56487cb5664b4de866b8ed5af"
+    },
+    "head_ab_summary.json": {
+      "bytes": 16761,
+      "sha256": "e07d0caf05a6231b397700657feb9338538e4e73473d6a8b4ca77616246b2498"
+    },
+    "manifest.json": {
+      "bytes": 16239,
+      "sha256": "fc9719d63fd231a210f0f55b6b018e4b06d850342d5a65bbfe83ad98a9691182"
+    },
+    "plain_nem.json": {
+      "bytes": 9613,
+      "sha256": "547f75f11d3331141bc8d816600ec7e17ea3b84b34c2c6ad8343612a1ed48d37"
+    },
+    "plain_nem.log": {
+      "bytes": 3075,
+      "sha256": "c45aa7e28b6b866d95667015f17630fbc08e6c554b3de0be6bce561f16d3f8c0"
+    },
+    "plain_nem.meta.json": {
+      "bytes": 724,
+      "sha256": "86a7b50405c0dd29bc64b88fb9867e619d29280020b1b0922b4da6801857481d"
+    },
+    "plain_q27.json": {
+      "bytes": 9062,
+      "sha256": "f14be7f0592dd889ec3a36cc52fb755eaf3e3f62273a5a0c329f47152efc29c0"
+    },
+    "plain_q27.log": {
+      "bytes": 3075,
+      "sha256": "c45aa7e28b6b866d95667015f17630fbc08e6c554b3de0be6bce561f16d3f8c0"
+    },
+    "plain_q27.meta.json": {
+      "bytes": 648,
+      "sha256": "ae93170bdb69e79493a2c874ca1e9a9a55a30e7bfd68a0f8bb502e26bd09e53b"
+    },
+    "plain_qfn.json": {
+      "bytes": 9330,
+      "sha256": "b8dbd503b8735f4bced19349fcac83a37cc3f67fe1cb4ceef6eb4de9b8e10d98"
+    },
+    "plain_qfn.log": {
+      "bytes": 3075,
+      "sha256": "c45aa7e28b6b866d95667015f17630fbc08e6c554b3de0be6bce561f16d3f8c0"
+    },
+    "plain_qfn.meta.json": {
+      "bytes": 711,
+      "sha256": "d6ae4ac2731bc4020943d9dff460e773530a9b2afa5ad037b672f22a0742769b"
+    },
+    "plain_summary.json": {
+      "bytes": 7109,
+      "sha256": "ddf77d87a7a12cc000db800652a0fe11609f4e8f893afc81f324b811951104e3"
+    },
+    "qfn_mtp_tensors.json": {
+      "bytes": 4889,
+      "sha256": "ed592f8d91c7de773f4cf13d74f24efaf17aec0599307c97de9b2eeee3f5e1fc"
+    },
+    "server_D1_decode.json": {
+      "bytes": 365467,
+      "sha256": "d17436d755860d54996c8820b6fb966c820abf589fcff3864bc6b09522850c63"
+    },
+    "server_D1_decode.log": {
+      "bytes": 36950,
+      "sha256": "ed86a5c9e673aa9b4f7776fead56c3e9b03cf03e2891fa55747d61937fc3dd01"
+    },
+    "server_D2_decode.json": {
+      "bytes": 366031,
+      "sha256": "d97c49349b36e51177014132993e334825c1f8f5e3bffe4afd96ac11f79aeba3"
+    },
+    "server_D2_decode.log": {
+      "bytes": 34637,
+      "sha256": "ac225ea1debeab68953387db1e9a8b9a57d9903b9130b8fe5522289de6e6e7cd"
+    },
+    "server_D3_decode.json": {
+      "bytes": 366026,
+      "sha256": "4bd72403d9e598499860eb842238e0d662fbb59c36287b977f790134470743f1"
+    },
+    "server_D3_decode.log": {
+      "bytes": 34755,
+      "sha256": "2b897732ea4d813d079146d6f083fbecd87fe89aff49864c9833eb1bf6441554"
+    },
+    "server_N1_decode.json": {
+      "bytes": 365958,
+      "sha256": "e0b6af57575307d80d752ef197c3467d389e62293e3e16e07db8516a2c79ff31"
+    },
+    "server_N1_decode.log": {
+      "bytes": 31898,
+      "sha256": "851481097af140d4b41fdfc3d7b667385834453d22100370f22bf37cf45daa0a"
+    },
+    "server_N1_novel.json": {
+      "bytes": 163138,
+      "sha256": "87b3d1c02404a72a948933f144b45c3343b2d17d8e06f06a8bb0cb852596b838"
+    },
+    "server_N1_novel.log": {
+      "bytes": 9417,
+      "sha256": "9071c40963ddf12c474ca673f150db817d1385ad75d65a9ea6d2be9442e5b06e"
+    },
+    "server_N2_decode.json": {
+      "bytes": 366958,
+      "sha256": "ee75ef4924ea290b70e0b6ee118a68372392fa1410d25ea31b50318109307805"
+    },
+    "server_N2_decode.log": {
+      "bytes": 30352,
+      "sha256": "58e72f1bc9869c6bc505087ca37453792b8c4532f1d7782bf0fc923cd107a185"
+    },
+    "server_N2_novel.json": {
+      "bytes": 163600,
+      "sha256": "eb23d8e19b43aea0c598faa170e52b03990250be249a40aad93ab57c63516991"
+    },
+    "server_N2_novel.log": {
+      "bytes": 8076,
+      "sha256": "2bbca976fd6c074294ebdd471cf56667b0fc4673e6f4966a369ae036b2eb0f79"
+    },
+    "server_N4_decode.json": {
+      "bytes": 367395,
+      "sha256": "e40960986b30afbac351a3b6bde7b336de6f29ad0eaabd6a381f6a4bc0ddbb3e"
+    },
+    "server_N4_decode.log": {
+      "bytes": 31000,
+      "sha256": "dae19ae765cc14171b3bfd8f18f4d7b50c4e3c0972ba28a5af14f9f98d1d8dec"
+    },
+    "server_N4_novel.json": {
+      "bytes": 161213,
+      "sha256": "d352dc8b429d1889df02d086416c90637f9cf69335f9fd35430fd642b9e0a7f5"
+    },
+    "server_N4_novel.log": {
+      "bytes": 8603,
+      "sha256": "c6fbf69ed7bf6b342731b3159e30b34b92ced02870ba6032d4f03c4fdf93968b"
+    },
+    "server_Q0_decode.json": {
+      "bytes": 365974,
+      "sha256": "c47b53e8b496c26db2ca47425a38408754badba623c20abe5ba8a421985b8e26"
+    },
+    "server_Q0_decode.log": {
+      "bytes": 30374,
+      "sha256": "2943512a57fd5c2f84cf894e3855443040db93d38286d9550feda0430c645876"
+    },
+    "server_summary.json": {
+      "bytes": 90392,
+      "sha256": "2c4a9b4ef32e3c99a96e6cea051d3343d0c692d78dff19c2bcba0e7c113e7cc8"
+    },
+    "server_U1_decode.json": {
+      "bytes": 368612,
+      "sha256": "6084354775e5703c889bdd7933e066df1dd65ab78b48d1bbc331722d3a5f6904"
+    },
+    "server_U1_decode.log": {
+      "bytes": 31206,
+      "sha256": "8d5c74ef31f190b6260e07fe4d5a3d69a2f6fa6000db06df952f73c8d1f51ebb"
+    },
+    "telemetry_plain_decode_qfn-nem-q27.csv": {
+      "bytes": 5677,
+      "sha256": "f6b90a04362553d317f3e966671fdaac8d943c628eedafaf334f6e29635e21dc"
+    },
+    "telemetry_server_decode_D1-D2-D3.csv": {
+      "bytes": 12047,
+      "sha256": "21c4890ed4c47543c3ef169b54ab7b866d07bf352fd93cb8eecba06bf31ca4ee"
+    },
+    "telemetry_server_decode_N1-N2-N4.csv": {
+      "bytes": 9373,
+      "sha256": "40f71a3f1a3ea77aa5a974dabaa4b372b73e2447c0cb47e244d55425f7a9db04"
+    },
+    "telemetry_server_decode_Q0-U1.csv": {
+      "bytes": 6261,
+      "sha256": "0a62996fce3cf64b6f217eb253a5dc3e7eb9035d6a79f9714a5b280fe9a5e8eb"
+    },
+    "telemetry_server_novel_N1-N2-N4.csv": {
+      "bytes": 2933,
+      "sha256": "9f46293c9df810d8664ca529253106efeb43d1939ca98b4e3c837f5a8f1bc105"
+    }
+  }
+}

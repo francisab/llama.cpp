@@ -1,0 +1,29 @@
+{
+  "command": [
+    "C:\\llama.cpp\\llama-bench.exe",
+    "-m",
+    "<hf_home>\\hub\\models--lmstudio-community--NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-GGUF\\snapshots\\716398014e94528b38bf58871dbd6eb996bd7ad9\\NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-Q4_K_M-00001-of-00002.gguf",
+    "-fa",
+    "on",
+    "-ub",
+    "2048",
+    "-p",
+    "2048",
+    "-n",
+    "32,128",
+    "-d",
+    "0,16384",
+    "-r",
+    "5",
+    "-ngl",
+    "99",
+    "-o",
+    "json",
+    "--progress"
+  ],
+  "repetitions": 5,
+  "completed": true,
+  "wall_s": 132.6493298000023,
+  "started_at_utc": "2026-10-20T19:34:04.966965+00:00",
+  "finished_at_utc": "2026-10-20T19:36:17.617543+00:00"
+}

@@ -1,0 +1,107 @@
+[
+ {
+  "depth_words": 0,
+  "prompt_n": 19,
+  "gen_n": 2,
+  "draft_n": null,
+  "tg_tps_reported": 21.27
+ },
+ {
+  "depth_words": 0,
+  "prompt_n": 18,
+  "gen_n": 2,
+  "draft_n": null,
+  "tg_tps_reported": 16.51
+ },
+ {
+  "depth_words": 0,
+  "prompt_n": 12,
+  "gen_n": 2,
+  "draft_n": null,
+  "tg_tps_reported": 21.38
+ },
+ {
+  "depth_words": 0,
+  "prompt_n": 5,
+  "gen_n": 2,
+  "draft_n": null,
+  "tg_tps_reported": 22.12
+ },
+ {
+  "depth_words": 0,
+  "prompt_n": 4,
+  "gen_n": 2,
+  "draft_n": null,
+  "tg_tps_reported": 20.81
+ },
+ {
+  "depth_words": 0,
+  "prompt_n": 17,
+  "gen_n": 2,
+  "draft_n": null,
+  "tg_tps_reported": 21.35
+ },
+ {
+  "depth_words": 6000,
+  "prompt_n": 6315,
+  "gen_n": 2,
+  "draft_n": null,
+  "tg_tps_reported": 20.94
+ },
+ {
+  "depth_words": 6000,
+  "prompt_n": 6306,
+  "gen_n": 2,
+  "draft_n": null,
+  "tg_tps_reported": 19.55
+ },
+ {
+  "depth_words": 6000,
+  "prompt_n": 6307,
+  "gen_n": 2,
+  "draft_n": null,
+  "tg_tps_reported": 19.68
+ },
+ {
+  "depth_words": 6000,
+  "prompt_n": 6297,
+  "gen_n": 2,
+  "draft_n": null,
+  "tg_tps_reported": 19.97
+ },
+ {
+  "depth_words": 6000,
+  "prompt_n": 6292,
+  "gen_n": 2,
+  "draft_n": null,
+  "tg_tps_reported": 20.38
+ },
+ {
+  "depth_words": 6000,
+  "prompt_n": 6305,
+  "gen_n": 2,
+  "draft_n": null,
+  "tg_tps_reported": 21.77
+ },
+ {
+  "depth_words": 20000,
+  "prompt_n": 20925,
+  "gen_n": 2,
+  "draft_n": null,
+  "tg_tps_reported": 21.39
+ },
+ {
+  "depth_words": 20000,
+  "prompt_n": 20982,
+  "gen_n": 2,
+  "draft_n": null,
+  "tg_tps_reported": 21.16
+ },
+ {
+  "depth_words": 20000,
+  "prompt_n": 20950,
+  "gen_n": 2,
+  "draft_n": null,
+  "tg_tps_reported": 20.8
+ }
+]

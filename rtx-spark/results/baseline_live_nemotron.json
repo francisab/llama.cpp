@@ -1,0 +1,72 @@
+[
+ {
+  "prompt_n": 35,
+  "pp_tps": 110.0,
+  "gen_n": 256,
+  "tg_tps": 34.58,
+  "draft_n": 404,
+  "draft_acc": 174,
+  "wall_s": 7.74,
+  "case": "decode-code#0"
+ },
+ {
+  "prompt_n": 35,
+  "pp_tps": 106.0,
+  "gen_n": 256,
+  "tg_tps": 33.76,
+  "draft_n": 404,
+  "draft_acc": 174,
+  "wall_s": 7.95,
+  "case": "decode-code#1"
+ },
+ {
+  "prompt_n": 18,
+  "pp_tps": 62.2,
+  "gen_n": 256,
+  "tg_tps": 40.26,
+  "draft_n": 340,
+  "draft_acc": 186,
+  "wall_s": 6.66,
+  "case": "decode-prose#0"
+ },
+ {
+  "prompt_n": 18,
+  "pp_tps": 67.2,
+  "gen_n": 256,
+  "tg_tps": 40.14,
+  "draft_n": 340,
+  "draft_acc": 186,
+  "wall_s": 6.68,
+  "case": "decode-prose#1"
+ },
+ {
+  "prompt_n": 1570,
+  "pp_tps": 568.3,
+  "gen_n": 21,
+  "tg_tps": 16.0,
+  "draft_n": 65,
+  "draft_acc": 7,
+  "wall_s": 4.03,
+  "case": "pp~2K"
+ },
+ {
+  "prompt_n": 6307,
+  "pp_tps": 727.0,
+  "gen_n": 64,
+  "tg_tps": 20.2,
+  "draft_n": 142,
+  "draft_acc": 34,
+  "wall_s": 11.88,
+  "case": "pp~8K"
+ },
+ {
+  "prompt_n": 25130,
+  "pp_tps": 771.5,
+  "gen_n": 64,
+  "tg_tps": 23.21,
+  "draft_n": 140,
+  "draft_acc": 34,
+  "wall_s": 35.43,
+  "case": "pp~32K"
+ }
+]

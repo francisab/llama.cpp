@@ -1,0 +1,1377 @@
+{
+  "cutoffs": [
+    32768,
+    65536
+  ],
+  "scope": "en-us",
+  "files": [
+    {
+      "path": "<repo>\\rtx-spark\\results\\plan-20261020\\depth-q4\\server_U2_heldout.json",
+      "name": "U2 qfn mtp2 ub512",
+      "suite": "heldout",
+      "completed": true,
+      "scope": "en-us",
+      "overall": {
+        "responses": 20,
+        "tokens": 5120,
+        "distinct": 348,
+        "max_id": 248069,
+        "id_coverage": {
+          "32768": 0.9287109375,
+          "65536": 0.974609375
+        },
+        "median_tg": 44.913438285078655,
+        "draft_n": 3809,
+        "draft_n_accepted": 3178,
+        "acceptance": 0.8343397217117353,
+        "verify_steps": 1907.0,
+        "mean_accepted_length": 2.666491872050341,
+        "accepted_per_position": [
+          0.9008914525432616,
+          0.7656004195070791
+        ]
+      },
+      "cases": {
+        "rust256": {
+          "responses": 5,
+          "tokens": 1280,
+          "distinct": 131,
+          "max_id": 248069,
+          "id_coverage": {
+            "32768": 0.9140625,
+            "65536": 0.984375
+          },
+          "median_tg": 46.78863883776287,
+          "draft_n": 940,
+          "draft_n_accepted": 800,
+          "acceptance": 0.851063829787234,
+          "verify_steps": 470.0,
+          "mean_accepted_length": 2.702127659574468,
+          "accepted_per_position": [
+            0.925531914893617,
+            0.776595744680851
+          ]
+        },
+        "sqlpy256": {
+          "responses": 5,
+          "tokens": 1280,
+          "distinct": 119,
+          "max_id": 248069,
+          "id_coverage": {
+            "32768": 0.875,
+            "65536": 0.93359375
+          },
+          "median_tg": 44.60326705812593,
+          "draft_n": 982,
+          "draft_n_accepted": 779,
+          "acceptance": 0.7932790224032586,
+          "verify_steps": 491.0,
+          "mean_accepted_length": 2.5865580448065173,
+          "accepted_per_position": [
+            0.8635437881873728,
+            0.7230142566191446
+          ]
+        },
+        "json256": {
+          "responses": 5,
+          "tokens": 1280,
+          "distinct": 106,
+          "max_id": 248068,
+          "id_coverage": {
+            "32768": 0.9453125,
+            "65536": 0.9921875
+          },
+          "median_tg": 44.35545522525526,
+          "draft_n": 977,
+          "draft_n_accepted": 784,
+          "acceptance": 0.8024564994882293,
+          "verify_steps": 491.0,
+          "mean_accepted_length": 2.5967413441955194,
+          "accepted_per_position": [
+            0.8635437881873728,
+            0.7331975560081466
+          ]
+        },
+        "chat256": {
+          "responses": 5,
+          "tokens": 1280,
+          "distinct": 51,
+          "max_id": 248069,
+          "id_coverage": {
+            "32768": 0.98046875,
+            "65536": 0.98828125
+          },
+          "median_tg": 47.34248968026553,
+          "draft_n": 910,
+          "draft_n_accepted": 815,
+          "acceptance": 0.8956043956043956,
+          "verify_steps": 455.0,
+          "mean_accepted_length": 2.791208791208791,
+          "accepted_per_position": [
+            0.9560439560439561,
+            0.8351648351648352
+          ]
+        }
+      }
+    },
+    {
+      "path": "<repo>\\rtx-spark\\results\\plan-20261020\\depth-q4\\server_U4_heldout.json",
+      "name": "U4 qfn mtp4 ub512",
+      "suite": "heldout",
+      "completed": true,
+      "scope": "en-us",
+      "overall": {
+        "responses": 20,
+        "tokens": 5120,
+        "distinct": 371,
+        "max_id": 248069,
+        "id_coverage": {
+          "32768": 0.9375,
+          "65536": 0.9736328125
+        },
+        "median_tg": 47.97310506200621,
+        "draft_n": 5334,
+        "draft_n_accepted": 3749,
+        "acceptance": 0.7028496437945256,
+        "verify_steps": 1341.0,
+        "mean_accepted_length": 3.795674869500373,
+        "accepted_per_position": [
+          0.8873974645786726,
+          0.7449664429530202,
+          0.6413124533929903,
+          0.5219985085756897
+        ]
+      },
+      "cases": {
+        "rust256": {
+          "responses": 5,
+          "tokens": 1280,
+          "distinct": 129,
+          "max_id": 248069,
+          "id_coverage": {
+            "32768": 0.92578125,
+            "65536": 0.984375
+          },
+          "median_tg": 51.564215647616216,
+          "draft_n": 1225,
+          "draft_n_accepted": 960,
+          "acceptance": 0.7836734693877551,
+          "verify_steps": 310.0,
+          "mean_accepted_length": 4.096774193548387,
+          "accepted_per_position": [
+            0.9354838709677419,
+            0.8225806451612904,
+            0.7419354838709677,
+            0.5967741935483871
+          ]
+        },
+        "sqlpy256": {
+          "responses": 5,
+          "tokens": 1280,
+          "distinct": 119,
+          "max_id": 248069,
+          "id_coverage": {
+            "32768": 0.890625,
+            "65536": 0.93359375
+          },
+          "median_tg": 48.03542640953836,
+          "draft_n": 1360,
+          "draft_n_accepted": 930,
+          "acceptance": 0.6838235294117647,
+          "verify_steps": 340.0,
+          "mean_accepted_length": 3.735294117647059,
+          "accepted_per_position": [
+            0.8676470588235294,
+            0.7058823529411765,
+            0.6323529411764706,
+            0.5294117647058824
+          ]
+        },
+        "json256": {
+          "responses": 5,
+          "tokens": 1280,
+          "distinct": 107,
+          "max_id": 248068,
+          "id_coverage": {
+            "32768": 0.96484375,
+            "65536": 0.9921875
+          },
+          "median_tg": 47.93057397332241,
+          "draft_n": 1364,
+          "draft_n_accepted": 934,
+          "acceptance": 0.6847507331378299,
+          "verify_steps": 341.0,
+          "mean_accepted_length": 3.7390029325513194,
+          "accepted_per_position": [
+            0.8944281524926686,
+            0.7448680351906158,
+            0.5865102639296188,
+            0.5131964809384164
+          ]
+        },
+        "chat256": {
+          "responses": 5,
+          "tokens": 1280,
+          "distinct": 78,
+          "max_id": 248069,
+          "id_coverage": {
+            "32768": 0.96875,
+            "65536": 0.984375
+          },
+          "median_tg": 46.54820422504359,
+          "draft_n": 1385,
+          "draft_n_accepted": 925,
+          "acceptance": 0.6678700361010831,
+          "verify_steps": 350.0,
+          "mean_accepted_length": 3.642857142857143,
+          "accepted_per_position": [
+            0.8571428571428571,
+            0.7142857142857143,
+            0.6142857142857143,
+            0.45714285714285713
+          ]
+        }
+      }
+    },
+    {
+      "path": "<repo>\\rtx-spark\\results\\plan-20261020\\heldout-eos-q4\\server_U1_heldout.json",
+      "name": "U1 qfn mtp3 ub512",
+      "suite": "heldout",
+      "completed": true,
+      "scope": "en-us",
+      "overall": {
+        "responses": 20,
+        "tokens": 4540,
+        "distinct": 340,
+        "max_id": 248069,
+        "id_coverage": {
+          "32768": 0.9218061674008811,
+          "65536": 0.9724669603524229
+        },
+        "median_tg": 48.14388603575046,
+        "draft_n": 4122,
+        "draft_n_accepted": 3136,
+        "acceptance": 0.7607957302280446,
+        "verify_steps": 1374.0,
+        "mean_accepted_length": 3.2823871906841338,
+        "accepted_per_position": [
+          0.8704512372634643,
+          0.7532751091703057,
+          0.6586608442503639
+        ]
+      },
+      "cases": {
+        "rust256": {
+          "responses": 5,
+          "tokens": 1280,
+          "distinct": 129,
+          "max_id": 248069,
+          "id_coverage": {
+            "32768": 0.92578125,
+            "65536": 0.984375
+          },
+          "median_tg": 49.084166448835624,
+          "draft_n": 1137,
+          "draft_n_accepted": 891,
+          "acceptance": 0.783641160949868,
+          "verify_steps": 379.0,
+          "mean_accepted_length": 3.350923482849604,
+          "accepted_per_position": [
+            0.9023746701846965,
+            0.7651715039577837,
+            0.683377308707124
+          ]
+        },
+        "sqlpy256": {
+          "responses": 5,
+          "tokens": 1280,
+          "distinct": 116,
+          "max_id": 248069,
+          "id_coverage": {
+            "32768": 0.875,
+            "65536": 0.94140625
+          },
+          "median_tg": 47.38917252186221,
+          "draft_n": 1170,
+          "draft_n_accepted": 880,
+          "acceptance": 0.7521367521367521,
+          "verify_steps": 390.0,
+          "mean_accepted_length": 3.2564102564102564,
+          "accepted_per_position": [
+            0.8589743589743589,
+            0.7564102564102564,
+            0.6410256410256411
+          ]
+        },
+        "json256": {
+          "responses": 5,
+          "tokens": 1280,
+          "distinct": 106,
+          "max_id": 248068,
+          "id_coverage": {
+            "32768": 0.9453125,
+            "65536": 0.9921875
+          },
+          "median_tg": 46.05665618922892,
+          "draft_n": 1215,
+          "draft_n_accepted": 870,
+          "acceptance": 0.7160493827160493,
+          "verify_steps": 405.0,
+          "mean_accepted_length": 3.1481481481481484,
+          "accepted_per_position": [
+            0.837037037037037,
+            0.7037037037037037,
+            0.6074074074074074
+          ]
+        },
+        "chat256": {
+          "responses": 5,
+          "tokens": 700,
+          "distinct": 47,
+          "max_id": 248069,
+          "id_coverage": {
+            "32768": 0.9571428571428572,
+            "65536": 0.9714285714285714
+          },
+          "median_tg": 50.28026727398478,
+          "draft_n": 600,
+          "draft_n_accepted": 495,
+          "acceptance": 0.825,
+          "verify_steps": 200.0,
+          "mean_accepted_length": 3.475,
+          "accepted_per_position": [
+            0.9,
+            0.825,
+            0.75
+          ]
+        }
+      }
+    },
+    {
+      "path": "<repo>\\rtx-spark\\results\\plan-20261020\\heldout-eos-q8\\server_U1_heldout.json",
+      "name": "U1 qfn mtp3 ub512",
+      "suite": "heldout",
+      "completed": true,
+      "scope": "en-us",
+      "overall": {
+        "responses": 20,
+        "tokens": 4540,
+        "distinct": 340,
+        "max_id": 248069,
+        "id_coverage": {
+          "32768": 0.9218061674008811,
+          "65536": 0.9724669603524229
+        },
+        "median_tg": 46.76600516322858,
+        "draft_n": 4113,
+        "draft_n_accepted": 3139,
+        "acceptance": 0.7631898857281789,
+        "verify_steps": 1371.0,
+        "mean_accepted_length": 3.2895696571845368,
+        "accepted_per_position": [
+          0.8679795769511306,
+          0.7549234135667396,
+          0.6666666666666666
+        ]
+      },
+      "cases": {
+        "rust256": {
+          "responses": 5,
+          "tokens": 1280,
+          "distinct": 129,
+          "max_id": 248069,
+          "id_coverage": {
+            "32768": 0.92578125,
+            "65536": 0.984375
+          },
+          "median_tg": 48.221952599522545,
+          "draft_n": 1113,
+          "draft_n_accepted": 899,
+          "acceptance": 0.8077268643306379,
+          "verify_steps": 371.0,
+          "mean_accepted_length": 3.4231805929919137,
+          "accepted_per_position": [
+            0.9164420485175202,
+            0.7816711590296496,
+            0.7250673854447439
+          ]
+        },
+        "sqlpy256": {
+          "responses": 5,
+          "tokens": 1280,
+          "distinct": 116,
+          "max_id": 248069,
+          "id_coverage": {
+            "32768": 0.875,
+            "65536": 0.94140625
+          },
+          "median_tg": 46.39271194146586,
+          "draft_n": 1155,
+          "draft_n_accepted": 885,
+          "acceptance": 0.7662337662337663,
+          "verify_steps": 385.0,
+          "mean_accepted_length": 3.2987012987012987,
+          "accepted_per_position": [
+            0.8701298701298701,
+            0.7662337662337663,
+            0.6623376623376623
+          ]
+        },
+        "json256": {
+          "responses": 5,
+          "tokens": 1280,
+          "distinct": 106,
+          "max_id": 248068,
+          "id_coverage": {
+            "32768": 0.9453125,
+            "65536": 0.9921875
+          },
+          "median_tg": 44.17821248368871,
+          "draft_n": 1230,
+          "draft_n_accepted": 865,
+          "acceptance": 0.7032520325203252,
+          "verify_steps": 410.0,
+          "mean_accepted_length": 3.1097560975609757,
+          "accepted_per_position": [
+            0.8048780487804879,
+            0.7073170731707317,
+            0.5975609756097561
+          ]
+        },
+        "chat256": {
+          "responses": 5,
+          "tokens": 700,
+          "distinct": 47,
+          "max_id": 248069,
+          "id_coverage": {
+            "32768": 0.9571428571428572,
+            "65536": 0.9714285714285714
+          },
+          "median_tg": 47.63437090588579,
+          "draft_n": 615,
+          "draft_n_accepted": 490,
+          "acceptance": 0.7967479674796748,
+          "verify_steps": 205.0,
+          "mean_accepted_length": 3.3902439024390243,
+          "accepted_per_position": [
+            0.9024390243902439,
+            0.7804878048780488,
+            0.7073170731707317
+          ]
+        }
+      }
+    },
+    {
+      "path": "<repo>\\rtx-spark\\results\\plan-20261020\\heldout-q4-b1\\server_U1_heldout.json",
+      "name": "U1 qfn mtp3 ub512",
+      "suite": "heldout",
+      "completed": true,
+      "scope": "en-us",
+      "overall": {
+        "responses": 20,
+        "tokens": 5120,
+        "distinct": 349,
+        "max_id": 248069,
+        "id_coverage": {
+          "32768": 0.9287109375,
+          "65536": 0.9765625
+        },
+        "median_tg": 48.83769084190923,
+        "draft_n": 4644,
+        "draft_n_accepted": 3542,
+        "acceptance": 0.7627045650301464,
+        "verify_steps": 1548.0,
+        "mean_accepted_length": 3.2881136950904395,
+        "accepted_per_position": [
+          0.875968992248062,
+          0.748062015503876,
+          0.6640826873385013
+        ]
+      },
+      "cases": {
+        "rust256": {
+          "responses": 5,
+          "tokens": 1280,
+          "distinct": 129,
+          "max_id": 248069,
+          "id_coverage": {
+            "32768": 0.92578125,
+            "65536": 0.984375
+          },
+          "median_tg": 49.889363000874525,
+          "draft_n": 1137,
+          "draft_n_accepted": 891,
+          "acceptance": 0.783641160949868,
+          "verify_steps": 379.0,
+          "mean_accepted_length": 3.350923482849604,
+          "accepted_per_position": [
+            0.9050131926121372,
+            0.7598944591029023,
+            0.6860158311345647
+          ]
+        },
+        "sqlpy256": {
+          "responses": 5,
+          "tokens": 1280,
+          "distinct": 116,
+          "max_id": 248069,
+          "id_coverage": {
+            "32768": 0.875,
+            "65536": 0.94140625
+          },
+          "median_tg": 48.31614447019831,
+          "draft_n": 1167,
+          "draft_n_accepted": 881,
+          "acceptance": 0.7549271636675235,
+          "verify_steps": 389.0,
+          "mean_accepted_length": 3.2647814910025708,
+          "accepted_per_position": [
+            0.8586118251928021,
+            0.7583547557840618,
+            0.6478149100257069
+          ]
+        },
+        "json256": {
+          "responses": 5,
+          "tokens": 1280,
+          "distinct": 106,
+          "max_id": 248068,
+          "id_coverage": {
+            "32768": 0.9453125,
+            "65536": 0.9921875
+          },
+          "median_tg": 46.63398630058073,
+          "draft_n": 1215,
+          "draft_n_accepted": 870,
+          "acceptance": 0.7160493827160493,
+          "verify_steps": 405.0,
+          "mean_accepted_length": 3.1481481481481484,
+          "accepted_per_position": [
+            0.837037037037037,
+            0.7037037037037037,
+            0.6074074074074074
+          ]
+        },
+        "chat256": {
+          "responses": 5,
+          "tokens": 1280,
+          "distinct": 60,
+          "max_id": 248069,
+          "id_coverage": {
+            "32768": 0.96875,
+            "65536": 0.98828125
+          },
+          "median_tg": 51.16998669580346,
+          "draft_n": 1125,
+          "draft_n_accepted": 900,
+          "acceptance": 0.8,
+          "verify_steps": 375.0,
+          "mean_accepted_length": 3.4,
+          "accepted_per_position": [
+            0.9066666666666666,
+            0.7733333333333333,
+            0.72
+          ]
+        }
+      }
+    },
+    {
+      "path": "<repo>\\rtx-spark\\results\\plan-20261020\\heldout-q4-b2\\server_U1_heldout.json",
+      "name": "U1 qfn mtp3 ub512",
+      "suite": "heldout",
+      "completed": true,
+      "scope": "en-us",
+      "overall": {
+        "responses": 20,
+        "tokens": 5120,
+        "distinct": 349,
+        "max_id": 248069,
+        "id_coverage": {
+          "32768": 0.9287109375,
+          "65536": 0.9765625
+        },
+        "median_tg": 47.66008791790886,
+        "draft_n": 4644,
+        "draft_n_accepted": 3542,
+        "acceptance": 0.7627045650301464,
+        "verify_steps": 1548.0,
+        "mean_accepted_length": 3.2881136950904395,
+        "accepted_per_position": [
+          0.875968992248062,
+          0.7487080103359173,
+          0.66343669250646
+        ]
+      },
+      "cases": {
+        "rust256": {
+          "responses": 5,
+          "tokens": 1280,
+          "distinct": 129,
+          "max_id": 248069,
+          "id_coverage": {
+            "32768": 0.92578125,
+            "65536": 0.984375
+          },
+          "median_tg": 48.42913914831186,
+          "draft_n": 1134,
+          "draft_n_accepted": 892,
+          "acceptance": 0.7865961199294532,
+          "verify_steps": 378.0,
+          "mean_accepted_length": 3.35978835978836,
+          "accepted_per_position": [
+            0.9047619047619048,
+            0.7645502645502645,
+            0.6904761904761905
+          ]
+        },
+        "sqlpy256": {
+          "responses": 5,
+          "tokens": 1280,
+          "distinct": 116,
+          "max_id": 248069,
+          "id_coverage": {
+            "32768": 0.875,
+            "65536": 0.94140625
+          },
+          "median_tg": 46.82394124642027,
+          "draft_n": 1170,
+          "draft_n_accepted": 880,
+          "acceptance": 0.7521367521367521,
+          "verify_steps": 390.0,
+          "mean_accepted_length": 3.2564102564102564,
+          "accepted_per_position": [
+            0.8589743589743589,
+            0.7564102564102564,
+            0.6410256410256411
+          ]
+        },
+        "json256": {
+          "responses": 5,
+          "tokens": 1280,
+          "distinct": 106,
+          "max_id": 248068,
+          "id_coverage": {
+            "32768": 0.9453125,
+            "65536": 0.9921875
+          },
+          "median_tg": 46.0771454286864,
+          "draft_n": 1215,
+          "draft_n_accepted": 870,
+          "acceptance": 0.7160493827160493,
+          "verify_steps": 405.0,
+          "mean_accepted_length": 3.1481481481481484,
+          "accepted_per_position": [
+            0.837037037037037,
+            0.7037037037037037,
+            0.6074074074074074
+          ]
+        },
+        "chat256": {
+          "responses": 5,
+          "tokens": 1280,
+          "distinct": 60,
+          "max_id": 248069,
+          "id_coverage": {
+            "32768": 0.96875,
+            "65536": 0.98828125
+          },
+          "median_tg": 49.42202396561157,
+          "draft_n": 1125,
+          "draft_n_accepted": 900,
+          "acceptance": 0.8,
+          "verify_steps": 375.0,
+          "mean_accepted_length": 3.4,
+          "accepted_per_position": [
+            0.9066666666666666,
+            0.7733333333333333,
+            0.72
+          ]
+        }
+      }
+    },
+    {
+      "path": "<repo>\\rtx-spark\\results\\plan-20261020\\heldout-q8-a1\\server_U1_heldout.json",
+      "name": "U1 qfn mtp3 ub512",
+      "suite": "heldout",
+      "completed": true,
+      "scope": "en-us",
+      "overall": {
+        "responses": 20,
+        "tokens": 5120,
+        "distinct": 349,
+        "max_id": 248069,
+        "id_coverage": {
+          "32768": 0.9287109375,
+          "65536": 0.9765625
+        },
+        "median_tg": 46.63675064509813,
+        "draft_n": 4614,
+        "draft_n_accepted": 3547,
+        "acceptance": 0.7687472908539228,
+        "verify_steps": 1538.0,
+        "mean_accepted_length": 3.3062418725617686,
+        "accepted_per_position": [
+          0.8745123537061118,
+          0.7607282184655396,
+          0.6710013003901171
+        ]
+      },
+      "cases": {
+        "rust256": {
+          "responses": 5,
+          "tokens": 1280,
+          "distinct": 129,
+          "max_id": 248069,
+          "id_coverage": {
+            "32768": 0.92578125,
+            "65536": 0.984375
+          },
+          "median_tg": 48.483447275772136,
+          "draft_n": 1119,
+          "draft_n_accepted": 897,
+          "acceptance": 0.8016085790884718,
+          "verify_steps": 373.0,
+          "mean_accepted_length": 3.4048257372654156,
+          "accepted_per_position": [
+            0.9115281501340483,
+            0.7774798927613941,
+            0.7158176943699732
+          ]
+        },
+        "sqlpy256": {
+          "responses": 5,
+          "tokens": 1280,
+          "distinct": 116,
+          "max_id": 248069,
+          "id_coverage": {
+            "32768": 0.875,
+            "65536": 0.94140625
+          },
+          "median_tg": 46.83878604152745,
+          "draft_n": 1155,
+          "draft_n_accepted": 885,
+          "acceptance": 0.7662337662337663,
+          "verify_steps": 385.0,
+          "mean_accepted_length": 3.2987012987012987,
+          "accepted_per_position": [
+            0.8701298701298701,
+            0.7662337662337663,
+            0.6623376623376623
+          ]
+        },
+        "json256": {
+          "responses": 5,
+          "tokens": 1280,
+          "distinct": 106,
+          "max_id": 248068,
+          "id_coverage": {
+            "32768": 0.9453125,
+            "65536": 0.9921875
+          },
+          "median_tg": 44.17901614543801,
+          "draft_n": 1230,
+          "draft_n_accepted": 865,
+          "acceptance": 0.7032520325203252,
+          "verify_steps": 410.0,
+          "mean_accepted_length": 3.1097560975609757,
+          "accepted_per_position": [
+            0.8048780487804879,
+            0.7073170731707317,
+            0.5975609756097561
+          ]
+        },
+        "chat256": {
+          "responses": 5,
+          "tokens": 1280,
+          "distinct": 60,
+          "max_id": 248069,
+          "id_coverage": {
+            "32768": 0.96875,
+            "65536": 0.98828125
+          },
+          "median_tg": 47.30705954901345,
+          "draft_n": 1110,
+          "draft_n_accepted": 900,
+          "acceptance": 0.8108108108108109,
+          "verify_steps": 370.0,
+          "mean_accepted_length": 3.4324324324324325,
+          "accepted_per_position": [
+            0.918918918918919,
+            0.7972972972972973,
+            0.7162162162162162
+          ]
+        }
+      }
+    },
+    {
+      "path": "<repo>\\rtx-spark\\results\\plan-20261020\\heldout-q8-a2\\server_U1_heldout.json",
+      "name": "U1 qfn mtp3 ub512",
+      "suite": "heldout",
+      "completed": true,
+      "scope": "en-us",
+      "overall": {
+        "responses": 20,
+        "tokens": 5120,
+        "distinct": 349,
+        "max_id": 248069,
+        "id_coverage": {
+          "32768": 0.9287109375,
+          "65536": 0.9765625
+        },
+        "median_tg": 47.353754984910275,
+        "draft_n": 4611,
+        "draft_n_accepted": 3548,
+        "acceptance": 0.7694643244415528,
+        "verify_steps": 1537.0,
+        "mean_accepted_length": 3.308392973324658,
+        "accepted_per_position": [
+          0.8757319453480806,
+          0.7612231620039037,
+          0.6714378659726741
+        ]
+      },
+      "cases": {
+        "rust256": {
+          "responses": 5,
+          "tokens": 1280,
+          "distinct": 129,
+          "max_id": 248069,
+          "id_coverage": {
+            "32768": 0.92578125,
+            "65536": 0.984375
+          },
+          "median_tg": 49.4163157946754,
+          "draft_n": 1116,
+          "draft_n_accepted": 898,
+          "acceptance": 0.8046594982078853,
+          "verify_steps": 372.0,
+          "mean_accepted_length": 3.413978494623656,
+          "accepted_per_position": [
+            0.9166666666666666,
+            0.7795698924731183,
+            0.717741935483871
+          ]
+        },
+        "sqlpy256": {
+          "responses": 5,
+          "tokens": 1280,
+          "distinct": 116,
+          "max_id": 248069,
+          "id_coverage": {
+            "32768": 0.875,
+            "65536": 0.94140625
+          },
+          "median_tg": 47.26868558946461,
+          "draft_n": 1155,
+          "draft_n_accepted": 885,
+          "acceptance": 0.7662337662337663,
+          "verify_steps": 385.0,
+          "mean_accepted_length": 3.2987012987012987,
+          "accepted_per_position": [
+            0.8701298701298701,
+            0.7662337662337663,
+            0.6623376623376623
+          ]
+        },
+        "json256": {
+          "responses": 5,
+          "tokens": 1280,
+          "distinct": 106,
+          "max_id": 248068,
+          "id_coverage": {
+            "32768": 0.9453125,
+            "65536": 0.9921875
+          },
+          "median_tg": 45.07025126576708,
+          "draft_n": 1230,
+          "draft_n_accepted": 865,
+          "acceptance": 0.7032520325203252,
+          "verify_steps": 410.0,
+          "mean_accepted_length": 3.1097560975609757,
+          "accepted_per_position": [
+            0.8048780487804879,
+            0.7073170731707317,
+            0.5975609756097561
+          ]
+        },
+        "chat256": {
+          "responses": 5,
+          "tokens": 1280,
+          "distinct": 60,
+          "max_id": 248069,
+          "id_coverage": {
+            "32768": 0.96875,
+            "65536": 0.98828125
+          },
+          "median_tg": 48.98440912700562,
+          "draft_n": 1110,
+          "draft_n_accepted": 900,
+          "acceptance": 0.8108108108108109,
+          "verify_steps": 370.0,
+          "mean_accepted_length": 3.4324324324324325,
+          "accepted_per_position": [
+            0.918918918918919,
+            0.7972972972972973,
+            0.7162162162162162
+          ]
+        }
+      }
+    },
+    {
+      "path": "<repo>\\rtx-spark\\results\\plan-20261020\\nem-heldout-eos\\server_N2_heldout.json",
+      "name": "N2 nem mtp3 ub4096",
+      "suite": "heldout",
+      "completed": true,
+      "scope": "en-us",
+      "overall": {
+        "responses": 20,
+        "tokens": 5120,
+        "distinct": 303,
+        "max_id": 124351,
+        "id_coverage": {
+          "32768": 0.919921875,
+          "65536": 0.9599609375
+        },
+        "median_tg": 46.479882242976316,
+        "draft_n": 4285,
+        "draft_n_accepted": 3665,
+        "acceptance": 0.8553092182030338,
+        "verify_steps": 1435.0,
+        "mean_accepted_length": 3.554006968641115,
+        "accepted_per_position": [
+          0.9407665505226481,
+          0.8432055749128919,
+          0.7700348432055749
+        ]
+      },
+      "cases": {
+        "rust256": {
+          "responses": 5,
+          "tokens": 1280,
+          "distinct": 113,
+          "max_id": 120764,
+          "id_coverage": {
+            "32768": 0.8984375,
+            "65536": 0.9609375
+          },
+          "median_tg": 44.05121964870966,
+          "draft_n": 1115,
+          "draft_n_accepted": 900,
+          "acceptance": 0.8071748878923767,
+          "verify_steps": 375.0,
+          "mean_accepted_length": 3.4,
+          "accepted_per_position": [
+            0.9333333333333333,
+            0.7733333333333333,
+            0.6933333333333334
+          ]
+        },
+        "sqlpy256": {
+          "responses": 5,
+          "tokens": 1280,
+          "distinct": 144,
+          "max_id": 124351,
+          "id_coverage": {
+            "32768": 0.87109375,
+            "65536": 0.9375
+          },
+          "median_tg": 44.125296461428086,
+          "draft_n": 1140,
+          "draft_n_accepted": 895,
+          "acceptance": 0.7850877192982456,
+          "verify_steps": 380.0,
+          "mean_accepted_length": 3.3552631578947367,
+          "accepted_per_position": [
+            0.9078947368421053,
+            0.7894736842105263,
+            0.6578947368421053
+          ]
+        },
+        "json256": {
+          "responses": 5,
+          "tokens": 1280,
+          "distinct": 29,
+          "max_id": 121468,
+          "id_coverage": {
+            "32768": 0.9453125,
+            "65536": 0.9453125
+          },
+          "median_tg": 46.67807686323324,
+          "draft_n": 1015,
+          "draft_n_accepted": 935,
+          "acceptance": 0.9211822660098522,
+          "verify_steps": 340.0,
+          "mean_accepted_length": 3.75,
+          "accepted_per_position": [
+            0.9705882352941176,
+            0.9117647058823529,
+            0.8676470588235294
+          ]
+        },
+        "chat256": {
+          "responses": 5,
+          "tokens": 1280,
+          "distinct": 63,
+          "max_id": 90221,
+          "id_coverage": {
+            "32768": 0.96484375,
+            "65536": 0.99609375
+          },
+          "median_tg": 48.41401386349526,
+          "draft_n": 1015,
+          "draft_n_accepted": 935,
+          "acceptance": 0.9211822660098522,
+          "verify_steps": 340.0,
+          "mean_accepted_length": 3.75,
+          "accepted_per_position": [
+            0.9558823529411765,
+            0.9117647058823529,
+            0.8823529411764706
+          ]
+        }
+      }
+    },
+    {
+      "path": "<repo>\\rtx-spark\\results\\plan-20261020\\nem-heldout-eos\\server_N4_heldout.json",
+      "name": "N4 nem mtp3 pmin0.5",
+      "suite": "heldout",
+      "completed": true,
+      "scope": "en-us",
+      "overall": {
+        "responses": 20,
+        "tokens": 5120,
+        "distinct": 307,
+        "max_id": 124351,
+        "id_coverage": {
+          "32768": 0.9248046875,
+          "65536": 0.9697265625
+        },
+        "median_tg": 41.804364593705,
+        "draft_n": 4149,
+        "draft_n_accepted": 3541,
+        "acceptance": 0.8534586647384912,
+        "verify_steps": 1464.0,
+        "mean_accepted_length": 3.4187158469945356,
+        "accepted_per_position": [
+          0.9460382513661202,
+          0.8032786885245902,
+          0.6693989071038251
+        ]
+      },
+      "cases": {
+        "rust256": {
+          "responses": 5,
+          "tokens": 1280,
+          "distinct": 117,
+          "max_id": 120764,
+          "id_coverage": {
+            "32768": 0.8828125,
+            "65536": 0.94921875
+          },
+          "median_tg": 40.14556308875239,
+          "draft_n": 1095,
+          "draft_n_accepted": 860,
+          "acceptance": 0.7853881278538812,
+          "verify_steps": 380.0,
+          "mean_accepted_length": 3.263157894736842,
+          "accepted_per_position": [
+            0.9342105263157895,
+            0.7631578947368421,
+            0.5657894736842105
+          ]
+        },
+        "sqlpy256": {
+          "responses": 5,
+          "tokens": 1280,
+          "distinct": 155,
+          "max_id": 124351,
+          "id_coverage": {
+            "32768": 0.8671875,
+            "65536": 0.94921875
+          },
+          "median_tg": 37.754112940466506,
+          "draft_n": 1105,
+          "draft_n_accepted": 835,
+          "acceptance": 0.755656108597285,
+          "verify_steps": 405.0,
+          "mean_accepted_length": 3.0617283950617282,
+          "accepted_per_position": [
+            0.9259259259259259,
+            0.6790123456790124,
+            0.4567901234567901
+          ]
+        },
+        "json256": {
+          "responses": 5,
+          "tokens": 1280,
+          "distinct": 19,
+          "max_id": 121468,
+          "id_coverage": {
+            "32768": 0.984375,
+            "65536": 0.984375
+          },
+          "median_tg": 44.6112653066937,
+          "draft_n": 959,
+          "draft_n_accepted": 911,
+          "acceptance": 0.9499478623566214,
+          "verify_steps": 339.0,
+          "mean_accepted_length": 3.687315634218289,
+          "accepted_per_position": [
+            0.9587020648967551,
+            0.887905604719764,
+            0.8407079646017699
+          ]
+        },
+        "chat256": {
+          "responses": 5,
+          "tokens": 1280,
+          "distinct": 63,
+          "max_id": 90221,
+          "id_coverage": {
+            "32768": 0.96484375,
+            "65536": 0.99609375
+          },
+          "median_tg": 47.90274277955383,
+          "draft_n": 990,
+          "draft_n_accepted": 935,
+          "acceptance": 0.9444444444444444,
+          "verify_steps": 340.0,
+          "mean_accepted_length": 3.75,
+          "accepted_per_position": [
+            0.9705882352941176,
+            0.9117647058823529,
+            0.8676470588235294
+          ]
+        }
+      }
+    },
+    {
+      "path": "<repo>\\rtx-spark\\results\\plan-20261020\\nem-heldout\\server_N2_heldout.json",
+      "name": "N2 nem mtp3 ub4096",
+      "suite": "heldout",
+      "completed": true,
+      "scope": "en-us",
+      "overall": {
+        "responses": 20,
+        "tokens": 5120,
+        "distinct": 303,
+        "max_id": 124351,
+        "id_coverage": {
+          "32768": 0.919921875,
+          "65536": 0.9599609375
+        },
+        "median_tg": 45.78939937713223,
+        "draft_n": 4285,
+        "draft_n_accepted": 3665,
+        "acceptance": 0.8553092182030338,
+        "verify_steps": 1435.0,
+        "mean_accepted_length": 3.554006968641115,
+        "accepted_per_position": [
+          0.9407665505226481,
+          0.8432055749128919,
+          0.7700348432055749
+        ]
+      },
+      "cases": {
+        "rust256": {
+          "responses": 5,
+          "tokens": 1280,
+          "distinct": 113,
+          "max_id": 120764,
+          "id_coverage": {
+            "32768": 0.8984375,
+            "65536": 0.9609375
+          },
+          "median_tg": 44.54198265273184,
+          "draft_n": 1115,
+          "draft_n_accepted": 900,
+          "acceptance": 0.8071748878923767,
+          "verify_steps": 375.0,
+          "mean_accepted_length": 3.4,
+          "accepted_per_position": [
+            0.9333333333333333,
+            0.7733333333333333,
+            0.6933333333333334
+          ]
+        },
+        "sqlpy256": {
+          "responses": 5,
+          "tokens": 1280,
+          "distinct": 144,
+          "max_id": 124351,
+          "id_coverage": {
+            "32768": 0.87109375,
+            "65536": 0.9375
+          },
+          "median_tg": 43.952467905218484,
+          "draft_n": 1140,
+          "draft_n_accepted": 895,
+          "acceptance": 0.7850877192982456,
+          "verify_steps": 380.0,
+          "mean_accepted_length": 3.3552631578947367,
+          "accepted_per_position": [
+            0.9078947368421053,
+            0.7894736842105263,
+            0.6578947368421053
+          ]
+        },
+        "json256": {
+          "responses": 5,
+          "tokens": 1280,
+          "distinct": 29,
+          "max_id": 121468,
+          "id_coverage": {
+            "32768": 0.9453125,
+            "65536": 0.9453125
+          },
+          "median_tg": 46.94292053815364,
+          "draft_n": 1015,
+          "draft_n_accepted": 935,
+          "acceptance": 0.9211822660098522,
+          "verify_steps": 340.0,
+          "mean_accepted_length": 3.75,
+          "accepted_per_position": [
+            0.9705882352941176,
+            0.9117647058823529,
+            0.8676470588235294
+          ]
+        },
+        "chat256": {
+          "responses": 5,
+          "tokens": 1280,
+          "distinct": 63,
+          "max_id": 90221,
+          "id_coverage": {
+            "32768": 0.96484375,
+            "65536": 0.99609375
+          },
+          "median_tg": 48.8172723550084,
+          "draft_n": 1015,
+          "draft_n_accepted": 935,
+          "acceptance": 0.9211822660098522,
+          "verify_steps": 340.0,
+          "mean_accepted_length": 3.75,
+          "accepted_per_position": [
+            0.9558823529411765,
+            0.9117647058823529,
+            0.8823529411764706
+          ]
+        }
+      }
+    },
+    {
+      "path": "<repo>\\rtx-spark\\results\\plan-20261020\\nem-heldout\\server_N4_heldout.json",
+      "name": "N4 nem mtp3 pmin0.5",
+      "suite": "heldout",
+      "completed": true,
+      "scope": "en-us",
+      "overall": {
+        "responses": 20,
+        "tokens": 5120,
+        "distinct": 307,
+        "max_id": 124351,
+        "id_coverage": {
+          "32768": 0.9248046875,
+          "65536": 0.9697265625
+        },
+        "median_tg": 42.65119703686533,
+        "draft_n": 4149,
+        "draft_n_accepted": 3541,
+        "acceptance": 0.8534586647384912,
+        "verify_steps": 1464.0,
+        "mean_accepted_length": 3.4187158469945356,
+        "accepted_per_position": [
+          0.9460382513661202,
+          0.8032786885245902,
+          0.6693989071038251
+        ]
+      },
+      "cases": {
+        "rust256": {
+          "responses": 5,
+          "tokens": 1280,
+          "distinct": 117,
+          "max_id": 120764,
+          "id_coverage": {
+            "32768": 0.8828125,
+            "65536": 0.94921875
+          },
+          "median_tg": 40.10397466561149,
+          "draft_n": 1095,
+          "draft_n_accepted": 860,
+          "acceptance": 0.7853881278538812,
+          "verify_steps": 380.0,
+          "mean_accepted_length": 3.263157894736842,
+          "accepted_per_position": [
+            0.9342105263157895,
+            0.7631578947368421,
+            0.5657894736842105
+          ]
+        },
+        "sqlpy256": {
+          "responses": 5,
+          "tokens": 1280,
+          "distinct": 155,
+          "max_id": 124351,
+          "id_coverage": {
+            "32768": 0.8671875,
+            "65536": 0.94921875
+          },
+          "median_tg": 38.30258561979742,
+          "draft_n": 1105,
+          "draft_n_accepted": 835,
+          "acceptance": 0.755656108597285,
+          "verify_steps": 405.0,
+          "mean_accepted_length": 3.0617283950617282,
+          "accepted_per_position": [
+            0.9259259259259259,
+            0.6790123456790124,
+            0.4567901234567901
+          ]
+        },
+        "json256": {
+          "responses": 5,
+          "tokens": 1280,
+          "distinct": 19,
+          "max_id": 121468,
+          "id_coverage": {
+            "32768": 0.984375,
+            "65536": 0.984375
+          },
+          "median_tg": 44.56167563084479,
+          "draft_n": 959,
+          "draft_n_accepted": 911,
+          "acceptance": 0.9499478623566214,
+          "verify_steps": 339.0,
+          "mean_accepted_length": 3.687315634218289,
+          "accepted_per_position": [
+            0.9587020648967551,
+            0.887905604719764,
+            0.8407079646017699
+          ]
+        },
+        "chat256": {
+          "responses": 5,
+          "tokens": 1280,
+          "distinct": 63,
+          "max_id": 90221,
+          "id_coverage": {
+            "32768": 0.96484375,
+            "65536": 0.99609375
+          },
+          "median_tg": 48.23250564462176,
+          "draft_n": 990,
+          "draft_n_accepted": 935,
+          "acceptance": 0.9444444444444444,
+          "verify_steps": 340.0,
+          "mean_accepted_length": 3.75,
+          "accepted_per_position": [
+            0.9705882352941176,
+            0.9117647058823529,
+            0.8676470588235294
+          ]
+        }
+      }
+    }
+  ]
+}

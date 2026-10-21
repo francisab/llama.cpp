@@ -1,0 +1,144 @@
+{
+  "finished_at": "2026-10-20T23:30:15.241135+00:00",
+  "source_head": "23e9d007c30e2ea0c63a8d63c3826a7703bcba4f",
+  "installed_build": "version: 0.7.0-dev (build 11756, commit d80619397)\nbuilt with Clang 20.1.8 for Windows arm64",
+  "counts": {
+    "launches": 6,
+    "measured": 50,
+    "warmups": 18
+  },
+  "quality_passed": true,
+  "geomean_speedup_percent": 4.5006137326607965,
+  "candidate_disposition": "Opt-in en-US/code Q4_K draft at MTP3/ub512; four scored tasks pass and the new fixed-length timing pair improves 4.50%. Not a universal/default replacement or a production quality/soak certification.",
+  "original_draft": {
+    "path": "<hf_home>\\hub\\models--ggml-org--Qwen3.8-Flash-Next-GGUF\\snapshots\\92796c044d1e70d66a373598709092f2989f4155\\mtp-Qwen3.8-Flash-Next-Q8_0.gguf",
+    "sha256": "6be8a94e2d94107b7f38fdc957c3460ffeb6ff6302edef92c50738682f9dc0e0"
+  },
+  "candidate_draft": {
+    "path": "<work>\\benchmark-models\\mtp-Qwen3.8-Flash-Next-Q8_0-output-Q4_K.gguf",
+    "sha256": "ee2207b567710b4f73035b83ed214ba470ee17a94355c678e17fd3c58e7ccd84",
+    "bytes_saved": 317849600
+  },
+  "integrity": "Original binary/model sizes and mtimes unchanged; installed binaries and original/candidate draft SHA-256 rechecked unchanged. Giant target weights referenced by unchanged size/mtime plus the earlier manifest hash.",
+  "baseline_manifest_sha256": "fc9719d63fd231a210f0f55b6b018e4b06d850342d5a65bbfe83ad98a9691182",
+  "source_files": {
+    "rtx-spark\\PLAN.md": "2b93f480c797036466267a2adfae52321dbd0bd1477a2b2a8dcd9c510337ca37",
+    "rtx-spark\\README.md": "3f44f94de3ec2db14dab1f1482d03b3b378d1ae55f90311356484242a0d6a0db",
+    "rtx-spark\\bench\\en_us_quality.py": "7e373bc172e0d09e5bf54a89a5e4c80592015e707e0dcbc71be26a222a70db68",
+    "rtx-spark\\bench\\heldout_suite.py": "d9e71b09d703adc0c03b9b5f2f9cf9c28a578f8fcb0b7a046e11c726d3f492dc",
+    "rtx-spark\\bench\\run_rebaseline.py": "a1dfacd8a6c12b2f03924a1e5a9cca8a069221d4ec9d01a70c8f605b4064c973",
+    "rtx-spark\\bench\\analyze_mtp_tokens.py": "8c647a73c026669fb5fc5c3141b32c187291a091cab1457a3664c33a0d45741c",
+    "rtx-spark\\bench\\run_matrix.py": "de1fc4fb208b79ef68fc43d8a10f9a0f55e4790595f019cc79d415182002b2fe"
+  },
+  "audit_helper": {
+    "path": "<work>\\audit_en_us_quality.py",
+    "sha256": "dd7e82f8015909384e87037d85adad4f053522fa67651186f2d2dc17988f1d15"
+  },
+  "validation": {
+    "type_check": "passed: ty 0.0.86 on all four new/changed benchmark modules",
+    "diff_check": "passed: git -c core.whitespace=cr-at-eol diff --check",
+    "source_checks": "syntax, ASCII, trailing whitespace passed",
+    "scorer_checks": "231 code assertions per final answer; incorrect code, imports, self-reference, unknown calls, loops, duplicate JSON keys, missing reasoning/EOS and wrong values rejected",
+    "data_audit": "six clean exits; counts, token lengths/content hashes, prompt hashes, per-request speculative counters, one-variable commands, matched request bodies, score provenance, exact timing tables and strict JSON passed",
+    "original_evidence": "all 62 artifacts in the earlier execution manifest rechecked unchanged"
+  },
+  "budget_retry": "The initial Q8 measured code answer hit its 1536-token limit. Both heads reran only code at 2048 with the same prompt/scorer; both passed. The original failed result remains in quality_scores.json. Final source hashes describe the final 2048-token fixture and added --cases selector; saved request bodies document the original budget.",
+  "cleanup": {
+    "active_inference_or_telemetry_processes": 0,
+    "gpu": "memory.used [MiB], power.draw [W], temperature.gpu\n1856 MiB, 2.63 W, 55\n",
+    "deployed_settings_changed": false,
+    "engine_binaries_changed": false,
+    "committed_or_pushed": false
+  },
+  "deferred": "No reduced-vocabulary MTP or grouped-kernel implementation: head/routing operator cost and compatible instrumented build remain unestablished. No further GPU runs queued.",
+  "artifacts": {
+    "code_retry_scores.json": {
+      "bytes": 1543,
+      "sha256": "c4f6a8523df29e102c4ecd3282956ebf0d3bfe804cd834673752cb39746dce78"
+    },
+    "code_retry_scores.log": {
+      "bytes": 1543,
+      "sha256": "c4f6a8523df29e102c4ecd3282956ebf0d3bfe804cd834673752cb39746dce78"
+    },
+    "final_summary.json": {
+      "bytes": 8023,
+      "sha256": "251b36c61b1ad1715bd2a3e29b1cbb6a2668c98608e645fd8ad4f8583e2eb2c5"
+    },
+    "q4\\server_U1_en-us-quality.json": {
+      "bytes": 409494,
+      "sha256": "cc6cad1c91411eee9cc774094f8119a860b5d27bc200b661d3164ff7b6c9a8d7"
+    },
+    "q4\\server_U1_en-us-quality.log": {
+      "bytes": 16563,
+      "sha256": "8c8550f4c7e9bcfd62ae10ea616ae56135fef0c1eddfe077526e0d4ca716db53"
+    },
+    "q4\\telemetry_server_en-us-quality_U1.csv": {
+      "bytes": 2892,
+      "sha256": "95927b6f282a391b91f8f1e72436abe54dd8d93da5044f536d6725cfef577ac2"
+    },
+    "q4-code-retry\\server_U1_en-us-quality.json": {
+      "bytes": 74383,
+      "sha256": "de1e84b829a4013e19cfbe01f34cb5b9fe9ad22f4b3c9e5e5dc99421ddf45149"
+    },
+    "q4-code-retry\\server_U1_en-us-quality.log": {
+      "bytes": 6049,
+      "sha256": "55ec666ec8b56f9fb7793eafb4f7bca862b2f002c96b39a08ad82a3835eb9272"
+    },
+    "q4-code-retry\\telemetry_server_en-us-quality_U1.csv": {
+      "bytes": 1462,
+      "sha256": "be33caf156b40591bd840810a600448e69626c719a826399b2da29f0a419ebfb"
+    },
+    "q4-speed\\server_U1_en-us.json": {
+      "bytes": 245318,
+      "sha256": "0aef23874adda9172e03f1007ebfc57f0e7938b407ec497bce777e3b2f1adf88"
+    },
+    "q4-speed\\server_U1_en-us.log": {
+      "bytes": 29729,
+      "sha256": "0fd5dfea32cf4e06f7923345f30fbc44023cb7865f06d808586cb25af135130d"
+    },
+    "q4-speed\\telemetry_server_en-us_U1.csv": {
+      "bytes": 2368,
+      "sha256": "96d8ae2cb6a7064ef47e13210bf0ee7ac71ebf942d372b5bd587c55c9dbda185"
+    },
+    "q8\\server_U1_en-us-quality.json": {
+      "bytes": 409846,
+      "sha256": "b1d21e2d0d5c2cf148f286aa5e04ada613edcac107fa8aa733ca6a116190934d"
+    },
+    "q8\\server_U1_en-us-quality.log": {
+      "bytes": 16690,
+      "sha256": "efa13e92aa1f30d4494047382208af5e0ee78737b28938681546007efa7742fd"
+    },
+    "q8\\telemetry_server_en-us-quality_U1.csv": {
+      "bytes": 2956,
+      "sha256": "83b45abd4caed9c99b6d576386e6377e8cf6e0dda50add420acc796a03d27a22"
+    },
+    "q8-code-retry\\server_U1_en-us-quality.json": {
+      "bytes": 74421,
+      "sha256": "9dac720471f9df6a148dd4161e61b0adc24a0a60f8136ac0d523d79ec49ac454"
+    },
+    "q8-code-retry\\server_U1_en-us-quality.log": {
+      "bytes": 6070,
+      "sha256": "f3fe7e06c104c4ced09cce778715c7b7a4bc67b9ef5dac58abb0cac2c31de0d5"
+    },
+    "q8-code-retry\\telemetry_server_en-us-quality_U1.csv": {
+      "bytes": 1527,
+      "sha256": "5510354731b8491815366b3a6d8c8a7b6a89859d50fe738e954dd0cd142222d6"
+    },
+    "q8-speed\\server_U1_en-us.json": {
+      "bytes": 245366,
+      "sha256": "43d2e23503e1d4bd6d184b290e40b5ae3bef6313687fee409f2b6c07710a18f4"
+    },
+    "q8-speed\\server_U1_en-us.log": {
+      "bytes": 29750,
+      "sha256": "40dcd15371f96446f57664604fa6c9c0cb7983a1e5de73015460b59b1e65c688"
+    },
+    "q8-speed\\telemetry_server_en-us_U1.csv": {
+      "bytes": 2438,
+      "sha256": "6928ce0ff470db7d1858fd9c306ad44cb5cc9cb625c1a0d5d9027a5fa534b698"
+    },
+    "quality_scores.json": {
+      "bytes": 4923,
+      "sha256": "f1868e058420c3ac3826b4c44c3759622ec4a4f744778e9b24e1354556f27e58"
+    }
+  }
+}

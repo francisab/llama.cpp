@@ -1,0 +1,72 @@
+[
+ {
+  "prompt_n": 35,
+  "pp_tps": 59.4,
+  "gen_n": 256,
+  "tg_tps": 31.83,
+  "draft_n": null,
+  "draft_acc": null,
+  "wall_s": 8.66,
+  "case": "decode-code#0"
+ },
+ {
+  "prompt_n": 35,
+  "pp_tps": 132.6,
+  "gen_n": 256,
+  "tg_tps": 32.47,
+  "draft_n": null,
+  "draft_acc": null,
+  "wall_s": 8.16,
+  "case": "decode-code#1"
+ },
+ {
+  "prompt_n": 19,
+  "pp_tps": 74.0,
+  "gen_n": 256,
+  "tg_tps": 31.45,
+  "draft_n": null,
+  "draft_acc": null,
+  "wall_s": 8.37,
+  "case": "decode-prose#0"
+ },
+ {
+  "prompt_n": 19,
+  "pp_tps": 79.3,
+  "gen_n": 256,
+  "tg_tps": 32.12,
+  "draft_n": null,
+  "draft_acc": null,
+  "wall_s": 8.27,
+  "case": "decode-prose#1"
+ },
+ {
+  "prompt_n": 1535,
+  "pp_tps": 794.9,
+  "gen_n": 64,
+  "tg_tps": 30.77,
+  "draft_n": null,
+  "draft_acc": null,
+  "wall_s": 3.98,
+  "case": "pp~2K"
+ },
+ {
+  "prompt_n": 6146,
+  "pp_tps": 983.7,
+  "gen_n": 64,
+  "tg_tps": 30.23,
+  "draft_n": null,
+  "draft_acc": null,
+  "wall_s": 8.52,
+  "case": "pp~8K"
+ },
+ {
+  "prompt_n": 24554,
+  "pp_tps": 905.4,
+  "gen_n": 64,
+  "tg_tps": 29.38,
+  "draft_n": null,
+  "draft_acc": null,
+  "wall_s": 29.54,
+  "case": "pp~32K"
+ }
+]

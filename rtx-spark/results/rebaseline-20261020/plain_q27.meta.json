@@ -1,0 +1,29 @@
+{
+  "command": [
+    "C:\\llama.cpp\\llama-bench.exe",
+    "-m",
+    "<hf_home>\\hub\\models--unsloth--Qwen3.8-27B-GGUF\\snapshots\\4ca720788d1e01f1bff70c033e0d0028fd02e502\\Qwen3.8-27B-UD-Q4_K_M.gguf",
+    "-fa",
+    "on",
+    "-ub",
+    "2048",
+    "-p",
+    "2048",
+    "-n",
+    "32,128",
+    "-d",
+    "0,16384",
+    "-r",
+    "5",
+    "-ngl",
+    "99",
+    "-o",
+    "json",
+    "--progress"
+  ],
+  "repetitions": 5,
+  "completed": true,
+  "wall_s": 163.82544060000146,
+  "started_at_utc": "2026-10-20T19:36:17.618544+00:00",
+  "finished_at_utc": "2026-10-20T19:39:01.444749+00:00"
+}

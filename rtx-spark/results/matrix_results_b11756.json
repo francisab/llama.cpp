@@ -1,0 +1,158 @@
+{
+ "D2 q27 dflash7 ub2048": {
+  "args": [
+   "-m",
+   "<hf_home>\\hub\\models--unsloth--Qwen3.8-27B-GGUF\\snapshots\\4ca720788d1e01f1bff70c033e0d0028fd02e502\\Qwen3.8-27B-UD-Q4_K_M.gguf",
+   "--mmproj",
+   "<launcher_data>\\projectors\\unsloth--Qwen3.8-27B-GGUF\\4ca720788d1e01f1bff70c033e0d0028fd02e502\\mmproj-F16.gguf",
+   "--host",
+   "127.0.0.1",
+   "--port",
+   "9940",
+   "-c",
+   "262144",
+   "-np",
+   "1",
+   "-fa",
+   "on",
+   "-ngl",
+   "999",
+   "-b",
+   "2048",
+   "-ub",
+   "2048",
+   "--spec-type",
+   "draft-dflash",
+   "--spec-draft-n-max",
+   "7",
+   "-md",
+   "<hf_home>\\hub\\models--incoai--Qwen3.8-27B-DFlash2-GGUF\\snapshots\\51962825493a48b846b40126d35c799ac4093ad0\\Qwen3.8-27B-DFlash2-Q4_K_M.gguf",
+   "--spec-draft-ngl",
+   "999"
+  ],
+  "suite": "decode",
+  "load_s": 14.7,
+  "vram_mib": 40718,
+  "rows": [
+   {
+    "prompt_n": 35,
+    "pp_tps": 114.7,
+    "gen_n": 256,
+    "tg_tps": 48.18,
+    "draft_n": 376,
+    "draft_acc": 201,
+    "wall_s": 5.65,
+    "case": "code256"
+   },
+   {
+    "prompt_n": 19,
+    "pp_tps": 76.1,
+    "gen_n": 256,
+    "tg_tps": 36.93,
+    "draft_n": 497,
+    "draft_acc": 183,
+    "wall_s": 7.32,
+    "case": "prose256"
+   },
+   {
+    "prompt_n": 19,
+    "pp_tps": 72.2,
+    "gen_n": 512,
+    "tg_tps": 38.57,
+    "draft_n": 913,
+    "draft_acc": 379,
+    "wall_s": 13.68,
+    "case": "prose512"
+   },
+   {
+    "prompt_n": 1535,
+    "pp_tps": 673.9,
+    "gen_n": 128,
+    "tg_tps": 30.9,
+    "draft_n": 274,
+    "draft_acc": 87,
+    "wall_s": 6.52,
+    "case": "novel2K"
+   }
+  ],
+  "stop": "ctrl+c"
+ },
+ "N4 nem mtp3 pmin0.5": {
+  "args": [
+   "-m",
+   "<hf_home>\\hub\\models--lmstudio-community--NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-GGUF\\snapshots\\716398014e94528b38bf58871dbd6eb996bd7ad9\\NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-Q4_K_M-00001-of-00002.gguf",
+   "--mmproj",
+   "<launcher_data>\\projectors\\unsloth--NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-GGUF\\main\\mmproj-BF16.gguf",
+   "--fit",
+   "off",
+   "--host",
+   "127.0.0.1",
+   "--port",
+   "9940",
+   "-c",
+   "262144",
+   "-np",
+   "1",
+   "-fa",
+   "on",
+   "-ngl",
+   "999",
+   "-b",
+   "4096",
+   "-ub",
+   "4096",
+   "--spec-type",
+   "draft-mtp",
+   "--spec-draft-n-max",
+   "3",
+   "--spec-draft-p-min",
+   "0.5"
+  ],
+  "suite": "decode",
+  "load_s": 34.7,
+  "vram_mib": 79497,
+  "rows": [
+   {
+    "prompt_n": 35,
+    "pp_tps": 80.5,
+    "gen_n": 256,
+    "tg_tps": 46.08,
+    "draft_n": 208,
+    "draft_acc": 177,
+    "wall_s": 6.01,
+    "case": "code256"
+   },
+   {
+    "prompt_n": 18,
+    "pp_tps": 61.6,
+    "gen_n": 256,
+    "tg_tps": 45.49,
+    "draft_n": 212,
+    "draft_acc": 174,
+    "wall_s": 6.0,
+    "case": "prose256"
+   },
+   {
+    "prompt_n": 18,
+    "pp_tps": 67.6,
+    "gen_n": 512,
+    "tg_tps": 44.87,
+    "draft_n": 445,
+    "draft_acc": 348,
+    "wall_s": 11.77,
+    "case": "prose512"
+   },
+   {
+    "prompt_n": 1570,
+    "pp_tps": 730.9,
+    "gen_n": 128,
+    "tg_tps": 33.01,
+    "draft_n": 100,
+    "draft_acc": 72,
+    "wall_s": 6.14,
+    "case": "novel2K"
+   }
+  ],
+  "stop": "ctrl+c"
+ }
+}
