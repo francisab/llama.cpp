@@ -7,6 +7,13 @@
     "saved_mib": 617.578125,
     "metadata_changed": []
   },
+  "recipe": {
+    "source_repository": "unsloth/Qwen3.8-Flash-Next-GGUF",
+    "source_revision": "766911a6b7369840a91dbcd95f9f997acaab6cd6",
+    "tensor_types_file": "tensor-types.txt",
+    "tensor_types_sha256": "7c762f7ba519b2f93678762415ad265bba17463f79fcd6ff900a42ba571d3052",
+    "tensor_count": 1224
+  },
   "native": {
     "decision": "advance",
     "rounds": 2,
@@ -88,12 +95,52 @@
       4
     ]
   },
-  "decision": "park for promotion under the declared per-case 3% screen threshold",
-  "quality_gate_run": false,
+  "reversed_order_server": {
+    "decision": "invalid_for_promotion",
+    "apparent_geomean_gain_pct": 24.29,
+    "order": "q6_then_control",
+    "reason": "The control ran after Q6 while GPU power and clocks fell; telemetry reached 18.62 W and 1683 MHz."
+  },
+  "server_confirmation": {
+    "decision": "advance",
+    "order": "control_then_q6",
+    "fixed_length_repetitions_per_case": 5,
+    "geomean_gain_pct": 6.45,
+    "cases": [
+      {
+        "case": "json256",
+        "base_median_tps": 50.9578,
+        "candidate_median_tps": 54.3285,
+        "gain_pct": 6.61,
+        "base_range": [50.3903, 51.6075],
+        "candidate_range": [53.9838, 56.5204]
+      },
+      {
+        "case": "rust256",
+        "base_median_tps": 54.0833,
+        "candidate_median_tps": 57.4842,
+        "gain_pct": 6.29,
+        "base_range": [53.5603, 55.4027],
+        "candidate_range": [56.1285, 60.0717]
+      }
+    ],
+    "identical_outputs": [0, 10]
+  },
+  "quality_gate": {
+    "passed": true,
+    "control_passed": true,
+    "candidate_passed": true,
+    "checks_per_arm": 8,
+    "cases": ["code", "locale_json", "identifiers", "document"],
+    "perplexity_checked": false
+  },
+  "decision": "advance as an experimental model candidate; not deployed",
+  "quality_gate_run": true,
   "deployed": false,
   "notes": [
-    "Native plain decode improved in both launch orders, but the actual MTP screen did not clear the threshold on both cases.",
-    "Target-weight changes changed all four measured outputs. Throughput is not evidence of preserved quality.",
-    "No full quality, perplexity, or deployment validation was performed; do not promote this artifact or advertise a quality-equivalent gain."
+    "Five-repeat actual MTP throughput improved by 6.45% geometric mean across the tested Rust and JSON cases, with non-overlapping sample ranges.",
+    "The candidate passed the bounded English natural-EOS quality gate, but its target-weight changes do not preserve all generated outputs.",
+    "A reversed-order server pair was invalidated by a measured GPU power/clock drop on the control run.",
+    "Perplexity, broader long-context, and deployment validation remain undone; do not claim general quality equivalence."
   ]
 }
