@@ -1,0 +1,134 @@
+{
+ "base": {
+  "name": "U1 qfn mtp3 ub512",
+  "args": [
+   "llama-server.exe",
+   "-m",
+   "Qwen3.8-Flash-Next-UD-IQ4_XS-00001-of-00003.gguf",
+   "--mmproj",
+   "mmproj-BF16.gguf",
+   "-lzm",
+   "on",
+   "--host",
+   "127.0.0.1",
+   "--port",
+   "9940",
+   "-c",
+   "262144",
+   "-np",
+   "1",
+   "-fa",
+   "on",
+   "-ngl",
+   "999",
+   "-b",
+   "2048",
+   "-ub",
+   "512",
+   "--spec-type",
+   "draft-mtp",
+   "--spec-draft-n-max",
+   "3",
+   "-md",
+   "mtp-Qwen3.8-Flash-Next-Q8_0-output-Q4_K.gguf",
+   "--spec-draft-ngl",
+   "999",
+   "--spec-draft-vocab-dynamic",
+   "16384",
+   "-lv",
+   "4",
+   "--metrics"
+  ],
+  "load_s": 36.62922629999957,
+  "gpu_memory_ready_mib": 78043
+ },
+ "cand": {
+  "name": "U1 qfn mtp3 ub512",
+  "args": [
+   "llama-server.exe",
+   "-m",
+   "Qwen3.8-Flash-Next-UD-IQ4_XS-00001-of-00003.gguf",
+   "--mmproj",
+   "mmproj-BF16.gguf",
+   "-lzm",
+   "on",
+   "--host",
+   "127.0.0.1",
+   "--port",
+   "9940",
+   "-c",
+   "262144",
+   "-np",
+   "1",
+   "-fa",
+   "on",
+   "-ngl",
+   "999",
+   "-b",
+   "2048",
+   "-ub",
+   "512",
+   "--spec-type",
+   "draft-mtp",
+   "--spec-draft-n-max",
+   "3",
+   "-md",
+   "mtp-Qwen3.8-Flash-Next-head-Q4_K-ffn-Q4.gguf",
+   "--spec-draft-ngl",
+   "999",
+   "--spec-draft-vocab-dynamic",
+   "16384",
+   "-lv",
+   "4",
+   "--metrics"
+  ],
+  "load_s": 34.67641990000266,
+  "gpu_memory_ready_mib": 76845
+ },
+ "cases": [
+  {
+   "case": "json256",
+   "base_tg_median": 51.878851363702324,
+   "cand_tg_median": 53.10424873006541,
+   "ratio": 1.0236203642554131,
+   "base_tg_range": [
+    51.641051355101695,
+    52.11665137230296
+   ],
+   "cand_tg_range": [
+    52.58630805141745,
+    53.622189408713375
+   ],
+   "base_accept": 0.7160493827160493,
+   "cand_accept": 0.7291666666666666
+  },
+  {
+   "case": "rust256",
+   "base_tg_median": 54.792648901277225,
+   "cand_tg_median": 54.54058158386624,
+   "ratio": 0.9953996143193379,
+   "base_tg_range": [
+    54.40535058487886,
+    55.17994721767559
+   ],
+   "cand_tg_range": [
+    53.94890087048139,
+    55.1322622972511
+   ],
+   "base_accept": 0.7807017543859649,
+   "cand_accept": 0.7807017543859649
+  }
+ ],
+ "geomean_ratio": 1.0094113709431147,
+ "identical_outputs": [
+  4,
+  4
+ ],
+ "screen": {
+  "decision": "park",
+  "reason": "json256 is below the minimum gain",
+  "quality_checked": false,
+  "min_gain_pct": 3.0,
+  "max_regression_pct": 3.0
+ }
+}

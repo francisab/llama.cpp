@@ -5,6 +5,8 @@ import math
 import statistics
 from pathlib import Path
 
+from ab_llamabench import screen_decision
+
 
 def load(path):
     data = json.loads(Path(path).read_text(encoding="utf-8"))
@@ -22,14 +24,44 @@ def load(path):
     return data, cases
 
 
-def main():
+def check_screen_pair(base, cand):
+    if base.get("allow_eos") or cand.get("allow_eos"):
+        raise ValueError("Speed screens require fixed output lengths, not natural-EOS runs")
+    if not base.get("prompts") or base["prompts"] != cand.get("prompts"):
+        raise ValueError("Screen prompt hashes differ or are missing")
+    samples = []
+    for data in (base, cand):
+        keys = {}
+        for row in data["rows"]:
+            key = (row["case"], row["repeat"])
+            timing = row["response"]["timings"]
+            count = timing["predicted_n"]
+            speed = timing["predicted_per_second"]
+            if key in keys or count <= 0 or len(row["response"]["tokens"]) != count:
+                raise ValueError(f"Duplicate or incomplete screen sample: {key}")
+            if not math.isfinite(speed) or speed <= 0:
+                raise ValueError(f"Invalid screen speed: {key}")
+            if row["response"]["request"]["n_predict"] != count:
+                raise ValueError(f"Screen output hit a different token count: {key}")
+            keys[key] = count
+        samples.append(keys)
+    if not samples[0] or samples[0] != samples[1]:
+        raise ValueError("Screen case/repeat sets or output lengths differ")
+
+
+def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("base")
     p.add_argument("cand")
     p.add_argument("--out", type=Path)
-    a = p.parse_args()
+    p.add_argument("--screen", action="store_true", help="Triage a short fixed-length pair; not a quality gate")
+    p.add_argument("--min-gain", type=float, default=3.0)
+    p.add_argument("--max-regression", type=float, default=3.0)
+    a = p.parse_args(argv)
     bd, b = load(a.base)
     cd, c = load(a.cand)
+    if a.screen:
+        check_screen_pair(bd, cd)
     if set(b) != set(c):
         raise ValueError(f"case mismatch: {sorted(b)} vs {sorted(c)}")
     rows, ratios = [], []
@@ -52,14 +84,28 @@ def main():
     print(f"geomean: {(geo - 1) * 100:+.2f}%  load_s {bd.get('load_s', 0):.1f} -> {cd.get('load_s', 0):.1f}  "
           f"gpu_ready_mib {bd.get('gpu_memory_ready_mib')} -> {cd.get('gpu_memory_ready_mib')}  "
           f"identical outputs {same}/{len(cd['rows'])}")
+    outcome = None
+    if a.screen:
+        tests = [{"test": row["case"], "ratio": row["ratio"],
+                  "base_range": row["base_tg_range"], "cand_range": row["cand_tg_range"],
+                  "n_base": len(b[row["case"]]["tg"]), "n_cand": len(c[row["case"]]["tg"])} for row in rows]
+        outcome = screen_decision(tests, None, a.min_gain, a.max_regression)
+        outcome["quality_checked"] = False
+        outcome["min_gain_pct"] = a.min_gain
+        outcome["max_regression_pct"] = a.max_regression
+        print(f"screen: {outcome['decision']} - {outcome['reason']}")
     if a.out:
         def side(d):
             # keep file names only, local paths stay private
             return {"name": d["name"], "args": [Path(x).name if ("\\" in x or "/" in x) else x for x in d["command"]],
                     "load_s": d.get("load_s"), "gpu_memory_ready_mib": d.get("gpu_memory_ready_mib")}
-        a.out.write_text(json.dumps({"base": side(bd), "cand": side(cd), "cases": rows, "geomean_ratio": geo,
-                                     "identical_outputs": [same, len(cd["rows"])]}, indent=1), encoding="utf-8")
+        summary = {"base": side(bd), "cand": side(cd), "cases": rows, "geomean_ratio": geo,
+                   "identical_outputs": [same, len(cd["rows"])]}
+        if outcome is not None:
+            summary["screen"] = outcome
+        a.out.write_text(json.dumps(summary, indent=1, allow_nan=False), encoding="utf-8")
+    return {"advance": 0, "park": 2, "reject": 3}[outcome["decision"]] if outcome is not None else 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

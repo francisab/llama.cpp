@@ -3,3 +3,4 @@ CHAT_LOG.md
 results/logs/
 results/**/server_*.json
 results/model_paths.json
+results/**/*.err.txt

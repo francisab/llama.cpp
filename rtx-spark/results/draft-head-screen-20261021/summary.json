@@ -1,0 +1,225 @@
+{
+  "scope": "Flash-Next English rust256/json256, MTP3, ub512, dynamic draft vocabulary K=16384; current deployed binary and Q4_K draft control",
+  "protocol": "One warm-up plus two measured responses per case; reversed-order pair only for a first-pair survivor",
+  "head_control": "Shared fresh control for Q3_K and Q2_K; FFN has its own fresh control and reversed pair",
+  "decision_thresholds": {
+    "min_gain_pct": 3,
+    "max_regression_pct": 3
+  },
+  "candidates": [
+    {
+      "candidate": "Q3_K output head",
+      "authorship": "local model-precision experiment; no engine patch",
+      "decision": "reject",
+      "saved_model_mib": 80.517578125,
+      "geomean_ratios": [
+        0.9254340131925308
+      ],
+      "cases": [
+        [
+          {
+            "case": "json256",
+            "base_tg_median": 51.41924509718911,
+            "cand_tg_median": 46.737405806109415,
+            "ratio": 0.908947724101542,
+            "base_tg_range": [
+              51.15514331865682,
+              51.683346875721405
+            ],
+            "cand_tg_range": [
+              46.30980752735956,
+              47.16500408485927
+            ],
+            "base_accept": 0.7160493827160493,
+            "cand_accept": 0.6461538461538462
+          },
+          {
+            "case": "rust256",
+            "base_tg_median": 54.22638111314846,
+            "cand_tg_median": 51.09314431166278,
+            "ratio": 0.9422193268817278,
+            "base_tg_range": [
+              53.76069785180684,
+              54.69206437449008
+            ],
+            "cand_tg_range": [
+              50.17800400951768,
+              52.00828461380789
+            ],
+            "base_accept": 0.7807017543859649,
+            "cand_accept": 0.7119341563786008
+          }
+        ]
+      ],
+      "identical_outputs": [
+        [
+          4,
+          4
+        ]
+      ],
+      "comparisons": [
+        "compare-q3k.json"
+      ],
+      "quality_gate_run": false,
+      "deployed": false
+    },
+    {
+      "candidate": "Q2_K output head",
+      "authorship": "local model-precision experiment; no engine patch",
+      "decision": "reject",
+      "saved_model_mib": 142.08984375,
+      "geomean_ratios": [
+        0.8999221269076649
+      ],
+      "cases": [
+        [
+          {
+            "case": "json256",
+            "base_tg_median": 51.41924509718911,
+            "cand_tg_median": 49.00537930505806,
+            "ratio": 0.953055207489559,
+            "base_tg_range": [
+              51.15514331865682,
+              51.683346875721405
+            ],
+            "cand_tg_range": [
+              48.61713794150081,
+              49.3936206686153
+            ],
+            "base_accept": 0.7160493827160493,
+            "cand_accept": 0.6887550200803213
+          },
+          {
+            "case": "rust256",
+            "base_tg_median": 54.22638111314846,
+            "cand_tg_median": 46.078934030903795,
+            "ratio": 0.849751229659891,
+            "base_tg_range": [
+              53.76069785180684,
+              54.69206437449008
+            ],
+            "cand_tg_range": [
+              45.05624344365399,
+              47.10162461815359
+            ],
+            "base_accept": 0.7807017543859649,
+            "cand_accept": 0.6210131332082551
+          }
+        ]
+      ],
+      "identical_outputs": [
+        [
+          4,
+          4
+        ]
+      ],
+      "comparisons": [
+        "compare-q2k.json"
+      ],
+      "quality_gate_run": false,
+      "deployed": false
+    },
+    {
+      "candidate": "Mixed-Q4 routed draft FFN",
+      "authorship": "local model-precision experiment; no engine patch",
+      "decision": "park",
+      "saved_model_mib": 1200.0,
+      "geomean_ratios": [
+        1.0397129220800816,
+        1.0094113709431147
+      ],
+      "cases": [
+        [
+          {
+            "case": "json256",
+            "base_tg_median": 50.37005686466001,
+            "cand_tg_median": 52.311106620605386,
+            "ratio": 1.038535786472523,
+            "base_tg_range": [
+              49.89492715340636,
+              50.84518657591366
+            ],
+            "cand_tg_range": [
+              51.50522505359574,
+              53.116988187615036
+            ],
+            "base_accept": 0.7160493827160493,
+            "cand_accept": 0.7291666666666666
+          },
+          {
+            "case": "rust256",
+            "base_tg_median": 53.15010479088744,
+            "cand_tg_median": 55.32348655649017,
+            "ratio": 1.0408913919201783,
+            "base_tg_range": [
+              53.025852702498966,
+              53.27435687927592
+            ],
+            "cand_tg_range": [
+              53.69890706930318,
+              56.94806604367716
+            ],
+            "base_accept": 0.7807017543859649,
+            "cand_accept": 0.7807017543859649
+          }
+        ],
+        [
+          {
+            "case": "json256",
+            "base_tg_median": 51.878851363702324,
+            "cand_tg_median": 53.10424873006541,
+            "ratio": 1.0236203642554131,
+            "base_tg_range": [
+              51.641051355101695,
+              52.11665137230296
+            ],
+            "cand_tg_range": [
+              52.58630805141745,
+              53.622189408713375
+            ],
+            "base_accept": 0.7160493827160493,
+            "cand_accept": 0.7291666666666666
+          },
+          {
+            "case": "rust256",
+            "base_tg_median": 54.792648901277225,
+            "cand_tg_median": 54.54058158386624,
+            "ratio": 0.9953996143193379,
+            "base_tg_range": [
+              54.40535058487886,
+              55.17994721767559
+            ],
+            "cand_tg_range": [
+              53.94890087048139,
+              55.1322622972511
+            ],
+            "base_accept": 0.7807017543859649,
+            "cand_accept": 0.7807017543859649
+          }
+        ]
+      ],
+      "identical_outputs": [
+        [
+          4,
+          4
+        ],
+        [
+          4,
+          4
+        ]
+      ],
+      "comparisons": [
+        "compare-ffn-q4.json",
+        "compare-ffn-q4-confirm.json"
+      ],
+      "quality_gate_run": false,
+      "deployed": false
+    }
+  ],
+  "deployment_changed": false,
+  "notes": [
+    "Q3_K and Q2_K reduced acceptance and lost throughput.",
+    "FFN first-pair gain did not survive reversed order; do not promote or advertise the first result.",
+    "Token identity is not a general quality guarantee. No full quality campaign was run for rejected/parked candidates."
+  ]
+}

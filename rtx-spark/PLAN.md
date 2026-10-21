@@ -442,6 +442,21 @@ Initial two-round results showed tg128 -6.25%, pp512 +8.35%, and pp2048 +4.28%. 
 
 ---
 
+### 2.17 Fail-fast local model-precision experiments, 2026-10-21 [M]
+
+These are our model-artifact experiments, not integrations of upstream engine patches. The deployed b11756 + #30380 + #30640 binary and Q4_K draft are unchanged. Server screens use rust256 and json256, one warm-up and two measured responses per case, MTP3/ub512, and dynamic draft vocabulary K=16,384. The declared thresholds are 3% minimum gain per case and 3% maximum regression; a first-pair survivor receives one reversed-order pair.
+
+| Candidate | Isolated change | Measured screen | Decision |
+|---|---|---|---|
+| Q3_K draft output head | Converted from the original Q8_0 head; all 33 other tensors unchanged; 80.52 MiB smaller than the Q4_K control | Two-case decode geomean -7.46%; lower draft acceptance; 4/4 outputs identical | Reject after first pair |
+| Q2_K draft output head | Converted from the original Q8_0 head; all 33 other tensors unchanged; 142.09 MiB smaller | Decode -10.01%; lower acceptance; 4/4 outputs identical | Reject after first pair |
+| Mixed-Q4 routed draft FFN | Gate/up tensors Q8_0 to Q4_K, down tensor to Q4_0 because its 640-wide rows do not fit Q4_K blocks; 31 other tensors unchanged, including head and router; 1,200 MiB smaller | First pair +3.97%, reversed pair +0.94%; 4/4 outputs identical in each pair | Park; first gain did not hold up |
+| Q6_K target attention/SSM projections | 156 eligible Q8_0 tensors changed; 1,068 other tensors and non-layout metadata unchanged; 617.58 MiB smaller across three separate shards | Plain tg128 +6.72% / +6.78% in opposite launch orders, pooled +6.52%; pooled pp2048 -1.01%. Actual MTP screen: Rust +2.98%, JSON +5.59%, geomean +4.28%; 0/4 outputs identical | Park for promotion: Rust misses the declared per-case threshold; target quality remains unvalidated |
+
+Evidence: `results/draft-head-screen-20261021/summary.json` and `results/target-q6-attention-20261021/summary.json`, with conversion manifests, tensor hashes and per-comparison data. The target conversion took 163.5 s and conversion plus full tensor verification took 706.5 s; this preparation cost is separate from the native screen budget. All original GGUFs were preserved.
+
+No full quality, perplexity or deployment campaign was run for these rejected/parked candidates. In particular, the Q6_K target's throughput result is not a quality-equivalent improvement: target precision changed its generated tokens. Do not lower the threshold after observing these results or promote the first FFN pair. A future target-quality or memory-capacity investigation is a separate decision, not a passing speed screen.
+
 ## 3. Source-verified feature status and reference lessons
 
 The following status is verified in this checkout. This table supersedes the porting assumptions in the initial reference inventory below.
@@ -548,6 +563,16 @@ Keep the optional 64 GB machine idle unless a specific fitting job is assigned, 
 ## 5. Revised roadmap
 
 The v2 step estimates and cumulative tok/s projections below remain withdrawn. They combined unverified gains, double-counted upstream work, and lacked repeated A/B evidence. Sections 2.7-2.11 provide controls and validation decisions, not a cumulative forecast. Prioritize en-US and code; keep other languages non-gating. The bounded English follow-up is complete; broad benchmarking remains stopped.
+
+**User-directed execution change: screen quickly and fail fast, for binary changes and model changes alike.** The table below is a backlog, not a requirement to spend a full validation campaign on every item. Model/head quantization experiments can be screened without waiting for the upstream-PR queue. Distinguish our own changes, model/configuration experiments, and integrations of other authors' patches in every result.
+
+1. State one change and one primary goal: decode or prefill speed. Check the relevant dispatch or tensor first; skip inapplicable proposals. Keep the control source/toolchain fixed for binary changes, or the executable fixed for model changes. Preserve the original weights and live deployment.
+2. Build only the needed native ARM64 targets, or generate one separate model candidate. Run the narrow correctness/load smoke needed for that change, not every backend or model suite. Reuse a control build only when its source, compiler and flags match.
+3. Run a short speed screen. `ab_llamabench.py --screen prefill|decode` uses pp2048 and tg128 with two samples each, up to two pairs, and a 600-second total benchmark budget including loads. A weak first pair stops before the second. For draft/speculation changes, use the existing server harness on only two English cases with two measured requests per case, then `compare_speed.py --screen`; native target-only timing is not a proxy for draft acceptance or speculative throughput.
+4. Default triage: reject a greater-than-3% regression in any measured case; park gains below 3% or overlapping target sample ranges. Only clear survivors get one reversed-order pair. Both pairs must survive before longer validation. These are configurable screening thresholds, not significance tests or proof that parked candidates have no benefit. Do not keep rerunning a marginal candidate until it wins.
+5. Only survivors get the full repeated A/B, English quality gate, relevant model-precision checks, and release-like integration/deployment validation. Model changes may alter tokens; speed alone does not establish equivalent quality. A screen never authorizes deployment. Revisit a parked candidate only with a changed implementation, a better-matched workload, or new bottleneck evidence.
+
+Screen decisions and partial measurements are retained. Errors and timeouts stop the run explicitly. Build/conversion time is separate from the native benchmark budget; server screens use a bounded case count and the existing server timeouts, not that native wall-clock cap. Commands and exit codes are in `README.md`, under "Fail-fast candidate screens".
 
 | Order | Work | Evidence needed to proceed | Stop condition |
 |---|---|---|---|

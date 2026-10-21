@@ -1,0 +1,9 @@
+{
+  "decision": "advance",
+  "reason": "Speed screen only; correctness and quality are not established",
+  "rounds_completed": 2,
+  "goal": "decode",
+  "min_gain_pct": 3.0,
+  "max_regression_pct": 3.0,
+  "quality_checked": false
+}

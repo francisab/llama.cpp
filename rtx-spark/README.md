@@ -87,11 +87,12 @@ This pass finished 420 measured server requests and 25 native samples. `executio
 
 The source review and revised gates are in `PLAN.md` sections 3-5. The baseline has now been repeated against the installed binary and hashed model files. The v2 cumulative speed targets and delivery estimates remain withdrawn because they combined unverified gains and included work already upstream.
 
-1. Stop broad benchmarking. Reuse the captured control and choose one specific bottleneck or configuration change.
+1. Screen one binary, model or configuration change at a time using the fail-fast protocol below. Stop weak candidates before full validation; do not exhaust the upstream-PR queue before trying our own model or code changes.
 2. The compact English gate and matched A/B are complete. The Q4_K draft is deployed only on the Flash-Next launcher recipe (`-md <launcher_data>\custom-models\mtp-...-Q4_K.gguf`); a timestamped `catalog.json` backup is kept beside it. Rollback: restore that backup. Its exact path and hash are in `results/rebaseline-20261020/head-q4k/quantization.json`.
 3. The proxy shortlist screen is complete. The fork survey found an existing dynamic-head implementation in [ggml-org/llama.cpp#30380](https://github.com/ggml-org/llama.cpp/pull/30380). A native ARM64 toolchain is now installed (VS 2022 Build Tools ARM64-hosted MSVC, ARM64 CUDA 13.4 redistributables, ARM64 CMake/Ninja; no x64 emulation) and `tools/build_native_cuda.ps1` builds matched control/candidate binaries. The matched A/B (`PLAN.md` section 2.13) passes the compact English gate with token-identical timing outputs and gains +2.63% (geomean; chat flat) at K=16,384 over its merge-base control.
 4. **Deployed:** the current release-like build is b11756 + #30380 + #30640 (Clang 20.1.8 CPU side and tools, MSVC CUDA `ggml-cuda.dll`, same 42-file set). The Flash-Next recipe keeps `--spec-draft-vocab-dynamic 16384`; the #30640 deployment did not change the catalog. Against the prior #30380 build, U1 improves +2.43% geomean with 20/20 token-identical outputs and 8/8 quality checks. A timestamped backup and local rollback script are retained. Remove the dynamic-head flag if the install is replaced by an official build without #30380.
 5. **Candidate status:** #30640 is deployed (see `PLAN.md` section 2.15). #29948 passed backend tests but did not show a stable 27B gain in repeated runs and does not apply cleanly to b11756 + #30380; it is not deployed (section 2.16). Next, recheck PR heads before evaluating #30489 and #30804. Keep grouped-MoE work blocked on operator timing and routed-ID evidence; no all-fork/all-model sweep is queued.
+6. **Local model experiments:** Q3_K and Q2_K draft heads were rejected for lower acceptance and slower decode. A mixed-Q4 draft FFN saved 1,200 MiB but its initial gain did not survive reverse order. Selective Q6_K target projections improved plain decode by 6.52%; the two-case MTP screen gained 4.28% overall but missed the 3% threshold on Rust and changed every measured output. It is parked, not quality-validated or deployed. See `PLAN.md` section 2.17.
 
 The reviewed checkout already includes CUDA graphs, Blackwell NVFP4/MXFP4 MMQ, qwen4exp hyper-connection fusion, grouped MoE top-k, and PLE row prefetch. Do not port or reimplement those without identifying a target-specific gap.
 
@@ -107,8 +108,9 @@ The survey also confirmed `--spec-draft-n-ubatch` in the installed b11756 binary
 - `PLAN.md`: full analysis, measurements, reference-project evaluation, roadmap, risks, sources.
 - `bench/`: harness.
   - `run_rebaseline.py`: repeated native/server benchmarks, raw samples and generated token IDs, isolated logs, and GPU telemetry. Refuses to overwrite an existing result. Server mode accepts `--exe PATH` (custom build) and `--extra-args="..."` (one-variable A/B flags).
-  - `compare_speed.py`: matched server speed comparison of two `server_*.json` files: per-case median tok/s, ratio, acceptance, geomean, load time, GPU memory and the count of token-identical outputs. `--out` keeps file names only.
-  - `ab_llamabench.py`: paired `llama-bench` A/B of two executables on one model (`q27`, `qfn`, `nem`), alternating base and candidate per round; `--bench-args="..."`, `--rounds`, `--dry-run`. Writes per-round JSON and `summary.json` with paths reduced to file names.
+  - `compare_speed.py`: matched server speed comparison of two `server_*.json` files: per-case median tok/s, ratio, acceptance, geomean, load time, GPU memory and the count of token-identical outputs. `--out` keeps file names only. `--screen` checks matching fixed-length samples and emits an advance/park/reject speed decision.
+  - `ab_llamabench.py`: paired `llama-bench` A/B for `q27`, `qfn`, or `nem`, reversing base/candidate order every round. Accepts `--base-model`/`--cand-model` for model-only comparisons, `--bench-args="..."`, `--rounds`, and `--dry-run`. `--screen prefill|decode` adds early stopping, a time budget and `screen.json`. Writes per-round JSON and `summary.json` with paths reduced to file names.
+  - `test_fast_screen.py`: dependency-free tests for triage, reverse-order confirmation, model overrides, early stopping, timeouts and malformed/incomplete results.
   - `heldout_suite.py`: held-out multilingual/code/chat cases, an English/code-only selection, and a documentation prompt pinned to the measured source commit; the raw long prompt has a known EOS limitation.
   - `en_us_quality.py`: four chat-templated natural-EOS cases and explicit scoring: a bounded Python function with 231 assertions, exact US-format JSON, exact identifier/number copying, and distributed facts in pinned English documentation. Both warm-up and measured responses must pass. Generated code is limited to a single function with no imports, attributes, loops or self-reference before execution.
   - `analyze_mtp_tokens.py`: low-ID token coverage and per-position accepted counts divided by verification steps; `--scope en-us` selects the four English/code cases and fails if any are missing. It does not measure router overlap or implement a vocabulary subset.
@@ -129,8 +131,56 @@ The survey also confirmed `--spec-draft-n-ubatch` in the installed b11756 binary
   - `deploy-b11756-20261021/`: b11756 + #30380 deploy validation: official/all-MSVC/release-like/hybrid builds on U1, N2 and D2, official drift pairs, quality scores, `compare_*.json` and `summary.json`.
   - `ab-30640-20261021/`: #30640 correctness, paired `llama-bench`, server A/B, release parity, quality and deployment evidence.
   - `ab-29948-20261021/`, `ab-29948-20261021-r4/`, `ab-29948-20261021-pp2048-r4/`: #29948 backend tests and repeated 27B A/B results; follow-up summary records why it was not deployed.
+  - `draft-head-screen-20261021/`: Q3_K/Q2_K draft-head and mixed-Q4 routed-FFN conversion proofs, short server screens and rejection/parking decisions.
+  - `target-q6-attention-20261021/`: selective target-projection conversion proof, native reverse-order screen and actual MTP screen; target quality is not validated.
+  - `screen-aa-20261021/`: unchanged-binary/model screen used to exercise the early-stop path; observed prefill drift is not a candidate-caused regression.
 
-## Repeated benchmarks
+## Fail-fast candidate screens
+
+Use one primary goal and one changed variable. Start with the relevant kernel correctness check or model-load smoke, then screen speed before spending time on full quality suites or release builds. Keep all candidates separate from the live install and original GGUFs. Model changes are first-class candidates, not just upstream patches.
+
+For a binary change, use matching source/toolchain control and candidate executables:
+
+```powershell
+python rtx-spark\bench\ab_llamabench.py q27 --base <control>\llama-bench.exe --cand <candidate>\llama-bench.exe --screen prefill --out rtx-spark\results\screen-binary
+```
+
+For a target-model change, use the same executable and explicit GGUFs:
+
+```powershell
+python rtx-spark\bench\ab_llamabench.py q27 --base <build>\llama-bench.exe --cand <build>\llama-bench.exe --base-model <original.gguf> --cand-model <candidate.gguf> --screen decode --out rtx-spark\results\screen-model
+```
+
+The native screen defaults to pp2048 and tg128, two samples each. It runs control/candidate once and stops immediately for a weak pair. A survivor gets candidate/control once more; both pairs must survive independently. The total benchmark budget is 600 seconds including model loads (`--budget`), excluding build/conversion time. Normal runs without `--screen` retain their full sample defaults. `--dry-run` prints commands without running or creating results.
+
+| Decision | Default rule | Next action |
+|---|---|---|
+| `reject` (exit 3) | Any measured case regresses more than 3% | Stop; preserve evidence and move to another candidate |
+| `park` (exit 2) | A target case gains less than 3%, or target sample ranges overlap | Stop, not repeated retries to hunt for a win |
+| `advance` (exit 0) | All target cases clear both filters and no case exceeds the regression limit | Continue to confirmation/quality, never directly to deployment |
+| `error` (nonzero) | Crash, timeout, malformed or incomplete output | Stop and diagnose; not a completed speed comparison |
+
+`--min-gain` and `--max-regression` set the percentage thresholds on both comparison tools. Set them before running, not after seeing results. Range separation is only a cheap noise filter, not a confidence interval; a parked result does not prove no improvement. A native screen records its decision in `screen.json`, and completed-pair measurements in `summary.json`.
+
+For external draft heads or speculation changes, reuse the server path rather than target-only `llama-bench`. Run only two fixed-length cases initially, with one warm-up and two measured requests per case:
+
+```powershell
+python rtx-spark\bench\run_rebaseline.py server U1 --exe <build>\llama-server.exe --draft-model <control-draft.gguf> --extra-args="--spec-draft-vocab-dynamic 16384" --suite en-us --cases rust256 json256 --repetitions 2 --out rtx-spark\results\screen-draft-control
+python rtx-spark\bench\run_rebaseline.py server U1 --exe <build>\llama-server.exe --draft-model <candidate-draft.gguf> --extra-args="--spec-draft-vocab-dynamic 16384" --suite en-us --cases rust256 json256 --repetitions 2 --out rtx-spark\results\screen-draft-candidate
+python rtx-spark\bench\compare_speed.py rtx-spark\results\screen-draft-control\server_U1_en-us.json rtx-spark\results\screen-draft-candidate\server_U1_en-us.json --screen --out rtx-spark\results\screen-draft-comparison.json
+```
+
+These placeholders must be replaced with real paths; retain the same flags in both arms. The dynamic-head flag requires a build containing that feature. Server screens use the existing request/startup timeouts, not the native screen's total budget. Only if the first server comparison advances, run a second pair in reverse launch order in fresh directories and compare it separately. Token identity is reported but is not a quality pass, particularly for changed target weights.
+
+Only confirmed survivors get the repeated performance and natural-EOS quality gates below, plus relevant precision/long-context checks for changed weights. Publish sanitized evidence and identify whether the candidate is our own code, a model/config change, or another author's upstream patch. No screen modifies the deployment or provides a cumulative speedup estimate.
+
+Harness checks (no GPU or local model map required):
+
+```powershell
+python -m unittest discover -s rtx-spark\bench -p test_fast_screen.py -v
+```
+
+## Repeated benchmarks (survivors only)
 
 Run these sequentially from the repository root, with no other inference process active. Choose a new output directory for a rerun.
 
@@ -161,4 +211,4 @@ For a narrowly scoped retry, both runner and scorer accept `--cases code` (or ot
 
 ## Conventions
 - Never run a test server while the user's deployer model is up (VRAM). Check `Get-Process llama-server` first; stop test servers with Ctrl+C (`run_matrix.ctrl_c`).
-- Report steady-state numbers, label each claim measured, sourced or inferred, and keep 5-run medians for gates.
+- Report steady-state numbers, label each claim measured, sourced or inferred, and keep 5-run medians for promotion gates. Two-sample screens are triage only.

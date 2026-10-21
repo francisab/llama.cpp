@@ -1,0 +1,9 @@
+{
+  "decision": "reject",
+  "reason": "pp2048 exceeds the regression limit",
+  "rounds_completed": 1,
+  "goal": "decode",
+  "min_gain_pct": 3.0,
+  "max_regression_pct": 3.0,
+  "quality_checked": false
+}
