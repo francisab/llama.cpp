@@ -132,7 +132,8 @@ def run_plain(tag, out, repetitions, bench="base"):
         save(out / f"{name}.meta.json", metadata)
 
 
-def run_server(tag, out, repetitions, suite, allow_eos=False, draft_model=None, capture_metrics=False, case_names=None):
+def run_server(tag, out, repetitions, suite, allow_eos=False, draft_model=None, capture_metrics=False, case_names=None,
+               exe=None, extra_args=()):
     configs = {name.split()[0]: (name, args) for name, args, _ in matrix.CONFIGS}
     configs["Q0"] = ("Q0 qfn nospec ub512",
                      matrix.qfn + ["-b", "2048", "-ub", "512", "--spec-type", "none"])
@@ -166,7 +167,8 @@ def run_server(tag, out, repetitions, suite, allow_eos=False, draft_model=None, 
         cases = [case for case in cases if case[0] in case_names]
         if not cases:
             raise ValueError("Case selection is empty")
-    command = [matrix.EXE] + args + (["--metrics"] if capture_metrics else [])
+    exe = str(exe.resolve(strict=True)) if exe is not None else matrix.EXE
+    command = [exe] + list(args) + list(extra_args) + (["--metrics"] if capture_metrics else [])
     output = out / f"server_{tag}_{suite}.json"
     if output.exists():
         raise FileExistsError(output)
@@ -275,11 +277,14 @@ def main():
     parser.add_argument("--spec-metrics", action="store_true", help="Record per-request speculative counters")
     parser.add_argument("--cases", nargs="+", help="Run only these named server cases, preserving suite order")
     parser.add_argument("--bench", choices=list(BENCH_PROFILES), default="base", help="llama-bench profile")
+    parser.add_argument("--exe", type=Path, help="llama-server executable to use instead of the installed one")
+    parser.add_argument("--extra-args", default="", help="Extra server arguments, space separated")
     args = parser.parse_args()
     if args.repetitions < 1:
         parser.error("--repetitions must be positive")
-    if args.mode == "plain" and (args.allow_eos or args.draft_model is not None or args.spec_metrics):
-        parser.error("--allow-eos, --draft-model, and --spec-metrics require server mode")
+    if args.mode == "plain" and (args.allow_eos or args.draft_model is not None or args.spec_metrics
+                                 or args.exe is not None or args.extra_args):
+        parser.error("--allow-eos, --draft-model, --spec-metrics, --exe and --extra-args require server mode")
     if args.mode == "server" and args.bench != "base":
         parser.error("--bench requires plain mode")
     if args.mode != "server" and args.cases is not None:
@@ -304,7 +309,7 @@ def main():
                     run_plain(tag, args.out, args.repetitions, args.bench)
                 else:
                     run_server(tag, args.out, args.repetitions, args.suite, args.allow_eos, args.draft_model,
-                               args.spec_metrics, args.cases)
+                               args.spec_metrics, args.cases, args.exe, args.extra_args.split())
                 if telemetry.poll() is not None:
                     raise RuntimeError(f"GPU telemetry exited with {telemetry.returncode}")
         finally:

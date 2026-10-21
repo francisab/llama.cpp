@@ -1,0 +1,147 @@
+{
+ "base": {
+  "name": "U1 qfn mtp3 ub512",
+  "args": [
+   "llama-server.exe",
+   "-m",
+   "Qwen3.8-Flash-Next-UD-IQ4_XS-00001-of-00003.gguf",
+   "--mmproj",
+   "mmproj-BF16.gguf",
+   "-lzm",
+   "on",
+   "--host",
+   "127.0.0.1",
+   "--port",
+   "9940",
+   "-c",
+   "262144",
+   "-np",
+   "1",
+   "-fa",
+   "on",
+   "-ngl",
+   "999",
+   "-b",
+   "2048",
+   "-ub",
+   "512",
+   "--spec-type",
+   "draft-mtp",
+   "--spec-draft-n-max",
+   "3",
+   "-md",
+   "mtp-Qwen3.8-Flash-Next-Q8_0-output-Q4_K.gguf",
+   "--spec-draft-ngl",
+   "999",
+   "--metrics"
+  ],
+  "load_s": 32.81510100000014,
+  "gpu_memory_ready_mib": 78534
+ },
+ "cand": {
+  "name": "U1 qfn mtp3 ub512",
+  "args": [
+   "llama-server.exe",
+   "-m",
+   "Qwen3.8-Flash-Next-UD-IQ4_XS-00001-of-00003.gguf",
+   "--mmproj",
+   "mmproj-BF16.gguf",
+   "-lzm",
+   "on",
+   "--host",
+   "127.0.0.1",
+   "--port",
+   "9940",
+   "-c",
+   "262144",
+   "-np",
+   "1",
+   "-fa",
+   "on",
+   "-ngl",
+   "999",
+   "-b",
+   "2048",
+   "-ub",
+   "512",
+   "--spec-type",
+   "draft-mtp",
+   "--spec-draft-n-max",
+   "3",
+   "-md",
+   "mtp-Qwen3.8-Flash-Next-Q8_0-output-Q4_K.gguf",
+   "--spec-draft-ngl",
+   "999",
+   "--metrics"
+  ],
+  "load_s": 32.73132279999845,
+  "gpu_memory_ready_mib": 78550
+ },
+ "cases": [
+  {
+   "case": "chat256",
+   "base_tg_median": 49.28513363229115,
+   "cand_tg_median": 49.82209604097994,
+   "ratio": 1.010895017809934,
+   "base_tg_range": [
+    48.260858456579896,
+    49.975081052722146
+   ],
+   "cand_tg_range": [
+    48.924899320231695,
+    50.24043496001354
+   ],
+   "base_accept": 0.7777777777777778,
+   "cand_accept": 0.7777777777777778
+  },
+  {
+   "case": "json256",
+   "base_tg_median": 49.547813056684255,
+   "cand_tg_median": 49.33870654420865,
+   "ratio": 0.995779702481795,
+   "base_tg_range": [
+    48.13279668725555,
+    49.97588418608196
+   ],
+   "cand_tg_range": [
+    48.19797232075505,
+    50.19635633507544
+   ],
+   "base_accept": 0.777292576419214,
+   "cand_accept": 0.777292576419214
+  },
+  {
+   "case": "rust256",
+   "base_tg_median": 50.980535631495904,
+   "cand_tg_median": 51.458038290430785,
+   "ratio": 1.0093663719500012,
+   "base_tg_range": [
+    50.13565134370427,
+    52.01603970680089
+   ],
+   "cand_tg_range": [
+    50.56293399851682,
+    52.154427829111825
+   ],
+   "base_accept": 0.8108108108108109,
+   "cand_accept": 0.8108108108108109
+  },
+  {
+   "case": "sqlpy256",
+   "base_tg_median": 50.1323001230109,
+   "cand_tg_median": 49.875965319969964,
+   "ratio": 0.9948868333906092,
+   "base_tg_range": [
+    48.1158130638395,
+    51.2982996122452
+   ],
+   "cand_tg_range": [
+    49.43479550472926,
+    50.942312924843904
+   ],
+   "base_accept": 0.7920353982300885,
+   "cand_accept": 0.7920353982300885
+  }
+ ],
+ "geomean_ratio": 1.0027044911778606
+}

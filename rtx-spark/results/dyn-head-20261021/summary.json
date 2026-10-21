@@ -1,0 +1,99 @@
+{
+ "pr": "https://github.com/ggml-org/llama.cpp/pull/30380",
+ "control_commit": "ccdbe2905",
+ "candidate_commit": "da03be647",
+ "build": "native ARM64: VS 2022 Build Tools MSVC 14.44 (ARM64 host), CUDA 13.4, CMAKE_CUDA_ARCHITECTURES=121a-real, GGML_NATIVE=ON, Ninja; rtx-spark/tools/build_native_cuda.ps1",
+ "config": "U1: Flash-Next UD-IQ4_XS, MTP3 external Q4_K draft, ub512, ctx 262144, fa on, greedy",
+ "variants": {
+  "control": "merge-base build",
+  "k0": "PR build, flag off",
+  "k16384": "PR build, --spec-draft-vocab-dynamic 16384"
+ },
+ "engagement": "-lv 4 log: vocab_subset: lowest 32768 of 248320 ids + 16384 picked per output, 1 LM head(s), 3.42 s",
+ "unit_test": "test-draft-vocab: OK",
+ "quality_passed": {
+  "control-quality": true,
+  "k16384-quality": true
+ },
+ "timing_outputs_token_identical": true,
+ "geomean_ratio": {
+  "control_k16384": 1.0263,
+  "control_k0": 1.0027,
+  "k0_k16384": 1.0236
+ },
+ "cases_control_vs_k16384": [
+  {
+   "case": "chat256",
+   "base_tg_median": 49.28513363229115,
+   "cand_tg_median": 49.475261496159064,
+   "ratio": 1.0038577122522672,
+   "base_tg_range": [
+    48.260858456579896,
+    49.975081052722146
+   ],
+   "cand_tg_range": [
+    48.98626290715988,
+    50.62863893342333
+   ],
+   "base_accept": 0.7777777777777778,
+   "cand_accept": 0.7493606138107417
+  },
+  {
+   "case": "json256",
+   "base_tg_median": 49.547813056684255,
+   "cand_tg_median": 50.857091572680766,
+   "ratio": 1.0264245470228657,
+   "base_tg_range": [
+    48.13279668725555,
+    49.97588418608196
+   ],
+   "cand_tg_range": [
+    50.011796900327674,
+    52.169408595309015
+   ],
+   "base_accept": 0.777292576419214,
+   "cand_accept": 0.777292576419214
+  },
+  {
+   "case": "rust256",
+   "base_tg_median": 50.980535631495904,
+   "cand_tg_median": 53.05909618095191,
+   "ratio": 1.0407716498798782,
+   "base_tg_range": [
+    50.13565134370427,
+    52.01603970680089
+   ],
+   "cand_tg_range": [
+    51.37213978057045,
+    54.39411673233424
+   ],
+   "base_accept": 0.8108108108108109,
+   "cand_accept": 0.8108108108108109
+  },
+  {
+   "case": "sqlpy256",
+   "base_tg_median": 50.1323001230109,
+   "cand_tg_median": 51.86951988351937,
+   "ratio": 1.0346527040699471,
+   "base_tg_range": [
+    48.1158130638395,
+    51.2982996122452
+   ],
+   "cand_tg_range": [
+    50.932941688972306,
+    53.1045879240167
+   ],
+   "base_accept": 0.7920353982300885,
+   "cand_accept": 0.7920353982300885
+  }
+ ],
+ "load_s": {
+  "control": 32.81510100000014,
+  "k16384": 36.779368400006206
+ },
+ "gpu_memory_ready_mib": {
+  "control": 78534,
+  "k16384": 78772
+ },
+ "decision": "passes; enable only per Flash-Next recipe after a deployable b11756+PR build repeats the gain"
+}

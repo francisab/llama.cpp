@@ -88,11 +88,11 @@ This pass finished 420 measured server requests and 25 native samples. `executio
 The source review and revised gates are in `PLAN.md` sections 3-5. The baseline has now been repeated against the installed binary and hashed model files. The v2 cumulative speed targets and delivery estimates remain withdrawn because they combined unverified gains and included work already upstream.
 
 1. Stop broad benchmarking. Reuse the captured control and choose one specific bottleneck or configuration change.
-2. The compact English gate and matched A/B are complete. Keep the Q4_K draft separate as an opt-in MTP3/ub512 candidate; its exact path and rollback hash are in `results/rebaseline-20261020/head-q4k/quantization.json`.
-3. The proxy shortlist screen is complete. The additional fork survey found an existing dynamic-head implementation in [ggml-org/llama.cpp#30380](https://github.com/ggml-org/llama.cpp/pull/30380): evaluate it before designing static MTP `d2t`. It derives a scorer from head weights, so independent selection data is a requirement for our static alternative, not for this dynamic path. A 2026-10-20 readiness check found the native ARM64 host has no detected Visual Studio/CMake/Ninja/NVIDIA CUDA build toolchain; installed b11756 does not expose the feature, and the open PR has only a labeler check visible. Obtain a matching build first; then compare K=0 with K=16,384 using the same Q4_K draft/MTP3/ub512 setup and the compact English gate.
-4. Prefer the source-shortlisted QSA-mask fusion for Flash-Next and FFN MMQ fusion for the dense 27B before new kernel designs. Obtain operator timing and routed IDs before grouped-MoE work. No all-fork/all-model benchmark sweep is queued.
+2. The compact English gate and matched A/B are complete. The Q4_K draft is deployed only on the Flash-Next launcher recipe (`-md <launcher_data>\custom-models\mtp-...-Q4_K.gguf`); a timestamped `catalog.json` backup is kept beside it. Rollback: restore that backup. Its exact path and hash are in `results/rebaseline-20261020/head-q4k/quantization.json`.
+3. The proxy shortlist screen is complete. The fork survey found an existing dynamic-head implementation in [ggml-org/llama.cpp#30380](https://github.com/ggml-org/llama.cpp/pull/30380). A native ARM64 toolchain is now installed (VS 2022 Build Tools ARM64-hosted MSVC, ARM64 CUDA 13.4 redistributables, ARM64 CMake/Ninja; no x64 emulation) and `tools/build_native_cuda.ps1` builds matched control/candidate binaries. The matched A/B (`PLAN.md` section 2.13) passes the compact English gate with token-identical timing outputs and gains +2.63% (geomean; chat flat) at K=16,384 over its merge-base control.
+4. Next: QSA-mask fusion ([ggml-org/llama.cpp#30640](https://github.com/ggml-org/llama.cpp/pull/30640)) for Flash-Next and dense FFN MMQ fusion ([ggml-org/llama.cpp#29948](https://github.com/ggml-org/llama.cpp/pull/29948)) for the 27B, each against its merge-base control. Obtain operator timing and routed IDs before grouped-MoE work. No all-fork/all-model benchmark sweep is queued.
 
-The reviewed checkout already includes CUDA graphs, Blackwell NVFP4/MXFP4 MMQ, qwen4exp hyper-connection fusion, grouped MoE top-k, and PLE row prefetch. Do not port or reimplement those without identifying a target-specific gap. No deployed model or launcher configuration was changed by the measurements.
+The reviewed checkout already includes CUDA graphs, Blackwell NVFP4/MXFP4 MMQ, qwen4exp hyper-connection fusion, grouped MoE top-k, and PLE row prefetch. Do not port or reimplement those without identifying a target-specific gap.
 
 ### Additional fork survey
 
@@ -100,12 +100,13 @@ The reviewed checkout already includes CUDA graphs, Blackwell NVFP4/MXFP4 MMQ, q
 
 `ik_llama.cpp` is useful for CUDA/quantization algorithms; BeeLlama and TheTom are later KV-compression references. GenerelSchwerz and thecodacus expert caches, and RaymondHuang's KV streaming, mainly address capacity/offload problems. The Spark-specific croll83 fork is deprecated in favor of upstream; EngramHalo is explicitly AMD HIP-focused. These are not qualified drop-in Windows ARM64 replacements.
 
-The survey also confirmed `--spec-draft-n-ubatch` in the installed b11756 binary: basic independent draft workspace tuning needs no fork. It is a memory knob, not a demonstrated speed improvement. No fork was installed or benchmarked, and no model, executable, remote or deployment setting changed. The Windows CUDA cross-build still needs an x64 host; API/graph changes require matching executables and DLLs.
+The survey also confirmed `--spec-draft-n-ubatch` in the installed b11756 binary: basic independent draft workspace tuning needs no fork. It is a memory knob, not a demonstrated speed improvement. Pinned PRs are built locally from source on the native ARM64 toolchain, one candidate against its own merge-base control; API/graph changes require matching executables and DLLs.
 
 ## Folder layout
 - `PLAN.md`: full analysis, measurements, reference-project evaluation, roadmap, risks, sources.
 - `bench/`: harness.
-  - `run_rebaseline.py`: repeated native/server benchmarks, raw samples and generated token IDs, isolated logs, and GPU telemetry. Refuses to overwrite an existing result.
+  - `run_rebaseline.py`: repeated native/server benchmarks, raw samples and generated token IDs, isolated logs, and GPU telemetry. Refuses to overwrite an existing result. Server mode accepts `--exe PATH` (custom build) and `--extra-args="..."` (one-variable A/B flags).
+  - `compare_speed.py`: matched server speed comparison of two `server_*.json` files: per-case median tok/s, ratio, acceptance, geomean, load time and GPU memory. `--out` keeps file names only.
   - `heldout_suite.py`: held-out multilingual/code/chat cases, an English/code-only selection, and a documentation prompt pinned to the measured source commit; the raw long prompt has a known EOS limitation.
   - `en_us_quality.py`: four chat-templated natural-EOS cases and explicit scoring: a bounded Python function with 231 assertions, exact US-format JSON, exact identifier/number copying, and distributed facts in pinned English documentation. Both warm-up and measured responses must pass. Generated code is limited to a single function with no imports, attributes, loops or self-reference before execution.
   - `analyze_mtp_tokens.py`: low-ID token coverage and per-position accepted counts divided by verification steps; `--scope en-us` selects the four English/code cases and fails if any are missing. It does not measure router overlap or implement a vocabulary subset.
@@ -113,6 +114,7 @@ The survey also confirmed `--spec-draft-n-ubatch` in the installed b11756 binary
   - `run_llamabench.py`: DGX Spark methodology; `LB_SUFFIX` env var.
   - `bench_server.py`: request helper; `URL` global.
   - `bench_ple.py`, `bench_nospec.py`, `bench_spec_*.py`, `summarize_matrix.py`, `gguf_geometry.py`, `perf_model.py`.
+- `tools/build_native_cuda.ps1`: native ARM64 CUDA build (VS ARM64 MSVC, Ninja, `sm_121a`). `-Src`, `-Out`, optional `-Targets` and `-Extra` CMake flags. Copies CUDA runtime DLLs into `bin`.
 - `results/`: JSON/markdown summaries, `geometry.txt`, and `model_paths.example.json`.
   - Scripts read `results/model_paths.json` and write to `results/` (server logs to `results/logs/`), via `RESULTS = bench/../results`. They run from any working directory. Copy `model_paths.example.json` to `model_paths.json` and set local paths.
   - Published files omit raw server logs, full generated responses (`server_*.json`) and the local model path file; local paths are replaced by placeholders such as `<hf_home>` and `<launcher_data>`.
@@ -120,6 +122,7 @@ The survey also confirmed `--spec-draft-n-ubatch` in the installed b11756 binary
   - `rebaseline-20261020/head-q4k/`: isolated draft-head conversion evidence and candidate measurements; `head-q8-repeat/` is the repeated control. `head_ab_summary.json` compares both with the original control.
   - `plan-20261020/`: held-out head/reload/EOS, Nemotron policy and MTP2/3/4 comparisons. `bench-targeted/` contains only the bounded Flash-Next diagnostics; the broader proxy matrix was cancelled.
   - `en-us-quality-20261020/`: scored natural-EOS tasks, preserved initial token-cap failure, code-only retries, one matched English speed pair, final audit and provenance.
+  - `dyn-head-20261021/`: #30380 matched A/B (control, K=0, K=16,384): quality scores, telemetry and `compare_*.json`.
 
 ## Repeated benchmarks
 

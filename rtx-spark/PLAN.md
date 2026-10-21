@@ -1,4 +1,4 @@
-# RTX Spark Inference Engine - en-US Optimization and Fork Survey (v8)
+# RTX Spark Inference Engine - en-US Optimization and Fork Survey (v9)
 
 **Machine:** NVIDIA RTX Spark N1X (20-core ARM64 CPU, 6144-core Blackwell GPU, **sm_121**) · 128 GB LPDDR5X-9400 on a 256-bit bus (**≈300 GB/s**, shared CPU/GPU) · boot carve-out **96 GB GPU / 30.5 GB Windows** · Windows 11 ARM64 · CUDA 13.4 · 45–80 W SoC.
 **Measured software:** llama.cpp b11756 (`d80619397`, official `win-cuda-13.4-arm64` build). The source review is against this repository checkout at `4a45de4f2`; it includes the upstream changes cited below.
@@ -14,6 +14,7 @@
 > **Labels:** **[M]** measured on this machine · **[S]** sourced (link) · **[I]** inference, not measured.
 > **v7 executed follow-up:** section 2.11 completes the compact English quality gate and one matched timing pair. Both draft heads pass complete-code, US-format JSON, exact identifier and 17,225-token document checks. The new Q4_K pair gains +4.50% across four English/code cases with identical measured tokens. The smaller draft is supported as an opt-in candidate for these workloads, not a universal replacement. Keep MTP3 and ub512; no deployment change or reduced-vocabulary engine patch was made.
 > **v8 source follow-up:** section 3.1 surveys additional llama.cpp forks and active upstream proposals. Dynamic draft-head selection already has a Flash-Next/GB10 prototype in [ggml-org/llama.cpp#30380](https://github.com/ggml-org/llama.cpp/pull/30380); evaluate that before inventing a static MTP vocabulary format. QSA-mask and FFN prefill fusion are the next concrete kernel leads. These are sourced results, not new Windows measurements. No engine, model, deployment, commit or remote changed during this survey.
+> **v9 native build follow-up:** a native ARM64 toolchain now builds llama.cpp with CUDA on this host (section 3.1). The matched #30380 A/B passes: +2.63% geomean at K=16,384 over its merge-base control, token-identical outputs, all quality checks pass, +238 MiB and +4 s load (section 2.13). The Q4_K draft is deployed on the Flash-Next launcher recipe, with a catalog backup. QSA-mask and FFN-fusion PRs are reviewed and staged for the same A/B.
 
 ---
 
@@ -373,6 +374,25 @@ The 65,536-token candidate is promising for a follow-up prototype: it covers nea
 
 **v8 update:** that corpus requirement applies to our static shortlist proposal. The dynamic alternative in [ggml-org/llama.cpp#30380](https://github.com/ggml-org/llama.cpp/pull/30380) derives a low-rank scorer from the existing head weights and selects additional rows per token. It does not require a frequency corpus or a new `d2t` GGUF. Evaluate this existing implementation first once a compatible build is available; the static screen remains evidence, not an implementation commitment.
 
+### 2.13 Dynamic draft head, PR #30380, matched native build A/B [M]
+
+Evidence is in `results/dyn-head-20261021/`. Both binaries were built on this machine with the native ARM64 toolchain (`tools/build_native_cuda.ps1`, MSVC 14.44, CUDA 13.4, `sm_121a`): control at merge-base `ccdbe2905`, candidate at PR head `da03be647`. Same Flash-Next UD-IQ4_XS target, Q4_K external draft, MTP3, ub512, 262K context, prompts and greedy sampling. Only the binary and `--spec-draft-vocab-dynamic` change.
+
+- **Engaged:** with `-lv 4` the candidate logs `vocab_subset: lowest 32768 of 248320 ids + 16384 picked per output, 1 LM head(s), 3.42 s`. The default log level hides this line; no fallback warning appeared. The PR unit test `test-draft-vocab` passes on this build.
+- **Exactness:** all 20 fixed-length timing outputs are token-identical across control, K=0 and K=16,384. Draft acceptance is unchanged except chat (0.778 to 0.749).
+- **Quality gate:** control and K=16,384 pass all four en-US checks (code, US JSON, identifiers, 17K-token document) in both warm-up and measured responses.
+
+| Case | Control tok/s | K=0 tok/s | K=16,384 tok/s | K=16,384 vs control |
+|---|---:|---:|---:|---:|
+| Rust256 | 50.98 | 51.46 | 53.06 | +4.08% |
+| SQL/Python256 | 50.13 | 49.88 | 51.87 | +3.47% |
+| JSON256 | 49.55 | 49.34 | 50.86 | +2.64% |
+| Chat256 | 49.29 | 49.82 | 49.48 | +0.39% |
+
+Medians of five measured requests; sample CV 0.9-2.3%. Geometric mean: K=16,384 **+2.63%** over control and +2.36% over K=0 in the same binary; K=0 versus control is +0.27% (noise), so the off path is neutral. Cost: load 32.8 to 36.8 s (scorer setup) and +238 MiB GPU memory at ready.
+
+**Disposition: passes; smaller than the GB10 report (+5.9%).** The author's draft file, OS, prompts and control differ; this pass does not isolate why. Do not add this +2.6% to the Q4_K +4.50%; they were measured against different controls and binaries. These are one sequential pair per variant; chat shows no gain.
+
 ---
 
 ## 3. Source-verified feature status and reference lessons
@@ -453,9 +473,16 @@ Additional screen-outs: [quimmedes/cafe-llama.cpp](https://github.com/quimmedes/
 
 **Already-upstream exclusions.** Low-bit MMVQ [ggml-org/llama.cpp#30517](https://github.com/ggml-org/llama.cpp/pull/30517) is an ancestor of this checkout at `2744e48d1e`; chunked CUDA/HIP GDN is present at `62df1815b` ([ggml-org/llama.cpp#29353](https://github.com/ggml-org/llama.cpp/pull/29353)). Keep these, native sm_121a, CUDA graphs, MTP/DFlash, NVFP4, routing/HC fusion and PLE prefetch out of the new-port list. An impressive fork comparison against an older baseline does not make them new work.
 
-**Changed next step.** Do not build a new static MTP vocabulary subsystem yet. First obtain a matching Windows ARM64 control/candidate build for the pinned dynamic-head proposal, or wait for its inclusion in an official ARM64 release. The documented CUDA cross-build still requires an x64 host with ARM64 target libraries; no such host/runner has been made available. A native-host readiness check on 2026-10-20 found ARM64 .NET and the installed official b11756 executable, but no Visual Studio, CMake, Ninja, `nvcc` or CUDA Toolkit. The installed executable does not expose `--spec-draft-vocab-dynamic`; PR #30380 remains open at the pinned SHA, and its visible status check is only the labeler, not a build or test. API/graph changes require a matching executable and library set, not an arbitrary single-DLL swap. A source build and valid candidate A/B are therefore blocked on a suitable toolchain or official ARM64 build. While blocked, the planned native-ARM64 installed-DLL head microbenchmark remains an optional cost diagnostic, not a substitute for a real dynamic-head A/B.
+**Changed next step (v9).** The toolchain blocker is resolved. A native ARM64 toolchain now builds full CUDA binaries on this host with no x64 emulation: VS 2022 Build Tools (ARM64-hosted MSVC 14.44), ARM64 CUDA 13.4 redistributables, CMake 4.x and Ninja (`tools/build_native_cuda.ps1`, about 4-5 min per build). The #30380 matched A/B is complete and passes (section 2.13). Do not build a static MTP vocabulary subsystem; the dynamic path covers it.
 
-Once a compatible build exists, use the same target, separate Q4_K draft, MTP3, target ub512, context, sampling and prompts on both sides. Compare K=0 against K=16,384; include scorer startup/memory, effective-path logs, acceptance and the compact en-US gate plus one matched timing pair. Reuse the existing harness; do not benchmark every fork. Evaluate QSA fusion and FFN fusion separately afterward, on Flash-Next and the 27B respectively. Keep the optional 64 GB machine idle unless a specific fitting job is assigned, and confirm any final performance decision on the 128 GB machine.
+Build differences from the official release: the release cross-compiles only `ggml-cuda.dll` with MSVC and builds everything else with Clang 20; our build is all MSVC. GPU kernels are the same compiler; CPU-side code differs. Before deploying a custom build, run a parity pair (official b11756 versus our unmodified b11756 build) on the same harness.
+
+Remaining fusion candidates, each against its own merge-base control:
+
+- **QSA k-pool mask, [ggml-org/llama.cpp#30640](https://github.com/ggml-org/llama.cpp/pull/30640).** Adds `GGML_OP_KPOOL_MASK` (CPU and CUDA). On by default when the model has `indexer_kpool>0` (Flash-Next); no runtime toggle, so the control is the merge-base build. Mask-only change; attention numerics do not change. Gate: `test-backend-ops -o KPOOL_MASK`, then Flash-Next prefill at 2K and 8K plus decode at fixed ubatch.
+- **Dense FFN MMQ fusion, [ggml-org/llama.cpp#29948](https://github.com/ggml-org/llama.cpp/pull/29948).** Fuses up, gate and GLU in one MMQ pass for prefill and large batches; decode (MMVQ) is not affected. Needs same type for gate and up, type in {Q4_K, Q5_K, Q6_K, Q8_0, IQ4_XS} and `ne01 % 128 == 0`. In the 27B UD file, 37 of 65 layers have matching gate/up types and 35 use a supported type (IQ4_XS 20, Q5_K 9, Q4_K 5, Q6_K 1). Gate: backend-ops MUL_MAT/GLU fusion tests, then 27B `llama-bench -p 512,2048 -n 128`.
+
+Keep the optional 64 GB machine idle unless a specific fitting job is assigned, and confirm any final performance decision on the 128 GB machine.
 
 ---
 
@@ -480,11 +507,11 @@ The v2 step estimates and cumulative tok/s projections below remain withdrawn. T
 |---|---|---|---|
 | 0 | Completed the installed-binary control in section 2.7. Refresh it when binary, model, settings, or workload changes. | Five samples per case, actual hashes, exact commands, full outputs, logs, and telemetry. Cold cache and operator profiles remain unmeasured. | A patched-binary claim needs an unmodified build from the same source/toolchain, not only this release control. |
 | 1 | Completed the English quality gate and matched speed pair: Q4_K +4.50% in the new pair; smaller +1.73% in earlier reloads. Retain as an opt-in English/code candidate. | The recorded scope passes; general writing, arbitrary code and much longer context require their own evidence before broader claims. No further sweep is queued. | Do not replace the deployed default or advertise a guaranteed gain from one pair. Router F32 to BF16 is not a CLI-only experiment here. |
-| 2 | Proxy shortlist screen complete. The fork survey found an existing dynamic-head prototype: prioritize [ggml-org/llama.cpp#30380](https://github.com/ggml-org/llama.cpp/pull/30380) over inventing static MTP `d2t`. | Matching Windows ARM64 build, engaged dynamic path, full-target verification, startup/memory accounting, held-out acceptance/quality and one matched K=0/K=16,384 comparison. Independent selection data is still required if returning to our static shortlist design. | No mapping patch from proxy coverage alone; no claimed dynamic speedup from the GB10 report. Never restrict target tokens or train on evaluation outputs. |
-| 3 | Source-shortlisted QSA mask and CUDA graph-chunk proposals in section 3.1; local operator profiling remains blocked. | Same-source control/candidate builds and an isolated target-model A/B; per-op evidence if pursuing additional custom fusion, routed-ID or page-fault work. | Do not port whole forks or interpret existing graph/fusion ablation losses as remaining headroom. |
+| 2 | Dynamic draft head [ggml-org/llama.cpp#30380](https://github.com/ggml-org/llama.cpp/pull/30380): matched native A/B passed (section 2.13), +2.63% geomean at K=16,384, token-identical, +238 MiB, +4 s load. | Toolchain parity pair, then a b11756+PR build with the same gain before deployment; enable only on the Flash-Next recipe. | No claim beyond the four en-US cases; chat is flat. Do not add to the Q4_K gain without a combined measurement. |
+| 3 | QSA k-pool mask [ggml-org/llama.cpp#30640](https://github.com/ggml-org/llama.cpp/pull/30640) reviewed safe; worktrees ready (section 3.1). CUDA graph-chunk proposal not started. | Same-source control/candidate builds, `test-backend-ops -o KPOOL_MASK`, Flash-Next prefill 2K/8K and decode A/B. | Do not port whole forks or interpret existing graph/fusion ablation losses as remaining headroom. |
 | 4 | MTP2/3/4 and Nemotron p_min comparisons executed. Keep MTP3; the hindsight depth selector has only 2.00% headroom on the English/code slice before overhead. | Only revisit if a representative English workload shows a larger opportunity, with per-step cost traces and measured switching/capture cost. | No adaptive implementation is justified by the current per-request aggregates or different-output throughput alone. |
 | 5 | Source gate assessed; grouped MoE verify prototype blocked, not implemented. | Actual per-layer routed-ID overlap, bytes saved, launch/packing cost, and correctness under rollback/multi-sequence batches. | Do not replace missing route measurements with uniform-routing assumptions or target-only timing proxies. |
-| 6 | Assess existing FFN MMQ proposals in section 3.1 before new grouped-MoE work. Grouped prefill still needs evidence that expert GEMMs dominate; NVFP4 remains a separate format/quality experiment. | Actual quant/dispatch coverage, same-build speed and correctness; routed distributions for a grouped kernel; stable Windows ARM64 execution. | No assumed 1.5-2x improvement, no double-counting overlapping fusions, and no swapping model precision inside a kernel-only comparison. |
+| 6 | Dense FFN MMQ fusion [ggml-org/llama.cpp#29948](https://github.com/ggml-org/llama.cpp/pull/29948) reviewed safe; 35 of 65 27B layers eligible (section 3.1). Assess before new grouped-MoE work. Grouped prefill still needs evidence that expert GEMMs dominate; NVFP4 remains a separate format/quality experiment. | Actual quant/dispatch coverage, same-build speed and correctness; routed distributions for a grouped kernel; stable Windows ARM64 execution. | No assumed 1.5-2x improvement, no double-counting overlapping fusions, and no swapping model precision inside a kernel-only comparison. |
 | 7 | Treat per-request speculative server controls as a separate serving/API decision, not an engine speed step. | Confirm the desired request semantics and server-scope fit; implement tests proving parameters are honored rather than merely echoed. | Do not combine this with speculation algorithm work or claim it improves single-request throughput. |
 
 There is no defensible cumulative target or delivery timeline yet. Report each prototype's measured delta independently; add a combined projection only after combined measurements confirm interactions and no double counting.
@@ -521,6 +548,7 @@ Everything below this notice in section 5 records the original v2 roadmap. It is
 - **Physical ceilings** (85% of 300 GB/s): Flash-Next plain ≈ 51 tok/s after the step-1 remix (4.96 GB/token); Nemotron ≈ 34; 27B ≈ 16.8.
 
 ### Phase 0 — Toolchain and harness (≈1 week)
+- **v9 note:** superseded. Builds now run natively on the ARM64 host (`tools/build_native_cuda.ps1`); see section 3.1.
 - **Build:** cross-compile `ggml-cuda` like upstream CI. On an x64 Windows host (or a GitHub Actions `windows-2022` runner): `vcvarsall amd64_arm64`, toolchain `cmake/arm64-windows-msvc-cuda.cmake`, flags `-DGGML_BACKEND_DL=ON -DGGML_CPU=OFF -DGGML_CUDA=ON -DGGML_CUDA_CCCL_VERSION=v3.4.3`, CUDA 13.4.
   - Dev builds use `-DCMAKE_CUDA_ARCHITECTURES=121a-real` only, for faster compiles.
 - **Deploy:** copy `ggml-cuda.dll` into `C:\llama.cpp`, keeping the stock DLL for rollback.

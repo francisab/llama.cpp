@@ -1,0 +1,87 @@
+{
+  "passed": true,
+  "cases": [
+    "code",
+    "locale_json",
+    "identifiers",
+    "document"
+  ],
+  "files": [
+    {
+      "path": "rtx-spark\\results\\dyn-head-20261021\\control-quality\\server_U1_en-us-quality.json",
+      "cases": [
+        "code",
+        "locale_json",
+        "identifiers",
+        "document"
+      ],
+      "passed": true,
+      "scores": [
+        {
+          "phase": "warmups",
+          "case": "code",
+          "tokens": 1887,
+          "content_sha256": "e5df2cd433567160a3d900d18e776464d72fc756d3144d2afdb37496cf767d01",
+          "passed": true,
+          "assertions": 231
+        },
+        {
+          "phase": "warmups",
+          "case": "locale_json",
+          "tokens": 517,
+          "content_sha256": "09f8dcfd12a8d9dd69fe9b544f7cce0a720c83d0878e906483af53eb2b18b92f",
+          "passed": true,
+          "assertions": 6
+        },
+        {
+          "phase": "warmups",
+          "case": "identifiers",
+          "tokens": 201,
+          "content_sha256": "8d92c5f0e476c51e5bde12e709d93c0d887237e6ddd1810dae5b753c031d6e0f",
+          "passed": true,
+          "assertions": 4
+        },
+        {
+          "phase": "warmups",
+          "case": "document",
+          "tokens": 288,
+          "content_sha256": "49d53589fff63549430f450e043c5ca71956b37f531e0648a054cfe9b3a9b2f7",
+          "passed": true,
+          "assertions": 4
+        },
+        {
+          "phase": "rows",
+          "case": "code",
+          "tokens": 1887,
+          "content_sha256": "e5df2cd433567160a3d900d18e776464d72fc756d3144d2afdb37496cf767d01",
+          "passed": true,
+          "assertions": 231
+        },
+        {
+          "phase": "rows",
+          "case": "locale_json",
+          "tokens": 517,
+          "content_sha256": "09f8dcfd12a8d9dd69fe9b544f7cce0a720c83d0878e906483af53eb2b18b92f",
+          "passed": true,
+          "assertions": 6
+        },
+        {
+          "phase": "rows",
+          "case": "identifiers",
+          "tokens": 201,
+          "content_sha256": "8d92c5f0e476c51e5bde12e709d93c0d887237e6ddd1810dae5b753c031d6e0f",
+          "passed": true,
+          "assertions": 4
+        },
+        {
+          "phase": "rows",
+          "case": "document",
+          "tokens": 282,
+          "content_sha256": "3fa776405ecadaec55f8ab1d960aeb76bde23383a37980784ded0ff27573d79a",
+          "passed": true,
+          "assertions": 4
+        }
+      ]
+    }
+  ]
+}
