@@ -1,0 +1,29 @@
+{
+  "hypothesis": "The twelve-token lookup path may beat pure MTP3 if the target retains twelve recurrent rollback states instead of three, avoiding full checkpoint replay.",
+  "new_evidence": "Section 2.51 measured 13/15 checkpoint replays per unconditional-hybrid request and verified that need_n_rs_seq() considers the model draft length, not the twelve-token lookup proposal.",
+  "change": "When ngram-simple is enabled, raise target n_rs_seq to max(existing capacity, configured lookup size_m). Draft context still explicitly sets n_rs_seq to zero. One startup line reports the actual target capacity via llama_n_rs_seq.",
+  "unchanged": [
+    "Frozen Python rename and JSON unit-conversion fixtures",
+    "MTP3 and ngram-simple n=m=12",
+    "Original target, Q4_K draft head, dynamic vocabulary 16384, b2048/ub512, reasoning off",
+    "All installed files, launcher settings and model files",
+    "No cost policy, acceptance predictor, cooldown or length tuning"
+  ],
+  "control": "Fresh installed-runtime pure MTP3 run. The earlier rejected unconditional hybrid is contextual evidence, not the speed denominator.",
+  "candidate": "Same installed files except the capacity-only llama-common.dll, with ngram-simple added.",
+  "screen": {
+    "order": ["pure MTP control", "capacity-matched hybrid"],
+    "warmups_per_case": 1,
+    "repetitions_per_case": 2,
+    "generated_tokens": 512,
+    "actual_target_rollback_states": 12,
+    "maximum_additional_ready_gpu_mib": 2048,
+    "minimum_gain_each_case": 0.03,
+    "require_nonoverlapping_ranges": true,
+    "require_identical_prefix_tokens": true,
+    "stop": "Stop on the first failed gate; no capacity sweep.",
+    "survivor": "Confirm reversed order and full natural-EOS edits, then integration and release gates before deployment."
+  },
+  "attribution": "This capacity-matching prototype is a new follow-up to measured rollback behavior, not a retuned version of the rejected cost selector.",
+  "deployment_changed": false
+}

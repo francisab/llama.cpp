@@ -1,0 +1,20 @@
+--- a/common/common.cpp
++++ b/common/common.cpp
+@@ -1376,6 +1376,7 @@
+     }
+ 
+     pimpl->context.reset(lctx);
++    LOG_INF("lookup_snapshot target_n_rs_seq=%u\n", llama_n_rs_seq(lctx));
+ 
+     set_process_priority(params.cpuparams.priority);
+ 
+@@ -1714,6 +1715,9 @@
+     cparams.n_ctx             = params.n_ctx;
+     cparams.n_seq_max         = params.n_parallel;
+     cparams.n_rs_seq          = params.speculative.need_n_rs_seq();
++    if (std::find(params.speculative.types.begin(), params.speculative.types.end(), COMMON_SPECULATIVE_TYPE_NGRAM_SIMPLE) != params.speculative.types.end()) {
++        cparams.n_rs_seq = std::max(cparams.n_rs_seq, uint32_t(params.speculative.ngram_simple.size_m));
++    }
+     cparams.n_outputs_max     = std::max(params.n_outputs_max, 0);
+     cparams.n_outputs_max_per_seq = std::max(params.n_outputs_max_per_seq, 0);
+     cparams.n_batch           = params.n_batch;

@@ -1,0 +1,11 @@
+{
+  "build_command": "cmake --build C:\\llama-builds\\rel-b11756-30380-30640\\cpu --target llama-server --parallel 8",
+  "build_result": "passed for capacity candidate and restored source",
+  "screen_command": "python rtx-spark\\results\\lookup-rollback-capacity-20261021\\screen.py --private <private-directory>",
+  "screen_result": "completed; comparison exit 3 rejects the Python regression",
+  "verified_prefix_responses_including_warmups": 12,
+  "public_measured_rows_reconciled": 8,
+  "actual_target_n_rs_seq": 12,
+  "not_run": "Reverse order, full natural-EOS edits and deployment gates are stopped by the failed first pair.",
+  "deployment_changed": false
+}

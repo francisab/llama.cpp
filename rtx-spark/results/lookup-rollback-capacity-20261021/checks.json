@@ -1,0 +1,13 @@
+{
+  "actual_target_n_rs_seq": [
+    12
+  ],
+  "additional_ready_gpu_mib": 1102,
+  "identical_prefixes": [
+    4,
+    4
+  ],
+  "comparison_exit_code": 3,
+  "installed_runtime_unchanged": true,
+  "deployment_changed": false
+}
