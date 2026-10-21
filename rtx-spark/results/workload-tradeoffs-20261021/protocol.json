@@ -1,0 +1,49 @@
+{
+  "policy": "Explicit workload-specific opt-in profiles; never change the balanced default or silently auto-select a profile.",
+  "user_directed_change": "Replace the blanket per-operator regression veto with measured end-to-end profile utility. Preserve historical decisions and hard correctness/model-quality gates.",
+  "review_scope": "Every deferred candidate in PLAN sections 2.1-2.58 plus the serving/API backlog; assessment.json records source/evidence-based dispositions separately from new validation.",
+  "long_prefill_profile": {
+    "primary_inputs": "Fresh synthetic fact-retrieval and code/document inputs at approximately 8192 and 24576 actual prompt tokens, uncached.",
+    "generated_token_budget": 128,
+    "measurements": ["time to first content", "complete request wall time", "prompt processing", "decode throughput", "draft acceptance", "ready GPU memory", "model bytes", "load time"],
+    "guard_workload": "Approximately 1024 prompt tokens / 512 generated tokens, with cached-prefix costs reported separately rather than hidden.",
+    "order": ["control", "candidate", "candidate", "control"],
+    "samples_per_case_per_launch": 3,
+    "minimum_request_latency_reduction_percent": 3,
+    "require_both_orders": true,
+    "require_separated_primary_ranges": true,
+    "component_regressions": "Report prefill and verification separately; a slower component does not veto a net request win.",
+    "outside_profile_regressions": "Disclose explicitly; do not change the balanced default."
+  },
+  "configuration_profiles": {
+    "minimum_request_latency_reduction_percent": 1,
+    "require_both_orders": true,
+    "require_separated_primary_ranges": true,
+    "require_gain_above_control_drift": true,
+    "samples_per_case_per_launch": 3,
+    "scope": "Existing settings with no new kernel subsystem; fresh task-appropriate fixtures and independently scored complete responses are required.",
+    "rationale": "A small repeatable gain may justify a low-cost opt-in flag; noise alone does not."
+  },
+  "nvfp4_precision_preflight": {
+    "order": ["27B", "Nemotron", "Flash-Next"],
+    "scope": "Same complete tensor selections as the earlier operator screens. Preserve all other tensor payloads and original models.",
+    "source": "Separate feasibility candidates requantized from the actual original local GGUFs, not advertised as conversions from original BF16. A failure applies to this requantization path only.",
+    "selected_tensors": {"27B":192,"Nemotron":80,"Flash-Next":144},
+    "dataset_sha256": "173c87a53759e0201f33e0ccf978e510c2042d7f2cb78229d9a50d79b9e7dd08",
+    "dataset": "Existing pinned wiki.test.raw, first 16 chunks, context1024/batch1024/ub512, same installed perplexity tool and CUDA backend.",
+    "maximum_mean_perplexity_ratio": 1.01,
+    "maximum_mean_kl_nats": 0.01,
+    "require_reference_and_same_model_calibration": true,
+    "maximum_calibration_absolute_mean_kl_nats": 0.001,
+    "maximum_calibration_perplexity_ratio_distance_from_one": 0.001,
+    "timeout_per_process_seconds": 1200,
+    "stop": "A failed precision screen stops that model candidate before speed claims. No subset narrowing, activation-precision sweep or threshold relaxation."
+  },
+  "promotion": [
+    "Complete profile-specific end-to-end comparisons and independent English/code task checks.",
+    "For changed target weights, pass development precision then an unused validation split before task/speed promotion.",
+    "For changed binaries, preserve applicable CPU-reference and boundary/fusion checks and validate the actual release stack.",
+    "Check defaults and unrelated recipes unchanged, isolate artifacts, document limitations and provide rollback.",
+    "Publish sanitized evidence and only enable profiles that pass; do not invent a winner to satisfy an enablement request."
+  ]
+}

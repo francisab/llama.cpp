@@ -1160,6 +1160,23 @@ Performance uses all 512 experts/top22 and an offset ID view. Routes are seeded 
 
 **Disposition of this pass:** no speed candidate qualified for full release/quality/stability promotion or runtime integration. The installed runtime and launcher defaults remain unchanged. Q8 counters remain driver-resource blocked; per-request speculation semantics and broader long-context/soak hardening remain separate work, not silently claimed as completed by these screens.
 
+### 2.59 User-directed workload-specific tradeoff reassessment [M/S]
+
+The user requested reconsidering previously ignored candidates using end-to-end tradeoffs and selected **workload-specific opt-in profiles, with the balanced default unchanged**. The inventory and new protocols are in `results/workload-tradeoffs-20261021/`. Historical rejected/parked screens remain unchanged; a slower verification operator is no longer an automatic veto on a separately validated long-prefill profile. Correctness and model precision remain hard gates. Existing features, unsupported designs, noisy non-wins and driver blockers are distinguished from candidates requiring new measurements.
+
+Long-prefill profiles must show at least 3% lower complete-request latency in both launch orders with separated primary ranges. Low-cost configuration profiles use a 1% minimum, require both orders and separated ranges, and must exceed control reload drift. These are new profile-specific criteria, not retroactive passes. Complete task outputs are scored independently; synthetic operator geometric means do not become model-speed claims.
+
+The first model-level check converts all 192 selected 27B FFN tensors to NVFP4 in a separate file using the actual existing quantized GGUF as input. All 674 unselected tensor payloads are byte-verified unchanged; metadata names, types and values match. This tests the readily available requantization path, not conversion from original BF16.
+
+| Precision check, 16 pinned Wikitext-2 chunks | PPL ratio | Mean KL, nats | Same top token | Decision |
+|---|---:|---:|---:|---|
+| Original 27B A/A calibration | 1.000015 | Approximately 0 | 100.000% | Valid numerical control |
+| 27B FFN NVFP4 requantization | 1.020371 | 0.056200 | 90.484% | Fails the unchanged 1.01 PPL-ratio and 0.01 KL gates |
+
+**Do not enable this requantized 27B candidate.** Its prefill operator lead remains real, but it now has a model-level precision failure independent of the old verification-speed veto. No end-to-end speed or general language-quality claim follows. Original-BF16 conversion has not been evaluated. Nemotron/Flash-Next precision checks and the remaining profile validations are separate, unfinished work; the inventory is not a claim that all work is complete.
+
+The Nemotron conversion also passes full tensor/metadata isolation, but its unchanged-model calibration stops before candidate evaluation: reported compressed-reference PPL ratio is 1.001971, while mean KL is approximately zero and actual PPL 3.086314 matches the original reference pass's printed 3.0863. The initial guard and this blocked attempt are retained in `nvfp4-nemotron-calibration.json`; this is not a failed NVFP4 model-quality result. Reference-format diagnosis is required before continuing.
+
 ## 3. Source-verified feature status and reference lessons
 
 The following status is verified in this checkout. This table supersedes the porting assumptions in the initial reference inventory below.
@@ -1267,7 +1284,9 @@ Keep the optional 64 GB machine idle unless a specific fitting job is assigned, 
 
 ## 5. Revised roadmap
 
-The v2 step estimates and cumulative tok/s projections below remain withdrawn. They combined unverified gains, double-counted upstream work, and lacked repeated A/B evidence. Sections 2.7-2.11 provide controls and validation decisions, not a cumulative forecast. Prioritize en-US and code; keep other languages non-gating. The bounded English follow-up is complete; broad benchmarking remains stopped.
+The v2 step estimates and cumulative tok/s projections below remain withdrawn. They combined unverified gains, double-counted upstream work, and lacked repeated A/B evidence. Sections 2.7-2.11 provide controls and validation decisions, not a cumulative forecast. Prioritize en-US and code; keep other languages non-gating. The bounded English follow-up is complete.
+
+**Latest user-directed policy (section 2.59):** reassess parked items for explicit workload-specific opt-in profiles while preserving the balanced default. The profile protocols in `results/workload-tradeoffs-20261021/protocol.json` supersede the blanket per-component regression veto below for this new campaign only. Preserve historical failures; do not relax correctness/precision or call an unfinished candidate validated.
 
 **User-directed execution change: screen quickly and fail fast, for binary changes and model changes alike.** The table below is a backlog, not a requirement to spend a full validation campaign on every item. Model/head quantization experiments can be screened without waiting for the upstream-PR queue. Distinguish our own changes, model/configuration experiments, and integrations of other authors' patches in every result.
 

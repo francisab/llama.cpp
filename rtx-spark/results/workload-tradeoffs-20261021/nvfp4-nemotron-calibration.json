@@ -1,0 +1,33 @@
+{
+  "status": "calibration_guard_blocked_before_candidate",
+  "candidate_measured": false,
+  "deployment_changed": false,
+  "calibration": {
+    "ppl": 3.086314,
+    "ppl_ratio": 1.001971,
+    "mean_kl_nats": 0.0,
+    "same_top_percent": 99.988
+  },
+  "reference_final_ppl": 3.0863,
+  "conversion": {
+    "source_filenames": [
+      "NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-Q4_K_M-00001-of-00002.gguf",
+      "NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-Q4_K_M-00002-of-00002.gguf"
+    ],
+    "candidate_filenames": [
+      "nemotron-ffn-nvfp4-00001-of-00002.gguf",
+      "nemotron-ffn-nvfp4-00002-of-00002.gguf"
+    ],
+    "source_bytes": 70103292320,
+    "candidate_bytes": 70103292320,
+    "changed_tensors": 80,
+    "unchanged_payloads_verified": 701,
+    "metadata_unchanged": true,
+    "tensor_map_sha256": "c8f609b6b477e4d3c78634658f271249b7e1452d5e97200c5c3b33f0c32fa630",
+    "unchanged_payload_manifest_sha256": "0a749fb22512ac62ea3bc799728654c72c5eac50f7bace594865ad2055c2ae91",
+    "changed_payload_manifest_sha256": "cbd2c1c47d3f4bed8a48e06864e19aa9eb081dc5cad6c648420696d153a2a248"
+  },
+  "protocol_sha256": "fd9acf62096177abe7311bd54459409743cff54b44925071f5f260f18aae0e48",
+  "script_sha256": "b977cee017af7c971d3ac31afb3f829f4f9b741ef90abdec597bbdc83c11001d",
+  "reason": "Same-model compressed-reference PPL ratio exceeds the frozen calibration guard. Preserve this attempt; diagnose before evaluating the candidate."
+}

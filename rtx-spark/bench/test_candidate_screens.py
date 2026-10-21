@@ -22,6 +22,69 @@ nvfp4 = load_module("nvfp4_screen", "27b-nvfp4-20261021", "screen.py")
 profiles = load_module("profile_screen", "27b-profiles-20261021", "validate.py")
 ssm = load_module("ssm_capture", "ssm-ssd-dispatch-20261021", "capture.py")
 nemotron = load_module("nemotron_nvfp4_screen", "nemotron-nvfp4-20261021", "screen.py")
+precision = load_module("tradeoff_precision", "workload-tradeoffs-20261021", "precision.py")
+tradeoffs = load_module("tradeoff_profiles", "workload-tradeoffs-20261021", "config_profiles.py")
+
+
+class TradeoffTaskTests(unittest.TestCase):
+    def test_sql_is_scored_against_independent_tables(self):
+        query = ("SELECT customer, SUM(amount_cents) AS total_cents FROM orders WHERE paid=1 "
+                 "GROUP BY customer HAVING SUM(amount_cents)>=1000 ORDER BY total_cents DESC, customer ASC")
+        self.assertTrue(tradeoffs.score_sql(query)["passed"])
+        with self.assertRaises(ValueError):
+            tradeoffs.score_sql(query.replace("paid=1", "paid=0"))
+
+    def test_sql_cannot_modify_or_access_external_data(self):
+        import sqlite3
+        for query in ("DROP TABLE orders", "ATTACH DATABASE 'x' AS x",
+                      "SELECT load_extension('x')", "SELECT zeroblob(1000000000)"):
+            with self.subTest(query=query), self.assertRaises((ValueError, sqlite3.Error)):
+                tradeoffs.score_sql(query)
+
+    def test_latency_gate_requires_both_orders_and_beats_drift(self):
+        def row(values):
+            return {"total_request_seconds": values, "median_total_seconds": sorted(values)[1]}
+        runs = [row([10, 10.1, 10.2]), row([9, 9.1, 9.2]), row([9, 9.1, 9.2]), row([10, 10.1, 10.2])]
+        self.assertTrue(tradeoffs.compare(runs, 1)["passed"])
+        runs[2] = row([10, 10.1, 10.2])
+        self.assertFalse(tradeoffs.compare(runs, 1)["passed"])
+        runs[2] = row([9, 9.1, 9.2])
+        runs[3] = row([13, 13.1, 13.2])
+        self.assertFalse(tradeoffs.compare(runs, 1)["passed"])
+
+
+class TradeoffPrecisionTests(unittest.TestCase):
+    def log(self):
+        rows = "\n".join(f"{i} 2.5 \u00b1 0.1" for i in range(1, 17))
+        return rows + "\nMean PPL(Q) : 2.5\nMean PPL(Q)/PPL(base) : 1.002\nMean KLD: 0.007\nSame top p: 98.5\n"
+
+    def test_complete_precision_metrics(self):
+        self.assertEqual(precision.parse_metrics(self.log()),
+                         {"ppl": 2.5, "ppl_ratio": 1.002, "mean_kl_nats": 0.007, "same_top_percent": 98.5})
+
+    def test_missing_duplicate_or_nonfinite_scores_fail(self):
+        text = self.log()
+        for invalid in (
+            text.replace("16 2.5", "17 2.5"),
+            text + "Mean KLD: 0.008\n",
+            text.replace("0.007", "nan"),
+            text.replace("0.007", "1e309"),
+            text.replace("98.5", "101"),
+            text.replace("1.002", "0"),
+        ):
+            with self.subTest(invalid=invalid), self.assertRaises(ValueError):
+                precision.parse_metrics(invalid)
+
+    def test_split_names_preserve_source(self):
+        self.assertEqual(precision.shards(Path("model.gguf")), [Path("model.gguf")])
+        self.assertEqual(precision.shards(Path("model-00001-of-00002.gguf")),
+                         [Path("model-00001-of-00002.gguf"), Path("model-00002-of-00002.gguf")])
+
+    def test_inventory_has_unique_ids_and_no_new_enablement(self):
+        assessment = json.loads((RESULTS / "workload-tradeoffs-20261021" / "assessment.json").read_text())
+        items = assessment["candidates"]
+        self.assertEqual(len(items), len({item["id"] for item in items}))
+        self.assertNotIn("enabled", {item["decision"] for item in items})
 
 
 class MMQFixtureTests(unittest.TestCase):
