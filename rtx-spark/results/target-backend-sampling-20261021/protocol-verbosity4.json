@@ -1,0 +1,26 @@
+{
+  "hypothesis": "Target GPU sampling may reduce full-logit readback and CPU sampling overhead during greedy MTP verification",
+  "source_preflight": "Draft backend sampling is already enabled. Target backend sampling is disabled in the prior recorded server settings and enabled only by this candidate.",
+  "runtime": "Same installed b11756 plus 30380 and 30640 binaries and original model files",
+  "model": "Original Flash-Next target, Q4_K external draft, MTP3, ub512, dynamic draft vocabulary 16384",
+  "candidate_extra_args": ["--backend-sampling"],
+  "scope": "Existing experimental target-sampling option on unconstrained greedy requests, not a new sampler implementation",
+  "engagement_probe": {
+    "request": "One naturally exiting 64-token Rust CLI request, reasoning off, verbosity four",
+    "evidence": "Require target-token backend-selection messages and the completed generation budget on the original installed runtime",
+    "timings_valid_for_performance": false,
+    "timeout_seconds": 180
+  },
+  "screen": {
+    "cases": ["rust256", "json256"],
+    "measured_samples_per_case_per_arm": 2,
+    "minimum_gain_each_case": 0.03,
+    "require_nonoverlapping_ranges": true,
+    "maximum_regression": 0.03,
+    "reverse_order_only_if_first_pair_passes": true,
+    "operational_budget_seconds": 600
+  },
+  "promotion": "Only after both speed orders pass, run English quality and repeated release-stack confirmation. Grammar, reasoning-budget and log-probability request modes need explicit compatibility checks before any default change.",
+  "stop_rule": "Stop on a failed speed pair without changing sampler-chain parameters or draft depth",
+  "deployment_changed": false
+}

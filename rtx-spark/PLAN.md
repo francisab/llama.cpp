@@ -766,6 +766,19 @@ The geometric mean is **-12.16%**, with 4/4 identical measured prefixes. Control
 
 `results/copy-edit-ngram-20261021/` retains the protocol, fixture hash, preflight, samples and telemetry. The frozen fixture module and validators are in `bench/copy_edit_suite.py`; `run_rebaseline.py --suite copy-edit` selects fixed 512-token requests, or a 2,048-token cap with `--allow-eos`. The public suite selector was wired after the screen; the screen used the same hashed fixture function through the existing custom-suite path. Future use should preserve this distinction between throughput triage and complete-edit validation.
 
+### 2.37 Target backend-sampling screen [M]
+
+Draft GPU sampling is already enabled in the deployed runtime; target GPU sampling is not. This candidate adds only `--backend-sampling` to the original-model MTP3/dynamic-head recipe, with unchanged executables and DLLs. A naturally exiting 64-token CLI probe records 64 backend-token selections. The first logging pilot completed but could not prove engagement because `LOG_DBG` requires verbosity five rather than four; both protocols and the failed pilot are retained.
+
+| Case | CPU target-sampling median | GPU target-sampling median | Change |
+|---|---:|---:|---:|
+| Rust | 54.80 tok/s | 55.75 tok/s | +1.73% |
+| JSON | 51.57 tok/s | 52.82 tok/s | +2.43% |
+
+The geometric mean is +2.08%, with nonoverlapping ranges, 4/4 identical token sequences and unchanged acceptance. Nevertheless, both cases miss the predeclared 3% gain. **Stop after the first pair**, completed in 145.219 seconds, without reverse order, sampler-parameter tuning or deployment. This is insufficient for promotion, not evidence of zero benefit.
+
+All measured responses confirm the intended target backend-sampling state. The verbose probe is not timing evidence. Grammar, reasoning-budget and log-probability compatibility remain outside this screen. `results/target-backend-sampling-20261021/` contains the engagement evidence, preserved logging pilot, samples and telemetry; target sampling remains at the deployed default.
+
 ## 3. Source-verified feature status and reference lessons
 
 The following status is verified in this checkout. This table supersedes the porting assumptions in the initial reference inventory below.
