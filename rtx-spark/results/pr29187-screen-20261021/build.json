@@ -1,0 +1,48 @@
+{
+  "control": {
+    "source_sha": "1b43d311698269073fb4827db10f9d6f195d2e7d",
+    "settings": {
+      "CMAKE_BUILD_TYPE": "Release",
+      "CMAKE_CUDA_ARCHITECTURES": "121a-real",
+      "GGML_CUDA": "ON",
+      "GGML_NATIVE": "ON",
+      "GGML_CUDA_CCCL_VERSION": "v3.4.3",
+      "LLAMA_BUILD_TESTS": "ON",
+      "LLAMA_OPENSSL": "OFF"
+    },
+    "compilers": {
+      "CXX": {
+        "ID": "MSVC",
+        "VERSION": "19.44.35229.0"
+      },
+      "CUDA": {
+        "ID": "NVIDIA",
+        "VERSION": "13.4.59"
+      }
+    }
+  },
+  "candidate": {
+    "source_sha": "e75c82b7750ce2163acacf3b41232f385c758135",
+    "settings": {
+      "CMAKE_BUILD_TYPE": "Release",
+      "CMAKE_CUDA_ARCHITECTURES": "121a-real",
+      "GGML_CUDA": "ON",
+      "GGML_NATIVE": "ON",
+      "GGML_CUDA_CCCL_VERSION": "v3.4.3",
+      "LLAMA_BUILD_TESTS": "ON",
+      "LLAMA_OPENSSL": "OFF"
+    },
+    "compilers": {
+      "CXX": {
+        "ID": "MSVC",
+        "VERSION": "19.44.35229.0"
+      },
+      "CUDA": {
+        "ID": "NVIDIA",
+        "VERSION": "13.4.59"
+      }
+    }
+  },
+  "production_source_changes_from_pinned_candidate": false,
+  "test_only_patch_verified_after_build": true
+}

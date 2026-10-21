@@ -1,0 +1,46 @@
+{
+  "command": [
+    "test-backend-ops.exe",
+    "-o",
+    "GATED_DELTA_NET_AB_FUSION",
+    "-b",
+    "CUDA0"
+  ],
+  "returncode": 0,
+  "elapsed_seconds": 0.8589999999967404,
+  "expected_cases": 14,
+  "observed_cases": 14,
+  "all_cases_passed": true,
+  "cases": [
+    "GATED_DELTA_NET_AB_FUSION(w_type=bf16,head_count=8,head_size=32,n_tokens=4,n_embd=128,dt_per_token=0,dt_internal=0): OK",
+    "GATED_DELTA_NET_AB_FUSION(w_type=f16,head_count=8,head_size=32,n_tokens=4,n_embd=128,dt_per_token=0,dt_internal=0): OK",
+    "GATED_DELTA_NET_AB_FUSION(w_type=f32,head_count=8,head_size=32,n_tokens=4,n_embd=128,dt_per_token=0,dt_internal=0): OK",
+    "GATED_DELTA_NET_AB_FUSION(w_type=q8_0,head_count=8,head_size=32,n_tokens=4,n_embd=128,dt_per_token=0,dt_internal=0): OK",
+    "GATED_DELTA_NET_AB_FUSION(w_type=bf16,head_count=8,head_size=32,n_tokens=1,n_embd=128,dt_per_token=0,dt_internal=0): OK",
+    "GATED_DELTA_NET_AB_FUSION(w_type=bf16,head_count=8,head_size=32,n_tokens=8,n_embd=128,dt_per_token=0,dt_internal=0): OK",
+    "GATED_DELTA_NET_AB_FUSION(w_type=bf16,head_count=8,head_size=32,n_tokens=9,n_embd=128,dt_per_token=0,dt_internal=0): OK",
+    "GATED_DELTA_NET_AB_FUSION(w_type=bf16,head_count=8,head_size=32,n_tokens=4,n_embd=384,dt_per_token=0,dt_internal=0): OK",
+    "GATED_DELTA_NET_AB_FUSION(w_type=q8_0,head_count=8,head_size=32,n_tokens=4,n_embd=384,dt_per_token=0,dt_internal=0): OK",
+    "GATED_DELTA_NET_AB_FUSION(w_type=bf16,head_count=4,head_size=32,n_tokens=4,n_embd=128,dt_per_token=1,dt_internal=0): OK",
+    "GATED_DELTA_NET_AB_FUSION(w_type=bf16,head_count=8,head_size=32,n_tokens=1,n_embd=128,dt_per_token=0,dt_internal=1): OK",
+    "GATED_DELTA_NET_AB_FUSION(w_type=f32,head_count=48,head_size=128,n_tokens=1,n_embd=2560,dt_per_token=0,dt_internal=0): OK",
+    "GATED_DELTA_NET_AB_FUSION(w_type=f32,head_count=48,head_size=128,n_tokens=4,n_embd=2560,dt_per_token=0,dt_internal=0): OK",
+    "GATED_DELTA_NET_AB_FUSION(w_type=f32,head_count=48,head_size=128,n_tokens=8,n_embd=2560,dt_per_token=0,dt_internal=0): OK"
+  ],
+  "binary_manifest": {
+    "test-backend-ops.exe": "ca9aab2546d229f6a8fc4c6140d2cb7f8841d1965166aee3c91c28e835e36409",
+    "cublas64_13.dll": "49e8fa23d88ac0cbae27e200fc092b894dd55b4de5cb4293993986e29fb9b65a",
+    "cublasLt64_13.dll": "daf579ae36bb3c85e2340c57a1994f634e07c6f55ef70dd4cdc26695de21c752",
+    "cudart64_13.dll": "bd927ddf03823eeead7c8b261a8669d96764b89109311f4ab6accde8b7d97ec2",
+    "ggml-base.dll": "f61b8565c01da97ad0da4bca831b7c4fe59af94f8c33c64a2aa9383ed1aad4f7",
+    "ggml-cpu.dll": "735edea4a6e73d5d997b9febd3a2ad86875a248b82912c071a809d5a4debcda7",
+    "ggml-cuda.dll": "446d34dee04e323a212ff8decb899c2d31ca6db338858540b15eeefd90ab8c75",
+    "ggml.dll": "5ae55d2884be245b892ff854e331150befb8540feec7e29fde6a5ea09966fee6",
+    "llama-common.dll": "e4b80756a03e61996438610501a0c40b731a0b037bb907d8edef2978c3fae0ca",
+    "llama-server-impl.dll": "65eedac5e4a163fbd9ea737fb0b0e24c93f67f16d4ebc617fe2ae2d1c0f85519",
+    "llama.dll": "680d715d012b5855e1291ea549c9884a3884ad2da228a97df2bf760dc26dcc8a",
+    "mtmd.dll": "0c016fa43a1b99d40a1214c78e44074fd191787c605fdb726827eb07450d1a51"
+  },
+  "runtime_fusion_dispatch_traced": false,
+  "binary_hashes_verified_after": true
+}

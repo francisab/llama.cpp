@@ -550,7 +550,26 @@ Geometric mean: **-0.70%**, with all four output-token sequences identical and u
 
 The first harness attempt completed only a control run, then rejected an outdated startup-log format. That control and its telemetry are retained separately. The parser was corrected and the matched comparison restarted before any candidate measurement; the failed attempt was not silently discarded or used to select a favorable baseline. Evidence is in `results/decode-threads4-20261021/`.
 
-The next candidate is upstream [ggml-org/llama.cpp#29187](https://github.com/ggml-org/llama.cpp/pull/29187), GDN alpha/beta producer fusion. Source inspection found matching F32 `[2560, 48]` projections in all 36 recurrent layers. Its proposed benefit is small token batches, so the screen must use actual MTP, not a plain tg128 proxy. Pinned native control/candidate builds and three supplemental real-geometry tests are specified in `results/pr29187-screen-20261021/protocol.json`. This is upstream work under evaluation, not an integrated optimization or an established speedup.
+The subsequent GDN alpha/beta producer-fusion screen is recorded below.
+
+### 2.24 GDN alpha/beta producer fusion [M]
+
+Upstream [ggml-org/llama.cpp#29187](https://github.com/ggml-org/llama.cpp/pull/29187), head `e75c82b7750ce2163acacf3b41232f385c758135`, was built against its true merge base `1b43d311698269073fb4827db10f9d6f195d2e7d`. Both native ARM64 Release builds use MSVC 19.44.35229.0, CUDA 13.4.59, CCCL v3.4.3 and `121a-real`; installed binaries were not replaced.
+
+All 14 selected CUDA correctness cases passed, including three local test-only additions for the actual F32 `[2560, 48]` projections, head size 128 and 1/4/8 tokens. Production source remains at the upstream candidate head. The supplemental patch, exact build settings and binary hashes are in `results/pr29187-screen-20261021/`. Source matching and these warmup-enabled tests do not constitute a production fusion-dispatch trace.
+
+The first actual-MTP3 pair used original target weights, the Q4_K draft, ub512 and two fixed-length Rust/JSON samples per arm. Both arms omit the dynamic-vocabulary flag because their matched source base does not include that separately deployed patch. These rates are not a comparison against the installed release stack.
+
+| Case | Control median | Candidate median | Change |
+|---|---|---|---|
+| Rust | 43.72 tok/s | 45.91 tok/s | +5.01% |
+| JSON | 43.03 tok/s | 41.82 tok/s | -2.81% |
+
+Geometric mean: **+1.03%**, failing the unchanged 3% per-case gate. Stop after the first pair; no reverse-order run, integration or deployment. Outputs are repeatable within each arm but **0/4** match across arms, and JSON draft acceptance falls from 76.6% to 71.6%. Thus the mixed timing result is not an isolated kernel-latency measurement or proof of model-quality equivalence. No perplexity/KL or English task campaign was spent on this speed-screen failure.
+
+The pair completed in 153.641 seconds. Its 140 telemetry samples include nine software power-cap flags and no hardware thermal-slowdown flag. Runtime DLL hashes were unchanged after correctness and timing runs. This remains upstream work evaluated locally, not a locally authored engine improvement.
+
+Next is one independent model-only hypothesis: a Q5_K draft output head, rebuilt from the original Q8_0 draft, versus the deployed Q4_K head. Higher draft precision may improve acceptance enough to offset its extra head cost; acceptance alone is not the promotion criterion. The target model, 33 other draft tensors and deployed runtime recipe must remain unchanged. The protocol is in `results/draft-head-q5-20261021/`.
 
 ## 3. Source-verified feature status and reference lessons
 

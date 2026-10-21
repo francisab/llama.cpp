@@ -1,0 +1,44 @@
+{
+  "completed": true,
+  "binary_manifest": {
+    "base": {
+      "llama-server.exe": "0d826a64782b770a0e40abee019ad49a7b0c92b7e2f1e0b9e9f698d3d9d71f42",
+      "cublas64_13.dll": "49e8fa23d88ac0cbae27e200fc092b894dd55b4de5cb4293993986e29fb9b65a",
+      "cublasLt64_13.dll": "daf579ae36bb3c85e2340c57a1994f634e07c6f55ef70dd4cdc26695de21c752",
+      "cudart64_13.dll": "bd927ddf03823eeead7c8b261a8669d96764b89109311f4ab6accde8b7d97ec2",
+      "ggml-base.dll": "036965a5c623cbf428cdc8762dc749d246ddcb8185a66bc5d2dc3d1062e077c6",
+      "ggml-cpu.dll": "26aa6cd02c4ab7b5074dc2f0c433b41386a93a922124eca972e4cb45dd86a51d",
+      "ggml-cuda.dll": "0aa7182e64dd34a74a3dd648a734f3c8bdf2fa5602de559e3ec4c56f56f8fceb",
+      "ggml.dll": "8280b4b81f09a8e5b26fd7b630e68862a2e41f407e601bc34efd0071f834f4eb",
+      "llama-common.dll": "5c26fa98649d4992212fe8964f53e27f6e00e1854058833702613b26be9a5214",
+      "llama-server-impl.dll": "f0120d5d3ea2fa42ca7058950045c7fb6aab37ee7d3a8cd9dcb078c7a49c73e9",
+      "llama.dll": "2ca4625b8fe3e52bf86a2b778e744575c25e9d5790650fd001e07e8a09f50a69",
+      "mtmd.dll": "a5f5bcd2d9e3b4bd650efbec6b3aeac80b723837e34b600e28ec8886dde24da9"
+    },
+    "cand": {
+      "llama-server.exe": "0d826a64782b770a0e40abee019ad49a7b0c92b7e2f1e0b9e9f698d3d9d71f42",
+      "cublas64_13.dll": "49e8fa23d88ac0cbae27e200fc092b894dd55b4de5cb4293993986e29fb9b65a",
+      "cublasLt64_13.dll": "daf579ae36bb3c85e2340c57a1994f634e07c6f55ef70dd4cdc26695de21c752",
+      "cudart64_13.dll": "bd927ddf03823eeead7c8b261a8669d96764b89109311f4ab6accde8b7d97ec2",
+      "ggml-base.dll": "f61b8565c01da97ad0da4bca831b7c4fe59af94f8c33c64a2aa9383ed1aad4f7",
+      "ggml-cpu.dll": "735edea4a6e73d5d997b9febd3a2ad86875a248b82912c071a809d5a4debcda7",
+      "ggml-cuda.dll": "446d34dee04e323a212ff8decb899c2d31ca6db338858540b15eeefd90ab8c75",
+      "ggml.dll": "5ae55d2884be245b892ff854e331150befb8540feec7e29fde6a5ea09966fee6",
+      "llama-common.dll": "e4b80756a03e61996438610501a0c40b731a0b037bb907d8edef2978c3fae0ca",
+      "llama-server-impl.dll": "65eedac5e4a163fbd9ea737fb0b0e24c93f67f16d4ebc617fe2ae2d1c0f85519",
+      "llama.dll": "680d715d012b5855e1291ea549c9884a3884ad2da228a97df2bf760dc26dcc8a",
+      "mtmd.dll": "0c016fa43a1b99d40a1214c78e44074fd191787c605fdb726827eb07450d1a51"
+    }
+  },
+  "deployment_changed": false,
+  "source_base_screen_only": true,
+  "operational_budget_seconds": 600,
+  "quality_followup_required": true,
+  "pair_1_identical_outputs": [
+    0,
+    4
+  ],
+  "decision": "stop after first pair",
+  "binary_hashes_verified_after": true,
+  "elapsed_seconds": 153.64100000000326
+}

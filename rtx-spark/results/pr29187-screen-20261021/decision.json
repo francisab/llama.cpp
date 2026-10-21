@@ -1,0 +1,34 @@
+{
+  "decision": "Park: first actual-MTP pair fails the unchanged per-case speed gate",
+  "geomean_change_percent": 1.025173292551007,
+  "case_change_percent": {
+    "json256": -2.8084120038196825,
+    "rust256": 5.009968961419431
+  },
+  "identical_outputs": [
+    0,
+    4
+  ],
+  "within_arm_identical_repeats": {
+    "base-1": {
+      "rust256": true,
+      "json256": true
+    },
+    "cand-1": {
+      "rust256": true,
+      "json256": true
+    }
+  },
+  "opposite_order_run": false,
+  "quality_established": false,
+  "precision_comparison_run": false,
+  "elapsed_seconds": 153.64100000000326,
+  "scope": "Matched upstream source base, without the deployed dynamic-vocabulary patch; not a release-stack comparison",
+  "runtime_fusion_dispatch_traced": false,
+  "telemetry": {
+    "samples": 140,
+    "software_power_cap_samples": 9,
+    "hardware_thermal_slowdown_samples": 0
+  },
+  "deployment_changed": false
+}

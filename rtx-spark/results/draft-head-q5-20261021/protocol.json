@@ -1,0 +1,41 @@
+{
+  "candidate": "Q5_K external draft output head",
+  "authorship": "Local model-precision experiment; no engine patch",
+  "hypothesis": "Higher draft-head precision than Q4_K may recover enough accepted tokens to offset its larger head. Select on end-to-end speed, not acceptance alone.",
+  "source": {
+    "repo": "ggml-org/Qwen3.8-Flash-Next-GGUF",
+    "revision": "92796c044d1e70d66a373598709092f2989f4155",
+    "filename": "mtp-Qwen3.8-Flash-Next-Q8_0.gguf",
+    "bytes": 4137429280,
+    "output_shape": [2560, 248320],
+    "input_precision": "Q8_0, never the already-quantized Q4_K draft"
+  },
+  "conversion": {
+    "quantizer_sha256": "36e8b5eb6039ec2a6e86366e24a385eb3913022356b6f1944f6f0ec8d72c7146",
+    "options": ["--allow-requantize", "--output-tensor-type", "q5_k", "--pure", "--max-buffer-size", "512", "<original-draft>", "<new-draft>", "Q8_0", "8"],
+    "dry_run_first": true,
+    "require_only_output_weight_changed": true,
+    "require_all_33_other_tensors_byte_identical": true,
+    "require_all_metadata_unchanged": true,
+    "preserve_original_and_deployed_drafts": true
+  },
+  "screen": {
+    "control": "Deployed Q4_K output head",
+    "runtime": "Unchanged installed b11756 + #30380 + #30640",
+    "target": "Unchanged original Flash-Next UD-IQ4_XS weights",
+    "recipe": "MTP3, ub512, lazy PLE, context 262144, dynamic draft vocabulary 16384, automatic threads",
+    "cases": ["rust256", "json256"],
+    "tokens_per_response": 256,
+    "repetitions_per_case_per_arm": 2,
+    "order": "Q4_K then Q5_K; only a survivor proceeds to Q5_K then Q4_K",
+    "minimum_gain_percent_per_case": 3,
+    "maximum_regression_percent": 3,
+    "require_nonoverlapping_ranges": true,
+    "record_output_token_equality_and_speculative_metrics": true,
+    "operational_budget_seconds": 600,
+    "stop_if_first_pair_fails": true,
+    "no_further_head_precision_sweep_if_failed": true
+  },
+  "promotion": "A speed survivor still needs bounded English task quality and repeated timing confirmation. Changed output tokens require investigation; do not silently promote. No target precision threshold changes.",
+  "deployment": "No installed model, binary or launcher replacement during this screen"
+}
