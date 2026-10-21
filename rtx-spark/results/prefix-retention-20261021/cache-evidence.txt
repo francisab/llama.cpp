@@ -1,0 +1,33 @@
+defaults: 0.33.282.681 I srv    load_model: prompt cache is enabled, size limit: 8192 MiB
+defaults: 0.33.282.943 I srv    load_model: context checkpoints enabled, max = 32, min spacing = 8192
+defaults: 0.33.872.115 I srv        update:  - cache state: 0 prompts, 0.000 MiB (limits: 8192.000 MiB, 262144 tokens, 8589934592 est)
+defaults: 0.33.872.116 I srv  get_availabl: prompt cache update took 0.20 ms
+defaults: 0.37.298.740 I slot   operator(): id  0 | task 11 | restored context checkpoint (pos_min = 1676, pos_max = 1676, n_tokens = 1677, n_past = 1677, size = 112.571 MiB)
+defaults: 0.37.977.050 I srv   prompt_save:  - saving prompt with length 1714, total state size = 167.108 MiB (draft: 4.244 MiB)
+defaults: 0.38.114.987 I srv        update:  - cache state: 1 prompts, 504.822 MiB (limits: 8192.000 MiB, 262144 tokens, 262144 est)
+defaults: 0.38.114.990 I srv  get_availabl: prompt cache update took 139.27 ms
+defaults: 0.41.121.456 I slot   operator(): id  0 | task 29 | restored context checkpoint (pos_min = 1772, pos_max = 1772, n_tokens = 1773, n_past = 1773, size = 112.571 MiB)
+defaults: 0.41.689.098 I srv   prompt_save:  - saving prompt with length 1812, total state size = 170.227 MiB (draft: 4.486 MiB)
+defaults: 0.41.832.770 I srv        update:  - cache state: 1 prompts, 507.940 MiB (limits: 8192.000 MiB, 262144 tokens, 262144 est)
+defaults: 0.41.832.786 I srv  get_availabl: prompt cache update took 144.86 ms
+defaults: 0.41.842.196 I slot   operator(): id  0 | task 37 | restored context checkpoint (pos_min = 1676, pos_max = 1676, n_tokens = 1677, n_past = 1677, size = 112.571 MiB)
+defaults: 0.42.438.893 I srv   prompt_save:  - saving prompt with length 1714, total state size = 167.108 MiB (draft: 4.244 MiB)
+defaults: 0.42.561.873 I srv        update:  - cache state: 1 prompts, 504.822 MiB (limits: 8192.000 MiB, 262144 tokens, 262144 est)
+defaults: 0.42.561.885 I srv  get_availabl: prompt cache update took 124.08 ms
+defaults: 0.42.572.200 I slot   operator(): id  0 | task 45 | restored context checkpoint (pos_min = 1772, pos_max = 1772, n_tokens = 1773, n_past = 1773, size = 112.571 MiB)
+defaults: 0.43.177.040 I srv   prompt_save:  - saving prompt with length 1812, total state size = 170.227 MiB (draft: 4.486 MiB)
+defaults: 0.43.283.816 I srv        update:  - cache state: 1 prompts, 507.940 MiB (limits: 8192.000 MiB, 262144 tokens, 262144 est)
+defaults: 0.43.283.827 I srv  get_availabl: prompt cache update took 107.84 ms
+defaults: 0.46.255.385 I srv   prompt_save:  - saving prompt with length 1714, total state size = 167.108 MiB (draft: 4.244 MiB)
+defaults: 0.46.358.503 I srv        update:  - cache state: 1 prompts, 504.822 MiB (limits: 8192.000 MiB, 262144 tokens, 262144 est)
+defaults: 0.46.358.516 I srv  get_availabl: prompt cache update took 104.41 ms
+defaults: 0.49.403.961 I srv   prompt_save:  - saving prompt with length 1812, total state size = 170.227 MiB (draft: 4.486 MiB)
+defaults: 0.49.483.375 I srv        update:  - cache state: 1 prompts, 507.940 MiB (limits: 8192.000 MiB, 262144 tokens, 262144 est)
+defaults: 0.49.483.387 I srv  get_availabl: prompt cache update took 80.81 ms
+defaults: 0.52.524.727 I srv   prompt_save:  - saving prompt with length 1714, total state size = 167.108 MiB (draft: 4.244 MiB)
+defaults: 0.52.677.046 I srv        update:  - cache state: 1 prompts, 504.822 MiB (limits: 8192.000 MiB, 262144 tokens, 262144 est)
+defaults: 0.52.677.065 I srv  get_availabl: prompt cache update took 153.34 ms
+no_ram_cache: 0.33.701.187 I srv    load_model: prompt cache is disabled - use `--cache-ram N` to enable it
+no_ram_cache: 0.33.701.329 I srv    load_model: context checkpoints enabled, max = 32, min spacing = 8192
+no_ram_cache: 0.38.340.080 I slot   operator(): id  0 | task 11 | restored context checkpoint (pos_min = 1676, pos_max = 1676, n_tokens = 1677, n_past = 1677, size = 112.571 MiB)
+no_ram_cache: 0.42.086.757 I slot   operator(): id  0 | task 29 | restored context checkpoint (pos_min = 1772, pos_max = 1772, n_tokens = 1773, n_past = 1773, size = 112.571 MiB)

@@ -1,0 +1,20 @@
+{
+  "question": "Does the installed hybrid/MTP server already retain a shared system prefix across adjacent and interleaved conversations?",
+  "kind": "Bounded diagnostic of existing upstream behavior; no engine-speed attribution",
+  "runtime": "Unchanged installed Flash-Next target, Q4_K draft output, MTP3, dynamic vocabulary 16384, b2048/ub512, one slot, 262144 context",
+  "arms": [
+    "Installed defaults: prompt RAM cache 8192 MiB and context checkpoints enabled",
+    "Ablation: --cache-ram 0; context checkpoints stay enabled"
+  ],
+  "requests": "A1,A2,B1,B2,A3,B3. A and B have different synthetic inventory documents in the system message; each request looks up a different record. Afterwards, the defaults arm evaluates uncached references for A2,B2,A3,B3.",
+  "checks": [
+    "Measure real template/tokenizer longest common prefixes; reconcile template token count with response usage.",
+    "Every response must return the exact requested synthetic record, color and limit, with no unrelated output.",
+    "For A2/B2 (adjacent) and A3/B3 (interleaved), default cached_tokens must cover at least 95% of the respective shared system prefix.",
+    "Ablation must still reuse adjacent prefixes, but cache less than 10% of the shared prefix on A3/B3, establishing RAM-cache engagement.",
+    "Uncached references must report zero cached tokens and the same expected JSON answer.",
+    "Stop the new prefix-pinning candidate if all checks pass. Otherwise retain the failure and inspect the existing cache/state path before proposing a new mechanism."
+ ],
+  "metrics": "SSE first nonempty content latency includes prompt-cache restoration; also record full request wall time, server timings and cached-token counts. These single-sequence diagnostics are not opposite-order throughput confirmation.",
+  "limits": "Two documents below the existing cache capacity, text-only, one slot, short greedy answers. No cache-pressure/eviction, concurrent-client, long-running conversation, multimodal or general quality claim."
+}

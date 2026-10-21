@@ -1003,6 +1003,25 @@ Fresh reads of the original GGUF headers confirm 94 IQ3_S and two IQ4_XS gate/up
 
 `results/prefill-preparation-20261021/` contains the frozen selection/triage protocol, executable analyzer, six synthetic accounting/failure tests, target tensor list, trace hash and source/binary provenance. Reproduction uses `python analyze_trace.py <preserved-prefill.sqlite> <new-summary.json>`; the raw trace remains private. The installed binaries still match the captured manifest. No model execution, CUDA build, engine edit, deployment or measured speed gain accompanies this analysis.
 
+### 2.50 Shared-system-prefix retention: already working [M]
+
+A bounded two-conversation diagnostic uses the unchanged installed server, original target, Q4_K MTP draft, MTP3, dynamic vocabulary 16384, one slot and b2048/ub512. Synthetic inventories A/B are placed in system messages; three different user lookups per inventory run in order A1,A2,B1,B2,A3,B3. All answer fields have exact expected values. Actual chat-template/tokenizer output gives common prefixes of 1,684 tokens for A and 1,780 for B, with full prompts of 1,696 and 1,792 tokens.
+
+The first arm leaves the installed defaults unchanged: 8,192 MiB prompt RAM cache, 32 context checkpoints, minimum spacing 8,192 tokens. The second disables only `--cache-ram`; hybrid checkpoints remain enabled. First-content latency is measured from the HTTP request through the first nonempty SSE content, so it includes prompt-cache save/restore work before the server's prompt timer:
+
+| Request | Default cached tokens | Default first content | RAM-cache-off cached tokens | RAM-cache-off first content |
+|---|---:|---:|---:|---:|
+| A2, adjacent shared prefix | 1,677 | 333.8 ms | 1,677 | 329.9 ms |
+| B2, adjacent shared prefix | 1,773 | 233.9 ms | 1,773 | 218.6 ms |
+| A3, return after B | 1,677 | 428.6 ms | 0 | 2,557.4 ms |
+| B3, return after A | 1,773 | 393.0 ms | 0 | 2,656.9 ms |
+
+Defaults reuse more than 99.5% of each measured common prefix, above the fixed 95% gate. Four additional uncached default-arm references report zero cached tokens and 2,648-2,923 ms first-content latency. All 16 requests return the exact expected semantic JSON answer; formatting/token identity is not asserted. Logs confirm 112.571 MiB hybrid checkpoint restores and a parked prompt-cache entry of about 505-508 MiB, well below its capacity. They also confirm target and draft state are saved. Source restores the speculative state alongside target/draft checkpoints, rather than treating hybrid state as KV alone.
+
+**Stop the new system-prefix-pinning candidate for this demonstrated workload.** The existing upstream checkpoint and prompt-cache mechanisms already provide adjacent-prefix reuse and interleaved conversation recovery; this is not our engine gain. The measurements are single diagnostic samples with verbose logging, not an opposite-order throughput campaign or a new default recommendation. Eviction under capacity pressure, concurrent clients, long conversation chains and multimodal state remain outside this test. A separate retention-policy experiment needs a measured failure in one of those workloads, not a claim that prefix caching is absent.
+
+`results/prefix-retention-20261021/` preserves the preregistered checks, runnable fixture/SSE runner, 16 response records, selected cache logs and provenance. Reproduce with `python screen.py --draft <Q4_K-draft.gguf> --out <new-private-directory>` from an environment with `results/model_paths.json` configured. Both owned server processes are stopped; installed binaries, launcher settings and model files are unchanged.
+
 ## 3. Source-verified feature status and reference lessons
 
 The following status is verified in this checkout. This table supersedes the porting assumptions in the initial reference inventory below.
@@ -1019,6 +1038,7 @@ The following status is verified in this checkout. This table supersedes the por
 | Confidence cut-off and n-gram draft modes | Existing CLI/config controls include `n_max` and `p_min`; multiple n-gram modes are documented. Per-request speculative fields are still disabled under `#if 0` in `tools/server/server-schema.cpp`. | The measured `p_min` behavior is available now. Per-request overrides are a server/API feature, not a decode-kernel optimization. |
 | Adaptive draft depth | No general runtime controller found. Related open research issues: [#27821](https://github.com/ggml-org/llama.cpp/issues/27821), [#29875](https://github.com/ggml-org/llama.cpp/issues/29875). | First log acceptance and measured cost by draft depth; compare an offline policy on held-out prompts. Implement only if it beats fixed settings without quality regressions. |
 | Grouped MoE prefill | CUDA already has device-side expert packing and quantized grouped MMQ. Strata additionally offers streamed-group dependency batching and an optional fused math path; neither means grouped CUDA GEMM is absent here. | Section 2.49: no per-expert copy ring in our resident path, preparation-reuse GPU-only estimate 1.01%, and zero layers compatible with the complete native-IQ fused path. Do not port without a separately justified gap. |
+| Shared-prefix and conversation retention | Existing server checkpoints and RAM prompt cache save/restore target and draft state, with speculative checkpoint restoration. | Section 2.50: adjacent and interleaved synthetic conversations preserve more than 99.5% of their common prefixes. No new pinning mechanism without a measured pressure/eviction or state-restoration gap. |
 | Grouped expert decode/verify | GenerelSchwerz has CUDA expert grouping and tests in its `moe-cache` branch. It groups shared expert IDs across routed rows; it is not an upstream speculative-verify feature. | Measure routed-expert overlap and verify tensor layouts before designing a compatible upstream experiment. |
 | Independent draft microbatch | Already in `common/arg.cpp`, `common/speculative.cpp` and the installed b11756 help as `--spec-draft-n-ubatch`. Zero inherits the target microbatch. | No BeeLlama port is needed for the basic control. A smaller draft workspace is a configuration experiment only if memory pressure warrants it; verify effective settings and prefill cost rather than assuming a speedup. |
 

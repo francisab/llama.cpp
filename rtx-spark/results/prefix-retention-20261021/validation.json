@@ -1,0 +1,15 @@
+{
+  "requests": 16,
+  "semantic_answers_correct": 16,
+  "uncached_references": 4,
+  "usage_timing_accounting": "passed for every response",
+  "minimum_reused_prefix_fraction": 0.9958432304038005,
+  "default_checkpoint_restores": 4,
+  "ablation_checkpoint_restores": 2,
+  "template_counts_match_usage": true,
+  "default_cache_limit_mib": 8192,
+  "checkpoint_count": 32,
+  "checkpoint_min_spacing": 8192,
+  "evictions_observed": 0,
+  "check": "Complete result set, fixture answers, timing/cache/usage counters, log engagement, unchanged runtime hashes, and closed test port all verified."
+}
