@@ -1,0 +1,45 @@
+diff --git a/ggml/src/ggml-cuda/mmvq.cu b/ggml/src/ggml-cuda/mmvq.cu
+index a42f9dba2..5c6ec4458 100644
+--- a/ggml/src/ggml-cuda/mmvq.cu
++++ b/ggml/src/ggml-cuda/mmvq.cu
+@@ -883,8 +883,8 @@ static __global__ void mul_mat_vec_q(
+ // Grid: (ceil(nrows_x / c_rows_per_block), nchannels_dst)
+ // Block: (warp_size, ncols_dst) - each warp handles one token independently.
+ // No shared memory reduction needed since each warp works alone.
+-template <ggml_type type, int c_rows_per_block, bool has_fusion = false, bool check_rows = true>
+-__launch_bounds__(get_mmvq_mmid_max_batch_for_device<type>()*ggml_cuda_get_physical_warp_size(), 1)
++template <ggml_type type, int c_rows_per_block, bool has_fusion = false, bool check_rows = true, bool single_warp = false>
++__launch_bounds__((single_warp ? 1 : get_mmvq_mmid_max_batch_for_device<type>())*ggml_cuda_get_physical_warp_size(), 1)
+ static __global__ void mul_mat_vec_q_moe(
+         const void * vx_ptr, const void * vy_ptr, const int32_t * ids_ptr, const ggml_cuda_mm_fusion_args_device fusion,
+         float * dst_ptr,
+@@ -934,7 +934,7 @@ static __global__ void mul_mat_vec_q_moe(
+         }
+     }
+ 
+-    const uint32_t token_idx   = threadIdx.y;
++    const uint32_t token_idx   = single_warp ? blockIdx.z : threadIdx.y;
+     const int      row0        = c_rows_per_block*blockIdx.x;
+     const int      blocks_per_row_x = ncols_x / qk;
+     constexpr int  blocks_per_iter  = vdr * warp_size / qi;
+@@ -1113,6 +1113,20 @@ static void mul_mat_vec_q_moe_launch(
+ 
+     const auto launch = [&](auto check_rows_tag) {
+         constexpr bool check_rows = decltype(check_rows_tag)::value;
++        if constexpr (type == GGML_TYPE_IQ4_NL) {
++            if (!has_fusion && fusion.shared_up == nullptr &&
++                    ggml_cuda_info().devices[ggml_cuda_get_device()].cc == GGML_CUDA_CC_DGX_SPARK) {
++                const dim3 single_nums(nblocks_rows, nchannels_dst, ncols_dst);
++                const dim3 single_dims(warp_size, 1);
++                const ggml_cuda_kernel_launch_params single_params(single_nums, single_dims, 0, stream);
++                ggml_cuda_kernel_launch(mul_mat_vec_q_moe<type, rows_per_block, false, check_rows, true>, single_params,
++                    vx, vy, ids, fusion, dst, ncols_x, nchannels_y, nrows_x,
++                    stride_row_x, stride_col_y, stride_col_dst,
++                    stride_channel_x, stride_channel_y, stride_channel_dst,
++                    ncols_dst, ids_stride);
++                return;
++            }
++        }
+         if (has_fusion) {
+             ggml_cuda_kernel_launch(mul_mat_vec_q_moe<type, rows_per_block, true, check_rows>, launch_params,
+                 vx, vy, ids, fusion, dst, ncols_x, nchannels_y, nrows_x,

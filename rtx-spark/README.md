@@ -115,6 +115,8 @@ The source review and revised gates are in `PLAN.md` sections 3-5. The baseline 
 
 26. **MMVQ row-tail correctness:** fixed expert-boundary writes and invalid tail reads, with 64 permanent regression cases and 100 additional checks passing against CPU. Actual-MTP Rust/JSON outputs match across both launch orders; no speed gain is claimed. Operator timing regressions remain unresolved, so the installed runtime is unchanged. The separate one-warp candidate is still unpromoted (section 2.45).
 
+27. **IQ4_NL one-warp MoE CTAs:** rejected. With the row-tail correction in both arms, both pass 100 CPU-reference checks and traces confirm the intended geometry, but the changed operators lose 16.03% geometric mean, worst case -39.84%. No actual-MTP run or deployment follows (section 2.46).
+
 The reviewed checkout already includes CUDA graphs, Blackwell NVFP4/MXFP4 MMQ, qwen4exp hyper-connection fusion, grouped MoE top-k, and PLE row prefetch. Do not port or reimplement those without identifying a target-specific gap.
 
 ### Reproducing the unweighted Q6_K experiment

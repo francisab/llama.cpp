@@ -1,0 +1,79 @@
+{
+  "label": "base-r2-operators",
+  "arm": "base",
+  "command": [
+    "test-backend-ops.exe",
+    "perf",
+    "-b",
+    "CUDA0",
+    "-o",
+    "MUL_MAT_ID",
+    "-p",
+    "type_a=iq4_nl,.*m=(2560|3072),n=(2|3|4|8),.*prefill_route=[012]"
+  ],
+  "cases": {
+    "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=2560,n=2,k=640,amax=1.000000,m_v=0,ids_offset=1,prefill_route=0)": {
+      "runs": 27468,
+      "time_us": 36.86
+    },
+    "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=2560,n=2,k=640,amax=1.000000,m_v=0,ids_offset=1,prefill_route=1)": {
+      "runs": 30520,
+      "time_us": 33.69
+    },
+    "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=2560,n=2,k=640,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+      "runs": 30520,
+      "time_us": 33.52
+    },
+    "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=2560,n=3,k=640,amax=1.000000,m_v=0,ids_offset=1,prefill_route=0)": {
+      "runs": 14252,
+      "time_us": 74.09
+    },
+    "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=2560,n=3,k=640,amax=1.000000,m_v=0,ids_offset=1,prefill_route=1)": {
+      "runs": 22396,
+      "time_us": 45.71
+    },
+    "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=2560,n=3,k=640,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+      "runs": 22396,
+      "time_us": 46.56
+    },
+    "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=2560,n=4,k=640,amax=1.000000,m_v=0,ids_offset=1,prefill_route=0)": {
+      "runs": 8393,
+      "time_us": 123.49
+    },
+    "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=2560,n=4,k=640,amax=1.000000,m_v=0,ids_offset=1,prefill_route=1)": {
+      "runs": 17549,
+      "time_us": 58.16
+    },
+    "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=2560,n=4,k=640,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+      "runs": 17549,
+      "time_us": 58.47
+    },
+    "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=2560,n=8,k=640,amax=1.000000,m_v=0,ids_offset=1,prefill_route=0)": {
+      "runs": 4202,
+      "time_us": 261.45
+    },
+    "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=2560,n=8,k=640,amax=1.000000,m_v=0,ids_offset=1,prefill_route=1)": {
+      "runs": 9550,
+      "time_us": 107.59
+    },
+    "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=2560,n=8,k=640,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+      "runs": 8404,
+      "time_us": 121.06
+    },
+    "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=3072,n=4,k=512,amax=1.000000,m_v=0,ids_offset=1,prefill_route=0)": {
+      "runs": 8745,
+      "time_us": 123.48
+    },
+    "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=3072,n=4,k=512,amax=1.000000,m_v=0,ids_offset=1,prefill_route=1)": {
+      "runs": 22260,
+      "time_us": 45.61
+    },
+    "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=3072,n=4,k=512,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)": {
+      "runs": 23055,
+      "time_us": 44.72
+    }
+  },
+  "expected_cases": 15,
+  "passed": true,
+  "elapsed_seconds": 225.25
+}

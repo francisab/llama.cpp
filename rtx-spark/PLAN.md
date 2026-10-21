@@ -934,6 +934,21 @@ A separate actual-MTP diagnostic uses the same target, Q4_K draft head, MTP3/ub5
 
 **Retain the source-level correctness correction, but do not deploy it or claim a throughput improvement.** Operator-cost investigation remains open. The one-warp optimization remains a separate, unpromoted candidate and must use the same corrected baseline in both arms. `results/mmvq-rowtail-20261021/` contains the four implementation patches, measurements, binary hashes and paired output hashes. Original owned source/build files and the installed runtime remain unchanged. Superseded experimental binaries were removed during the requested disk cleanup; their source and measurement evidence were retained.
 
+### 2.46 IQ4_NL one-warp MoE CTAs: rejected [M]
+
+Hypothesis: on sm_121, give each token of unfused routed IQ4_NL multi-token MMVQ (2-8 tokens) its own one-warp CTA (token in grid Z) instead of one warp per token inside a shared CTA. Row tiles, dot products, fusion and other types are unchanged. Both arms include the section 2.45 row-tail correction; only `ggml-cuda.dll` differs.
+
+Both arms pass 100 CPU-reference checks (34 serialized, 54 IQ4_NL boundary, 12 shared/gate fusion). Software traces confirm the candidate launches `(64,10,4)` grids of `(32,1,1)` blocks, the baseline `(64,10,1)` grids of `(32,4,1)` blocks, and fused work keeps its original geometry. Nsight truncates test stdout in both arms, so the trace step checks child exit codes and kernel geometry; correctness comes from the separate complete runs.
+
+Base/candidate/candidate/base operator screen (15 changed cases plus fused guard; routing fixture from section 2.42):
+
+| Routing | n2 | n3 | n4 | n8 | m3072 n4 |
+|---|---:|---:|---:|---:|---:|
+| Shuffled | -3.29% | -2.55% | -2.62% | -2.74% | -0.02% |
+| Concentrated | -16.45% | -17.12% | -15.58% | -17.70% | -39.72% |
+| Mixed | -13.67% | -20.69% | -11.32% | -23.12% | -39.84% |
+
+Changed-case geometric mean is -16.03% (gate: +5%, no case below -3%). **Reject.** Splitting token warps into separate CTAs hurts most when tokens share experts, which suggests the shared CTA already gets weight reuse through L1/L2. Per protocol, no warp-count, row-count or type sweep and no actual-MTP run follow. Evidence is in `results/iq4-singlewarp-20261021/`; source and installed runtime are unchanged.
 ## 3. Source-verified feature status and reference lessons
 
 The following status is verified in this checkout. This table supersedes the porting assumptions in the initial reference inventory below.

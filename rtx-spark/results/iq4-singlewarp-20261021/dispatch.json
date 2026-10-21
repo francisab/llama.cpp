@@ -1,0 +1,83 @@
+{
+  "passed": true,
+  "observations": {
+    "diagnostic-base": [
+      {
+        "kernel": "void mul_mat_vec_q_moe<(ggml_type)20, (int)2, (bool)0, (bool)0>(const void *, const void *, const int *, ggml_cuda_mm_fusion_args_device, float *, unsigned int, uint3, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int)",
+        "grid": [
+          64,
+          10,
+          1
+        ],
+        "block": [
+          32,
+          4,
+          1
+        ]
+      },
+      {
+        "kernel": "void mul_mat_vec_q_moe<(ggml_type)20, (int)2, (bool)0, (bool)0>(const void *, const void *, const int *, ggml_cuda_mm_fusion_args_device, float *, unsigned int, uint3, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int)",
+        "grid": [
+          64,
+          10,
+          1
+        ],
+        "block": [
+          32,
+          4,
+          1
+        ]
+      }
+    ],
+    "diagnostic-cand": [
+      {
+        "kernel": "void mul_mat_vec_q_moe<(ggml_type)20, (int)2, (bool)0, (bool)0, (bool)1>(const void *, const void *, const int *, ggml_cuda_mm_fusion_args_device, float *, unsigned int, uint3, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int)",
+        "grid": [
+          64,
+          10,
+          4
+        ],
+        "block": [
+          32,
+          1,
+          1
+        ]
+      },
+      {
+        "kernel": "void mul_mat_vec_q_moe<(ggml_type)20, (int)2, (bool)0, (bool)0, (bool)1>(const void *, const void *, const int *, ggml_cuda_mm_fusion_args_device, float *, unsigned int, uint3, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int)",
+        "grid": [
+          64,
+          10,
+          4
+        ],
+        "block": [
+          32,
+          1,
+          1
+        ]
+      }
+    ],
+    "dispatch-v3-fused": [
+      {
+        "kernel": "void mul_mat_vec_q_moe<(ggml_type)20, (int)2, (bool)1, (bool)0, (bool)0>(const void *, const void *, const int *, ggml_cuda_mm_fusion_args_device, float *, unsigned int, uint3, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int)",
+        "grid": [
+          64,
+          4,
+          1
+        ],
+        "block": [
+          32,
+          4,
+          1
+        ]
+      }
+    ]
+  },
+  "diagnostic_warnings": [],
+  "profiled_child_exit_codes": {
+    "base": 0,
+    "candidate": 0,
+    "fused": 0
+  },
+  "output_capture_limitation": "Nsight truncates application text on both arms despite zero child exits. Correctness is established by the separate complete 100-case checks per arm; dispatch requires exact kernel counts and geometry."
+}

@@ -1,0 +1,217 @@
+{
+  "decision": "reject",
+  "geomean_throughput_ratio": 0.839653251369048,
+  "comparisons": [
+    {
+      "case": "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=2560,n=2,k=640,amax=1.000000,m_v=0,ids_offset=1,prefill_route=0)",
+      "base_us": [
+        37.42,
+        36.86
+      ],
+      "candidate_us": [
+        37.52,
+        39.29
+      ],
+      "throughput_ratio": 0.9670615805233693,
+      "nonoverlapping_improvement": false
+    },
+    {
+      "case": "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=2560,n=2,k=640,amax=1.000000,m_v=0,ids_offset=1,prefill_route=1)",
+      "base_us": [
+        33.91,
+        33.69
+      ],
+      "candidate_us": [
+        42.8,
+        38.11
+      ],
+      "throughput_ratio": 0.8354962303794339,
+      "nonoverlapping_improvement": false
+    },
+    {
+      "case": "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=2560,n=2,k=640,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)",
+      "base_us": [
+        34.89,
+        33.52
+      ],
+      "candidate_us": [
+        40.26,
+        38.98
+      ],
+      "throughput_ratio": 0.863326602725896,
+      "nonoverlapping_improvement": false
+    },
+    {
+      "case": "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=2560,n=3,k=640,amax=1.000000,m_v=0,ids_offset=1,prefill_route=0)",
+      "base_us": [
+        84.41,
+        74.09
+      ],
+      "candidate_us": [
+        82.69,
+        79.96
+      ],
+      "throughput_ratio": 0.9744850906855212,
+      "nonoverlapping_improvement": false
+    },
+    {
+      "case": "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=2560,n=3,k=640,amax=1.000000,m_v=0,ids_offset=1,prefill_route=1)",
+      "base_us": [
+        46.6,
+        45.71
+      ],
+      "candidate_us": [
+        56.34,
+        55.04
+      ],
+      "throughput_ratio": 0.82878434189262,
+      "nonoverlapping_improvement": false
+    },
+    {
+      "case": "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=2560,n=3,k=640,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)",
+      "base_us": [
+        51.63,
+        46.56
+      ],
+      "candidate_us": [
+        70.23,
+        53.57
+      ],
+      "throughput_ratio": 0.7931340872374797,
+      "nonoverlapping_improvement": false
+    },
+    {
+      "case": "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=2560,n=4,k=640,amax=1.000000,m_v=0,ids_offset=1,prefill_route=0)",
+      "base_us": [
+        141.99,
+        123.49
+      ],
+      "candidate_us": [
+        138.91,
+        133.71
+      ],
+      "throughput_ratio": 0.9738096984814028,
+      "nonoverlapping_improvement": false
+    },
+    {
+      "case": "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=2560,n=4,k=640,amax=1.000000,m_v=0,ids_offset=1,prefill_route=1)",
+      "base_us": [
+        62.11,
+        58.16
+      ],
+      "candidate_us": [
+        71.49,
+        70.98
+      ],
+      "throughput_ratio": 0.8441777216256053,
+      "nonoverlapping_improvement": false
+    },
+    {
+      "case": "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=2560,n=4,k=640,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)",
+      "base_us": [
+        66.29,
+        58.47
+      ],
+      "candidate_us": [
+        70.39,
+        70.29
+      ],
+      "throughput_ratio": 0.8868353710548763,
+      "nonoverlapping_improvement": false
+    },
+    {
+      "case": "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=2560,n=8,k=640,amax=1.000000,m_v=0,ids_offset=1,prefill_route=0)",
+      "base_us": [
+        291.04,
+        261.45
+      ],
+      "candidate_us": [
+        283.41,
+        284.65
+      ],
+      "throughput_ratio": 0.9725909234939972,
+      "nonoverlapping_improvement": false
+    },
+    {
+      "case": "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=2560,n=8,k=640,amax=1.000000,m_v=0,ids_offset=1,prefill_route=1)",
+      "base_us": [
+        118.36,
+        107.59
+      ],
+      "candidate_us": [
+        136.45,
+        138.09
+      ],
+      "throughput_ratio": 0.8230130399941722,
+      "nonoverlapping_improvement": false
+    },
+    {
+      "case": "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=2560,n=8,k=640,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)",
+      "base_us": [
+        152.73,
+        121.06
+      ],
+      "candidate_us": [
+        176.7,
+        179.41
+      ],
+      "throughput_ratio": 0.7688354721855605,
+      "nonoverlapping_improvement": false
+    },
+    {
+      "case": "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=3072,n=4,k=512,amax=1.000000,m_v=0,ids_offset=1,prefill_route=0)",
+      "base_us": [
+        134.57,
+        123.48
+      ],
+      "candidate_us": [
+        129.35,
+        128.76
+      ],
+      "throughput_ratio": 0.9997675409709039,
+      "nonoverlapping_improvement": false
+    },
+    {
+      "case": "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=3072,n=4,k=512,amax=1.000000,m_v=0,ids_offset=1,prefill_route=1)",
+      "base_us": [
+        51.43,
+        45.61
+      ],
+      "candidate_us": [
+        82.25,
+        78.72
+      ],
+      "throughput_ratio": 0.6028452506678262,
+      "nonoverlapping_improvement": false
+    },
+    {
+      "case": "MUL_MAT_ID(type_a=iq4_nl,type_b=f32,n_mats=512,n_used=10,b=0,m=3072,n=4,k=512,amax=1.000000,m_v=0,ids_offset=1,prefill_route=2)",
+      "base_us": [
+        49.96,
+        44.72
+      ],
+      "candidate_us": [
+        78.27,
+        79.1
+      ],
+      "throughput_ratio": 0.6016394484336278,
+      "nonoverlapping_improvement": false
+    },
+    {
+      "case": "MUL_MAT_ID_SHARED(type=iq4_nl,n=4)",
+      "base_us": [
+        1.06,
+        1.01
+      ],
+      "candidate_us": [
+        0.99,
+        0.95
+      ],
+      "throughput_ratio": 1.0670103092783507,
+      "nonoverlapping_improvement": true
+    }
+  ],
+  "regression_limit_exceeded": true,
+  "deployed": false,
+  "model_quality_checked": false
+}

@@ -1,0 +1,23 @@
+{
+  "label": "base-r1-fusion",
+  "arm": "base",
+  "command": [
+    "test-backend-ops.exe",
+    "perf",
+    "-b",
+    "CUDA0",
+    "-o",
+    "MUL_MAT_ID_SHARED",
+    "-p",
+    "type=iq4_nl,n=4"
+  ],
+  "cases": {
+    "MUL_MAT_ID_SHARED(type=iq4_nl,n=4)": {
+      "runs": 949344,
+      "time_us": 1.06
+    }
+  },
+  "expected_cases": 1,
+  "passed": true,
+  "elapsed_seconds": 1.3589999999967404
+}

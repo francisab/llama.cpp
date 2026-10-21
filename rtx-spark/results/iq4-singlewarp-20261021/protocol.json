@@ -1,0 +1,42 @@
+{
+  "hypothesis": "Give independent token warps separate CTAs to change scheduling of short unfused IQ4_NL reductions without changing dot products or row tiling.",
+  "corrected_baseline": "Both arms include the row-tail correctness correction published as 20d4a2bce. All original gates and experiment scope remain unchanged.",
+  "dispatch_capture_addendum_before_timing": "Nsight truncates test stdout on both arms despite zero child exits. Preserve those failed text-capture attempts. Require the complete separate 100-case correctness checks, explicit profiled-child exit codes, no reported failures, and exact kernel counts/geometry in the trace; also trace the matched baseline.",
+  "scope": "sm_121, unfused routed IQ4_NL, existing multi-token MMVQ path (2-8 tokens), no shared expert",
+  "unchanged": ["Two output rows per warp", "Quantization and reduction order", "Expert IDs", "Fusion eligibility and fused launches", "One-token and prefill dispatch", "Other formats and architectures"],
+  "distinct_from_row4": "No four-row tile or type-subset revision of that failed candidate; this changes token-to-CTA mapping while retaining two-row tiles.",
+  "provenance": "Independent implementation using existing local MIT-licensed MMVQ arithmetic. The survey suggested one-warp CTAs as an idea; no AGPL implementation was consulted or copied.",
+  "correctness": {
+    "serialized": 34,
+    "shared_fusion": 12,
+    "new_boundaries": 54,
+    "new_boundary_shapes": "IQ4_NL, 512 experts, 10 selected, offset IDs, m127/128/129, k256, n1 through 9, both RHS layouts, mixed routes including the last expert",
+    "nmse_limit": 0.0005,
+    "required": "Both arms pass all cases; trace proves 32-thread CTAs and token grid Z for unfused work while fused work keeps the original geometry."
+  },
+  "operators": {
+    "changed_cases": "Actual down shape m2560/k640 at n2/3/4/8, plus fresh m3072/k512/n4, each with seeded shuffled, concentrated and mixed routing",
+    "unchanged_guard": "IQ4_NL shared/gate fusion at n4",
+    "cases_per_arm_per_round": 16,
+    "order": ["base-r1", "cand-r1", "cand-r2", "base-r2"],
+    "minimum_changed_case_geomean_gain_percent": 5,
+    "maximum_case_regression_percent": 3,
+    "require_nonoverlap_for_actual_n4_cases": true
+  },
+  "actual_mtp_if_operator_screen_passes": {
+    "draft": "Q4_K output head",
+    "draft_tokens": 3,
+    "dynamic_vocabulary": 16384,
+    "cases": ["rust256", "json256"],
+    "warmup_per_case": 1,
+    "measured_requests_per_case_per_arm": 5,
+    "order": ["base", "cand", "cand", "base"],
+    "minimum_per_case_gain_percent_each_order": 1,
+    "maximum_any_case_regression_percent": 3,
+    "require_nonoverlapping_ranges": true,
+    "require_token_identity": true,
+    "reason_for_gate": "Fresh lower gate for a narrowly scoped kernel affecting only part of decode, not a retrospective reinterpretation of prior experiments."
+  },
+  "stop": "Reject or park this implementation at a failed gate, without warp-count, row-count or type sweeps. Continue with a different roadmap hypothesis.",
+  "promotion": "Only after performance confirmation, English task-quality and release-stack validation. No installed binary changes during screening."
+}
