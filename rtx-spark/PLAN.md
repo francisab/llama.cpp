@@ -965,6 +965,24 @@ All 8 new CPU-reference cases pass. Mean of two runs, us:
 | IQ4_NL m3072 n4 | 128.1 | 47.1 | 50.1 | 51.4 | 87.2 | -69.5% |
 
 Cross-rank sharing costs only 5-10% more than same-rank sharing (T3/T1 1.05-1.10, gate 1.3), and realistic overlap at n4 is already within 7% (gate/up) and 10% (down) of perfect same-rank sharing. Caches already capture most cross-rank reuse. **Stop** the expert-first reuse candidate (S3) before a kernel prototype: even a perfect grouped kernel could save at most T4-T1 on these operators, and only part of verify time is routed MMVQ. This also explains the section 2.46 result. Evidence is in `results/route-reuse-ceiling-20261021/`; `fixture.patch` is relative to the section 2.42 routing test source, not repository HEAD.
+
+### 2.48 Whole-batch PLE prefetch: rejected [M]
+
+Strata gathers the next prompt chunk's PLE rows while the GPU runs the current chunk. Our qwen4exp already prefetches each ubatch's PLE rows in `set_input`, just before that ubatch runs. First, the stall was measured with the deployed recipe (installed runtime, `-lzm on`, `-b 2048 -ub 512`, MTP3 Q4_K draft head, dynamic vocab 16384). Novel random-word and Python stdlib prompts each ran three times (`cache_prompt=false`). Cold penalty = 1 - warm/cold time:
+
+| Prompt | Median cold penalty | Range by text | Run-order drift |
+|---|---:|---|---:|
+| 2K | 10.3% | words 14-16%, code 5.5-7% | ~1% |
+| 8K | 8.5% | words 12-13%, code 3-5% | ~1% |
+
+The predeclared gate (>= 5% at 2K or 8K) passed. The candidate then hashed the PLE rows of ubatches 2-4 at the start of each multi-ubatch `decode` call (single sequence, token input only) and issued one `llama_prefetch_rows`. Rows are the same as `set_input`, and a prefetch is only a hint. Only `llama.dll` changed; the control was built from the same unmodified source. An ABBA run used fresh novel prompts per phase (4 words + 2 code at each length), each cold then warm:
+
+| Length | Cold control | Cold candidate | Cold gain | Warm gain |
+|---|---:|---:|---:|---:|
+| 2K | 784.5 tok/s | 785.7 tok/s | +0.15% | +1.45% |
+| 8K | 809.0 tok/s | 798.1 tok/s | -1.34% | -1.46% |
+
+A fixed 64-token greedy generation matched in all four phases. The gain (>= +3% at both lengths) was not met, and 8K is below the +1% reject line: **reject**. By text type, the cold gain is within +-1.8% everywhere, below phase-to-phase noise (2K phase medians 756-791 tok/s). The cause was not measured. Possible causes: `PrefetchVirtualMemory` reads are not faster than demand faults on this NVMe path, or the cold cost is not page-fault latency that earlier hints can hide. Do not repeat a deeper prefetch window without a measurement of the cause (for example, ETW hard-fault and disk-queue traces). Strata-style RAM locking of the 28.8 GB table does not fit the 30 GB Windows share. Evidence is in `results/ple-batch-prefetch-20261021/` (`stall_*` = penalty measurement, `candidate.patch` relative to the owned source).
 ## 3. Source-verified feature status and reference lessons
 
 The following status is verified in this checkout. This table supersedes the porting assumptions in the initial reference inventory below.
@@ -1162,7 +1180,7 @@ Everything below this notice in section 5 records the original v2 roadmap. It is
 |---|---|---|
 | K1 | **Decode fusion** for qwen4exp: 4-way hyper-connection mixing fused into the preceding/following GEMVs; RMSNorm + q8_1 quantization; router + top-k; 10 routed + shared experts in one launch; linear-attention update; CUDA graphs + PDL throughout | Plain decode 31.8 → **38–42** (+20–30%); carries into speculative decode |
 | K2 | **Prefill: grouped GEMM for 512 small experts** (640-wide FFN) with per-expert token bucketing; fused hyper-connections | Prefill 900 → **1,400–1,900** |
-| K3 | GPU-resident PLE lookup (or pinned host with async prefetch) instead of lazy SSD/page-cache reads | Prefill +3–9% on new text; less first-token jitter |
+| K3 | GPU-resident PLE lookup (or pinned host with async prefetch) instead of lazy SSD/page-cache reads | Prefill +3–9% on new text; less first-token jitter measured cold penalty 8.5-10.3% at 2K/8K; **whole-batch prefetch rejected, section 2.48** |
 | K4 | Optional quant mix: the 3.80 GB/token of Q8_0 dense weights at Q6_K | Plain decode +15% if quality gates pass |
 
 ### Phase 4 — Prefill on tensor cores for Nemotron and 27B (4–5 weeks)

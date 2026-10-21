@@ -1,0 +1,464 @@
+{
+  "runtimes": {
+    "A": "C:\\llama-builds\\ple-ctrl",
+    "B": "C:\\llama-builds\\ple-cand"
+  },
+  "args": [
+    "-m",
+    "Qwen3.8-Flash-Next-UD-IQ4_XS-00001-of-00003.gguf",
+    "--mmproj",
+    "mmproj-BF16.gguf",
+    "-lzm",
+    "on",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    "9948",
+    "-c",
+    "262144",
+    "-np",
+    "1",
+    "-fa",
+    "on",
+    "-ngl",
+    "999",
+    "-b",
+    "2048",
+    "-ub",
+    "512",
+    "--spec-type",
+    "draft-mtp",
+    "--spec-draft-n-max",
+    "3",
+    "-md",
+    "mtp-Qwen3.8-Flash-Next-Q8_0-output-Q4_K.gguf",
+    "--spec-draft-ngl",
+    "999",
+    "--spec-draft-vocab-dynamic",
+    "16384"
+  ],
+  "rows": [
+    {
+      "phase": 0,
+      "arm": "A",
+      "case": "words2048#0",
+      "prompt_n": 2206,
+      "cold_tps": 760.1771908937252,
+      "warm_tps": 954.3396497409094
+    },
+    {
+      "phase": 0,
+      "arm": "A",
+      "case": "words2048#1",
+      "prompt_n": 2204,
+      "cold_tps": 840.3262021259033,
+      "warm_tps": 980.9035349911969
+    },
+    {
+      "phase": 0,
+      "arm": "A",
+      "case": "words2048#2",
+      "prompt_n": 2156,
+      "cold_tps": 789.8384860891712,
+      "warm_tps": 934.248573385962
+    },
+    {
+      "phase": 0,
+      "arm": "A",
+      "case": "words2048#3",
+      "prompt_n": 2211,
+      "cold_tps": 792.9187442978706,
+      "warm_tps": 912.0436790959259
+    },
+    {
+      "phase": 0,
+      "arm": "A",
+      "case": "code2048#0",
+      "prompt_n": 1724,
+      "cold_tps": 568.7355135741068,
+      "warm_tps": 615.9472457618792
+    },
+    {
+      "phase": 0,
+      "arm": "A",
+      "case": "code2048#1",
+      "prompt_n": 1649,
+      "cold_tps": 551.9419553874254,
+      "warm_tps": 594.0334402281319
+    },
+    {
+      "phase": 0,
+      "arm": "A",
+      "case": "words8192#0",
+      "prompt_n": 8857,
+      "cold_tps": 790.1480307587669,
+      "warm_tps": 894.4927745242964
+    },
+    {
+      "phase": 0,
+      "arm": "A",
+      "case": "words8192#1",
+      "prompt_n": 8774,
+      "cold_tps": 809.1772169117854,
+      "warm_tps": 905.7410916275727
+    },
+    {
+      "phase": 0,
+      "arm": "A",
+      "case": "words8192#2",
+      "prompt_n": 8695,
+      "cold_tps": 841.0029513932213,
+      "warm_tps": 915.3292543019422
+    },
+    {
+      "phase": 0,
+      "arm": "A",
+      "case": "words8192#3",
+      "prompt_n": 8888,
+      "cold_tps": 833.4882213522652,
+      "warm_tps": 898.8054119654582
+    },
+    {
+      "phase": 0,
+      "arm": "A",
+      "case": "code8192#0",
+      "prompt_n": 6680,
+      "cold_tps": 585.5058038262804,
+      "warm_tps": 612.0837612803692
+    },
+    {
+      "phase": 0,
+      "arm": "A",
+      "case": "code8192#1",
+      "prompt_n": 6996,
+      "cold_tps": 614.7911581853431,
+      "warm_tps": 650.3842528920067
+    },
+    {
+      "phase": 1,
+      "arm": "B",
+      "case": "words2048#0",
+      "prompt_n": 2165,
+      "cold_tps": 708.4820518425605,
+      "warm_tps": 944.3311344012199
+    },
+    {
+      "phase": 1,
+      "arm": "B",
+      "case": "words2048#1",
+      "prompt_n": 2213,
+      "cold_tps": 831.4438305778215,
+      "warm_tps": 956.7710684188592
+    },
+    {
+      "phase": 1,
+      "arm": "B",
+      "case": "words2048#2",
+      "prompt_n": 2214,
+      "cold_tps": 803.3361308588838,
+      "warm_tps": 973.1885242875152
+    },
+    {
+      "phase": 1,
+      "arm": "B",
+      "case": "words2048#3",
+      "prompt_n": 2221,
+      "cold_tps": 814.329560383032,
+      "warm_tps": 922.7089005057242
+    },
+    {
+      "phase": 1,
+      "arm": "B",
+      "case": "code2048#0",
+      "prompt_n": 1624,
+      "cold_tps": 548.0178726715568,
+      "warm_tps": 590.8548476293041
+    },
+    {
+      "phase": 1,
+      "arm": "B",
+      "case": "code2048#1",
+      "prompt_n": 1774,
+      "cold_tps": 556.442880855981,
+      "warm_tps": 580.230999969582
+    },
+    {
+      "phase": 1,
+      "arm": "B",
+      "case": "words8192#0",
+      "prompt_n": 8820,
+      "cold_tps": 800.0931083408618,
+      "warm_tps": 887.1596317020158
+    },
+    {
+      "phase": 1,
+      "arm": "B",
+      "case": "words8192#1",
+      "prompt_n": 8828,
+      "cold_tps": 832.1522985756415,
+      "warm_tps": 922.5900157534231
+    },
+    {
+      "phase": 1,
+      "arm": "B",
+      "case": "words8192#2",
+      "prompt_n": 8795,
+      "cold_tps": 796.148361862511,
+      "warm_tps": 870.7037157120193
+    },
+    {
+      "phase": 1,
+      "arm": "B",
+      "case": "words8192#3",
+      "prompt_n": 8785,
+      "cold_tps": 782.4164439800514,
+      "warm_tps": 890.9960412797401
+    },
+    {
+      "phase": 1,
+      "arm": "B",
+      "case": "code8192#0",
+      "prompt_n": 6307,
+      "cold_tps": 609.6362152716625,
+      "warm_tps": 633.5323330011483
+    },
+    {
+      "phase": 1,
+      "arm": "B",
+      "case": "code8192#1",
+      "prompt_n": 7136,
+      "cold_tps": 581.4472691859672,
+      "warm_tps": 618.486381122298
+    },
+    {
+      "phase": 2,
+      "arm": "B",
+      "case": "words2048#0",
+      "prompt_n": 2174,
+      "cold_tps": 768.0936579630185,
+      "warm_tps": 947.9292933697274
+    },
+    {
+      "phase": 2,
+      "arm": "B",
+      "case": "words2048#1",
+      "prompt_n": 2247,
+      "cold_tps": 809.3418289612546,
+      "warm_tps": 976.466165903644
+    },
+    {
+      "phase": 2,
+      "arm": "B",
+      "case": "words2048#2",
+      "prompt_n": 2210,
+      "cold_tps": 814.4402842064919,
+      "warm_tps": 975.2162685489664
+    },
+    {
+      "phase": 2,
+      "arm": "B",
+      "case": "words2048#3",
+      "prompt_n": 2233,
+      "cold_tps": 822.5644191711659,
+      "warm_tps": 961.1634856014869
+    },
+    {
+      "phase": 2,
+      "arm": "B",
+      "case": "code2048#0",
+      "prompt_n": 1534,
+      "cold_tps": 576.186591304165,
+      "warm_tps": 637.0918708074038
+    },
+    {
+      "phase": 2,
+      "arm": "B",
+      "case": "code2048#1",
+      "prompt_n": 1948,
+      "cold_tps": 630.863541430862,
+      "warm_tps": 667.9763300461445
+    },
+    {
+      "phase": 2,
+      "arm": "B",
+      "case": "words8192#0",
+      "prompt_n": 8839,
+      "cold_tps": 817.9272175252403,
+      "warm_tps": 910.583558481016
+    },
+    {
+      "phase": 2,
+      "arm": "B",
+      "case": "words8192#1",
+      "prompt_n": 8823,
+      "cold_tps": 816.8231310831243,
+      "warm_tps": 933.4886925984599
+    },
+    {
+      "phase": 2,
+      "arm": "B",
+      "case": "words8192#2",
+      "prompt_n": 8851,
+      "cold_tps": 817.3584739785235,
+      "warm_tps": 908.972807325185
+    },
+    {
+      "phase": 2,
+      "arm": "B",
+      "case": "words8192#3",
+      "prompt_n": 8788,
+      "cold_tps": 815.9642268209707,
+      "warm_tps": 911.2140714347039
+    },
+    {
+      "phase": 2,
+      "arm": "B",
+      "case": "code8192#0",
+      "prompt_n": 5959,
+      "cold_tps": 629.0158609320772,
+      "warm_tps": 650.1173135001186
+    },
+    {
+      "phase": 2,
+      "arm": "B",
+      "case": "code8192#1",
+      "prompt_n": 6436,
+      "cold_tps": 613.8570308280985,
+      "warm_tps": 639.108536934982
+    },
+    {
+      "phase": 3,
+      "arm": "A",
+      "case": "words2048#0",
+      "prompt_n": 2200,
+      "cold_tps": 779.2026560893448,
+      "warm_tps": 957.3154785293721
+    },
+    {
+      "phase": 3,
+      "arm": "A",
+      "case": "words2048#1",
+      "prompt_n": 2212,
+      "cold_tps": 814.5325569988673,
+      "warm_tps": 973.6794032912301
+    },
+    {
+      "phase": 3,
+      "arm": "A",
+      "case": "words2048#2",
+      "prompt_n": 2172,
+      "cold_tps": 802.5780047068318,
+      "warm_tps": 971.0087717141389
+    },
+    {
+      "phase": 3,
+      "arm": "A",
+      "case": "words2048#3",
+      "prompt_n": 2162,
+      "cold_tps": 834.7960927527188,
+      "warm_tps": 930.946745281861
+    },
+    {
+      "phase": 3,
+      "arm": "A",
+      "case": "code2048#0",
+      "prompt_n": 1635,
+      "cold_tps": 570.3453886092782,
+      "warm_tps": 606.1284591955063
+    },
+    {
+      "phase": 3,
+      "arm": "A",
+      "case": "code2048#1",
+      "prompt_n": 1327,
+      "cold_tps": 573.3664995823974,
+      "warm_tps": 611.1602372793927
+    },
+    {
+      "phase": 3,
+      "arm": "A",
+      "case": "words8192#0",
+      "prompt_n": 8770,
+      "cold_tps": 825.8356029687518,
+      "warm_tps": 913.3683169715081
+    },
+    {
+      "phase": 3,
+      "arm": "A",
+      "case": "words8192#1",
+      "prompt_n": 8823,
+      "cold_tps": 822.4528988877915,
+      "warm_tps": 925.1695829658904
+    },
+    {
+      "phase": 3,
+      "arm": "A",
+      "case": "words8192#2",
+      "prompt_n": 8802,
+      "cold_tps": 808.822691584017,
+      "warm_tps": 919.4840359520138
+    },
+    {
+      "phase": 3,
+      "arm": "A",
+      "case": "words8192#3",
+      "prompt_n": 8833,
+      "cold_tps": 823.8496114905056,
+      "warm_tps": 919.4223575246647
+    },
+    {
+      "phase": 3,
+      "arm": "A",
+      "case": "code8192#0",
+      "prompt_n": 6456,
+      "cold_tps": 626.950054047251,
+      "warm_tps": 637.411304453941
+    },
+    {
+      "phase": 3,
+      "arm": "A",
+      "case": "code8192#1",
+      "prompt_n": 7001,
+      "cold_tps": 603.3662684041363,
+      "warm_tps": 647.1052507770854
+    }
+  ],
+  "generations": {
+    "A": [
+      "\n\n<think>\nThe user wants a Python function to merge two sorted lists and an explanation of its complexity. This is a classic algorithm problem - the merge step from merge sort.\n\nLet me think about the best approach:\n\n1. **Two-pointer technique**: Walk through both lists simultaneously with two indices, always picking the",
+      "\n\n<think>\nThe user wants a Python function to merge two sorted lists and an explanation of its complexity. This is a classic algorithm problem - the merge step from merge sort.\n\nLet me think about the best approach:\n\n1. **Two-pointer technique**: Walk through both lists simultaneously with two indices, always picking the"
+    ],
+    "B": [
+      "\n\n<think>\nThe user wants a Python function to merge two sorted lists and an explanation of its complexity. This is a classic algorithm problem - the merge step from merge sort.\n\nLet me think about the best approach:\n\n1. **Two-pointer technique**: Walk through both lists simultaneously with two indices, always picking the",
+      "\n\n<think>\nThe user wants a Python function to merge two sorted lists and an explanation of its complexity. This is a classic algorithm problem - the merge step from merge sort.\n\nLet me think about the best approach:\n\n1. **Two-pointer technique**: Walk through both lists simultaneously with two indices, always picking the"
+    ]
+  },
+  "same_generation": true,
+  "summary": {
+    "2048": {
+      "cold_tps": {
+        "A": 784.520571089258,
+        "B": 785.7148944109512,
+        "gain": 0.0015223607457925947
+      },
+      "warm_tps": {
+        "A": 932.5976593339115,
+        "B": 946.1302138854736,
+        "gain": 0.014510603169675118
+      }
+    },
+    "8192": {
+      "cold_tps": {
+        "A": 808.9999542479012,
+        "B": 798.1207351016865,
+        "gain": -0.013447737653247138
+      },
+      "warm_tps": {
+        "A": 902.2732517965155,
+        "B": 889.0778364908779,
+        "gain": -0.01462463314673712
+      }
+    }
+  },
+  "verdict": "REJECT"
+}

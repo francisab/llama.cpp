@@ -1,0 +1,85 @@
+diff --git a/src/models/qwen4exp.cpp b/src/models/qwen4exp.cpp
+--- a/src/models/qwen4exp.cpp
++++ b/src/models/qwen4exp.cpp
+@@ -1231,6 +1231,39 @@ public:
+     std::vector<llama_token> prev;
+ };
+ 
++// prefetch the PLE rows of a whole multi-ubatch batch, so later ubatches find their pages in flight
++void llama_qwen4exp_prefetch_ple(const llama_model & model, const int32_t * tokens, size_t n_tokens) {
++    ggml_tensor * ple = model.per_layer_tok_embd;
++    if (!model.can_prefetch.count(ple)) {
++        return;
++    }
++
++    const auto & hparams = model.hparams;
++
++    const int64_t n_gram   = hparams.ple_ngram_size;
++    const int64_t per_gram = hparams.ple_heads_per_ngram;
++    const int64_t eos      = hparams.ple_eos_token_id;
++
++    std::vector<int32_t> idx;
++    idx.reserve(hparams.ple_n_heads * n_tokens);
++    for (int64_t i = n_gram - 1; i < (int64_t) n_tokens; ++i) {
++        uint64_t mixed = (uint64_t) tokens[i] * hparams.ple_layer_multipliers[0];
++        bool cut = false;
++        for (int64_t n = 2; n <= n_gram; ++n) {
++            const int64_t t = tokens[i - (n - 1)];
++            cut = cut || t < 0 || t == eos;
++            mixed ^= (uint64_t) (cut ? eos : t) * hparams.ple_layer_multipliers[n - 1];
++            const int64_t base = (n - 2) * per_gram;
++            for (int64_t g = 0; g < per_gram; ++g) {
++                const int64_t h_i = base + g;
++                idx.push_back((int32_t) (mixed % hparams.ple_head_vocab_sizes[h_i] + hparams.ple_head_offsets[h_i]));
++            }
++        }
++    }
++
++    llama_prefetch_rows(ple, idx.data(), idx.size());
++}
++
+ void llm_graph_input_qwen4exp_ple::set_input(const llama_ubatch * ubatch) {
+     const auto & hparams = model.hparams;
+ 
+diff --git a/src/llama-context.cpp b/src/llama-context.cpp
+--- a/src/llama-context.cpp
++++ b/src/llama-context.cpp
+@@ -1913,6 +1913,25 @@ int llama_context::decode(const llama_batch_ext & batch_inp) {
+     const uint32_t n_tokens_all  = balloc->get_n_tokens();
+     const uint32_t n_outputs_all = balloc->get_n_outputs();
+ 
++    // the first ubatch prefetches its own PLE rows in set_input; start the rest early
++    if (model.arch == LLM_ARCH_QWEN4EXP && n_tokens_all > cparams.n_ubatch) {
++        const auto & toks = batch_inp.tokens;
++        const size_t n_prev = model.hparams.ple_ngram_size - 1;
++        const size_t i0 = cparams.n_ubatch - n_prev;
++        bool ok = toks.size() == n_tokens_all && toks[0].seq_ids.size() == 1;
++        std::vector<llama_token> ids;
++        ids.reserve(toks.size() - i0);
++        for (size_t i = 0; ok && i < toks.size(); ++i) {
++            ok = !toks[i].has_embd && toks[i].id >= 0 && toks[i].seq_ids == toks[0].seq_ids;
++            if (i >= i0) {
++                ids.push_back(toks[i].id);
++            }
++        }
++        if (ok) {
++            llama_qwen4exp_prefetch_ple(model, ids.data(), ids.size());
++        }
++    }
++
+     if (output_all) {
+         // require that all tokens are output
+         if (n_outputs_all != n_tokens_all) {
+diff --git a/src/llama-impl.h b/src/llama-impl.h
+--- a/src/llama-impl.h
++++ b/src/llama-impl.h
+@@ -77,6 +77,9 @@ static inline ggml_tensor * llama_mul_mat_hadamard(
+ // Prefetch the host pages needed to gather these rows.
+ void llama_prefetch_rows(const ggml_tensor * tensor, const int32_t * rows, size_t n_rows);
+ 
++struct llama_model;
++void llama_qwen4exp_prefetch_ple(const llama_model & model, const int32_t * tokens, size_t n_tokens);
++
+ struct time_meas {
+     time_meas(int64_t & t_acc, bool disable = false);
+     ~time_meas();
