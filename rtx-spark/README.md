@@ -90,7 +90,8 @@ The source review and revised gates are in `PLAN.md` sections 3-5. The baseline 
 1. Stop broad benchmarking. Reuse the captured control and choose one specific bottleneck or configuration change.
 2. The compact English gate and matched A/B are complete. The Q4_K draft is deployed only on the Flash-Next launcher recipe (`-md <launcher_data>\custom-models\mtp-...-Q4_K.gguf`); a timestamped `catalog.json` backup is kept beside it. Rollback: restore that backup. Its exact path and hash are in `results/rebaseline-20261020/head-q4k/quantization.json`.
 3. The proxy shortlist screen is complete. The fork survey found an existing dynamic-head implementation in [ggml-org/llama.cpp#30380](https://github.com/ggml-org/llama.cpp/pull/30380). A native ARM64 toolchain is now installed (VS 2022 Build Tools ARM64-hosted MSVC, ARM64 CUDA 13.4 redistributables, ARM64 CMake/Ninja; no x64 emulation) and `tools/build_native_cuda.ps1` builds matched control/candidate binaries. The matched A/B (`PLAN.md` section 2.13) passes the compact English gate with token-identical timing outputs and gains +2.63% (geomean; chat flat) at K=16,384 over its merge-base control.
-4. Next: QSA-mask fusion ([ggml-org/llama.cpp#30640](https://github.com/ggml-org/llama.cpp/pull/30640)) for Flash-Next and dense FFN MMQ fusion ([ggml-org/llama.cpp#29948](https://github.com/ggml-org/llama.cpp/pull/29948)) for the 27B, each against its merge-base control. Obtain operator timing and routed IDs before grouped-MoE work. No all-fork/all-model benchmark sweep is queued.
+4. **Deployed:** a b11756 + #30380 build from `tools/build_release_like.ps1` (Clang 20.1.8 CPU side and tools, MSVC CUDA `ggml-cuda.dll`, same 42-file set as the official zip) replaces the official install directory. Only the Flash-Next launcher recipe adds `--spec-draft-vocab-dynamic 16384`. Validation (`PLAN.md` section 2.14): +3.24% / +3.35% geomean over fresh official runs, token-identical, 8/8 quality checks; Nemotron and 27B unchanged within noise. Rollback: rename the timestamped official backup directory back and restore the timestamped `catalog.json` backup. If the install directory is replaced with an official release without #30380, remove the flag too; unknown arguments stop `llama-server` at startup.
+5. Next: QSA-mask fusion ([ggml-org/llama.cpp#30640](https://github.com/ggml-org/llama.cpp/pull/30640)) for Flash-Next and dense FFN MMQ fusion ([ggml-org/llama.cpp#29948](https://github.com/ggml-org/llama.cpp/pull/29948)) for the 27B, each against its merge-base control. Obtain operator timing and routed IDs before grouped-MoE work. No all-fork/all-model benchmark sweep is queued.
 
 The reviewed checkout already includes CUDA graphs, Blackwell NVFP4/MXFP4 MMQ, qwen4exp hyper-connection fusion, grouped MoE top-k, and PLE row prefetch. Do not port or reimplement those without identifying a target-specific gap.
 
@@ -106,7 +107,8 @@ The survey also confirmed `--spec-draft-n-ubatch` in the installed b11756 binary
 - `PLAN.md`: full analysis, measurements, reference-project evaluation, roadmap, risks, sources.
 - `bench/`: harness.
   - `run_rebaseline.py`: repeated native/server benchmarks, raw samples and generated token IDs, isolated logs, and GPU telemetry. Refuses to overwrite an existing result. Server mode accepts `--exe PATH` (custom build) and `--extra-args="..."` (one-variable A/B flags).
-  - `compare_speed.py`: matched server speed comparison of two `server_*.json` files: per-case median tok/s, ratio, acceptance, geomean, load time and GPU memory. `--out` keeps file names only.
+  - `compare_speed.py`: matched server speed comparison of two `server_*.json` files: per-case median tok/s, ratio, acceptance, geomean, load time, GPU memory and the count of token-identical outputs. `--out` keeps file names only.
+  - `ab_llamabench.py`: paired `llama-bench` A/B of two executables on one model (`q27`, `qfn`, `nem`), alternating base and candidate per round; `--bench-args="..."`, `--rounds`, `--dry-run`. Writes per-round JSON and `summary.json` with paths reduced to file names.
   - `heldout_suite.py`: held-out multilingual/code/chat cases, an English/code-only selection, and a documentation prompt pinned to the measured source commit; the raw long prompt has a known EOS limitation.
   - `en_us_quality.py`: four chat-templated natural-EOS cases and explicit scoring: a bounded Python function with 231 assertions, exact US-format JSON, exact identifier/number copying, and distributed facts in pinned English documentation. Both warm-up and measured responses must pass. Generated code is limited to a single function with no imports, attributes, loops or self-reference before execution.
   - `analyze_mtp_tokens.py`: low-ID token coverage and per-position accepted counts divided by verification steps; `--scope en-us` selects the four English/code cases and fails if any are missing. It does not measure router overlap or implement a vocabulary subset.
@@ -114,7 +116,8 @@ The survey also confirmed `--spec-draft-n-ubatch` in the installed b11756 binary
   - `run_llamabench.py`: DGX Spark methodology; `LB_SUFFIX` env var.
   - `bench_server.py`: request helper; `URL` global.
   - `bench_ple.py`, `bench_nospec.py`, `bench_spec_*.py`, `summarize_matrix.py`, `gguf_geometry.py`, `perf_model.py`.
-- `tools/build_native_cuda.ps1`: native ARM64 CUDA build (VS ARM64 MSVC, Ninja, `sm_121a`). `-Src`, `-Out`, optional `-Targets` and `-Extra` CMake flags. Copies CUDA runtime DLLs into `bin`.
+- `tools/build_native_cuda.ps1`: native ARM64 CUDA build (VS ARM64 MSVC, Ninja, `sm_121a`). `-Src`, `-Out`, optional `-Targets` and `-Extra` CMake flags. Copies CUDA runtime DLLs into `bin`. Use for matched A/B pairs.
+- `tools/build_release_like.ps1`: deployable build in the official release layout: Clang (LLVM ARM64 release tarball in `-Tools`, major version must match the upstream OpenMP pin) with the release CMake flags for CPU side and tools, plus `ggml-cuda.dll` from `build_native_cuda.ps1`. Seeds the OpenMP fetch cache from the LLVM tarball (no 7-Zip needed). Output in `<Out>\bin`.
 - `results/`: JSON/markdown summaries, `geometry.txt`, and `model_paths.example.json`.
   - Scripts read `results/model_paths.json` and write to `results/` (server logs to `results/logs/`), via `RESULTS = bench/../results`. They run from any working directory. Copy `model_paths.example.json` to `model_paths.json` and set local paths.
   - Published files omit raw server logs, full generated responses (`server_*.json`) and the local model path file; local paths are replaced by placeholders such as `<hf_home>` and `<launcher_data>`.
@@ -123,6 +126,7 @@ The survey also confirmed `--spec-draft-n-ubatch` in the installed b11756 binary
   - `plan-20261020/`: held-out head/reload/EOS, Nemotron policy and MTP2/3/4 comparisons. `bench-targeted/` contains only the bounded Flash-Next diagnostics; the broader proxy matrix was cancelled.
   - `en-us-quality-20261020/`: scored natural-EOS tasks, preserved initial token-cap failure, code-only retries, one matched English speed pair, final audit and provenance.
   - `dyn-head-20261021/`: #30380 matched A/B (control, K=0, K=16,384): quality scores, telemetry and `compare_*.json`.
+  - `deploy-b11756-20261021/`: b11756 + #30380 deploy validation: official/all-MSVC/release-like/hybrid builds on U1, N2 and D2, official drift pairs, quality scores, `compare_*.json` and `summary.json`.
 
 ## Repeated benchmarks
 

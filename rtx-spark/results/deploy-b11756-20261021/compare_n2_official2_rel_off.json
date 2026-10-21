@@ -1,0 +1,143 @@
+{
+ "base": {
+  "name": "N2 nem mtp3 ub4096",
+  "args": [
+   "llama-server.exe",
+   "-m",
+   "NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-Q4_K_M-00001-of-00002.gguf",
+   "--mmproj",
+   "mmproj-BF16.gguf",
+   "--fit",
+   "off",
+   "--host",
+   "127.0.0.1",
+   "--port",
+   "9940",
+   "-c",
+   "262144",
+   "-np",
+   "1",
+   "-fa",
+   "on",
+   "-ngl",
+   "999",
+   "-b",
+   "4096",
+   "-ub",
+   "4096",
+   "--spec-type",
+   "draft-mtp",
+   "--spec-draft-n-max",
+   "3",
+   "--metrics"
+  ],
+  "load_s": 34.67470299999695,
+  "gpu_memory_ready_mib": 79277
+ },
+ "cand": {
+  "name": "N2 nem mtp3 ub4096",
+  "args": [
+   "llama-server.exe",
+   "-m",
+   "NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-Q4_K_M-00001-of-00002.gguf",
+   "--mmproj",
+   "mmproj-BF16.gguf",
+   "--fit",
+   "off",
+   "--host",
+   "127.0.0.1",
+   "--port",
+   "9940",
+   "-c",
+   "262144",
+   "-np",
+   "1",
+   "-fa",
+   "on",
+   "-ngl",
+   "999",
+   "-b",
+   "4096",
+   "-ub",
+   "4096",
+   "--spec-type",
+   "draft-mtp",
+   "--spec-draft-n-max",
+   "3",
+   "--metrics"
+  ],
+  "load_s": 35.26570289999654,
+  "gpu_memory_ready_mib": 79277
+ },
+ "cases": [
+  {
+   "case": "chat256",
+   "base_tg_median": 51.769733099618364,
+   "cand_tg_median": 52.14267544681161,
+   "ratio": 1.0072038684548674,
+   "base_tg_range": [
+    51.61705087295566,
+    51.854668648667335
+   ],
+   "cand_tg_range": [
+    51.666612973912,
+    52.58764194538804
+   ],
+   "base_accept": 0.9211822660098522,
+   "cand_accept": 0.9211822660098522
+  },
+  {
+   "case": "json256",
+   "base_tg_median": 50.173571041939795,
+   "cand_tg_median": 50.42168345939413,
+   "ratio": 1.0049450818887684,
+   "base_tg_range": [
+    49.426564626977715,
+    50.231023310346565
+   ],
+   "cand_tg_range": [
+    50.11863375425124,
+    50.46838620704943
+   ],
+   "base_accept": 0.9211822660098522,
+   "cand_accept": 0.9211822660098522
+  },
+  {
+   "case": "rust256",
+   "base_tg_median": 46.143089176677,
+   "cand_tg_median": 46.959423375111875,
+   "ratio": 1.0176913642541188,
+   "base_tg_range": [
+    46.052705244265354,
+    47.17355483814753
+   ],
+   "cand_tg_range": [
+    46.755789925319085,
+    47.11673309202175
+   ],
+   "base_accept": 0.7920353982300885,
+   "cand_accept": 0.7920353982300885
+  },
+  {
+   "case": "sqlpy256",
+   "base_tg_median": 47.110309065797026,
+   "cand_tg_median": 47.219843741204144,
+   "ratio": 1.0023250680706453,
+   "base_tg_range": [
+    46.933304277630185,
+    47.157712218489266
+   ],
+   "cand_tg_range": [
+    46.952826035360445,
+    47.33655754074146
+   ],
+   "base_accept": 0.7850877192982456,
+   "cand_accept": 0.7850877192982456
+  }
+ ],
+ "geomean_ratio": 1.0080245259429959,
+ "identical_outputs": [
+  12,
+  12
+ ]
+}

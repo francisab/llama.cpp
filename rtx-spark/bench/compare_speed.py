@@ -47,15 +47,18 @@ def main():
         print(f"{case:>10}: {mb:7.2f} -> {mc:7.2f} tok/s ({(mc / mb - 1) * 100:+.2f}%), "
               f"accept {rows[-1]['base_accept']:.3f} -> {rows[-1]['cand_accept']:.3f}")
     geo = math.exp(sum(math.log(r) for r in ratios) / len(ratios))
+    bt = {(r["case"], r["repeat"]): r["response"]["tokens"] for r in bd["rows"]}
+    same = sum(1 for r in cd["rows"] if bt.get((r["case"], r["repeat"])) == r["response"]["tokens"])
     print(f"geomean: {(geo - 1) * 100:+.2f}%  load_s {bd.get('load_s', 0):.1f} -> {cd.get('load_s', 0):.1f}  "
-          f"gpu_ready_mib {bd.get('gpu_memory_ready_mib')} -> {cd.get('gpu_memory_ready_mib')}")
+          f"gpu_ready_mib {bd.get('gpu_memory_ready_mib')} -> {cd.get('gpu_memory_ready_mib')}  "
+          f"identical outputs {same}/{len(cd['rows'])}")
     if a.out:
         def side(d):
             # keep file names only, local paths stay private
             return {"name": d["name"], "args": [Path(x).name if ("\\" in x or "/" in x) else x for x in d["command"]],
                     "load_s": d.get("load_s"), "gpu_memory_ready_mib": d.get("gpu_memory_ready_mib")}
-        a.out.write_text(json.dumps({"base": side(bd), "cand": side(cd), "cases": rows, "geomean_ratio": geo},
-                                    indent=1), encoding="utf-8")
+        a.out.write_text(json.dumps({"base": side(bd), "cand": side(cd), "cases": rows, "geomean_ratio": geo,
+                                     "identical_outputs": [same, len(cd["rows"])]}, indent=1), encoding="utf-8")
 
 
 if __name__ == "__main__":

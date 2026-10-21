@@ -1,0 +1,350 @@
+{
+ "purpose": "Deploy validation for llama.cpp b11756 + PR #30380 (dynamic draft head) on RTX Spark N1X",
+ "source": {
+  "base": "b11756 d80619397",
+  "pr": "https://github.com/ggml-org/llama.cpp/pull/30380",
+  "pr_head": "da03be647",
+  "applied": "squashed PR diff, git apply -3, no conflicts"
+ },
+ "builds": {
+  "official": "release llama-b11756-bin-win-cuda-13.4-arm64 (Clang 20 CPU side, MSVC cross-compiled ggml-cuda fat binary)",
+  "msvc": "tools/build_native_cuda.ps1, all MSVC 14.44, GGML_NATIVE=ON, CUDA 13.4 121a-real, BoringSSL",
+  "msvc_pr": "same as msvc, plus PR #30380",
+  "rel": "tools/build_release_like.ps1: Clang 20.1.8 (LLVM release tarball) + release CMAKE_ARGS for CPU side and tools, MSVC CUDA 13.4 121a-real for ggml-cuda.dll only; plus PR #30380; file set identical to official (42 files)",
+  "hyb": "rel with ggml-cuda.dll replaced by the official one (isolation test only)"
+ },
+ "tags": {
+  "U1": "Flash-Next UD-IQ4_XS, MTP3 Q4_K draft, ub512",
+  "N2": "Nemotron 120B Q4_K_M, MTP3, ub4096",
+  "D2": "27B UD-Q4_K_M, DFlash7, ub2048"
+ },
+ "flag": "--spec-draft-vocab-dynamic 16384 (U1 only)",
+ "comparisons": {
+  "compare_official_official2": {
+   "geomean_pct": -0.09,
+   "identical_outputs": [
+    20,
+    20
+   ],
+   "load_s": [
+    37.2,
+    32.8
+   ],
+   "cases_pct": {
+    "chat256": -0.96,
+    "json256": 0.24,
+    "rust256": 1.49,
+    "sqlpy256": -1.11
+   }
+  },
+  "compare_official2_official3": {
+   "geomean_pct": 0.11,
+   "identical_outputs": [
+    20,
+    20
+   ],
+   "load_s": [
+    32.8,
+    30.7
+   ],
+   "cases_pct": {
+    "chat256": 1.28,
+    "json256": 0.05,
+    "rust256": -1.08,
+    "sqlpy256": 0.19
+   }
+  },
+  "compare_official_msvc": {
+   "geomean_pct": -0.98,
+   "identical_outputs": [
+    20,
+    20
+   ],
+   "load_s": [
+    37.2,
+    32.7
+   ],
+   "cases_pct": {
+    "chat256": -1.37,
+    "json256": -0.5,
+    "rust256": -0.45,
+    "sqlpy256": -1.61
+   }
+  },
+  "compare_msvc_msvc2": {
+   "geomean_pct": -0.23,
+   "identical_outputs": [
+    20,
+    20
+   ],
+   "load_s": [
+    32.7,
+    32.8
+   ],
+   "cases_pct": {
+    "chat256": 0.37,
+    "json256": -0.77,
+    "rust256": -0.53,
+    "sqlpy256": 0.03
+   }
+  },
+  "compare_msvc_prk16384": {
+   "geomean_pct": 3.29,
+   "identical_outputs": [
+    20,
+    20
+   ],
+   "load_s": [
+    32.7,
+    34.6
+   ],
+   "cases_pct": {
+    "chat256": 3.48,
+    "json256": 2.33,
+    "rust256": 4.0,
+    "sqlpy256": 3.37
+   }
+  },
+  "compare_official_prk16384": {
+   "geomean_pct": 2.28,
+   "identical_outputs": [
+    20,
+    20
+   ],
+   "load_s": [
+    37.2,
+    34.6
+   ],
+   "cases_pct": {
+    "chat256": 2.07,
+    "json256": 1.81,
+    "rust256": 3.53,
+    "sqlpy256": 1.71
+   }
+  },
+  "compare_official2_rel_off": {
+   "geomean_pct": -0.71,
+   "identical_outputs": [
+    20,
+    20
+   ],
+   "load_s": [
+    32.8,
+    34.3
+   ],
+   "cases_pct": {
+    "chat256": -1.43,
+    "json256": 0.11,
+    "rust256": -1.6,
+    "sqlpy256": 0.1
+   }
+  },
+  "compare_official2_rel_k16384": {
+   "geomean_pct": 3.35,
+   "identical_outputs": [
+    20,
+    20
+   ],
+   "load_s": [
+    32.8,
+    34.7
+   ],
+   "cases_pct": {
+    "chat256": 2.95,
+    "json256": 2.93,
+    "rust256": 2.28,
+    "sqlpy256": 5.25
+   }
+  },
+  "compare_official3_rel_k16384": {
+   "geomean_pct": 3.24,
+   "identical_outputs": [
+    20,
+    20
+   ],
+   "load_s": [
+    30.7,
+    34.7
+   ],
+   "cases_pct": {
+    "chat256": 1.65,
+    "json256": 2.89,
+    "rust256": 3.4,
+    "sqlpy256": 5.05
+   }
+  },
+  "compare_official3_hyb_off": {
+   "geomean_pct": 0.08,
+   "identical_outputs": [
+    20,
+    20
+   ],
+   "load_s": [
+    30.7,
+    33.2
+   ],
+   "cases_pct": {
+    "chat256": 0.37,
+    "json256": 0.02,
+    "rust256": 0.11,
+    "sqlpy256": -0.18
+   }
+  },
+  "compare_official3_hyb_k16384": {
+   "geomean_pct": 3.33,
+   "identical_outputs": [
+    20,
+    20
+   ],
+   "load_s": [
+    30.7,
+    34.8
+   ],
+   "cases_pct": {
+    "chat256": 1.9,
+    "json256": 3.14,
+    "rust256": 4.3,
+    "sqlpy256": 4.0
+   }
+  },
+  "compare_rel_hyb_k16384": {
+   "geomean_pct": 0.09,
+   "identical_outputs": [
+    20,
+    20
+   ],
+   "load_s": [
+    34.7,
+    34.8
+   ],
+   "cases_pct": {
+    "chat256": 0.25,
+    "json256": 0.25,
+    "rust256": 0.87,
+    "sqlpy256": -1.0
+   }
+  },
+  "compare_n2_official_official2": {
+   "geomean_pct": -0.9,
+   "identical_outputs": [
+    12,
+    12
+   ],
+   "load_s": [
+    36.7,
+    34.7
+   ],
+   "cases_pct": {
+    "chat256": -0.54,
+    "json256": -0.63,
+    "rust256": -2.26,
+    "sqlpy256": -0.13
+   }
+  },
+  "compare_n2_official_proff": {
+   "geomean_pct": -0.5,
+   "identical_outputs": [
+    12,
+    12
+   ],
+   "load_s": [
+    36.7,
+    34.8
+   ],
+   "cases_pct": {
+    "chat256": 0.39,
+    "json256": -0.34,
+    "rust256": -1.77,
+    "sqlpy256": -0.28
+   }
+  },
+  "compare_n2_official2_rel_off": {
+   "geomean_pct": 0.8,
+   "identical_outputs": [
+    12,
+    12
+   ],
+   "load_s": [
+    34.7,
+    35.3
+   ],
+   "cases_pct": {
+    "chat256": 0.72,
+    "json256": 0.49,
+    "rust256": 1.77,
+    "sqlpy256": 0.23
+   }
+  },
+  "compare_d2_official_official2": {
+   "geomean_pct": 1.0,
+   "identical_outputs": [
+    12,
+    12
+   ],
+   "load_s": [
+    14.7,
+    14.7
+   ],
+   "cases_pct": {
+    "chat256": 3.22,
+    "json256": 1.53,
+    "rust256": 1.19,
+    "sqlpy256": -1.87
+   }
+  },
+  "compare_d2_official_proff": {
+   "geomean_pct": 0.91,
+   "identical_outputs": [
+    12,
+    12
+   ],
+   "load_s": [
+    14.7,
+    15.2
+   ],
+   "cases_pct": {
+    "chat256": 3.96,
+    "json256": 3.81,
+    "rust256": -1.3,
+    "sqlpy256": -2.65
+   }
+  },
+  "compare_d2_official2_rel_off": {
+   "geomean_pct": 0.43,
+   "identical_outputs": [
+    12,
+    12
+   ],
+   "load_s": [
+    14.7,
+    14.7
+   ],
+   "cases_pct": {
+    "chat256": -0.65,
+    "json256": 2.65,
+    "rust256": 1.64,
+    "sqlpy256": -1.86
+   }
+  }
+ },
+ "quality": {
+  "msvc_pr_k16384": {
+   "passed": true,
+   "checks": "8/8"
+  },
+  "rel_k16384": {
+   "passed": true,
+   "checks": "8/8"
+  }
+ },
+ "engagement": {
+  "msvc_pr": "vocab_subset: lowest 32768 of 248320 ids + 16384 picked per output, 1 LM head(s), 3.48 s",
+  "rel": "vocab_subset: lowest 32768 of 248320 ids + 16384 picked per output, 1 LM head(s), 1.61 s"
+ },
+ "decision": "Deploy rel. Flag on: +3.24% / +3.35% geomean over two fresh official runs, 20/20 identical outputs, 8/8 quality checks. Flag off: N2 +0.80%, D2 +0.43% (official run-to-run drift -0.90% / +1.00%), all outputs identical. U1 flag-off -0.71% to -0.81% comes mostly from chat in one run; hybrid with the official ggml-cuda.dll shows no difference with the flag on (+0.09%).",
+ "deployment": {
+  "method": "rename official install directory to a timestamped backup, copy rel bin (SHA-256 verified), add the flag to the Flash-Next recipe only (catalog backed up)",
+  "smoke": "launcher recipe command (-hf, HTTPS) on a side port: ready in 73 s including a one-time MTP file fetch by -hf, 52.69 tok/s, draft acceptance 101/144, correct output",
+  "rollback": "rename directories back and restore the catalog backup"
+ }
+}

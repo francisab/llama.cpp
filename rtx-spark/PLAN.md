@@ -1,4 +1,4 @@
-# RTX Spark Inference Engine - en-US Optimization and Fork Survey (v9)
+# RTX Spark Inference Engine - en-US Optimization and Fork Survey (v10)
 
 **Machine:** NVIDIA RTX Spark N1X (20-core ARM64 CPU, 6144-core Blackwell GPU, **sm_121**) · 128 GB LPDDR5X-9400 on a 256-bit bus (**≈300 GB/s**, shared CPU/GPU) · boot carve-out **96 GB GPU / 30.5 GB Windows** · Windows 11 ARM64 · CUDA 13.4 · 45–80 W SoC.
 **Measured software:** llama.cpp b11756 (`d80619397`, official `win-cuda-13.4-arm64` build). The source review is against this repository checkout at `4a45de4f2`; it includes the upstream changes cited below.
@@ -15,7 +15,7 @@
 > **v7 executed follow-up:** section 2.11 completes the compact English quality gate and one matched timing pair. Both draft heads pass complete-code, US-format JSON, exact identifier and 17,225-token document checks. The new Q4_K pair gains +4.50% across four English/code cases with identical measured tokens. The smaller draft is supported as an opt-in candidate for these workloads, not a universal replacement. Keep MTP3 and ub512; no deployment change or reduced-vocabulary engine patch was made.
 > **v8 source follow-up:** section 3.1 surveys additional llama.cpp forks and active upstream proposals. Dynamic draft-head selection already has a Flash-Next/GB10 prototype in [ggml-org/llama.cpp#30380](https://github.com/ggml-org/llama.cpp/pull/30380); evaluate that before inventing a static MTP vocabulary format. QSA-mask and FFN prefill fusion are the next concrete kernel leads. These are sourced results, not new Windows measurements. No engine, model, deployment, commit or remote changed during this survey.
 > **v9 native build follow-up:** a native ARM64 toolchain now builds llama.cpp with CUDA on this host (section 3.1). The matched #30380 A/B passes: +2.63% geomean at K=16,384 over its merge-base control, token-identical outputs, all quality checks pass, +238 MiB and +4 s load (section 2.13). The Q4_K draft is deployed on the Flash-Next launcher recipe, with a catalog backup. QSA-mask and FFN-fusion PRs are reviewed and staged for the same A/B.
-
+> **v10 deployment:** a b11756 + #30380 build that follows the official release layout (Clang 20 CPU side, MSVC CUDA) now replaces the official install. The Flash-Next recipe enables `--spec-draft-vocab-dynamic 16384`: +3.24% / +3.35% over official, token-identical, 8/8 quality checks. Nemotron and 27B are unchanged within noise (section 2.14). The official install and catalog are backed up for rollback.
 ---
 
 ## 1. Executive summary
@@ -393,6 +393,32 @@ Medians of five measured requests; sample CV 0.9-2.3%. Geometric mean: K=16,384 
 
 **Disposition: passes; smaller than the GB10 report (+5.9%).** The author's draft file, OS, prompts and control differ; this pass does not isolate why. Do not add this +2.6% to the Q4_K +4.50%; they were measured against different controls and binaries. These are one sequential pair per variant; chat shows no gain.
 
+### 2.14 Deploy validation: b11756 + #30380 release-like build [M]
+
+Evidence is in `results/deploy-b11756-20261021/` (`summary.json`). The PR diff applies cleanly to b11756 (`d80619397`). Two build styles were compared with the official b11756 release on the same harness: U1 with five repetitions, N2 and D2 with three. Fresh official runs were interleaved to bound drift. All U1 runs use the Q4_K draft in both arms.
+
+| Comparison | Geomean | Outputs |
+|---|---:|---|
+| Official vs official repeat (U1, two pairs) | -0.09%, +0.11% | identical |
+| Official vs all-MSVC b11756, unpatched | -0.98% | identical |
+| Official vs all-MSVC + PR, K=16,384 | +2.28% | identical |
+| Official vs release-like + PR, flag off | -0.71% | identical |
+| Official vs release-like + PR, K=16,384 (two control runs) | +3.35%, +3.24% | identical |
+| Release-like vs hybrid with official `ggml-cuda.dll`, K=16,384 | +0.09% | identical |
+| N2 official vs release-like + PR, flag off | +0.80% (official drift -0.90%) | identical |
+| D2 official vs release-like + PR, flag off | +0.43% (official drift +1.00%) | identical |
+
+The release-like build (`tools/build_release_like.ps1`) mirrors the release jobs:
+- CPU side and tools: Clang 20.1.8 from the LLVM ARM64 release tarball with the release CMake flags. The file set matches the official zip (42 files).
+- `ggml-cuda.dll`: MSVC with CUDA 13.4, `sm_121a` only.
+- The upstream OpenMP fetch needs 7-Zip; the script seeds its cache from the same LLVM 20.1.8 tarball.
+
+The all-MSVC build is about 1% slower than official; the release-like build recovers most of it. The U1 flag-off gap comes mostly from one chat median. With the flag on, the official `ggml-cuda.dll` changes nothing (+0.09%). CUDA runtime DLLs are byte-identical to the official zip. The release-like build also halves scorer setup (1.61 s vs 3.48 s with MSVC). Quality gate at K=16,384: 8/8 checks pass, and `-lv 4` shows `vocab_subset ... 16384 picked per output`.
+
+**Deployed.** The release-like build replaces the official install directory (SHA-256 verified copy; the official directory is kept as a timestamped backup). Only the Flash-Next launcher recipe gains `--spec-draft-vocab-dynamic 16384` (catalog backed up). A smoke test with the exact recipe command (`-hf`, HTTPS) passes: 52.7 tok/s, draft acceptance 101/144, correct output. In this test `-hf` also fetched the repository's 3.9 GB Q8_0 MTP file once; the recipe still loads the local Q4_K draft. Without symlink privilege the file is stored as a plain file.
+
+Rollback: rename the backup directory back and restore the catalog backup. If the install directory is replaced with an official release that lacks #30380, also remove the flag: `llama-server` stops at startup on unknown arguments. The gain over the original Q8_0 recipe is not measured in one pair.
+
 ---
 
 ## 3. Source-verified feature status and reference lessons
@@ -475,7 +501,7 @@ Additional screen-outs: [quimmedes/cafe-llama.cpp](https://github.com/quimmedes/
 
 **Changed next step (v9).** The toolchain blocker is resolved. A native ARM64 toolchain now builds full CUDA binaries on this host with no x64 emulation: VS 2022 Build Tools (ARM64-hosted MSVC 14.44), ARM64 CUDA 13.4 redistributables, CMake 4.x and Ninja (`tools/build_native_cuda.ps1`, about 4-5 min per build). The #30380 matched A/B is complete and passes (section 2.13). Do not build a static MTP vocabulary subsystem; the dynamic path covers it.
 
-Build differences from the official release: the release cross-compiles only `ggml-cuda.dll` with MSVC and builds everything else with Clang 20; our build is all MSVC. GPU kernels are the same compiler; CPU-side code differs. Before deploying a custom build, run a parity pair (official b11756 versus our unmodified b11756 build) on the same harness.
+Build differences from the official release: the release cross-compiles only `ggml-cuda.dll` with MSVC and builds everything else with Clang 20. The all-MSVC build is about 1% slower. For deployment use `tools/build_release_like.ps1`, which follows the release layout (section 2.14). For a matched A/B, the all-MSVC script is enough because both arms use the same toolchain.
 
 Remaining fusion candidates, each against its own merge-base control:
 
@@ -507,7 +533,7 @@ The v2 step estimates and cumulative tok/s projections below remain withdrawn. T
 |---|---|---|---|
 | 0 | Completed the installed-binary control in section 2.7. Refresh it when binary, model, settings, or workload changes. | Five samples per case, actual hashes, exact commands, full outputs, logs, and telemetry. Cold cache and operator profiles remain unmeasured. | A patched-binary claim needs an unmodified build from the same source/toolchain, not only this release control. |
 | 1 | Completed the English quality gate and matched speed pair: Q4_K +4.50% in the new pair; smaller +1.73% in earlier reloads. Retain as an opt-in English/code candidate. | The recorded scope passes; general writing, arbitrary code and much longer context require their own evidence before broader claims. No further sweep is queued. | Do not replace the deployed default or advertise a guaranteed gain from one pair. Router F32 to BF16 is not a CLI-only experiment here. |
-| 2 | Dynamic draft head [ggml-org/llama.cpp#30380](https://github.com/ggml-org/llama.cpp/pull/30380): matched native A/B passed (section 2.13), +2.63% geomean at K=16,384, token-identical, +238 MiB, +4 s load. | Toolchain parity pair, then a b11756+PR build with the same gain before deployment; enable only on the Flash-Next recipe. | No claim beyond the four en-US cases; chat is flat. Do not add to the Q4_K gain without a combined measurement. |
+| 2 | Dynamic draft head [ggml-org/llama.cpp#30380](https://github.com/ggml-org/llama.cpp/pull/30380): matched A/B passed (section 2.13); **deployed** as a b11756+PR release-like build (section 2.14), +3.24% / +3.35% over official on the Flash-Next recipe, token-identical, 8/8 quality, other models unchanged. | Rebuild with the same script on each upstream upgrade until the PR merges; repeat the U1 pair and quality gate. | No claim beyond the four en-US cases. Remove the flag if the install directory reverts to an official build without the PR. |
 | 3 | QSA k-pool mask [ggml-org/llama.cpp#30640](https://github.com/ggml-org/llama.cpp/pull/30640) reviewed safe; worktrees ready (section 3.1). CUDA graph-chunk proposal not started. | Same-source control/candidate builds, `test-backend-ops -o KPOOL_MASK`, Flash-Next prefill 2K/8K and decode A/B. | Do not port whole forks or interpret existing graph/fusion ablation losses as remaining headroom. |
 | 4 | MTP2/3/4 and Nemotron p_min comparisons executed. Keep MTP3; the hindsight depth selector has only 2.00% headroom on the English/code slice before overhead. | Only revisit if a representative English workload shows a larger opportunity, with per-step cost traces and measured switching/capture cost. | No adaptive implementation is justified by the current per-request aggregates or different-output throughput alone. |
 | 5 | Source gate assessed; grouped MoE verify prototype blocked, not implemented. | Actual per-layer routed-ID overlap, bytes saved, launch/packing cost, and correctness under rollback/multi-sequence batches. | Do not replace missing route measurements with uniform-routing assumptions or target-only timing proxies. |
