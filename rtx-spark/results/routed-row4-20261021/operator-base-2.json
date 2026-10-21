@@ -1,0 +1,18 @@
+{
+  "MUL_MAT_ID(name=moe_iq3_s_e512_n4_b1,type=f32,ne=[640,10,4,1],op_params=[],sources=iq3_s[2560,640,512,1],f32[2560,1,4,1],i32[10,4,1,1]nb[4,2048,8192,8192])": {
+    "runs": 15552,
+    "time_us": 64.37
+  },
+  "MUL_MAT_ID(name=moe_iq4_nl_e512_n4_b0,type=f32,ne=[2560,10,4,1],op_params=[],sources=iq4_nl[640,2560,512,1],f32[640,10,4,1],i32[10,4,1,1]nb[4,2048,8192,8192])": {
+    "runs": 16717,
+    "time_us": 60.01
+  },
+  "MUL_MAT_ID_SHARED(type=iq3_s,n=4)": {
+    "runs": 145600,
+    "time_us": 6.88
+  },
+  "MUL_MAT_ID_SHARED(type=iq4_nl,n=4)": {
+    "runs": 239330,
+    "time_us": 4.19
+  }
+}

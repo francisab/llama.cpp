@@ -1,0 +1,227 @@
+{
+  "all_cases_passed": true,
+  "supported_cases_per_arm": 46,
+  "nmse_limit": 0.0005,
+  "results": {
+    "base": {
+      "serialized": [
+        "MUL_MAT_ID(name=moe_iq3_s_e16_n1_b0,type=f32,ne=[640,10,1,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,10,1,1],i32[10,1,1,1]nb[4,64,64,64]): OK",
+        "MUL_MAT_ID(name=moe_iq3_s_e16_n1_b1,type=f32,ne=[640,10,1,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,1,1,1],i32[10,1,1,1]nb[4,64,64,64]): OK",
+        "MUL_MAT_ID(name=moe_iq3_s_e16_n3_b0,type=f32,ne=[640,10,3,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,10,3,1],i32[10,3,1,1]nb[4,64,192,192]): OK",
+        "MUL_MAT_ID(name=moe_iq3_s_e16_n3_b1,type=f32,ne=[640,10,3,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,1,3,1],i32[10,3,1,1]nb[4,64,192,192]): OK",
+        "MUL_MAT_ID(name=moe_iq3_s_e16_n4_b0,type=f32,ne=[640,10,4,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,10,4,1],i32[10,4,1,1]nb[4,64,256,256]): OK",
+        "MUL_MAT_ID(name=moe_iq3_s_e16_n4_b1,type=f32,ne=[640,10,4,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,1,4,1],i32[10,4,1,1]nb[4,64,256,256]): OK",
+        "MUL_MAT_ID(name=moe_iq3_s_e16_n5_b0,type=f32,ne=[640,10,5,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,10,5,1],i32[10,5,1,1]nb[4,64,320,320]): OK",
+        "MUL_MAT_ID(name=moe_iq3_s_e16_n5_b1,type=f32,ne=[640,10,5,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,1,5,1],i32[10,5,1,1]nb[4,64,320,320]): OK",
+        "MUL_MAT_ID(name=moe_iq3_s_e16_n8_b0,type=f32,ne=[640,10,8,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,10,8,1],i32[10,8,1,1]nb[4,64,512,512]): OK",
+        "MUL_MAT_ID(name=moe_iq3_s_e16_n8_b1,type=f32,ne=[640,10,8,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,1,8,1],i32[10,8,1,1]nb[4,64,512,512]): OK",
+        "MUL_MAT_ID(name=moe_iq3_s_e512_n4_b1,type=f32,ne=[640,10,4,1],op_params=[],sources=iq3_s[2560,640,512,1],f32[2560,1,4,1],i32[10,4,1,1]nb[4,2048,8192,8192]): OK",
+        "MUL_MAT_ID(name=moe_iq4_nl_e16_n1_b0,type=f32,ne=[2560,10,1,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,10,1,1],i32[10,1,1,1]nb[4,64,64,64]): OK",
+        "MUL_MAT_ID(name=moe_iq4_nl_e16_n1_b1,type=f32,ne=[2560,10,1,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,1,1,1],i32[10,1,1,1]nb[4,64,64,64]): OK",
+        "MUL_MAT_ID(name=moe_iq4_nl_e16_n3_b0,type=f32,ne=[2560,10,3,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,10,3,1],i32[10,3,1,1]nb[4,64,192,192]): OK",
+        "MUL_MAT_ID(name=moe_iq4_nl_e16_n3_b1,type=f32,ne=[2560,10,3,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,1,3,1],i32[10,3,1,1]nb[4,64,192,192]): OK",
+        "MUL_MAT_ID(name=moe_iq4_nl_e16_n4_b0,type=f32,ne=[2560,10,4,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,10,4,1],i32[10,4,1,1]nb[4,64,256,256]): OK",
+        "MUL_MAT_ID(name=moe_iq4_nl_e16_n4_b1,type=f32,ne=[2560,10,4,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,1,4,1],i32[10,4,1,1]nb[4,64,256,256]): OK",
+        "MUL_MAT_ID(name=moe_iq4_nl_e16_n5_b0,type=f32,ne=[2560,10,5,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,10,5,1],i32[10,5,1,1]nb[4,64,320,320]): OK",
+        "MUL_MAT_ID(name=moe_iq4_nl_e16_n5_b1,type=f32,ne=[2560,10,5,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,1,5,1],i32[10,5,1,1]nb[4,64,320,320]): OK",
+        "MUL_MAT_ID(name=moe_iq4_nl_e16_n8_b0,type=f32,ne=[2560,10,8,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,10,8,1],i32[10,8,1,1]nb[4,64,512,512]): OK",
+        "MUL_MAT_ID(name=moe_iq4_nl_e16_n8_b1,type=f32,ne=[2560,10,8,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,1,8,1],i32[10,8,1,1]nb[4,64,512,512]): OK",
+        "MUL_MAT_ID(name=moe_iq4_nl_e512_n4_b0,type=f32,ne=[2560,10,4,1],op_params=[],sources=iq4_nl[640,2560,512,1],f32[640,10,4,1],i32[10,4,1,1]nb[4,2048,8192,8192]): OK",
+        "MUL_MAT_ID(name=tile_iq3_s_m638_b0,type=f32,ne=[638,10,4,1],op_params=[],sources=iq3_s[2560,638,16,1],f32[2560,10,4,1],i32[10,4,1,1]nb[4,64,256,256]): OK",
+        "MUL_MAT_ID(name=tile_iq3_s_m638_b1,type=f32,ne=[638,10,4,1],op_params=[],sources=iq3_s[2560,638,16,1],f32[2560,1,4,1],i32[10,4,1,1]nb[4,64,256,256]): OK",
+        "MUL_MAT_ID(name=tile_iq3_s_m640_b0,type=f32,ne=[640,10,4,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,10,4,1],i32[10,4,1,1]nb[4,64,256,256]): OK",
+        "MUL_MAT_ID(name=tile_iq3_s_m640_b1,type=f32,ne=[640,10,4,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,1,4,1],i32[10,4,1,1]nb[4,64,256,256]): OK",
+        "MUL_MAT_ID(name=tile_iq3_s_m642_b0,type=f32,ne=[642,10,4,1],op_params=[],sources=iq3_s[2560,642,16,1],f32[2560,10,4,1],i32[10,4,1,1]nb[4,64,256,256]): OK",
+        "MUL_MAT_ID(name=tile_iq3_s_m642_b1,type=f32,ne=[642,10,4,1],op_params=[],sources=iq3_s[2560,642,16,1],f32[2560,1,4,1],i32[10,4,1,1]nb[4,64,256,256]): OK",
+        "MUL_MAT_ID(name=tile_iq4_nl_m2558_b0,type=f32,ne=[2558,10,4,1],op_params=[],sources=iq4_nl[640,2558,16,1],f32[640,10,4,1],i32[10,4,1,1]nb[4,64,256,256]): OK",
+        "MUL_MAT_ID(name=tile_iq4_nl_m2558_b1,type=f32,ne=[2558,10,4,1],op_params=[],sources=iq4_nl[640,2558,16,1],f32[640,1,4,1],i32[10,4,1,1]nb[4,64,256,256]): OK",
+        "MUL_MAT_ID(name=tile_iq4_nl_m2560_b0,type=f32,ne=[2560,10,4,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,10,4,1],i32[10,4,1,1]nb[4,64,256,256]): OK",
+        "MUL_MAT_ID(name=tile_iq4_nl_m2560_b1,type=f32,ne=[2560,10,4,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,1,4,1],i32[10,4,1,1]nb[4,64,256,256]): OK",
+        "MUL_MAT_ID(name=tile_iq4_nl_m2562_b0,type=f32,ne=[2562,10,4,1],op_params=[],sources=iq4_nl[640,2562,16,1],f32[640,10,4,1],i32[10,4,1,1]nb[4,64,256,256]): OK",
+        "MUL_MAT_ID(name=tile_iq4_nl_m2562_b1,type=f32,ne=[2562,10,4,1],op_params=[],sources=iq4_nl[640,2562,16,1],f32[640,1,4,1],i32[10,4,1,1]nb[4,64,256,256]): OK"
+      ],
+      "fusion": [
+        "MUL_MAT_ID_SHARED(type=iq3_s,n=1): OK",
+        "MUL_MAT_ID_SHARED(type=iq3_s,n=2): OK",
+        "MUL_MAT_ID_SHARED(type=iq3_s,n=3): OK",
+        "MUL_MAT_ID_SHARED(type=iq3_s,n=4): OK",
+        "MUL_MAT_ID_SHARED(type=iq3_s,n=8): OK",
+        "MUL_MAT_ID_SHARED(type=iq3_s,n=9): OK",
+        "MUL_MAT_ID_SHARED(type=iq4_nl,n=1): OK",
+        "MUL_MAT_ID_SHARED(type=iq4_nl,n=2): OK",
+        "MUL_MAT_ID_SHARED(type=iq4_nl,n=3): OK",
+        "MUL_MAT_ID_SHARED(type=iq4_nl,n=4): OK",
+        "MUL_MAT_ID_SHARED(type=iq4_nl,n=8): OK",
+        "MUL_MAT_ID_SHARED(type=iq4_nl,n=9): OK"
+      ]
+    },
+    "cand": {
+      "serialized": [
+        "MUL_MAT_ID(name=moe_iq3_s_e16_n1_b0,type=f32,ne=[640,10,1,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,10,1,1],i32[10,1,1,1]nb[4,64,64,64]): OK",
+        "MUL_MAT_ID(name=moe_iq3_s_e16_n1_b1,type=f32,ne=[640,10,1,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,1,1,1],i32[10,1,1,1]nb[4,64,64,64]): OK",
+        "MUL_MAT_ID(name=moe_iq3_s_e16_n3_b0,type=f32,ne=[640,10,3,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,10,3,1],i32[10,3,1,1]nb[4,64,192,192]): OK",
+        "MUL_MAT_ID(name=moe_iq3_s_e16_n3_b1,type=f32,ne=[640,10,3,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,1,3,1],i32[10,3,1,1]nb[4,64,192,192]): OK",
+        "MUL_MAT_ID(name=moe_iq3_s_e16_n4_b0,type=f32,ne=[640,10,4,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,10,4,1],i32[10,4,1,1]nb[4,64,256,256]): OK",
+        "MUL_MAT_ID(name=moe_iq3_s_e16_n4_b1,type=f32,ne=[640,10,4,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,1,4,1],i32[10,4,1,1]nb[4,64,256,256]): OK",
+        "MUL_MAT_ID(name=moe_iq3_s_e16_n5_b0,type=f32,ne=[640,10,5,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,10,5,1],i32[10,5,1,1]nb[4,64,320,320]): OK",
+        "MUL_MAT_ID(name=moe_iq3_s_e16_n5_b1,type=f32,ne=[640,10,5,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,1,5,1],i32[10,5,1,1]nb[4,64,320,320]): OK",
+        "MUL_MAT_ID(name=moe_iq3_s_e16_n8_b0,type=f32,ne=[640,10,8,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,10,8,1],i32[10,8,1,1]nb[4,64,512,512]): OK",
+        "MUL_MAT_ID(name=moe_iq3_s_e16_n8_b1,type=f32,ne=[640,10,8,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,1,8,1],i32[10,8,1,1]nb[4,64,512,512]): OK",
+        "MUL_MAT_ID(name=moe_iq3_s_e512_n4_b1,type=f32,ne=[640,10,4,1],op_params=[],sources=iq3_s[2560,640,512,1],f32[2560,1,4,1],i32[10,4,1,1]nb[4,2048,8192,8192]): OK",
+        "MUL_MAT_ID(name=moe_iq4_nl_e16_n1_b0,type=f32,ne=[2560,10,1,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,10,1,1],i32[10,1,1,1]nb[4,64,64,64]): OK",
+        "MUL_MAT_ID(name=moe_iq4_nl_e16_n1_b1,type=f32,ne=[2560,10,1,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,1,1,1],i32[10,1,1,1]nb[4,64,64,64]): OK",
+        "MUL_MAT_ID(name=moe_iq4_nl_e16_n3_b0,type=f32,ne=[2560,10,3,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,10,3,1],i32[10,3,1,1]nb[4,64,192,192]): OK",
+        "MUL_MAT_ID(name=moe_iq4_nl_e16_n3_b1,type=f32,ne=[2560,10,3,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,1,3,1],i32[10,3,1,1]nb[4,64,192,192]): OK",
+        "MUL_MAT_ID(name=moe_iq4_nl_e16_n4_b0,type=f32,ne=[2560,10,4,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,10,4,1],i32[10,4,1,1]nb[4,64,256,256]): OK",
+        "MUL_MAT_ID(name=moe_iq4_nl_e16_n4_b1,type=f32,ne=[2560,10,4,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,1,4,1],i32[10,4,1,1]nb[4,64,256,256]): OK",
+        "MUL_MAT_ID(name=moe_iq4_nl_e16_n5_b0,type=f32,ne=[2560,10,5,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,10,5,1],i32[10,5,1,1]nb[4,64,320,320]): OK",
+        "MUL_MAT_ID(name=moe_iq4_nl_e16_n5_b1,type=f32,ne=[2560,10,5,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,1,5,1],i32[10,5,1,1]nb[4,64,320,320]): OK",
+        "MUL_MAT_ID(name=moe_iq4_nl_e16_n8_b0,type=f32,ne=[2560,10,8,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,10,8,1],i32[10,8,1,1]nb[4,64,512,512]): OK",
+        "MUL_MAT_ID(name=moe_iq4_nl_e16_n8_b1,type=f32,ne=[2560,10,8,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,1,8,1],i32[10,8,1,1]nb[4,64,512,512]): OK",
+        "MUL_MAT_ID(name=moe_iq4_nl_e512_n4_b0,type=f32,ne=[2560,10,4,1],op_params=[],sources=iq4_nl[640,2560,512,1],f32[640,10,4,1],i32[10,4,1,1]nb[4,2048,8192,8192]): OK",
+        "MUL_MAT_ID(name=tile_iq3_s_m638_b0,type=f32,ne=[638,10,4,1],op_params=[],sources=iq3_s[2560,638,16,1],f32[2560,10,4,1],i32[10,4,1,1]nb[4,64,256,256]): OK",
+        "MUL_MAT_ID(name=tile_iq3_s_m638_b1,type=f32,ne=[638,10,4,1],op_params=[],sources=iq3_s[2560,638,16,1],f32[2560,1,4,1],i32[10,4,1,1]nb[4,64,256,256]): OK",
+        "MUL_MAT_ID(name=tile_iq3_s_m640_b0,type=f32,ne=[640,10,4,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,10,4,1],i32[10,4,1,1]nb[4,64,256,256]): OK",
+        "MUL_MAT_ID(name=tile_iq3_s_m640_b1,type=f32,ne=[640,10,4,1],op_params=[],sources=iq3_s[2560,640,16,1],f32[2560,1,4,1],i32[10,4,1,1]nb[4,64,256,256]): OK",
+        "MUL_MAT_ID(name=tile_iq3_s_m642_b0,type=f32,ne=[642,10,4,1],op_params=[],sources=iq3_s[2560,642,16,1],f32[2560,10,4,1],i32[10,4,1,1]nb[4,64,256,256]): OK",
+        "MUL_MAT_ID(name=tile_iq3_s_m642_b1,type=f32,ne=[642,10,4,1],op_params=[],sources=iq3_s[2560,642,16,1],f32[2560,1,4,1],i32[10,4,1,1]nb[4,64,256,256]): OK",
+        "MUL_MAT_ID(name=tile_iq4_nl_m2558_b0,type=f32,ne=[2558,10,4,1],op_params=[],sources=iq4_nl[640,2558,16,1],f32[640,10,4,1],i32[10,4,1,1]nb[4,64,256,256]): OK",
+        "MUL_MAT_ID(name=tile_iq4_nl_m2558_b1,type=f32,ne=[2558,10,4,1],op_params=[],sources=iq4_nl[640,2558,16,1],f32[640,1,4,1],i32[10,4,1,1]nb[4,64,256,256]): OK",
+        "MUL_MAT_ID(name=tile_iq4_nl_m2560_b0,type=f32,ne=[2560,10,4,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,10,4,1],i32[10,4,1,1]nb[4,64,256,256]): OK",
+        "MUL_MAT_ID(name=tile_iq4_nl_m2560_b1,type=f32,ne=[2560,10,4,1],op_params=[],sources=iq4_nl[640,2560,16,1],f32[640,1,4,1],i32[10,4,1,1]nb[4,64,256,256]): OK",
+        "MUL_MAT_ID(name=tile_iq4_nl_m2562_b0,type=f32,ne=[2562,10,4,1],op_params=[],sources=iq4_nl[640,2562,16,1],f32[640,10,4,1],i32[10,4,1,1]nb[4,64,256,256]): OK",
+        "MUL_MAT_ID(name=tile_iq4_nl_m2562_b1,type=f32,ne=[2562,10,4,1],op_params=[],sources=iq4_nl[640,2562,16,1],f32[640,1,4,1],i32[10,4,1,1]nb[4,64,256,256]): OK"
+      ],
+      "fusion": [
+        "MUL_MAT_ID_SHARED(type=iq3_s,n=1): OK",
+        "MUL_MAT_ID_SHARED(type=iq3_s,n=2): OK",
+        "MUL_MAT_ID_SHARED(type=iq3_s,n=3): OK",
+        "MUL_MAT_ID_SHARED(type=iq3_s,n=4): OK",
+        "MUL_MAT_ID_SHARED(type=iq3_s,n=8): OK",
+        "MUL_MAT_ID_SHARED(type=iq3_s,n=9): OK",
+        "MUL_MAT_ID_SHARED(type=iq4_nl,n=1): OK",
+        "MUL_MAT_ID_SHARED(type=iq4_nl,n=2): OK",
+        "MUL_MAT_ID_SHARED(type=iq4_nl,n=3): OK",
+        "MUL_MAT_ID_SHARED(type=iq4_nl,n=4): OK",
+        "MUL_MAT_ID_SHARED(type=iq4_nl,n=8): OK",
+        "MUL_MAT_ID_SHARED(type=iq4_nl,n=9): OK"
+      ]
+    }
+  },
+  "row4_and_fallback_dispatch_verified": true,
+  "shared_gate_fusion_retained": true,
+  "dispatch": {
+    "boundaries": [
+      {
+        "type_id": 21,
+        "rows_per_block": 2,
+        "fused": false,
+        "grid": [
+          319,
+          10
+        ],
+        "block": [
+          32,
+          4
+        ]
+      },
+      {
+        "type_id": 21,
+        "rows_per_block": 4,
+        "fused": false,
+        "grid": [
+          160,
+          10
+        ],
+        "block": [
+          32,
+          4
+        ]
+      },
+      {
+        "type_id": 21,
+        "rows_per_block": 2,
+        "fused": false,
+        "grid": [
+          321,
+          10
+        ],
+        "block": [
+          32,
+          4
+        ]
+      },
+      {
+        "type_id": 20,
+        "rows_per_block": 2,
+        "fused": false,
+        "grid": [
+          1279,
+          10
+        ],
+        "block": [
+          32,
+          4
+        ]
+      },
+      {
+        "type_id": 20,
+        "rows_per_block": 4,
+        "fused": false,
+        "grid": [
+          640,
+          10
+        ],
+        "block": [
+          32,
+          4
+        ]
+      },
+      {
+        "type_id": 20,
+        "rows_per_block": 2,
+        "fused": false,
+        "grid": [
+          1281,
+          10
+        ],
+        "block": [
+          32,
+          4
+        ]
+      }
+    ],
+    "fusion": [
+      {
+        "type_id": 21,
+        "rows_per_block": 4,
+        "fused": true,
+        "grid": [
+          32,
+          4
+        ],
+        "block": [
+          32,
+          4
+        ]
+      },
+      {
+        "type_id": 20,
+        "rows_per_block": 4,
+        "fused": true,
+        "grid": [
+          32,
+          4
+        ],
+        "block": [
+          32,
+          4
+        ]
+      }
+    ]
+  },
+  "dispatch_diagnostic_warnings_or_errors": [],
+  "build_manifest_sha256": "2c53b342df13be4353407a114fd3376d333dffedcead272a018ee0b00576d2d5",
+  "original_source_patch_set_restored": true,
+  "deployment_changed": false
+}

@@ -1,0 +1,28 @@
+--- a/tests/test-backend-ops.cpp
++++ b/tests/test-backend-ops.cpp
+@@ -1641,0 +1642,2 @@
++        const int n_nodes = ggml_graph_n_nodes(gf);
++        const int n_repeat_nodes = run_whole_graph() ? n_nodes : 1;
+@@ -1650 +1652 @@
+-            n_runs = (int)std::min<int64_t>(ggml_graph_size(gf) - ggml_graph_n_nodes(gf), target_flops / op_flops(out)) + 1;
++            n_runs = (int)std::min<int64_t>((ggml_graph_size(gf) - n_nodes) / n_repeat_nodes, target_flops / op_flops(out)) + 1;
+@@ -1657 +1659 @@
+-            n_runs = (int)std::min<int64_t>(ggml_graph_size(gf) - ggml_graph_n_nodes(gf), target_size / op_size(out)) + 1;
++            n_runs = (int)std::min<int64_t>((ggml_graph_size(gf) - n_nodes) / n_repeat_nodes, target_size / op_size(out)) + 1;
+@@ -1662 +1664,7 @@
+-            ggml_graph_add_node(gf, out);
++            if (run_whole_graph()) {
++                for (int j = 0; j < n_nodes; ++j) {
++                    ggml_graph_add_node(gf, ggml_graph_node(gf, j));
++                }
++            } else {
++                ggml_graph_add_node(gf, out);
++            }
+@@ -11267 +11275 @@
+-    for (ggml_type type : { GGML_TYPE_Q4_K, GGML_TYPE_Q8_0 }) {
++    for (ggml_type type : { GGML_TYPE_Q4_K, GGML_TYPE_Q8_0, GGML_TYPE_IQ3_S, GGML_TYPE_IQ4_NL }) {
+@@ -12310,0 +12319,4 @@
++    for (ggml_type type : { GGML_TYPE_IQ3_S, GGML_TYPE_IQ4_NL }) {
++        test_cases.emplace_back(new test_mul_mat_id_shared(type, 4));
++    }
++

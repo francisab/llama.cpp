@@ -1,0 +1,11 @@
+{
+  "initial_audit_failure": "The Windows Nsight wrapper did not relay child-process test stdout into its redirected output, despite --show-output=true. A stdout assertion stopped the audit after the boundary capture.",
+  "numerical_status_before_failure": "All 46 cases passed per arm in ordinary, unprofiled executions.",
+  "correction": "Audit the existing boundary trace directly for the exact expected kernels and geometry, then capture fusion separately. Do not rerun or overwrite the completed numerical cases or boundary capture.",
+  "operator_pilot_failure": "Shared-fusion cases existed only in the numerical test registry, so the first operator pilot produced no fusion timings. No candidate performance was measured.",
+  "operator_harness_correction": "Register the same two four-token fusion cases for perf. The original perf helper duplicates only the final node; extend the isolated test executable to repeat the whole graph for run_whole_graph cases, with graph-capacity accounting. Otherwise it would mostly measure the final ADD rather than fusion.",
+  "operator_pilot_disposition": "Retain the incomplete baseline pilot privately and restart the unchanged balanced four-case gate with identical rebuilt test executables in both arms.",
+  "bulk_perf_trace": "An optional Nsight capture of the repeated full-graph performance loop did not finish within its wait budget and was terminated with its owned process tree. No counts or timings were recovered from that capture.",
+  "bulk_perf_trace_followup": "The unprofiled baseline fusion pilot exits normally in 1.359 seconds. The successful numerical traces still prove fused/unfused four-row dispatch and two-row boundary fallback. Whole-graph repetition is implemented in the published test patch; no claim of successful bulk-loop profiling is made.",
+  "candidate_and_performance_gates_changed": false
+}

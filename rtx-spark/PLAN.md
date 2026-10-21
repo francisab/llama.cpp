@@ -779,6 +779,25 @@ The geometric mean is +2.08%, with nonoverlapping ranges, 4/4 identical token se
 
 All measured responses confirm the intended target backend-sampling state. The verbose probe is not timing evidence. Grammar, reasoning-budget and log-probability compatibility remain outside this screen. `results/target-backend-sampling-20261021/` contains the engagement evidence, preserved logging pilot, samples and telemetry; target sampling remains at the deployed default.
 
+### 2.38 Fusion-preserving routed row-tiling screen [M]
+
+The single candidate computes four output rows per block instead of two, only for sm_121, four-token routed IQ3_S/IQ4_NL operations with row counts divisible by four. Expert order, reduction order and gate/up/shared-expert fusion are unchanged. The divisibility guard matters because the inner loop loads every compile-time row before the bounds-checked store.
+
+Both arms pass 46 CPU-reference cases, including both RHS layouts, original 512-expert ID strides, neighboring row counts and shared/gate fusion. Clean numerical traces verify the four-row fused and unfused kernels, their launch geometry, and the two-row fallback. A balanced control/candidate/candidate/control operator screen gives:
+
+| Case | Throughput change |
+|---|---:|
+| IQ3_S, original 512-expert layout | +1.59% |
+| IQ4_NL, original 512-expert layout | +9.92% |
+| IQ3_S, small shared/gate-fusion graph | -0.69% |
+| IQ4_NL, small shared/gate-fusion graph | -8.02% |
+
+The geometric mean is only +0.49%, below the predeclared 5% operator gate, with a regression larger than the permitted 3%. **Stop before full-model MTP**, without a type-subset or row-count sweep. The operator screen takes 112.422 seconds; that excludes compilation and diagnostic preflights. These are repeated same-tensor timings, not physical bandwidth or model-speed measurements.
+
+The first test executable lacked shared-fusion cases in its performance registry. Inspection also found that the existing performance helper repeats only the final output node, which would mostly time ADD rather than the fusion graph. The corrected, identical test executables register the frozen cases and repeat whole graphs with capacity accounting. Numerical and dispatch checks pass again after rebuilding. The initial missing-stdout assumption, incomplete operator pilot and an optional bulk-loop profiler timeout are retained in the preflight notes; the ordinary fusion pilot completes in 1.359 seconds, and no bulk-profile counts are claimed.
+
+`results/routed-row4-20261021/` contains both harness revisions, the candidate patch, fixtures, manifests, numerical/dispatch results and operator samples. Apply the zero-context patches with `git apply --unidiff-zero`. Original owned sources, build DLLs and build configuration are restored. No production kernel or deployment change is retained.
+
 ## 3. Source-verified feature status and reference lessons
 
 The following status is verified in this checkout. This table supersedes the porting assumptions in the initial reference inventory below.

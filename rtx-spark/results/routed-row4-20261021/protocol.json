@@ -1,0 +1,23 @@
+{
+  "hypothesis": "Four output rows per block may amortize routed-MMVQ setup and activation loads while retaining gate/up/shared-expert fusion",
+  "candidate_scope": "Only sm_121, IQ3_S/IQ4_NL, four routed tokens and output-row counts divisible by four. All other cases keep two rows per block.",
+  "unchanged": ["Expert IDs and ordering", "Dot-product reduction order", "Fusion eligibility", "Dense dispatch", "Other architectures and quantization types"],
+  "runtime": "Isolated matched copies of the installed b11756 plus 30380 and 30640 runtime; only the candidate CUDA DLL differs",
+  "correctness": {
+    "serialized_cases": "22 existing corrected routed cases plus 12 row-boundary/broadcast cases",
+    "shared_fusion": "Extend the existing MUL_MAT_ID_SHARED test type list with IQ3_S/IQ4_NL; six token widths per type, including four",
+    "dispatch": "Clean traces must show four-row fused and unfused kernels, and two-row fallback on neighboring non-divisible row counts",
+    "nmse_limit": 0.0005
+  },
+  "operator_screen": {
+    "cases": "Two original-model 512-expert layouts at four tokens and two existing four-token shared/gate-fusion cases",
+    "order": ["base-1", "cand-1", "cand-2", "base-2"],
+    "minimum_geomean_gain": 0.05,
+    "maximum_case_regression": 0.03,
+    "require_nonoverlapping_ranges_for_positive_cases": true,
+    "meaning": "Repeated same-tensor cache-reuse diagnostic, not a model-speed or physical-bandwidth measurement"
+  },
+  "actual_mtp_if_operator_gate_passes": "Original Rust/JSON cases, two warmed samples per arm, >=3% per-case gain and nonoverlapping ranges, reverse order only after the first pair passes, 600-second total screen budget",
+  "stop_rule": "One row-tile candidate only. Stop at the first failed gate; no row-count, type-subset or token-cutoff sweep.",
+  "deployment_changed": false
+}

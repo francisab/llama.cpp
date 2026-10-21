@@ -1,0 +1,16 @@
+--- a/ggml/src/ggml-cuda/mmvq.cu
++++ b/ggml/src/ggml-cuda/mmvq.cu
+@@ -1078 +1078 @@
+-template <ggml_type type>
++template <ggml_type type, int rows_per_block = 2>
+@@ -1087 +1086,0 @@
+-    constexpr int rows_per_block = 2; // 2 gives best perf based on tuning
+@@ -1203 +1202,7 @@
+-        mul_mat_vec_q_moe_launch<type>(
++        auto launch = mul_mat_vec_q_moe_launch<type>;
++        if constexpr (type == GGML_TYPE_IQ3_S || type == GGML_TYPE_IQ4_NL) {
++            if (cc == GGML_CUDA_CC_DGX_SPARK && ncols_dst == 4 && nrows_x % 4 == 0) {
++                launch = mul_mat_vec_q_moe_launch<type, 4>;
++            }
++        }
++        launch(
