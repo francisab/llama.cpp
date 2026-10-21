@@ -21,9 +21,11 @@
     "timeout_seconds": 900
   },
   "conversion": {
-    "arguments": "--allow-requantize --pure --keep-split --max-buffer-size 512 --imatrix <calibration> --tensor-type-file <pinned-map> <original-source> <new-output-prefix> IQ4_XS 8",
+    "arguments": "--allow-requantize --pure --keep-split --max-buffer-size 512 --imatrix q6-imatrix-portable.gguf --tensor-type-file <pinned-map> <original-source> <new-output-prefix> IQ4_XS 8",
+    "importance_metadata": "Run from the calibration directory using a basename-only imatrix argument. Copy the matrix with imatrix.datasets set to wiki.train.raw, verifying all importance tensor bytes and all other metadata are unchanged; see portable-matrix.json.",
     "candidate_prefix": "Qwen3.8-Flash-Next-UD-IQ4_XS-attn-Q6_K-imatrix",
     "require_unchanged_tensor_hashes": true,
+    "verification_order": "Check headers, types and selected-tensor hashes before the precision screen; require the full unchanged-tensor byte audit before advancing a precision survivor",
     "allow_metadata_changes": "Only quantization provenance and necessary split/layout metadata",
     "minimum_remaining_disk_gib": 32
   },

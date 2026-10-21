@@ -1,0 +1,44 @@
+{
+  "candidate": "Importance-weighted Q6_K projections with recurrent QKV kept at original Q8_0",
+  "origin": "local model-artifact revision; no engine or live deployment change",
+  "source_repository": "unsloth/Qwen3.8-Flash-Next-GGUF",
+  "source_revision": "766911a6b7369840a91dbcd95f9f997acaab6cd6",
+  "source_model": "Qwen3.8-Flash-Next-UD-IQ4_XS-00001-of-00003.gguf",
+  "hypothesis": "Avoid directly perturbing persistent convolution and recurrent state through the 36 fused QKV inputs, while retaining weighted Q6 for 120 gate/output and full-attention projections. Other projections can still affect later recurrent inputs indirectly; this is a hypothesis, not an established diagnosis.",
+  "source_evidence": [
+    "src/models/qwen4exp.cpp:624-631: separate fused QKV and output-gate projections",
+    "src/models/qwen4exp.cpp:1070-1127: QKV supplies convolution state and the recurrent attention update",
+    "src/models/qwen4exp.cpp:1129-1138: output gating and projection follow the recurrent update"
+  ],
+  "selection": {
+    "rule": "Start from the original full map and restore exactly every blk.<layer>.attn_qkv.weight entry to q8_0; select no layers or individual tensors using development scores",
+    "qkv_tensors_preserved": 36,
+    "q6_tensors_changed_from_original": 120,
+    "other_tensors_preserved": 1104,
+    "tensor_types_file": "tensor-types.txt",
+    "parent_map_sha256": "7c762f7ba519b2f93678762415ad265bba17463f79fcd6ff900a42ba571d3052"
+  },
+  "calibration": {
+    "protocol": "../target-q6-imatrix-20261021/protocol.json",
+    "matrix_manifest": "../target-q6-imatrix-20261021/portable-matrix.json",
+    "matrix_sha256": "359e6db2b63a3da558911780f6d04389126394da77667552ff5dccbcd163cfd0",
+    "training_data_and_weights_unchanged": true
+  },
+  "conversion": {
+    "arguments": "--allow-requantize --pure --keep-split --max-buffer-size 512 --imatrix q6-imatrix-portable.gguf --tensor-type-file <this-map> <original-source> <new-output-prefix> IQ4_XS 8",
+    "candidate_prefix": "Qwen3.8-Flash-Next-UD-IQ4_XS-Q6_K-protected-qkv",
+    "use_original_source_not_lossy_q6_source": true,
+    "verification_order": "Audit all headers, shapes, types, selected payloads and allowed metadata; run the bounded development precision gate; require a full unchanged-payload audit for a survivor",
+    "minimum_remaining_disk_gib": 32,
+    "scratch_policy": "Discard only the failed full-scope weighted candidate shards after preserving their selected-payload hashes, dimensions, provenance and numerical result. Keep originals, unweighted Q6, calibration data and the live deployment."
+  },
+  "evaluation": {
+    "maximum_mean_perplexity_ratio": 1.01,
+    "maximum_mean_kl_divergence_nats": 0.01,
+    "development": "Reuse the pinned 16-chunk test prefix and saved baseline with identical binaries and arguments; it is not final held-out evidence",
+    "confirmation": "An untouched 16-chunk validation-split comparison, full tensor-byte audit and existing eight English task checks are required for a precision survivor",
+    "speed": "Use the actual deployed MTP3 recipe and matched original-versus-candidate Rust/JSON cases; require at least 3% geometric-mean gain, no case worse than -3%, and non-overlapping primary-case ranges in both launch orders before five-repeat confirmation",
+    "stop_rule": "One fixed architecture-based revision, not a layer/subset sweep. If it fails, stop this quantization hypothesis rather than repeatedly narrowing against the same prefix."
+  },
+  "deployment": "No promotion from a development pass alone; preserve original models, launcher and rollback"
+}

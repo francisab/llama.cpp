@@ -1,0 +1,36 @@
+{
+  "scope": "Source-only triage after the two failed weighted-Q6 precision revisions; no builds, local performance measurements or integrations for these proposals",
+  "candidates": [
+    {
+      "url": "https://github.com/ggml-org/llama.cpp/pull/30918",
+      "head": "2988b0cefac8646c2c831a148aa4f2e947b5327f",
+      "title": "Fused backend sampling penalties",
+      "decision": "Do not benchmark for the current recipe",
+      "reason": "Requires backend sampling and enabled penalties; the fixed U1 benchmark recipe does not enable backend sampling. The author reports a fixed roughly 22 microseconds per token saving with penalties, not a demonstrated benefit for this MTP workload."
+    },
+    {
+      "url": "https://github.com/ggml-org/llama.cpp/pull/30792",
+      "head": "3c2537549283ca08a70301675d4a4f75dd5e2071",
+      "title": "Native q8_0 KV in the flash-attention tile kernel",
+      "decision": "Not applicable to this Blackwell target's dispatch",
+      "reason": "The changed VEC-to-TILE decision is in the generic fallback after the Turing-MMA branch. For this model's head size 256 on sm_121, the earlier branch already returns VEC or MMA_F16. Its reported ROCm/gfx1151 gains cannot be transferred to this path.",
+      "geometry": {
+        "key_length": 256,
+        "value_length": 256,
+        "attention_heads": 24,
+        "kv_heads": 2
+      },
+      "source_evidence": [
+        "ggml/src/ggml-cuda/fattn.cu:636-663",
+        "PR diff changes generic fallback around lines 710-718 and TILE-only scratch allocation"
+      ]
+    },
+    {
+      "url": "https://github.com/ggml-org/llama.cpp/pull/30493",
+      "head": "9e37a8578f47936fb7f89cbb45f4e98affc134a9",
+      "title": "Vectorized MMQ activation tile copy",
+      "decision": "Defer behind independent low-cost runtime hypotheses",
+      "reason": "A plausible prefill-only change, not a decode optimization. The author reports roughly 1.1-3.1% gains on other models and an RTX 4090; the comparable 27B case is 2.4-2.6%. This is not a local failure result and does not establish an upper bound on this device."
+    }
+  ]
+}

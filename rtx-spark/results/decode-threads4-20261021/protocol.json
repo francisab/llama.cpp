@@ -1,0 +1,29 @@
+{
+  "candidate": "Four CPU generation threads for target and MTP draft",
+  "origin": "local runtime-configuration experiment, not an upstream patch or model conversion",
+  "hypothesis": "With GPU-offloaded inference and CPU-backed lazy PLE, fewer decode workers may reduce host scheduling or polling overhead. This is not established operator attribution.",
+  "unchanged": [
+    "Installed b11756 plus #30380 and #30640 binaries",
+    "Original target weights and Q4_K external draft",
+    "MTP3, ub512, lazy PLE and dynamic draft vocabulary 16384",
+    "Prompt/batch thread count: use the control startup generation count and documented same-as-generation default, after verifying no explicit batch override is present",
+    "CPU affinity, priority and polling settings"
+  ],
+  "control": "Existing U1 recipe with automatic generation/batch thread defaults",
+  "candidate_arguments": "-t 4 --spec-draft-threads 4 -tb <control-resolved-batch-threads> --spec-draft-threads-batch <control-resolved-batch-threads>",
+  "cases": ["rust256", "json256"],
+  "repetitions_per_launch": 2,
+  "order": "Control then candidate; only a survivor proceeds to candidate then control",
+  "gates": {
+    "minimum_gain_percent_per_case": 3,
+    "maximum_regression_percent": 3,
+    "require_nonoverlapping_ranges": true,
+    "require_identical_output_tokens": true,
+    "require_identical_prompts_and_fixed_output_lengths": true,
+    "skip_if_control_threads_at_most_four": true
+  },
+  "bounds": "One fixed four-thread candidate, no thread-count sweep. Operational 600-second wall-clock stop; existing server readiness/request timeouts remain separate.",
+  "telemetry": "One-second GPU power, SM clock, utilization, temperature, memory and clock-event samples; no clock locking or OS changes",
+  "promotion": "A two-order screen survivor still needs five-repeat confirmation and the existing eight English task checks before any launcher change",
+  "deployment": "Preserve the live launcher, original models and rollback"
+}

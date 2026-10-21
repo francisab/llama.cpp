@@ -1,0 +1,14 @@
+{
+  "filename": "q6-imatrix-portable.gguf",
+  "sha256": "359e6db2b63a3da558911780f6d04389126394da77667552ff5dccbcd163cfd0",
+  "bytes": 1159813696,
+  "importance_tensors_byte_identical": 3704,
+  "importance_tensor_manifest_sha256": "05e366309b45274bbc8f31964ea2b61626c0301be0bd96f2b9eefcaf049538a4",
+  "metadata_changes": {
+    "imatrix.datasets": [
+      "wiki.train.raw"
+    ]
+  },
+  "method": "Existing gguf_new_metadata.copy_with_new_metadata helper; original matrix retained",
+  "quantizer_working_directory": "Calibration artifact directory; pass this imatrix by basename to avoid local paths in model provenance"
+}

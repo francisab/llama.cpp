@@ -1,0 +1,38 @@
+{
+  "decision": "Reject the fixed protected-QKV revision at the unchanged KL gate; stop this narrowing hypothesis, not the overall improvement effort",
+  "chunks_completed": 16,
+  "metrics": {
+    "mean_ppl": 2.198765,
+    "reference_ppl": 2.202083,
+    "mean_ppl_ratio": 0.998493,
+    "mean_kl_nats": 0.033887,
+    "same_top_token_percent": 95.046,
+    "rms_probability_change_percent": 6.85
+  },
+  "gates": {
+    "maximum_mean_ppl_ratio": 1.01,
+    "maximum_mean_kl_nats": 0.01,
+    "perplexity_passed": true,
+    "kl_passed": false
+  },
+  "full_scope_weighted_mean_kl_nats": 0.035893,
+  "relative_kl_reduction_from_full_scope_percent": 5.588833477279698,
+  "binary_manifest": "../target-q6-precision-20261021/binary-manifest.json",
+  "binaries_verified_before_and_after": true,
+  "reference_sha256": "35e8db8c6047f65f92778dd754f252aa8e25239a6d027d4e2262fbcad836e5f9",
+  "input_sha256": "173c87a53759e0201f33e0ccf978e510c2042d7f2cb78229d9a50d79b9e7dd08",
+  "precision_seconds": 46.53100000000268,
+  "precision_log_sha256": "d448b7f4923b8bf77fea2c049e0d675363e4f10ad263b199ee907374287ece1f",
+  "protected_qkv_tensors_byte_verified": 36,
+  "remaining_q6_payloads_match_full_scope_weighted_candidate": 120,
+  "full_unchanged_tensor_audit_performed": false,
+  "independent_validation_performed": false,
+  "speed_and_task_checks_performed": false,
+  "deployment_changed": false,
+  "limitations": [
+    "The reused test prefix is a development gate, not untouched final validation",
+    "Lower perplexity is not evidence of distribution preservation",
+    "The modest KL decrease does not establish recurrent QKV as the main source of the discrepancy",
+    "No further subset or layer sweep against this prefix; independent validation remains untouched"
+  ]
+}
