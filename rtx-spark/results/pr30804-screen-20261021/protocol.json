@@ -1,0 +1,47 @@
+{
+  "candidate": "ggml-org/llama.cpp#30804",
+  "url": "https://github.com/ggml-org/llama.cpp/pull/30804",
+  "origin": "upstream-authored CUDA optimization",
+  "control_commit": "99db719bdf07f7d537431ca556a0512bf3d995b6",
+  "candidate_commit": "ed93210d3b8639a23b5024ad5561e34fc69db681",
+  "control_basis": "True merge base, not the GitHub API baseRefOid",
+  "primary_goal": "decode",
+  "change": "Capture and replay CUDA graphs in chunks of 512 GGML nodes",
+  "model": "Qwen3.8-Flash-Next-UD-IQ4_XS-00001-of-00003.gguf",
+  "model_change": false,
+  "speculative_decoding": false,
+  "build": {
+    "configuration": "Release",
+    "host": "native Windows ARM64",
+    "compiler": "MSVC 14.44",
+    "cuda": "13.4",
+    "cuda_architectures": "121a-real",
+    "cccl": "v3.4.3",
+    "parallel_jobs": 8,
+    "targets": ["llama-bench", "test-backend-ops"],
+    "script": "rtx-spark/tools/build_native_cuda.ps1"
+  },
+  "correctness": {
+    "operations": ["MUL_MAT_VEC_FUSION", "ROPE_SET_ROWS"],
+    "backend": "CUDA0",
+    "reference": "CPU reference backend",
+    "candidate_environment": {"GGML_CUDA_GRAPH_CHUNK_SIZE": "1"},
+    "scope": "Whole-graph fusion cases with deliberately short chunk boundaries; this is not exhaustive graph, concurrency, or full-model quality coverage"
+  },
+  "benchmark": {
+    "arguments": "-fa 1 -ngl 99 -ub 512 -p 2048 -n 128 -r 3",
+    "model_arguments": "-lzm on",
+    "candidate_environment": {"GGML_CUDA_GRAPH_CHUNK_SIZE": "512"},
+    "launch_order": ["control", "candidate", "candidate", "control"],
+    "samples_per_case_per_launch": 3,
+    "total_budget_seconds": 600,
+    "minimum_decode_gain_percent": 3,
+    "maximum_regression_percent": 3,
+    "require_nonoverlapping_target_ranges": true,
+    "telemetry": "One-second GPU power, SM clock, temperature, utilization and clock-event reasons",
+    "decision_rule": "Require both orderings to clear the gates without a telemetry confound before advancing; otherwise park as insufficient or inconclusive evidence",
+    "calibration_adjustment": "Finish one bounded opposite-order pair. Prior A/A prefill variation prevents treating one short prefill regression as causal evidence",
+    "retry_policy": "No repeated reruns of a marginal result"
+  },
+  "deployment": "Unchanged; even a surviving native screen needs actual MTP workload and release-stack validation"
+}

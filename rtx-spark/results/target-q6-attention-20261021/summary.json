@@ -132,15 +132,24 @@
     "candidate_passed": true,
     "checks_per_arm": 8,
     "cases": ["code", "locale_json", "identifiers", "document"],
-    "perplexity_checked": false
+    "perplexity_checked": true
   },
-  "decision": "advance as an experimental model candidate; not deployed",
+  "precision_gate": {
+    "record": "../target-q6-precision-20261021/summary.json",
+    "passed": false,
+    "mean_perplexity_ratio": 1.002883,
+    "mean_kl_divergence_nats": 0.038966,
+    "maximum_kl_divergence_nats": 0.01,
+    "unchanged_model_mean_kl_divergence_rounded": 0.0
+  },
+  "decision": "revise quantization before deployment; bounded speed and English task results retained",
   "quality_gate_run": true,
   "deployed": false,
   "notes": [
     "Five-repeat actual MTP throughput improved by 6.45% geometric mean across the tested Rust and JSON cases, with non-overlapping sample ranges.",
     "The candidate passed the bounded English natural-EOS quality gate, but its target-weight changes do not preserve all generated outputs.",
     "A reversed-order server pair was invalidated by a measured GPU power/clock drop on the control run.",
-    "Perplexity, broader long-context, and deployment validation remain undone; do not claim general quality equivalence."
+    "The subsequent bounded perplexity ratio passes, but KL divergence exceeds the predeclared 0.01-nat gate; unchanged-model calibration has approximately zero mean KL.",
+    "An importance-weighted Q6 revision is under investigation. Broader long-context and deployment validation remain undone; do not claim general quality equivalence."
   ]
 }

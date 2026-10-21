@@ -1,0 +1,37 @@
+{
+  "candidate": "Selective Q6_K target attention and SSM projections",
+  "origin": "local model-artifact experiment",
+  "prior_speed_and_quality_evidence": "../target-q6-attention-20261021/summary.json",
+  "control_model": "Qwen3.8-Flash-Next-UD-IQ4_XS-00001-of-00003.gguf",
+  "candidate_model": "Qwen3.8-Flash-Next-UD-IQ4_XS-attn-Q6_K-00001-of-00003.gguf",
+  "binary_change": false,
+  "speculative_decoding": false,
+  "executable": "The same installed llama-perplexity.exe and backend DLLs for both arms",
+  "dataset": {
+    "repository": "ggml-org/ci",
+    "revision": "927b3642933080f1b0e811e2f916e14c292992f9",
+    "archive": "wikitext-2-raw-v1.zip",
+    "archive_sha256": "ef7edb566e3e2b2d31b29c1fdb0c89a4cc683597484c3dc2517919c615435a11",
+    "member": "wikitext-2-raw/wiki.test.raw",
+    "test_sha256": "173c87a53759e0201f33e0ccf978e510c2042d7f2cb78229d9a50d79b9e7dd08",
+    "test_bytes": 1290590,
+    "selection": "First 16 chunks of the standard Wikitext-2 test split; no selection after seeing candidate scores"
+  },
+  "arguments": "-c 1024 -b 1024 -ub 512 -ngl 99 -fa on -lzm on --chunks 16 -t 20 -tb 20",
+  "control_run": "Save the original target's reference logits with --kl-divergence-base",
+  "candidate_run": "Read the same reference file with --kl-divergence --kl-divergence-base",
+  "gates": {
+    "maximum_mean_perplexity_ratio": 1.01,
+    "maximum_mean_kl_divergence_nats": 0.01,
+    "require_all_requested_chunks": true,
+    "require_finite_scores": true,
+    "timeout_seconds_per_arm": 900
+  },
+  "limits": [
+    "The reference target is already quantized, not FP16 or BF16",
+    "Saved reference logits have the tool's own compression error",
+    "This is a bounded English next-token precision check, not full Wikitext evaluation or general chat, code, multimodal, or long-context equivalence",
+    "A passing precision check alone does not change the live deployment"
+  ],
+  "raw_data": "Corpus text, reference logits and process logs remain private local artifacts"
+}

@@ -451,13 +451,64 @@ These are our model-artifact experiments, not integrations of upstream engine pa
 | Q3_K draft output head | Converted from the original Q8_0 head; all 33 other tensors unchanged; 80.52 MiB smaller than the Q4_K control | Two-case decode geomean -7.46%; lower draft acceptance; 4/4 outputs identical | Reject after first pair |
 | Q2_K draft output head | Converted from the original Q8_0 head; all 33 other tensors unchanged; 142.09 MiB smaller | Decode -10.01%; lower acceptance; 4/4 outputs identical | Reject after first pair |
 | Mixed-Q4 routed draft FFN | Gate/up tensors Q8_0 to Q4_K, down tensor to Q4_0 because its 640-wide rows do not fit Q4_K blocks; 31 other tensors unchanged, including head and router; 1,200 MiB smaller | First pair +3.97%, reversed pair +0.94%; 4/4 outputs identical in each pair | Park; first gain did not hold up |
-| Q6_K target attention/SSM projections | 156 eligible Q8_0 tensors changed; 1,068 other tensors and non-layout metadata unchanged; 617.58 MiB smaller across three separate shards | Plain tg128 +6.52%; pp2048 -1.01%. Five-repeat actual MTP comparison: Rust +6.29%, JSON +6.61%, geomean +6.45%; 0/10 outputs identical. All 8 bounded natural-EOS English checks passed for the candidate | Advance as an experimental model candidate; no perplexity or deployment validation |
+| Q6_K target attention/SSM projections | 156 eligible Q8_0 tensors changed; 1,068 other tensors and non-layout metadata unchanged; 617.58 MiB smaller across three separate shards | Plain tg128 +6.52%; pp2048 -1.01%. Five-repeat actual MTP comparison: Rust +6.29%, JSON +6.61%, geomean +6.45%; 0/10 outputs identical. All 8 bounded natural-EOS English checks passed for the candidate | Revise after the later KL precision gate failed (section 2.20); not deployed |
 
 Evidence: `results/draft-head-screen-20261021/summary.json` and `results/target-q6-attention-20261021/summary.json`, with conversion manifests, tensor hashes and per-comparison data. The target conversion took 163.5 s and conversion plus full tensor verification took 706.5 s; this preparation cost is separate from the native screen budget. All original GGUFs were preserved.
 
 The five-repeat actual MTP comparison used control then Q6, with five fixed-length measurements per case and recorded GPU telemetry. Median throughput rose from 50.96 to 54.33 tok/s for JSON (+6.61%) and from 54.08 to 57.48 tok/s for Rust (+6.29%); the sample ranges did not overlap. The geometric-mean gain was 6.45%. The reversed-order pair showed a misleading +24.29% because the control ran after Q6 and its telemetry fell to 18.62 W / 1,683 MHz; exclude that pair from promotion evidence.
 
-The Q6 candidate passed all four bounded natural-EOS English tasks for both warm-up and measured responses: 8/8 checks, including 231 code assertions, exact JSON, identifier copying, and document retrieval. Three task outputs changed, so this is not output equivalence or a general quality guarantee. A same-binary/model calibration also showed pooled tg128 +0.89% and pp2048 -7.20% across opposite launch orders; individual prefill pairs were -9.67% and -4.25%. Short native prefill screens are not reliable standalone rejection evidence on this device. No perplexity, broader long-context, or deployment validation was run, so keep Q6 experimental and undeployed.
+The Q6 candidate passed all four bounded natural-EOS English tasks for both warm-up and measured responses: 8/8 checks, including 231 code assertions, exact JSON, identifier copying, and document retrieval. Three task outputs changed, so this is not output equivalence or a general quality guarantee. A same-binary/model calibration also showed pooled tg128 +0.89% and pp2048 -7.20% across opposite launch orders; individual prefill pairs were -9.67% and -4.25%. Short native prefill screens are not reliable standalone rejection evidence on this device. The later precision check in section 2.20 fails its KL gate; broader long-context and deployment validation remain undone.
+
+### 2.18 GLU activation-quantization fusion, PR #30489, bounded native screen [M]
+
+This is an upstream-authored CUDA optimization, not our own kernel. The candidate `784fd01678cb91227c8de2fa1566308e7e3e2244` was built against its true merge-base control `411d548515017ca75c2a12c39659b6e7e1551dd7`, with identical native ARM64 MSVC/CUDA 13.4 flags. Flash-Next has 43 IQ4_NL and five Q8_0 expert down projections of shape `(640, 2560, 512)`, with ten selected experts; its graph has the relevant SWIGLU-to-MUL_MAT_ID chain. Runtime fusion dispatch was not instrumented.
+
+All 266 new `GLU_MUL_MAT` and `SWIGLU_MUL_MAT_ID` CUDA correctness cases passed against the CPU reference, including layout and fallback cases. These use the upstream correctness shapes; the exact full-model expert geometry appears in the upstream performance cases, not its correctness set.
+
+The original, unchanged target weights were measured with `-fa 1 -ngl 99 -ub 512 -p 2048 -n 128 -r 3 -lzm on`, without MTP. The predeclared protocol completed one control/candidate then candidate/control sequence within 206.75 seconds. This bounded opposite-order check was chosen before measurement because the earlier A/A calibration showed noisy short prefill results; it is not a change to the harness's automatic early-stop behavior.
+
+| Order | pp2048 | tg128 | Decision |
+|---|---|---|---|
+| Control then candidate | +1.73% | +1.29% | Below the 3% prefill gate; ranges overlap |
+| Candidate then control | +0.40% | -0.21% | Below the 3% prefill gate; ranges overlap |
+| Pooled medians, six samples per arm and case | +1.51% | +0.26% | No stable local improvement established |
+
+**Park, not a deployment candidate.** No integration or further repetitions are justified without a changed implementation or new bottleneck evidence. The 218 one-second telemetry samples include four software power-cap events and no hardware thermal-slowdown flag; they are not an operator profile or proof that these small deltas are causal. Full-model English quality and release-stack validation were deliberately not run after this weak speed screen. The installed binaries, launcher, and model files remain unchanged.
+
+Evidence, predeclared thresholds, per-order results, build flags, and binary hashes are in `results/pr30489-screen-20261021/`. The subsequent graph-chunking screen is recorded below.
+
+### 2.19 CUDA graph chunking, PR #30804, bounded native screen [M]
+
+The upstream-authored candidate `ed93210d3b8639a23b5024ad5561e34fc69db681` was compared with its true parent/merge base `99db719bdf07f7d537431ca556a0512bf3d995b6`, using identical native ARM64 MSVC/CUDA 13.4 builds. It captures and replays chunks of 512 GGML nodes by default; zero selects a whole graph in the modified implementation, not the original parent implementation.
+
+All 1,334 `MUL_MAT_VEC_FUSION` and `ROPE_SET_ROWS` whole-graph CUDA cases passed against the CPU reference with `GGML_CUDA_GRAPH_CHUNK_SIZE=1`, deliberately stressing short boundaries around fusion and fallback paths. This is not exhaustive graph or concurrency coverage.
+
+The original Flash-Next target, without MTP, used the same pp2048/tg128, ub512, three-sample settings and bounded control/candidate/candidate/control protocol as section 2.18. Performance used `GGML_CUDA_GRAPH_CHUNK_SIZE=512`, not the one-node correctness setting. The complete native screen took 201.67 seconds.
+
+| Order | tg128, primary goal | pp2048 | Decision |
+|---|---|---|---|
+| Control then candidate | +2.87% | +1.62% | Below the predeclared 3% decode gate |
+| Candidate then control | +1.60% | -0.64% | Below the gate; decode sample ranges overlap |
+| Pooled medians, six samples per arm and case | +1.95% | +0.61% | Park; insufficient promotion evidence |
+
+**Not integrated or deployed.** The small positive result is not evidence that further improvement is impossible, but it does not justify lowering the threshold or searching chunk sizes until one wins. Telemetry has 219 one-second samples, three software power-cap events, and no hardware thermal-slowdown flag. No actual MTP throughput, full-model English quality, or release-stack validation was run for this weak candidate.
+
+Evidence is in `results/pr30804-screen-20261021/`. Work returns to the surviving selective Q6 target model, starting with a pinned, bounded English perplexity/KL precision gate rather than another marginal upstream-patch repetition.
+
+### 2.20 Q6 target precision gate and revision [M]
+
+The same installed `llama-perplexity.exe` and backend DLLs compared the original and unweighted Q6 targets on the first 16 Wikitext-2 test chunks, with context/batch 1024, ub512, full GPU offload, flash attention, and lazy PLE. Dataset revision, hashes, commands, and the unchanged binary manifest are in `results/target-q6-precision-20261021/`. The predeclared limits were a mean perplexity ratio of 1.01 and mean KL divergence of 0.01 nats.
+
+| Run against the original target's saved logits | Mean PPL | Reported PPL ratio | Mean KL, nats | Same top token |
+|---|---|---|---|---|
+| Original target A/A calibration | 2.202870 | 1.000358 | Approximately 0 | 100.000% |
+| Unweighted Q6 target | 2.208432 | 1.002883 | 0.038966 | 94.569% |
+
+The ratios use the tool's compressed reference logits; the unchanged-model calibration documents that numerical floor. Q6 passes the perplexity-ratio gate but exceeds the KL limit. Its earlier speed and eight English task passes remain valid within their scope, but they do not establish distribution preservation. **Do not deploy this unweighted candidate.** This is a failed numerical promotion gate, not proof of a general language-quality failure.
+
+Both inference processes completed successfully. A console encoding error occurred only while printing the completed candidate log; saved metrics and binary hashes were audited without rerunning the candidate. The separate A/A run was a diagnostic calibration, not a retry of Q6.
+
+Continue with an importance-weighted Q6 revision using the existing quantizer, the same exact 156-tensor selection, and the original Q8 source projections. Its protocol uses 64 training-split chunks of 512 tokens, never the test text for importance calibration, and keeps the same precision thresholds. The already-used test prefix is a development gate; reserve the unused validation split for independent confirmation if the revision survives. No weighted-candidate result or deployment claim is established yet.
 
 ## 3. Source-verified feature status and reference lessons
 
@@ -581,7 +632,7 @@ Screen decisions and partial measurements are retained. Errors and timeouts stop
 | 0 | Completed the installed-binary control in section 2.7. Refresh it when binary, model, settings, or workload changes. | Five samples per case, actual hashes, exact commands, full outputs, logs, and telemetry. Cold cache and operator profiles remain unmeasured. | A patched-binary claim needs an unmodified build from the same source/toolchain, not only this release control. |
 | 1 | Completed the English quality gate and matched speed pair: Q4_K +4.50% in the new pair; smaller +1.73% in earlier reloads. Retain as an opt-in English/code candidate. | The recorded scope passes; general writing, arbitrary code and much longer context require their own evidence before broader claims. No further sweep is queued. | Do not replace the deployed default or advertise a guaranteed gain from one pair. Router F32 to BF16 is not a CLI-only experiment here. |
 | 2 | Dynamic draft head [ggml-org/llama.cpp#30380](https://github.com/ggml-org/llama.cpp/pull/30380): matched A/B passed (section 2.13); **deployed** as a b11756+PR release-like build (section 2.14), +3.24% / +3.35% over official on the Flash-Next recipe, token-identical, 8/8 quality, other models unchanged. | Rebuild with the same script on each upstream upgrade until the PR merges; repeat the U1 pair and quality gate. | No claim beyond the four en-US cases. Remove the flag if the install directory reverts to an official build without the PR. |
-| 3 | QSA k-pool mask [ggml-org/llama.cpp#30640](https://github.com/ggml-org/llama.cpp/pull/30640) passed native CUDA tests and matched A/B, then deployed with #30380 (section 2.15). The PR remains open; current head adds a test-only tensor initialization after the tested head. | Before rebuilding from the current PR head, rerun its updated `KPOOL_MASK` test and repeat U1 parity after upstream base changes. Next, check current heads for #30489 and #30804 before starting either A/B. | Do not port whole forks or interpret existing graph/fusion ablation losses as remaining headroom. |
+| 3 | QSA k-pool mask [ggml-org/llama.cpp#30640](https://github.com/ggml-org/llama.cpp/pull/30640) passed native CUDA tests and matched A/B, then deployed with #30380 (section 2.15). The PR remains open; current head adds a test-only tensor initialization after the tested head. | Before rebuilding from the current PR head, rerun its updated `KPOOL_MASK` test and repeat U1 parity after upstream base changes. GLU fusion and graph chunking are parked after bounded screens (sections 2.18-2.19); continue the surviving Q6 target model's precision gate. | Do not port whole forks or interpret existing graph/fusion ablation losses as remaining headroom. |
 | 4 | MTP2/3/4 and Nemotron p_min comparisons executed. Keep MTP3; the hindsight depth selector has only 2.00% headroom on the English/code slice before overhead. | Only revisit if a representative English workload shows a larger opportunity, with per-step cost traces and measured switching/capture cost. | No adaptive implementation is justified by the current per-request aggregates or different-output throughput alone. |
 | 5 | Source gate assessed; grouped MoE verify prototype blocked, not implemented. | Actual per-layer routed-ID overlap, bytes saved, launch/packing cost, and correctness under rollback/multi-sequence batches. | Do not replace missing route measurements with uniform-routing assumptions or target-only timing proxies. |
 | 6 | Dense FFN MMQ fusion [ggml-org/llama.cpp#29948](https://github.com/ggml-org/llama.cpp/pull/29948) passes its backend-ops tests, but repeated 27B speed gains are small/noisy and its patch does not apply to b11756 + #30380 (section 2.16). Not deployed. | Rebase/integrate to a clean release base, then repeat matched prefill and decode tests before reconsidering. Grouped prefill still needs evidence that expert GEMMs dominate; NVFP4 remains separate. | No assumed 1.5-2x improvement, no double-counting overlapping fusions, and no swapping model precision inside a kernel-only comparison. |

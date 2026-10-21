@@ -1,0 +1,39 @@
+{
+  "candidate": "Importance-weighted Q6_K target attention and SSM projections",
+  "origin": "local model-artifact revision using existing llama.cpp tools",
+  "motivation": "Unweighted Q6 passed the bounded speed and task checks but exceeded the predeclared KL precision gate",
+  "source_repository": "unsloth/Qwen3.8-Flash-Next-GGUF",
+  "source_revision": "766911a6b7369840a91dbcd95f9f997acaab6cd6",
+  "source_model": "Qwen3.8-Flash-Next-UD-IQ4_XS-00001-of-00003.gguf",
+  "tensor_types_file": "../target-q6-attention-20261021/tensor-types.txt",
+  "tensor_types_sha256": "7c762f7ba519b2f93678762415ad265bba17463f79fcd6ff900a42ba571d3052",
+  "scope": "The same 156 Q8_0 projections become Q6_K; preserve all 1068 other tensors",
+  "calibration": {
+    "repository": "ggml-org/ci",
+    "revision": "927b3642933080f1b0e811e2f916e14c292992f9",
+    "archive": "wikitext-2-raw-v1.zip",
+    "member": "wikitext-2-raw/wiki.train.raw",
+    "sha256": "6707892fa3788b5ab9ed78ab5ff37d9fe825f6011a2ad4fcd6a6d467f0e7da57",
+    "bytes": 10940747,
+    "selection": "First 64 chunks of 512 tokens from the training split, not the test split",
+    "arguments": "-c 512 -b 512 -ub 512 -ngl 99 -fa on -lzm on --chunks 64 --no-ppl -t 20 -tb 20 --output-frequency 64 --output-format gguf",
+    "require_coverage": "All 156 selected tensors must have finite, nonnegative importance data of the correct size and nonzero observations",
+    "timeout_seconds": 900
+  },
+  "conversion": {
+    "arguments": "--allow-requantize --pure --keep-split --max-buffer-size 512 --imatrix <calibration> --tensor-type-file <pinned-map> <original-source> <new-output-prefix> IQ4_XS 8",
+    "candidate_prefix": "Qwen3.8-Flash-Next-UD-IQ4_XS-attn-Q6_K-imatrix",
+    "require_unchanged_tensor_hashes": true,
+    "allow_metadata_changes": "Only quantization provenance and necessary split/layout metadata",
+    "minimum_remaining_disk_gib": 32
+  },
+  "evaluation": {
+    "first_gate": "../target-q6-precision-20261021/protocol.json",
+    "maximum_mean_perplexity_ratio": 1.01,
+    "maximum_mean_kl_divergence_nats": 0.01,
+    "thresholds_unchanged": true,
+    "note": "The prior test prefix is now a development gate. Reserve the unused validation split for an independent confirmation if the revision survives.",
+    "speed_and_task_checks": "Only a precision survivor proceeds to actual MTP throughput and bounded English task checks"
+  },
+  "deployment": "Preserve original weights, unweighted Q6 artifacts, installed binaries and the live launcher recipe"
+}

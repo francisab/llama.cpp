@@ -1,0 +1,100 @@
+{
+  "decision": "revise",
+  "reason": "Perplexity ratio passes, but mean KL divergence 0.038966 exceeds the predeclared 0.01-nat gate. Unchanged-model calibration has approximately zero mean KL and 100% same-top-token agreement.",
+  "candidate": {
+    "chunks": 16,
+    "metrics": {
+      "ppl": {
+        "mean": 2.208432,
+        "uncertainty": 0.043408
+      },
+      "stored_reference_ppl": {
+        "mean": 2.202083,
+        "uncertainty": 0.043293
+      },
+      "ppl_ratio": {
+        "mean": 1.002883,
+        "uncertainty": 0.003666
+      },
+      "kl_divergence_nats": {
+        "mean": 0.038966,
+        "uncertainty": 0.00137
+      },
+      "same_top_token_percent": {
+        "mean": 94.569,
+        "uncertainty": 0.251
+      },
+      "rms_probability_change_percent": {
+        "mean": 7.207,
+        "uncertainty": 0.202
+      }
+    }
+  },
+  "unchanged_model_calibration": {
+    "chunks": 16,
+    "metrics": {
+      "ppl": {
+        "mean": 2.20287,
+        "uncertainty": 0.043391
+      },
+      "stored_reference_ppl": {
+        "mean": 2.202083,
+        "uncertainty": 0.043293
+      },
+      "ppl_ratio": {
+        "mean": 1.000358,
+        "uncertainty": 0.000345
+      },
+      "kl_divergence_nats": {
+        "mean": -0.0,
+        "uncertainty": 0.0
+      },
+      "same_top_token_percent": {
+        "mean": 100.0,
+        "uncertainty": 0.0
+      },
+      "rms_probability_change_percent": {
+        "mean": 0.001,
+        "uncertainty": 0.0
+      }
+    }
+  },
+  "direct_ppl_ratio_to_calibration": 1.0025248879870352,
+  "gates": {
+    "perplexity_pass": true,
+    "kl_divergence_pass": false,
+    "thresholds_changed": false
+  },
+  "runs": {
+    "base": {
+      "exit_code": 0,
+      "elapsed_seconds": 56.469,
+      "log_sha256": "12e240eecd94208fd098baeb3434075d506030592ed6dc2b8a0e5e9a15e61e70"
+    },
+    "cand": {
+      "exit_code": 0,
+      "elapsed_seconds": 49.469,
+      "log_sha256": "6f78e6bd722aad2a920bf816dae18ec3d36f7e52d56d3895a30ae6e704b35c7b"
+    },
+    "reference_bytes": 4060659604,
+    "reference_sha256": "35e8db8c6047f65f92778dd754f252aa8e25239a6d027d4e2262fbcad836e5f9",
+    "binaries_unchanged": true,
+    "wrapper_note": "Both child processes returned zero. A CP1252 console UnicodeEncodeError while printing the final candidate log stopped the wrapper; the saved results and binary hashes were then audited without rerunning inference."
+  },
+  "calibration_run": {
+    "exit_code": 0,
+    "elapsed_seconds": 49.82800000000134,
+    "purpose": "Calibrate saved-logit compression and unchanged-model run-to-run differences; no candidate retry or threshold change",
+    "log_sha256": "21b19feb02b91d12706a7e0e8e7adfedcc6a28bdd3442df6cc491a6468a29131"
+  },
+  "speed_claim_from_precision_runtimes": false,
+  "prior_bounded_speed_and_english_checks_still_recorded": true,
+  "deployment_changed": false,
+  "next_action": "Revise the target quantization; investigate importance-weighted Q6_K before reducing the tensor scope. Keep the original weights and installed recipe unchanged.",
+  "limitations": [
+    "The reference target is already quantized, not FP16 or BF16",
+    "Saved reference logits have the tool's own compression error",
+    "This is a bounded English next-token precision check, not full Wikitext evaluation or general chat, code, multimodal, or long-context equivalence",
+    "A passing precision check alone does not change the live deployment"
+  ]
+}

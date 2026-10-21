@@ -1,0 +1,9 @@
+{
+  "llama-perplexity.exe": "04c8ae729a7ef367eb8b9831f7bae6712095a37a7f4675143610092d958baabd",
+  "llama.dll": "d2eeb4d523556424f6ec643737fe7ac2cfbd1a2e61cdfc1bd6eb08be37b1231b",
+  "ggml-base.dll": "78a8ee0bbfa83221d579166779edbb2bf81c1440e02185a17d83dbbd3a59bfc7",
+  "ggml-cpu.dll": "04540c35427ee8c8eddb867c048302120bce5a76732fb886054da31e579c26cc",
+  "ggml-cuda.dll": "898fb56c5a64f75e945e0823efa9a773cbdec66e5de9f1f253a771911b172c9f",
+  "ggml-rpc.dll": "62f5d72e6b1c909c1a8f05737acf7205a43f7ef9319cd53fdaea9f55b7e4bced",
+  "ggml.dll": "7444aa6d23f780f05230b4b2d71d2ef424853b2da302fe584afde956ef4d801e"
+}

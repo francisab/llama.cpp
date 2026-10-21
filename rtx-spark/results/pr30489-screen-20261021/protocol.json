@@ -1,0 +1,53 @@
+{
+  "candidate": "ggml-org/llama.cpp#30489",
+  "url": "https://github.com/ggml-org/llama.cpp/pull/30489",
+  "origin": "upstream-authored CUDA optimization",
+  "control_commit": "411d548515017ca75c2a12c39659b6e7e1551dd7",
+  "candidate_commit": "784fd01678cb91227c8de2fa1566308e7e3e2244",
+  "control_basis": "True merge base, not the GitHub API baseRefOid",
+  "primary_goal": "prefill",
+  "change": "Fuse GLU into MMQ Q8_1 activation quantization",
+  "model": "Qwen3.8-Flash-Next-UD-IQ4_XS-00001-of-00003.gguf",
+  "model_change": false,
+  "speculative_decoding": false,
+  "build": {
+    "configuration": "Release",
+    "host": "native Windows ARM64",
+    "compiler": "MSVC 14.44",
+    "cuda": "13.4",
+    "cuda_architectures": "121a-real",
+    "cccl": "v3.4.3",
+    "parallel_jobs": 8,
+    "targets": ["llama-bench", "test-backend-ops"],
+    "script": "rtx-spark/tools/build_native_cuda.ps1"
+  },
+  "applicability": {
+    "down_projection_shape": [640, 2560, 512],
+    "selected_experts": 10,
+    "down_projection_types": {"IQ4_NL": 43, "Q8_0": 5},
+    "activation": "SWIGLU split feeding MUL_MAT_ID",
+    "clamp_metadata_present": false,
+    "runtime_dispatch_instrumented": false
+  },
+  "correctness": {
+    "operations": ["GLU_MUL_MAT", "SWIGLU_MUL_MAT_ID"],
+    "backend": "CUDA0",
+    "reference": "CPU reference backend",
+    "scope": "Upstream evaluation cases, including layouts and fallback paths; exact full-model expert geometry is in the upstream performance cases, not its correctness set"
+  },
+  "benchmark": {
+    "arguments": "-fa 1 -ngl 99 -ub 512 -p 2048 -n 128 -r 3",
+    "model_arguments": "-lzm on",
+    "launch_order": ["control", "candidate", "candidate", "control"],
+    "samples_per_case_per_launch": 3,
+    "total_budget_seconds": 600,
+    "minimum_prefill_gain_percent": 3,
+    "maximum_regression_percent": 3,
+    "require_nonoverlapping_target_ranges": true,
+    "telemetry": "One-second GPU power, SM clock, temperature, utilization and clock-event reasons",
+    "decision_rule": "Require both orderings to clear the gates without a telemetry confound before advancing; otherwise park as insufficient or inconclusive evidence",
+    "calibration_adjustment": "Always finish one bounded opposite-order pair. Prior unchanged-binary A/A prefill varied by -9.67% and -4.25%, so a single short prefill result is not standalone rejection evidence",
+    "retry_policy": "No repeated reruns of a marginal result"
+  },
+  "deployment": "Unchanged; a speed screen does not authorize deployment"
+}
