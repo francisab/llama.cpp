@@ -1,0 +1,6 @@
+{
+  "initial_failure": "The first diagnostic selected a Q8 shape absent from its chosen fixture file and ran zero cases. It produced no OpenMP engagement evidence.",
+  "correction": "Select the existing K=320, M=10240, N=4 case and require exactly one passed case plus unambiguous effective KMP_BLOCKTIME output.",
+  "original_failed_log_preserved_privately": true,
+  "candidate_or_speed_gates_changed": false
+}

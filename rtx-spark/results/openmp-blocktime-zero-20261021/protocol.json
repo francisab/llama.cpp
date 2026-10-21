@@ -1,0 +1,18 @@
+{
+  "hypothesis": "Immediate sleeping of idle LLVM OpenMP workers may reduce CPU contention or shared power pressure during GPU-heavy MTP generation",
+  "source_gate": "The installed CPU backend uses GGML_USE_OPENMP; ggml's custom --poll busywait loop is excluded from that build. Test the active OpenMP runtime instead.",
+  "candidate_change": "Set only child-process KMP_BLOCKTIME=0; control leaves KMP_BLOCKTIME unset",
+  "engagement": "Use KMP_SETTINGS=1 in both arms to record the effective blocktime at process startup. Stop before a model run if the default is already zero or engagement cannot be verified.",
+  "unchanged": ["Installed binaries", "Original target", "Q4_K draft", "MTP3", "ub512", "Dynamic draft vocabulary 16384", "Thread counts", "GPU/driver settings"],
+  "screen": {
+    "cases": ["rust256", "json256"],
+    "measured_samples_per_case_per_arm": 2,
+    "minimum_each_case_gain": 0.03,
+    "require_nonoverlapping_ranges": true,
+    "maximum_case_regression": 0.03,
+    "reverse_order_only_after_first_pair_passes": true,
+    "operational_budget_seconds": 600
+  },
+  "stop_rule": "One default-versus-zero comparison. No wait-policy or intermediate-blocktime sweep. Deployment requires subsequent quality and repeated release-stack confirmation.",
+  "global_environment_or_deployment_changed": false
+}

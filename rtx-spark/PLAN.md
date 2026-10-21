@@ -798,6 +798,19 @@ The first test executable lacked shared-fusion cases in its performance registry
 
 `results/routed-row4-20261021/` contains both harness revisions, the candidate patch, fixtures, manifests, numerical/dispatch results and operator samples. Apply the zero-context patches with `git apply --unidiff-zero`. Original owned sources, build DLLs and build configuration are restored. No production kernel or deployment change is retained.
 
+### 2.39 OpenMP worker-wait screen [M]
+
+The installed CPU backend is built with `GGML_USE_OPENMP`, which excludes ggml's custom worker-polling loop. Rather than screening an inapplicable `--poll` setting, this candidate sets only child-process `KMP_BLOCKTIME=0`. The hypothesis is that immediately sleeping idle OpenMP workers could reduce CPU contention or shared power pressure during GPU-heavy generation. `KMP_SETTINGS=1`, identical in both arms, confirms the actual default of 200 ms versus zero in the diagnostic and real server logs.
+
+| Case | Default median | Zero-blocktime median | Change |
+|---|---:|---:|---:|
+| Rust | 54.80 tok/s | 55.70 tok/s | +1.64% |
+| JSON | 51.57 tok/s | 51.68 tok/s | +0.22% |
+
+Geometric mean: +0.93%, with unchanged acceptance and 4/4 identical token sequences. Both cases miss the fixed 3% gain; JSON ranges overlap. **Stop after the first pair**, completed in 146.390 seconds, without a wait-policy/blocktime sweep, reverse order, quality campaign or deployment. No causal power or contention reduction is inferred from these timings.
+
+The first diagnostic used a selector absent from its fixture file and ran zero cases; the corrected diagnostic requires one passed case and unambiguous effective settings. `results/openmp-blocktime-zero-20261021/` retains that limitation, the source gate, runtime engagement, measured pair and telemetry. Installed binaries, thread counts, model/draft recipe and global environment remain unchanged. Administrator authorization was unavailable, so this experiment did not retry hardware counters or elevate.
+
 ## 3. Source-verified feature status and reference lessons
 
 The following status is verified in this checkout. This table supersedes the porting assumptions in the initial reference inventory below.
@@ -926,7 +939,7 @@ Screen decisions and partial measurements are retained. Errors and timeouts stop
 | 6 | Dense FFN MMQ fusion [ggml-org/llama.cpp#29948](https://github.com/ggml-org/llama.cpp/pull/29948) passes its backend-ops tests, but repeated 27B speed gains are small/noisy and its patch does not apply to b11756 + #30380 (section 2.16). Not deployed. | Rebase/integrate to a clean release base, then repeat matched prefill and decode tests before reconsidering. Grouped prefill still needs evidence that expert GEMMs dominate; NVFP4 remains separate. | No assumed 1.5-2x improvement, no double-counting overlapping fusions, and no swapping model precision inside a kernel-only comparison. |
 | 7 | Treat per-request speculative server controls as a separate serving/API decision, not an engine speed step. | Confirm the desired request semantics and server-scope fit; implement tests proving parameters are honored rather than merely echoed. | Do not combine this with speculation algorithm work or claim it improves single-request throughput. |
 
-The next kernel diagnostic is the bounded Q8 hardware-counter capture in section 2.28, which still requires human authorization for elevated execution. Do not change driver policy or clocks. Target backend sampling also missed its gate (section 2.37); the deployed recipe remains unchanged.
+The next kernel diagnostic is the bounded Q8 hardware-counter capture in section 2.28, which still requires human authorization for elevated execution. Do not change driver policy or clocks. Target backend sampling and zero OpenMP blocktime also missed their gates (sections 2.37 and 2.39); the deployed recipe remains unchanged.
 
 There is no defensible cumulative target or delivery timeline yet. Report each prototype's measured delta independently; add a combined projection only after combined measurements confirm interactions and no double counting.
 
