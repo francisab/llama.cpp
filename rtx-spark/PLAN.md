@@ -628,6 +628,14 @@ Stop after this first pair, without reverse order, task-quality campaign, integr
 
 Next, determine whether the dominant Q8_0 kernels are bandwidth-, occupancy- or instruction-limited with a bounded native hardware-counter capture before proposing another kernel change. Their duration share alone does not explain the bottleneck.
 
+### 2.28 Native hardware-counter preflight [M]
+
+The official CUDA 13.4.3 manifest's Windows ARM64 Nsight Compute package was downloaded, SHA256-verified and extracted portably. The package version is 2026.3.1.2; its signed ARM64 CLI reports 2026.3.1.0, build 38829034. No CUDA, PATH, driver or access-policy change was made.
+
+A bounded single-kernel probe used the original installed CUDA DLL and the Q8_0 `[320, 10240]`, four-column backend case. User configuration loading was disabled, clocks were left unmodified with `--clock-control none`, cache flushing was disabled, and collection was limited to one `mul_mat_vec_q` launch with the basic metric set. The numerical case passed, but the profiler returned **`ERR_NVGPUCTRPERM`**: this process lacks permission to access GPU performance counters. No counters were accepted and no bandwidth, occupancy or instruction bottleneck is inferred.
+
+The probe exited in 6.282 seconds and its process/GPU cleanup was verified. `results/native-counters-20261021/probe.json` preserves tool provenance, settings and the blocker. Further hardware-counter work requires a human-authorized elevated capture or an approved access-policy change following [NVIDIA's guidance](https://developer.nvidia.com/ERR_NVGPUCTRPERM). Do not silently change the driver security policy or retry with elevated privileges.
+
 ## 3. Source-verified feature status and reference lessons
 
 The following status is verified in this checkout. This table supersedes the porting assumptions in the initial reference inventory below.

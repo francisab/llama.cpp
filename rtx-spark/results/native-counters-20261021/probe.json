@@ -1,0 +1,39 @@
+{
+  "completed": true,
+  "hardware_counters_accepted": false,
+  "decision": "blocked on hardware-counter access permission",
+  "error_code": "ERR_NVGPUCTRPERM",
+  "error": "The user does not have permission to access NVIDIA GPU Performance Counters on the target device 0.",
+  "official_guidance": "https://developer.nvidia.com/ERR_NVGPUCTRPERM",
+  "operator_correctness": "The single selected Q8_0 case passed; no hardware counters were collected",
+  "profiler_warnings": [
+    "Uncontrolled GPU caches can make profiling results inconsistent",
+    "Unmodified GPU clocks can make profiling results inconsistent"
+  ],
+  "next": "Human-authorized elevated profiling or a human-approved counter-access policy change is required before retrying; do not bypass this restriction",
+  "tool": {
+    "manifest_url": "https://developer.download.nvidia.com/compute/cuda/redist/redistrib_13.4.3.json",
+    "archive_url": "https://developer.download.nvidia.com/compute/cuda/redist/nsight_compute/windows-arm64/nsight_compute-windows-arm64-2026.3.1.2-archive.zip",
+    "archive_bytes": 461498326,
+    "archive_sha256": "3708e6e60bdd1fb6d5633bd60a7563acfe0aa6a0430b51c1b2577fe85cc5cc92",
+    "expanded_bytes": 1321124521,
+    "version": "2026.3.1.2",
+    "cli_pe_machine": "ARM64 / 0xAA64"
+  },
+  "cli_reported_version": "2026.3.1.0 (build 38829034)",
+  "cli_sha256": "7c8b43d4012edf0ead1698d87d9a33713e7d28985b4b2128565567660898cfdc",
+  "cli_authenticode_status": "Valid",
+  "control_cuda_sha256": "898fb56c5a64f75e945e0823efa9a773cbdec66e5de9f1f253a771911b172c9f",
+  "scope": "Capability probe: one original-runtime Q8_0 MMVQ kernel, K=320, M=10240, N=4, synthetic backend inputs",
+  "clock_control": "none",
+  "cache_control": "none",
+  "configuration_file": "off",
+  "set": "basic",
+  "launch_count": 1,
+  "timeout_seconds": 180,
+  "driver_or_counter_access_policy_changed": false,
+  "deployment_changed": false,
+  "exit_code": 1,
+  "cleanup_verified": true,
+  "elapsed_seconds": 6.281999999991967
+}
