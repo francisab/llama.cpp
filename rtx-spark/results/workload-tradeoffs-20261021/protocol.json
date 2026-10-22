@@ -1,4 +1,7 @@
 {
+  "revision": 2,
+  "previous_protocol_commit": "af98296aee3c556c3caf7c77859e3fce41cc320a",
+  "precision_method_correction": "Before measuring Nemotron/Flash-Next candidates: saved logits clamp tails at max_logit-16 and use uint16 quantization. Compare candidate actual PPL to original A/A actual PPL, not the clipped reference PPL. Require original A/A actual PPL to match the reference pass's printed actual PPL within 0.01%; retain the same 1% candidate PPL and 0.01 KL gates. Preserve the initial calibration failure.",
   "policy": "Explicit workload-specific opt-in profiles; never change the balanced default or silently auto-select a profile.",
   "user_directed_change": "Replace the blanket per-operator regression veto with measured end-to-end profile utility. Preserve historical decisions and hard correctness/model-quality gates.",
   "review_scope": "Every deferred candidate in PLAN sections 2.1-2.58 plus the serving/API backlog; assessment.json records source/evidence-based dispositions separately from new validation.",
@@ -35,7 +38,7 @@
     "maximum_mean_kl_nats": 0.01,
     "require_reference_and_same_model_calibration": true,
     "maximum_calibration_absolute_mean_kl_nats": 0.001,
-    "maximum_calibration_perplexity_ratio_distance_from_one": 0.001,
+    "maximum_calibration_actual_ppl_relative_difference": 0.0001,
     "timeout_per_process_seconds": 1200,
     "stop": "A failed precision screen stops that model candidate before speed claims. No subset narrowing, activation-precision sweep or threshold relaxation."
   },

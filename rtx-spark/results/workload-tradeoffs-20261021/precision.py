@@ -14,9 +14,9 @@ sys.path.insert(0, str(ROOT / "gguf-py"))
 from gguf import GGUFReader, GGMLQuantizationType
 
 CASES = {
-    "27b": ("d27", 64, 192, r"blk\.(\d+)\.ffn_(gate|up|down)\.weight"),
-    "nemotron": ("nem", 88, 80, r"blk\.(\d+)\.ffn_(up|down)_exps\.weight"),
-    "flash-next": ("qfn", 48, 144, r"blk\.(\d+)\.ffn_(gate|up|down)_exps\.weight"),
+    "27b": ("d27", 64, 65, 192, r"blk\.(\d+)\.ffn_(gate|up|down)\.weight"),
+    "nemotron": ("nem", 88, 89, 80, r"blk\.(\d+)\.ffn_(up|down)_exps\.weight"),
+    "flash-next": ("qfn", 48, 48, 144, r"blk\.(\d+)\.ffn_(gate|up|down)_exps\.weight"),
 }
 
 
@@ -79,6 +79,24 @@ def parse_metrics(text):
     return result
 
 
+def validate_calibration(calibration, reference_text, protocol):
+    matches = re.findall(r"Final estimate: PPL = ([\d.eE+-]+)", reference_text)
+    require(len(matches) == 1, "Missing or duplicate original perplexity estimate")
+    original_ppl = float(matches[0])
+    require(math.isfinite(original_ppl) and original_ppl > 0, "Invalid original perplexity")
+    require(abs(calibration["mean_kl_nats"]) <= protocol["maximum_calibration_absolute_mean_kl_nats"],
+            "Same-model KL exceeds its numerical floor")
+    require(abs(calibration["ppl"] / original_ppl - 1) <= protocol["maximum_calibration_actual_ppl_relative_difference"],
+            "Same-model actual PPL differs from the original reference pass")
+    return original_ppl
+
+
+def precision_passes(metrics, calibration, protocol):
+    ratio = metrics["ppl"] / calibration["ppl"]
+    return (ratio <= protocol["maximum_mean_perplexity_ratio"]
+            and metrics["mean_kl_nats"] <= protocol["maximum_mean_kl_nats"]), ratio
+
+
 def run(command, work, label, timeout):
     start = time.monotonic()
     log = work / f"{label}.log"
@@ -133,12 +151,12 @@ def main():
 
 
 def evaluate(args, protocol):
-    key, layers, expected, pattern = CASES[args.case]
+    key, layers, total_layers, expected, pattern = CASES[args.case]
     paths = json.loads((ROOT / "rtx-spark" / "results" / "model_paths.json").read_text())
     source_files = shards(Path(paths[key]))
     sources = [GGUFReader(str(path)) for path in source_files]
     architecture = sources[0].fields["general.architecture"].contents()
-    require(sources[0].fields[f"{architecture}.block_count"].contents() == layers + 1, "Unexpected target/MTP layout")
+    require(sources[0].fields[f"{architecture}.block_count"].contents() == total_layers, "Unexpected target/MTP layout")
     before = tensors(sources)
     selected = {}
     for name, tensor in before.items():
@@ -215,20 +233,19 @@ def evaluate(args, protocol):
     run([*common, "-m", str(source_files[0]), "--kl-divergence"], args.work,
         "calibration", protocol["timeout_per_process_seconds"])
     calibration = parse_metrics((args.work / "calibration.log").read_text(encoding="utf-8"))
-    require(abs(calibration["mean_kl_nats"]) <= protocol["maximum_calibration_absolute_mean_kl_nats"]
-            and abs(calibration["ppl_ratio"] - 1) <= protocol["maximum_calibration_perplexity_ratio_distance_from_one"],
-            "Same-model calibration exceeds its numerical floor")
+    original_ppl = validate_calibration(
+        calibration, (args.work / "reference.log").read_text(encoding="utf-8"), protocol)
     run([*common, "-m", str(candidate_files[0]), "--kl-divergence"], args.work,
         "candidate", protocol["timeout_per_process_seconds"])
     metrics = parse_metrics((args.work / "candidate.log").read_text(encoding="utf-8"))
-    passed = (metrics["ppl_ratio"] <= protocol["maximum_mean_perplexity_ratio"]
-              and metrics["mean_kl_nats"] <= protocol["maximum_mean_kl_nats"])
+    passed, ppl_ratio = precision_passes(metrics, calibration, protocol)
     return {
         "case": args.case, "candidate": "NVFP4 from existing quantized GGUF, not BF16",
         "status": "development_precision_pass" if passed else "development_precision_fail",
         "decision": "Continue held-out quality validation" if passed else "Do not enable this requantized candidate",
         "speed_measured": False, "deployment_changed": False,
         "conversion": audit, "calibration": calibration, "metrics": metrics,
+        "actual_ppl_ratio": ppl_ratio, "reference_printed_actual_ppl": original_ppl,
     }
 
 

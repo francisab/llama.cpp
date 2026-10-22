@@ -24,6 +24,71 @@ ssm = load_module("ssm_capture", "ssm-ssd-dispatch-20261021", "capture.py")
 nemotron = load_module("nemotron_nvfp4_screen", "nemotron-nvfp4-20261021", "screen.py")
 precision = load_module("tradeoff_precision", "workload-tradeoffs-20261021", "precision.py")
 tradeoffs = load_module("tradeoff_profiles", "workload-tradeoffs-20261021", "config_profiles.py")
+long_profiles = load_module("long_tradeoff_profiles", "workload-tradeoffs-20261021", "long_profiles.py")
+lookup_profile = load_module("lookup_tradeoff_profile", "workload-tradeoffs-20261021", "lookup_profile.py")
+prose_profile = load_module("prose_tradeoff_profile", "workload-tradeoffs-20261021", "prose_profile.py")
+
+
+class CompleteProseTests(unittest.TestCase):
+    def test_literal_checks_require_the_exact_identifiers(self):
+        for case, (facts, _) in prose_profile.FACTS.items():
+            response = {"content": facts + "\n\n" + facts, "content_sha256": "test",
+                        "stop_type": "eos", "request": {"prompt": "explain"}}
+            with self.subTest(case=case):
+                self.assertTrue(prose_profile.check_literals(case, response)["passed"])
+                response["content"] = response["content"].replace(prose_profile.FACTS[case][1][0], "wrong-id")
+                self.assertFalse(prose_profile.check_literals(case, response)["passed"])
+
+
+class FullEditTests(unittest.TestCase):
+    def test_every_worker_and_type_is_checked(self):
+        for case, fixture in lookup_profile.fixtures().items():
+            expected = fixture["expected"]
+            response = {"content": json.dumps(expected), "stop_type": "eos", "request": {"prompt": "edit"}}
+            with self.subTest(case=case):
+                self.assertTrue(lookup_profile.score(response, expected))
+                changed = copy.deepcopy(expected)
+                changed["workers"][-1]["enabled"] = int(changed["workers"][-1]["enabled"])
+                response["content"] = json.dumps(changed)
+                self.assertFalse(lookup_profile.score(response, expected))
+
+    def test_prefix_is_not_a_complete_edit(self):
+        fixture = next(iter(lookup_profile.fixtures().values()))
+        response = {"content": json.dumps(fixture["expected"]), "stop_type": "limit", "request": {"prompt": "edit"}}
+        with self.assertRaises(ValueError):
+            lookup_profile.score(response, fixture["expected"])
+
+
+class StreamTimingTests(unittest.TestCase):
+    def test_cached_guard_is_primed_in_every_rotated_order(self):
+        cases = long_profiles.cases()
+        for offset in range(3):
+            rows = cases[offset:] + cases[:offset]
+            index = next(index for index, row in enumerate(rows) if row[0] == "cached_prime")
+            self.assertEqual(rows[index + 1][0], "cached_guard")
+            self.assertEqual(rows[index][1], rows[index + 1][1])
+
+    def event(self, content, tokens, stop=False):
+        return ("data: " + json.dumps({"content": content, "tokens": tokens, "stop": stop}) + "\n").encode()
+
+    def test_first_content_is_observed_not_inferred_from_prompt_time(self):
+        events = [self.event("", []), self.event("hello", [11]), self.event(" world", [12]), self.event("", [], True)]
+        times = iter([12.5, 14.0])
+        result = long_profiles.read_stream(events, 10, lambda: next(times))
+        self.assertEqual(result["ttft_s"], 2.5)
+        self.assertEqual(result["wall_s"], 4.0)
+        self.assertEqual(result["content"], "hello world")
+        self.assertEqual(result["tokens"], [11, 12])
+
+    def test_empty_incomplete_or_duplicate_terminal_stream_fails(self):
+        for events in (
+            [self.event("", [], True)],
+            [self.event("x", [1])],
+            [self.event("x", [1]), self.event("", [], True), self.event("", [], True)],
+            [self.event("x", [1]), self.event("unexpected", [1], True)],
+        ):
+            with self.subTest(events=events), self.assertRaises(ValueError):
+                long_profiles.read_stream(events, 1, lambda: 2)
 
 
 class TradeoffTaskTests(unittest.TestCase):
@@ -79,6 +144,17 @@ class TradeoffPrecisionTests(unittest.TestCase):
         self.assertEqual(precision.shards(Path("model.gguf")), [Path("model.gguf")])
         self.assertEqual(precision.shards(Path("model-00001-of-00002.gguf")),
                          [Path("model-00001-of-00002.gguf"), Path("model-00002-of-00002.gguf")])
+
+    def test_clipped_reference_does_not_replace_actual_perplexity(self):
+        protocol = json.loads((RESULTS / "workload-tradeoffs-20261021" / "protocol.json").read_text())["nvfp4_precision_preflight"]
+        calibration = {"ppl": 3.086314, "ppl_ratio": 1.001971, "mean_kl_nats": 0}
+        self.assertEqual(precision.validate_calibration(calibration, "Final estimate: PPL = 3.0863", protocol), 3.0863)
+        candidate = {"ppl": 3.086314 * 1.009, "ppl_ratio": 1.011, "mean_kl_nats": 0.005}
+        self.assertTrue(precision.precision_passes(candidate, calibration, protocol)[0])
+        candidate["mean_kl_nats"] = 0.02
+        self.assertFalse(precision.precision_passes(candidate, calibration, protocol)[0])
+        with self.assertRaises(ValueError):
+            precision.validate_calibration(calibration, "Final estimate: PPL = 3.0", protocol)
 
     def test_inventory_has_unique_ids_and_no_new_enablement(self):
         assessment = json.loads((RESULTS / "workload-tradeoffs-20261021" / "assessment.json").read_text())
