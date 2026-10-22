@@ -1,0 +1,70 @@
+{
+  "schema": 1,
+  "note": "Explicit opt-in workload profiles. A profile never changes the balanced default, the launcher catalog or the installed runtime: tools/profile_command.py only prints a command that the operator chooses to run. Evidence paths are relative to rtx-spark.",
+  "profiles": [
+    {
+      "id": "nemotron-nospec-long-input",
+      "title": "Nemotron 3.5 Super: no speculative decoding for long uncached inputs with short outputs",
+      "control": {
+        "description": "Campaign default: native MTP3 with -b 4096 -ub 4096 (run_matrix.py config N2). The launcher's experimental DFlash recipe is not this control.",
+        "requires": [["--spec-type", "draft-mtp"], ["--spec-draft-n-max", "3"], ["-b", "4096"], ["-ub", "4096"]]
+      },
+      "edits": [
+        {"flag": "--spec-type", "from": "draft-mtp", "to": "none"},
+        {"flag": "--spec-draft-n-max", "from": "3"}
+      ],
+      "use_when": [
+        "Most requests carry long uncached inputs (about 9k tokens or more) and return short outputs (tens of tokens), such as record extraction, classification or a short answer over a document.",
+        "About 4.5 GiB less resident GPU memory is useful."
+      ],
+      "avoid_when": [
+        "Outputs are long. Estimated break-even is an output of 0.7-0.9% of the uncached prompt tokens (about 80 tokens at 9k, about 180-210 at 27k).",
+        "Chat with cached prefixes and short replies: a cached 4-token-suffix request took 1.10-1.15 s with MTP3 and 1.78 s without.",
+        "Generation-heavy use: 512 forced tokens took 13.4-13.5 s with MTP3 and 18.9-19.1 s without; decode falls from about 44-50 to about 28-30 tokens/s."
+      ],
+      "measured": {
+        "workload": "Two uncached synthetic record-extraction requests (9,073 and 26,933 prompt tokens, 50 output tokens); complete-request wall time summed per repetition, median of 3. Arm order control, candidate, candidate, control; each pair is the first and last arm against the nearest candidate arm.",
+        "pairs": [
+          {
+            "control_run": 0,
+            "candidate_run": 1,
+            "total_s": [48.430, 45.829],
+            "latency_reduction_percent": 5.372,
+            "ready_memory_mib": [79758, 75109],
+            "cached_short_wall_s": [1.095, 1.780],
+            "generation_512_wall_s": [13.449, 18.941]
+          },
+          {
+            "control_run": 3,
+            "candidate_run": 2,
+            "total_s": [48.364, 46.171],
+            "latency_reduction_percent": 4.535,
+            "ready_memory_mib": [79747, 75113],
+            "cached_short_wall_s": [1.146, 1.775],
+            "generation_512_wall_s": [13.481, 19.088]
+          }
+        ],
+        "control_reload_drift_percent": 0.137,
+        "gate": "At least 3% lower latency in both orders with separated ranges; passed."
+      },
+      "evidence": [
+        "results/workload-tradeoffs-20261021/long-nemotron-nospec.json",
+        "results/workload-tradeoffs-20261021/long-nemotron-nospec-invalid-display-off.json",
+        "results/workload-tradeoffs-20261021/nemotron-release-gates.json",
+        "results/workload-tradeoffs-20261021/nemotron-release-gates-non-inferiority.json",
+        "results/workload-tradeoffs-20261021/long_profiles.py",
+        "results/workload-tradeoffs-20261021/release_gates.py"
+      ],
+      "limits": [
+        "The control is campaign MTP3, not the launcher's DFlash5 recipe. The no-speculation setting was not compared with that recipe.",
+        "The workload is synthetic record extraction from pinned public project documents at two prompt sizes, not arbitrary long-context quality.",
+        "Quality covers four English and code checks. The model fails the en-US spelling check (cancelled, aluminium, grey) with identical output under both settings, so this is a model limitation, not a profile effect.",
+        "The strict quality rule failed in all arms because of that shared failure. The owner then approved a non-inferiority rule after the strict result (post hoc revision); under it the profile loses no check that the control passes. Both results are kept.",
+        "The 512-token generation guard produced different text under the two settings; that guard is not scored for quality.",
+        "The reported gain is the only valid complete measurement. An earlier complete run was invalidated because the screen turned off (Modern Standby) during three of its four arms; it measured +5.13% (separated) and +0.84% (not separated) with 3.51% control drift, and is retained but not scored (see the excluded run in PLAN.md section 2.59).",
+        "One machine, one model, one build (b11756 plus #30380 and #30640)."
+      ],
+      "rollback": "Run the unchanged control command. No file, catalog entry or runtime is modified."
+    }
+  ]
+}

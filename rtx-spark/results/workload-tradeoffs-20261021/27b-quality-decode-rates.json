@@ -1,0 +1,28 @@
+{
+  "scope": "Decode rates from the single-pass strict quality runs of Qwen3.8-27B: P7 is the DFlash depth 7 control, P4 is the depth 4 candidate. One repetition per case on a fresh server after four warmup requests, 64-112 generated tokens. An unreplicated observation, not a gated measurement.",
+  "source": "predicted_per_second, predicted_n, draft_n and draft_n_accepted from each row's response timings in the per-arm quality reports named by 27b-release-gates.json. The raw reports are private and not published. Output text hashes match between the two arms in every case.",
+  "ready_memory_mib": {"P7": 37793, "P4": 37403},
+  "cases": {
+    "code": {
+      "P7": {"tokens_per_second": 69.862, "generated_tokens": 112, "draft_tokens": 105, "accepted_tokens": 96},
+      "P4": {"tokens_per_second": 52.948, "generated_tokens": 112, "draft_tokens": 96, "accepted_tokens": 87},
+      "p4_vs_p7_percent": -24.21
+    },
+    "locale_json": {
+      "P7": {"tokens_per_second": 61.605, "generated_tokens": 74, "draft_tokens": 77, "accepted_tokens": 62},
+      "P4": {"tokens_per_second": 48.265, "generated_tokens": 74, "draft_tokens": 64, "accepted_tokens": 57},
+      "p4_vs_p7_percent": -21.65
+    },
+    "identifiers": {
+      "P7": {"tokens_per_second": 67.722, "generated_tokens": 82, "draft_tokens": 77, "accepted_tokens": 70},
+      "P4": {"tokens_per_second": 51.695, "generated_tokens": 82, "draft_tokens": 68, "accepted_tokens": 64},
+      "p4_vs_p7_percent": -23.67
+    },
+    "document": {
+      "P7": {"tokens_per_second": 61.730, "generated_tokens": 64, "draft_tokens": 63, "accepted_tokens": 54},
+      "P4": {"tokens_per_second": 49.242, "generated_tokens": 64, "draft_tokens": 52, "accepted_tokens": 51},
+      "p4_vs_p7_percent": -20.23
+    }
+  },
+  "mean_p4_vs_p7_percent": -22.44
+}

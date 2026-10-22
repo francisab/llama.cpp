@@ -1,0 +1,239 @@
+{
+  "quality": {
+    "control": "N2",
+    "candidate": "N1",
+    "reports": {
+      "N2": {
+        "path": "server_N2_en-us-quality.json",
+        "cases": [
+          "code",
+          "locale_json",
+          "identifiers",
+          "document"
+        ],
+        "passed": false,
+        "scores": [
+          {
+            "phase": "warmups",
+            "case": "code",
+            "tokens": 99,
+            "content_sha256": "be3272aed73fb156a2797c0226ed548819caa01a79a3cd861db3421a6122d210",
+            "passed": true,
+            "assertions": 231
+          },
+          {
+            "phase": "warmups",
+            "case": "locale_json",
+            "tokens": 61,
+            "content_sha256": "444634e2e864affe48f6abeab40cb1dceeaee2beb5eac9142373f272bef3e2f0",
+            "passed": false,
+            "error": "Expected {'date': '03/04/2027', 'total': '$12,345.67', 'time': '5:05 PM', 'status': 'canceled', 'material': 'aluminum', 'color': 'gray'}, got {'date': '03/04/2027', 'total': '$12,345.67', 'time': '5:05 PM', 'status': 'cancelled', 'material': 'aluminium', 'color': 'grey'}"
+          },
+          {
+            "phase": "warmups",
+            "case": "identifiers",
+            "tokens": 66,
+            "content_sha256": "02f1351f442738a745177228fa9e90954540af76b93d6abd5e1ac2bddd1482fd",
+            "passed": true,
+            "assertions": 4
+          },
+          {
+            "phase": "warmups",
+            "case": "document",
+            "tokens": 60,
+            "content_sha256": "fd6fd6271d943dfc516f279a077a894f0ec212b9ff2f570d48d93ad7c466bdfe",
+            "passed": true,
+            "assertions": 4
+          },
+          {
+            "phase": "rows",
+            "case": "code",
+            "tokens": 99,
+            "content_sha256": "be3272aed73fb156a2797c0226ed548819caa01a79a3cd861db3421a6122d210",
+            "passed": true,
+            "assertions": 231
+          },
+          {
+            "phase": "rows",
+            "case": "locale_json",
+            "tokens": 61,
+            "content_sha256": "444634e2e864affe48f6abeab40cb1dceeaee2beb5eac9142373f272bef3e2f0",
+            "passed": false,
+            "error": "Expected {'date': '03/04/2027', 'total': '$12,345.67', 'time': '5:05 PM', 'status': 'canceled', 'material': 'aluminum', 'color': 'gray'}, got {'date': '03/04/2027', 'total': '$12,345.67', 'time': '5:05 PM', 'status': 'cancelled', 'material': 'aluminium', 'color': 'grey'}"
+          },
+          {
+            "phase": "rows",
+            "case": "identifiers",
+            "tokens": 66,
+            "content_sha256": "02f1351f442738a745177228fa9e90954540af76b93d6abd5e1ac2bddd1482fd",
+            "passed": true,
+            "assertions": 4
+          },
+          {
+            "phase": "rows",
+            "case": "document",
+            "tokens": 60,
+            "content_sha256": "fd6fd6271d943dfc516f279a077a894f0ec212b9ff2f570d48d93ad7c466bdfe",
+            "passed": true,
+            "assertions": 4
+          }
+        ]
+      },
+      "N1": {
+        "path": "server_N1_en-us-quality.json",
+        "cases": [
+          "code",
+          "locale_json",
+          "identifiers",
+          "document"
+        ],
+        "passed": false,
+        "scores": [
+          {
+            "phase": "warmups",
+            "case": "code",
+            "tokens": 99,
+            "content_sha256": "be3272aed73fb156a2797c0226ed548819caa01a79a3cd861db3421a6122d210",
+            "passed": true,
+            "assertions": 231
+          },
+          {
+            "phase": "warmups",
+            "case": "locale_json",
+            "tokens": 61,
+            "content_sha256": "444634e2e864affe48f6abeab40cb1dceeaee2beb5eac9142373f272bef3e2f0",
+            "passed": false,
+            "error": "Expected {'date': '03/04/2027', 'total': '$12,345.67', 'time': '5:05 PM', 'status': 'canceled', 'material': 'aluminum', 'color': 'gray'}, got {'date': '03/04/2027', 'total': '$12,345.67', 'time': '5:05 PM', 'status': 'cancelled', 'material': 'aluminium', 'color': 'grey'}"
+          },
+          {
+            "phase": "warmups",
+            "case": "identifiers",
+            "tokens": 66,
+            "content_sha256": "02f1351f442738a745177228fa9e90954540af76b93d6abd5e1ac2bddd1482fd",
+            "passed": true,
+            "assertions": 4
+          },
+          {
+            "phase": "warmups",
+            "case": "document",
+            "tokens": 60,
+            "content_sha256": "fd6fd6271d943dfc516f279a077a894f0ec212b9ff2f570d48d93ad7c466bdfe",
+            "passed": true,
+            "assertions": 4
+          },
+          {
+            "phase": "rows",
+            "case": "code",
+            "tokens": 99,
+            "content_sha256": "be3272aed73fb156a2797c0226ed548819caa01a79a3cd861db3421a6122d210",
+            "passed": true,
+            "assertions": 231
+          },
+          {
+            "phase": "rows",
+            "case": "locale_json",
+            "tokens": 61,
+            "content_sha256": "444634e2e864affe48f6abeab40cb1dceeaee2beb5eac9142373f272bef3e2f0",
+            "passed": false,
+            "error": "Expected {'date': '03/04/2027', 'total': '$12,345.67', 'time': '5:05 PM', 'status': 'canceled', 'material': 'aluminum', 'color': 'gray'}, got {'date': '03/04/2027', 'total': '$12,345.67', 'time': '5:05 PM', 'status': 'cancelled', 'material': 'aluminium', 'color': 'grey'}"
+          },
+          {
+            "phase": "rows",
+            "case": "identifiers",
+            "tokens": 66,
+            "content_sha256": "02f1351f442738a745177228fa9e90954540af76b93d6abd5e1ac2bddd1482fd",
+            "passed": true,
+            "assertions": 4
+          },
+          {
+            "phase": "rows",
+            "case": "document",
+            "tokens": 60,
+            "content_sha256": "fd6fd6271d943dfc516f279a077a894f0ec212b9ff2f570d48d93ad7c466bdfe",
+            "passed": true,
+            "assertions": 4
+          }
+        ]
+      }
+    },
+    "control_passed": false,
+    "candidate_passed": false,
+    "passed": false,
+    "identical_outputs": true,
+    "content_sha256": {
+      "N2": {
+        "code": "be3272aed73fb156a2797c0226ed548819caa01a79a3cd861db3421a6122d210",
+        "locale_json": "444634e2e864affe48f6abeab40cb1dceeaee2beb5eac9142373f272bef3e2f0",
+        "identifiers": "02f1351f442738a745177228fa9e90954540af76b93d6abd5e1ac2bddd1482fd",
+        "document": "fd6fd6271d943dfc516f279a077a894f0ec212b9ff2f570d48d93ad7c466bdfe"
+      },
+      "N1": {
+        "code": "be3272aed73fb156a2797c0226ed548819caa01a79a3cd861db3421a6122d210",
+        "locale_json": "444634e2e864affe48f6abeab40cb1dceeaee2beb5eac9142373f272bef3e2f0",
+        "identifiers": "02f1351f442738a745177228fa9e90954540af76b93d6abd5e1ac2bddd1482fd",
+        "document": "fd6fd6271d943dfc516f279a077a894f0ec212b9ff2f570d48d93ad7c466bdfe"
+      }
+    }
+  },
+  "qualified": false,
+  "candidate": "nemotron-nospec",
+  "deployment_changed": false,
+  "protocol": {
+    "script_sha256": "b259fd2b49f581b3f6369177a63522b1fbf6a145c91c4b4fac564710fdb54086",
+    "parent_protocol_sha256": "ed6ecc5e9ba1379881029790f690ea6724e069ccf3e408365f66a520afd41755",
+    "candidate": "nemotron-nospec",
+    "catalog_sha256": null,
+    "criteria": {
+      "quality": "The no-speculation arm passes every English/code quality check. The MTP3 control result and output identity are reported.",
+      "integrity": "Installed runtime hashes are unchanged.",
+      "qualified": "quality passes and integrity holds."
+    },
+    "quality_order": [
+      "N2",
+      "N1"
+    ]
+  },
+  "runtime_sha256": {
+    "cublas64_13.dll": "49e8fa23d88ac0cbae27e200fc092b894dd55b4de5cb4293993986e29fb9b65a",
+    "cublasLt64_13.dll": "daf579ae36bb3c85e2340c57a1994f634e07c6f55ef70dd4cdc26695de21c752",
+    "cudart64_13.dll": "bd927ddf03823eeead7c8b261a8669d96764b89109311f4ab6accde8b7d97ec2",
+    "ggml-base.dll": "78a8ee0bbfa83221d579166779edbb2bf81c1440e02185a17d83dbbd3a59bfc7",
+    "ggml-cpu.dll": "04540c35427ee8c8eddb867c048302120bce5a76732fb886054da31e579c26cc",
+    "ggml-cuda.dll": "898fb56c5a64f75e945e0823efa9a773cbdec66e5de9f1f253a771911b172c9f",
+    "ggml-rpc-server.exe": "ff31fa6df8f0fd44e6266d08ef1b891c30ae3555bb43d00bda78cc4197cf30db",
+    "ggml-rpc.dll": "62f5d72e6b1c909c1a8f05737acf7205a43f7ef9319cd53fdaea9f55b7e4bced",
+    "ggml.dll": "7444aa6d23f780f05230b4b2d71d2ef424853b2da302fe584afde956ef4d801e",
+    "libomp.dll": "b13ebedc0cff13097516f9d291a2414e1a97d6ab49269307e03c5df55a60d7fd",
+    "llama-batched-bench-impl.dll": "3f9ca458697e5c3e4afbfef4d8c468d71d5f094ab4c9d65fd8834dbbf7c582db",
+    "llama-batched-bench.exe": "04ecabbbab8d09c0058b2b585770289195496d15a0cb7b2fb5eded4030feb45e",
+    "llama-bench-impl.dll": "9c9475ffdae8ec9865d7c227997ee1e940cfa0499f9a989f773cb14a32c4736f",
+    "llama-bench.exe": "0c4bec770ab595dd18b02f52b28d4bfb06b5bf7e5b743fa8f4f8671d768454a3",
+    "llama-cli-impl.dll": "851561d7d1435dd1f6b7a341d0066c548e94ff6a6e41dd2cabab99c8d383110b",
+    "llama-cli.exe": "4837bd989efebc8a4895a34067ac958f2aa472506818df4ab5f62338297db72f",
+    "llama-common.dll": "b2fa9b52c99c9d77f7b964ba283ad1a1de5eaf59cd19252984e41d8e03775e1c",
+    "llama-completion-impl.dll": "fe1963907d4b8df1c36ca2419be924132f6b58c7f9ecafe4684be47314ed677c",
+    "llama-completion.exe": "bedc0ff8f5efc2c8bfb63796013be612f96ceaf565ab9dda921fd738dd40b28b",
+    "llama-fit-params-impl.dll": "57b80a677aebfda1f236d72a62bec0682d71f228da39dedc3bccc9a0ec34c22c",
+    "llama-fit-params.exe": "3c7fa3a1264cfa753d0485850ba492091a94e609379cca443c9512a249df8e2f",
+    "llama-gemma3-cli.exe": "5bfbcde68d39a583ab1986230b5feee8b39021dadce7f80fe4c16cc31f1d4638",
+    "llama-gguf-split.exe": "514c2a1e815f22ab9585b4ba50ac5a679d7d34b38a055b916e5e8d8f82bf0fd1",
+    "llama-imatrix.exe": "23237fedaf108aac86483d518e77aea366d8d4a055d73410b28f56e171ef22bd",
+    "llama-llava-cli.exe": "5bfbcde68d39a583ab1986230b5feee8b39021dadce7f80fe4c16cc31f1d4638",
+    "llama-minicpmv-cli.exe": "5bfbcde68d39a583ab1986230b5feee8b39021dadce7f80fe4c16cc31f1d4638",
+    "llama-mtmd-cli.exe": "2693563d096287bbd5db947a9414ee39a46ec2f5c95cab052faf04a49ddf00eb",
+    "llama-mtmd-debug.exe": "86643be38cca782fe22d48b8057f8390d771da9dd64820b41f7c3903d01f90e6",
+    "llama-perplexity-impl.dll": "4ce712ee63f8522d82bfea0e7acdd93ab9e055b69ca6bfe24232539028154698",
+    "llama-perplexity.exe": "04c8ae729a7ef367eb8b9831f7bae6712095a37a7f4675143610092d958baabd",
+    "llama-quantize-impl.dll": "1877d61a18a47a8dd6cbf4544b17adc68cd3f9f9d24615d1362d16d84935c873",
+    "llama-quantize.exe": "36e8b5eb6039ec2a6e86366e24a385eb3913022356b6f1944f6f0ec8d72c7146",
+    "llama-qwen2vl-cli.exe": "5bfbcde68d39a583ab1986230b5feee8b39021dadce7f80fe4c16cc31f1d4638",
+    "llama-results.exe": "aec63861566748030920b658f836c59fc7351e0d1156fb19a535a9c430c326cd",
+    "llama-server-impl.dll": "c5a14ce5f4fd040637f78a68aed59c6c7f414546d63596cd53eaef4b1c7d20f9",
+    "llama-server.exe": "b575a9a6c70587568b97a9edbbe0c084d73cea067de40cb08091a5dd399528fd",
+    "llama-tokenize.exe": "6e36d63fc3f304d470e1546370ed1835c3bf8ca9386fd030ed1bcab3e0eeb0d7",
+    "llama-tts.exe": "4a46b2dce291c00ae7f9e3296e98a9fde546486df8e7122359753e88caaf88af",
+    "llama.dll": "d2eeb4d523556424f6ec643737fe7ac2cfbd1a2e61cdfc1bd6eb08be37b1231b",
+    "llama.exe": "5c224ee632770ccfcd39695054611219f01fe19a5d818c817d12c352ea6183ab",
+    "mtmd.dll": "0e066445858363e309ea6c4b1cf440e7f10c7079de79f55a468804853cafd54b"
+  }
+}

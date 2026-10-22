@@ -107,6 +107,14 @@ def completion(prompt, count, allow_eos=False):
     return result
 
 
+def guard_reused_prime(prime, guard):
+    # The warmup leaves the prime cached too, so test the guard's own reuse, not a drop from the prime.
+    timings = guard["timings"]
+    total = timings["cache_n"] + timings["prompt_n"]
+    return (prime["request"]["prompt"] == guard["request"]["prompt"]
+            and total > 0 and timings["cache_n"] >= 0.9 * total)
+
+
 def analyze(data):
     names = [item[0] for item in cases()]
     if not data["completed"] or data["exit_code"] != 0 or data["stop"] != "ctrl+c":
@@ -131,9 +139,7 @@ def analyze(data):
             prime = next(index for index, row in enumerate(rows) if row["case"] == "cached_prime")
             if prime + 1 >= len(rows) or rows[prime + 1]["case"] != "cached_guard":
                 raise ValueError("Cached guard did not immediately follow its identical priming request")
-            before, after = rows[prime]["response"], rows[prime + 1]["response"]
-            if (before["request"]["prompt"] != after["request"]["prompt"]
-                    or after["timings"]["prompt_n"] >= before["timings"]["prompt_n"]):
+            if not guard_reused_prime(rows[prime]["response"], rows[prime + 1]["response"]):
                 raise ValueError("Cached guard did not reuse the primed prompt")
     totals = [sum(row["response"]["wall_s"] for row in data["rows"]
                   if row["repeat"] == repeat and row["case"] in PRIMARY) for repeat in range(1, 4)]
@@ -181,7 +187,7 @@ def main():
         "order": ["control", "candidate", "candidate", "control"], "repetitions": 3,
         "primary_quality": "Exact complete natural-EOS record extraction",
         "generation_guard": "512 forced tokens; not scored as a complete quality answer",
-        "cached_guard": "Identical priming request immediately precedes the guard; require a smaller actual processed prompt count and report both",
+        "cached_guard": "Identical priming request immediately precedes the guard; require the guard to serve at least 90% of its prompt from cache and report both counts",
         "timing": "Client-observed first nonempty content and terminal response, not prompt_ms as a TTFT proxy",
     }
     runner.save(args.work / "protocol.json", protocol)

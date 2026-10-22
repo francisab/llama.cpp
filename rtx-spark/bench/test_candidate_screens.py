@@ -1,8 +1,12 @@
 import copy
+import hashlib
 import importlib.util
+import io
 import json
 from pathlib import Path
+import re
 import sys
+import tempfile
 from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
@@ -27,6 +31,7 @@ tradeoffs = load_module("tradeoff_profiles", "workload-tradeoffs-20261021", "con
 long_profiles = load_module("long_tradeoff_profiles", "workload-tradeoffs-20261021", "long_profiles.py")
 lookup_profile = load_module("lookup_tradeoff_profile", "workload-tradeoffs-20261021", "lookup_profile.py")
 prose_profile = load_module("prose_tradeoff_profile", "workload-tradeoffs-20261021", "prose_profile.py")
+release_gates = load_module("release_gates_profile", "workload-tradeoffs-20261021", "release_gates.py")
 
 
 class CompleteProseTests(unittest.TestCase):
@@ -38,6 +43,47 @@ class CompleteProseTests(unittest.TestCase):
                 self.assertTrue(prose_profile.check_literals(case, response)["passed"])
                 response["content"] = response["content"].replace(prose_profile.FACTS[case][1][0], "wrong-id")
                 self.assertFalse(prose_profile.check_literals(case, response)["passed"])
+
+
+class ProseReviewTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        base = RESULTS / "workload-tradeoffs-20261021"
+        cls.review = json.loads((base / "27b-prose-review.json").read_text(encoding="utf-8"))
+        cls.result = json.loads((base / "27b-complete-prose.json").read_text(encoding="utf-8"))
+
+    def test_reviewed_texts_are_the_measured_responses(self):
+        self.assertEqual(set(self.review["cases"]), set(prose_profile.FACTS))
+        for case, body in self.review["cases"].items():
+            recorded = [check for run in self.result["runs"] for check in run["checks"] if check["case"] == case]
+            digest = hashlib.sha256(body["text"].encode("utf-8")).hexdigest()
+            with self.subTest(case=case):
+                self.assertEqual(len(recorded), 16)
+                self.assertEqual({check["content_sha256"] for check in recorded}, {digest})
+                self.assertEqual(body["content_sha256"], digest)
+                self.assertEqual({check["words"] for check in recorded}, {body["words"]})
+                self.assertEqual(len(re.findall(r"\b[\w'-]+\b", body["text"])), body["words"])
+
+    def test_review_quotes_are_verbatim_and_literals_present(self):
+        for case, body in self.review["cases"].items():
+            response = {"content": body["text"], "content_sha256": body["content_sha256"],
+                        "stop_type": "eos", "request": {"prompt": "explain"}}
+            quotes = [quote for item in body["required_items"] for quote in item["evidence"]]
+            quotes += [item["quote"] for item in body["unsupported_additions"] + body["borderline"]]
+            with self.subTest(case=case):
+                self.assertTrue(prose_profile.check_literals(case, response)["passed"])
+                self.assertTrue(quotes)
+                for quote in quotes:
+                    self.assertIn(quote, body["text"])
+
+    def test_review_does_not_hide_the_instruction_violations(self):
+        self.assertFalse(self.review["promotion_blocking"])
+        self.assertIn("Do not invent events, causes or benefits", self.review["findings"]["constraint_adherence"])
+        for case, body in self.review["cases"].items():
+            with self.subTest(case=case):
+                self.assertTrue(body["unsupported_additions"])
+                self.assertTrue(all(item["verdict"].startswith(("faithful", "wording_drift"))
+                                    for item in body["required_items"]))
 
 
 class FullEditTests(unittest.TestCase):
@@ -67,6 +113,41 @@ class StreamTimingTests(unittest.TestCase):
             index = next(index for index, row in enumerate(rows) if row[0] == "cached_prime")
             self.assertEqual(rows[index + 1][0], "cached_guard")
             self.assertEqual(rows[index][1], rows[index + 1][1])
+
+    def timed(self, case, prompt, counts, repeat=None):
+        cache_n, prompt_n = counts
+        row = {"case": case, "response": {
+            "content": json.dumps(long_profiles.EXPECTED), "stop_type": "eos", "ttft_s": 0.5, "wall_s": 2.0,
+            "content_sha256": "x", "request": {"prompt": prompt, "cache_prompt": cache_n > 0},
+            "timings": {"cache_n": cache_n, "prompt_n": prompt_n}}}
+        if repeat is not None:
+            row["repeat"] = repeat
+        return row
+
+    def run_data(self, prime, guard):
+        names = [case[0] for case in long_profiles.cases()]
+        counts = {"cached_prime": prime, "cached_guard": guard}
+
+        def rows(repeat):
+            return [self.timed(name, "same" if name in counts else name, counts.get(name, (0, 9000)), repeat)
+                    for name in names]
+        return {"completed": True, "exit_code": 0, "stop": "ctrl+c", "load_s": 1.0, "gpu_memory_ready_mib": 1,
+                "warmups": rows(None), "rows": [row for repeat in (1, 2, 3) for row in rows(repeat)]}
+
+    def test_cached_guard_accepts_a_prime_that_the_warmup_already_cached(self):
+        for prime in ((0, 1306), (1302, 4)):
+            with self.subTest(prime=prime):
+                self.assertTrue(long_profiles.analyze(self.run_data(prime, (1302, 4)))["quality_passed"])
+
+    def test_cached_guard_must_serve_its_prompt_from_cache(self):
+        for guard in ((0, 1306), (600, 706)):
+            with self.subTest(guard=guard), self.assertRaises(ValueError):
+                long_profiles.analyze(self.run_data((1302, 4), guard))
+
+    def test_cached_guard_requires_the_identical_prompt(self):
+        prime = self.timed("cached_prime", "a", (0, 1306))["response"]
+        guard = self.timed("cached_guard", "b", (1302, 4))["response"]
+        self.assertFalse(long_profiles.guard_reused_prime(prime, guard))
 
     def event(self, content, tokens, stop=False):
         return ("data: " + json.dumps({"content": content, "tokens": tokens, "stop": stop}) + "\n").encode()
@@ -161,6 +242,32 @@ class TradeoffPrecisionTests(unittest.TestCase):
         items = assessment["candidates"]
         self.assertEqual(len(items), len({item["id"] for item in items}))
         self.assertNotIn("enabled", {item["decision"] for item in items})
+
+    def test_inventory_outcomes_are_resolved_and_evidence_exists(self):
+        folder = RESULTS / "workload-tradeoffs-20261021"
+        assessment = json.loads((folder / "assessment.json").read_text())
+        self.assertEqual(assessment["status"], "validation_complete")
+        self.assertNotIn("validate_profile", {item["decision"] for item in assessment["candidates"]})
+        for item in assessment["candidates"]:
+            evidence = item.get("evidence", [])
+            for name in [evidence] if isinstance(evidence, str) else evidence:
+                self.assertTrue((folder / name).is_file(), name)
+
+    def test_only_the_shipped_opt_in_profile_is_enabled(self):
+        assessment = json.loads((RESULTS / "workload-tradeoffs-20261021" / "assessment.json").read_text())
+        opted = [item["profile_id"] for item in assessment["candidates"] if item["decision"] == "opt_in_profile"]
+        shipped = json.loads((RESULTS.parent / "profiles" / "opt-in-profiles.json").read_text())["profiles"]
+        self.assertEqual(opted, [profile["id"] for profile in shipped])
+
+    def test_decode_rate_record_is_self_consistent(self):
+        record = json.loads((RESULTS / "workload-tradeoffs-20261021" / "27b-quality-decode-rates.json").read_text())
+        changes = []
+        for name, case in record["cases"].items():
+            change = 100 * (case["P4"]["tokens_per_second"] / case["P7"]["tokens_per_second"] - 1)
+            self.assertAlmostEqual(change, case["p4_vs_p7_percent"], delta=0.05, msg=name)
+            self.assertEqual(case["P4"]["generated_tokens"], case["P7"]["generated_tokens"], name)
+            changes.append(change)
+        self.assertAlmostEqual(sum(changes) / len(changes), record["mean_p4_vs_p7_percent"], delta=0.05)
 
 
 class MMQFixtureTests(unittest.TestCase):
@@ -365,6 +472,292 @@ class LauncherProfileTests(unittest.TestCase):
         self.recipe["serve"]["command"] = self.recipe["serve"]["command"].replace("--ubatch-size 512", "--ubatch-size 2048")
         with self.assertRaises(ValueError):
             profiles.resolve_command(self.recipe, self.paths, 9949, 4)
+
+
+class FakeServerRunner:
+    """Stands in for run_rebaseline and writes server files in the real format."""
+
+    def __init__(self, candidate_speedup=0.04, stop_type="eos"):
+        self.matrix = SimpleNamespace(
+            PORT=9940, P={}, CONFIGS=[],
+            SUITES={"decode": [(name, "p", 128) for name in ("code256", "prose256", "prose512", "novel2K")]})
+        self.completion = "greedy"
+        self.candidate_speedup = candidate_speedup
+        self.stop_type = stop_type
+        self.calls = []
+
+    def run_server(self, tag, out, repetitions, suite, allow_eos=False, draft_model=None,
+                   capture_metrics=False, case_names=None, exe=None, extra_args=()):
+        names = list(case_names or [case[0] for case in self.matrix.SUITES["decode"]])
+        if suite == "en-us-quality":
+            names = list(release_gates.en_us_quality.CASE_NAMES)
+        self.calls.append({"tag": tag, "suite": suite, "names": names, "completion": self.completion,
+                           "allow_eos": allow_eos, "extra_args": list(extra_args)})
+        scale = 1.0 if tag in ("P7", "N2") else 1.0 - self.candidate_speedup
+        rows = [{"case": case, "repeat": repeat, "response": self.response(case, scale)}
+                for repeat in range(1, repetitions + 1) for case in names]
+        data = {"completed": True, "exit_code": 0, "stop": "ctrl+c", "allow_eos": allow_eos,
+                "repetitions": repetitions, "gpu_memory_ready_mib": 30000, "warmups": [], "rows": rows}
+        (out / f"server_{tag}_{suite}.json").write_text(json.dumps(data), encoding="utf-8")
+
+    def response(self, case, scale):
+        facts = prose_profile.FACTS.get(case)
+        content = f"{facts[0]}\n\n{facts[0]}" if facts else "text"
+        return {"content": content, "content_sha256": hashlib.sha256(content.encode()).hexdigest(),
+                "stop_type": self.stop_type, "request": {"prompt": "p"}, "wall_s": 10.0 * scale,
+                "timings": {"predicted_n": 400, "predicted_per_second": 40.0 / scale,
+                            "draft_n": 100, "draft_n_accepted": 60}}
+
+
+class ReleaseGateTests(unittest.TestCase):
+    CHECKS = [("warmups", "code"), ("warmups", "locale_json"), ("rows", "code"), ("rows", "locale_json")]
+    LOCALE = [("warmups", "locale_json"), ("rows", "locale_json")]
+
+    def run_gates(self, function, runner, failing=(), quality=None):
+        def analyze(path):
+            return {"path": str(path), "cases": [], "scores": [], "passed": path.name.split("_")[1] not in failing}
+
+        with tempfile.TemporaryDirectory() as folder:
+            args = SimpleNamespace(catalog=Path("catalog.json"), work=Path(folder))
+            with patch.object(release_gates, "launcher_configs", return_value=([], "recipe-id")), \
+                    patch.object(release_gates.en_us_quality, "analyze", side_effect=analyze):
+                result = function(runner, args) if quality is None else function(runner, args, quality)
+            return result, sorted(path.name for path in Path(folder).glob("stage-*.json"))
+
+    def outcomes(self, failing):
+        return {key: key not in failing for key in self.CHECKS}
+
+    def saved_quality(self, control, candidate, identical=True):
+        def report(outcomes):
+            return {"scores": [{"phase": phase, "case": case, "passed": passed}
+                               for (phase, case), passed in outcomes.items()],
+                    "passed": all(outcomes.values())}
+
+        reports = {"P7": report(control), "P4": report(candidate)}
+        return {"control": "P7", "candidate": "P4", "reports": reports,
+                "control_passed": reports["P7"]["passed"], "candidate_passed": reports["P4"]["passed"],
+                "passed": reports["P4"]["passed"], "identical_outputs": identical}
+
+    def test_27b_stages_run_in_the_declared_order_and_restore_the_runner(self):
+        runner = FakeServerRunner()
+        result, stage_files = self.run_gates(release_gates.gates_27b, runner)
+        self.assertEqual([call["tag"] for call in runner.calls],
+                         ["P7", "P4", "P7", "P4", "P4", "P7", "P7", "P4", "P4", "P7"])
+        self.assertEqual([call["suite"] for call in runner.calls], ["en-us-quality"] * 2 + ["decode"] * 8)
+        self.assertTrue(all(call["allow_eos"] for call in runner.calls[:6]))
+        self.assertFalse(any(call["allow_eos"] for call in runner.calls[6:]))
+        self.assertTrue(all(call["extra_args"] == ["--reasoning", "off"] for call in runner.calls))
+        sampled = {call["completion"].__name__ for call in runner.calls[2:6]}
+        self.assertEqual(sampled, {"sampled_completion"})
+        self.assertEqual({call["completion"] for call in runner.calls[6:]}, {"greedy"})
+        self.assertEqual(runner.calls[2]["names"], list(prose_profile.FACTS))
+        self.assertEqual(runner.calls[6]["names"], ["code256", "novel2K"])
+        self.assertEqual(runner.completion, "greedy")
+        self.assertEqual(len(runner.matrix.SUITES["decode"]), 4)
+        self.assertTrue(result["qualified"])
+        self.assertTrue(result["launcher_sampling"]["comparison"]["passed"])
+        self.assertAlmostEqual(result["launcher_sampling"]["comparison"]["pairs"][0]["latency_reduction_percent"], 4)
+        self.assertEqual(result["launcher_sampling"]["identical_text_fraction"]["between_depths"], [1.0, 1.0])
+        self.assertAlmostEqual(result["launcher_sampling"]["runs"][0]["acceptance"], 0.6)
+        self.assertAlmostEqual(result["outside_profile"]["pairs"][1]["code256"]["reduction_percent"], 4)
+        self.assertTrue(result["outside_profile"]["pairs"][0]["novel2K"]["separated"])
+        self.assertEqual(stage_files, ["stage-launcher-sampling.json", "stage-outside-profile.json",
+                                       "stage-quality.json"])
+
+    def test_slower_candidate_fails_the_sampling_gate_and_skips_the_outside_stage(self):
+        runner = FakeServerRunner(candidate_speedup=-0.05)
+        result, stage_files = self.run_gates(release_gates.gates_27b, runner)
+        self.assertEqual(len(runner.calls), 6)
+        self.assertFalse(result["launcher_sampling"]["passed"])
+        self.assertFalse(result["qualified"])
+        self.assertNotIn("outside_profile", result)
+        self.assertEqual(stage_files, ["stage-launcher-sampling.json", "stage-quality.json"])
+
+    def test_gain_below_the_frozen_minimum_is_not_enough(self):
+        result, _ = self.run_gates(release_gates.gates_27b, FakeServerRunner(candidate_speedup=0.005))
+        self.assertFalse(result["launcher_sampling"]["comparison"]["passed"])
+        self.assertFalse(result["qualified"])
+
+    def test_candidate_quality_failure_skips_every_speed_stage(self):
+        runner = FakeServerRunner()
+        result, stage_files = self.run_gates(release_gates.gates_27b, runner, failing=("P4",))
+        self.assertEqual([call["tag"] for call in runner.calls], ["P7", "P4"])
+        self.assertTrue(result["quality"]["control_passed"])
+        self.assertFalse(result["quality"]["candidate_passed"])
+        self.assertFalse(result["qualified"])
+        self.assertEqual(stage_files, ["stage-quality.json"])
+
+    def test_control_quality_failure_is_reported_without_blaming_the_candidate(self):
+        result, _ = self.run_gates(release_gates.gates_27b, FakeServerRunner(), failing=("P7",))
+        self.assertFalse(result["quality"]["control_passed"])
+        self.assertTrue(result["quality"]["passed"])
+
+    def test_unfinished_sampled_response_fails_the_gate(self):
+        result, _ = self.run_gates(release_gates.gates_27b, FakeServerRunner(stop_type="limit"))
+        sampling = result["launcher_sampling"]
+        self.assertFalse(sampling["all_natural_eos"])
+        self.assertFalse(sampling["passed"])
+        self.assertIn("naturally", sampling["runs"][0]["responses"][0]["literals"]["error"])
+
+    def test_nemotron_gate_is_the_candidate_quality_check(self):
+        runner = FakeServerRunner()
+        result, stage_files = self.run_gates(release_gates.gates_nemotron, runner)
+        self.assertEqual([call["tag"] for call in runner.calls], ["N2", "N1"])
+        self.assertTrue(result["qualified"])
+        self.assertTrue(result["quality"]["identical_outputs"])
+        self.assertEqual(stage_files, ["stage-quality.json"])
+        result, _ = self.run_gates(release_gates.gates_nemotron, FakeServerRunner(), failing=("N1",))
+        self.assertFalse(result["qualified"])
+
+    def test_non_inferiority_accepts_a_candidate_that_repeats_the_control_failure(self):
+        verdict = release_gates.non_inferiority(self.saved_quality(self.outcomes(self.LOCALE), self.outcomes(self.LOCALE)))
+        self.assertTrue(verdict["passed"])
+        self.assertEqual(verdict["control_failed_checks"], ["rows/locale_json", "warmups/locale_json"])
+        self.assertEqual(verdict["candidate_failed_checks"], verdict["control_failed_checks"])
+        self.assertEqual(verdict["lost_control_passes"], [])
+
+    def test_non_inferiority_rejects_a_check_the_candidate_loses(self):
+        verdict = release_gates.non_inferiority(
+            self.saved_quality(self.outcomes(self.LOCALE), self.outcomes(self.LOCALE + [("rows", "code")])))
+        self.assertFalse(verdict["passed"])
+        self.assertEqual(verdict["lost_control_passes"], ["rows/code"])
+
+    def test_non_inferiority_does_not_penalize_an_extra_candidate_pass(self):
+        verdict = release_gates.non_inferiority(self.saved_quality(self.outcomes(self.LOCALE), self.outcomes([])))
+        self.assertTrue(verdict["passed"])
+        self.assertEqual(verdict["candidate_failed_checks"], [])
+
+    def test_non_inferiority_needs_the_same_nonempty_check_set(self):
+        shorter = self.outcomes([])
+        del shorter[("rows", "code")]
+        for control, candidate in ((self.outcomes([]), shorter), ({}, {})):
+            with self.subTest(candidate_checks=len(candidate)), self.assertRaises(ValueError):
+                release_gates.non_inferiority(self.saved_quality(control, candidate))
+
+    def test_revised_quality_binds_the_unchanged_strict_result(self):
+        saved = self.saved_quality(self.outcomes(self.LOCALE), self.outcomes(self.LOCALE))
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / "strict.json"
+            path.write_text(json.dumps({"quality": saved}), encoding="utf-8")
+            before = path.read_bytes()
+            revised = release_gates.revised_quality(path)
+            self.assertEqual(path.read_bytes(), before)
+        self.assertEqual(revised["strict_result"], "strict.json")
+        self.assertEqual(revised["strict_result_sha256"], hashlib.sha256(before).hexdigest())
+        self.assertFalse(revised["strict_passed"])
+        self.assertTrue(revised["passed"])
+        self.assertTrue(revised["identical_outputs"])
+        self.assertEqual(revised["rule"], "non-inferiority")
+
+    def test_revised_27b_gate_reuses_the_quality_result_and_still_requires_speed(self):
+        quality = {"rule": "non-inferiority", "passed": True, "identical_outputs": True}
+        runner = FakeServerRunner()
+        result, stage_files = self.run_gates(release_gates.gates_27b, runner, quality=quality)
+        self.assertEqual([call["suite"] for call in runner.calls], ["decode"] * 8)
+        self.assertEqual(result["quality"], quality)
+        self.assertTrue(result["qualified"])
+        self.assertEqual(stage_files, ["stage-launcher-sampling.json", "stage-outside-profile.json",
+                                       "stage-quality.json"])
+        result, _ = self.run_gates(release_gates.gates_27b, FakeServerRunner(candidate_speedup=0.005), quality=quality)
+        self.assertFalse(result["qualified"])
+        self.assertNotIn("outside_profile", result)
+
+    def test_revised_27b_quality_failure_skips_every_speed_stage(self):
+        runner = FakeServerRunner()
+        result, stage_files = self.run_gates(release_gates.gates_27b, runner, quality={"passed": False})
+        self.assertEqual(runner.calls, [])
+        self.assertFalse(result["qualified"])
+        self.assertEqual(stage_files, ["stage-quality.json"])
+
+    def test_revised_nemotron_gate_runs_no_server(self):
+        runner = FakeServerRunner()
+        result, _ = self.run_gates(release_gates.gates_nemotron, runner, quality={"passed": True})
+        self.assertEqual(runner.calls, [])
+        self.assertTrue(result["qualified"])
+
+    def test_saved_strict_results_rescore_as_recorded(self):
+        for candidate, name in release_gates.OUTPUT.items():
+            path = release_gates.HERE / name
+            strict = json.loads(path.read_text())
+            revised = release_gates.revised_quality(path)
+            with self.subTest(candidate=candidate):
+                self.assertFalse(strict["qualified"])
+                self.assertFalse(revised["strict_passed"])
+                self.assertTrue(revised["passed"])
+                self.assertTrue(revised["identical_outputs"])
+                self.assertEqual(revised["control_failed_checks"], ["rows/locale_json", "warmups/locale_json"])
+                self.assertEqual(revised["candidate_failed_checks"], revised["control_failed_checks"])
+                self.assertEqual(revised["lost_control_passes"], [])
+
+    def test_incomplete_runs_are_rejected(self):
+        for change in ({"completed": False}, {"exit_code": 1}, {"stop": "forced"}):
+            data = {"completed": True, "exit_code": 0, "stop": "ctrl+c", **change}
+            with self.subTest(change=change), self.assertRaises(ValueError):
+                release_gates.require_complete(data)
+
+    def test_launcher_sampling_defaults_are_recognized(self):
+        launcher = {"temperature": 1.0, "top_k": 20, "top_p": 0.949999988079071, "min_p": 0.0,
+                    "presence_penalty": 0.0, "repeat_penalty": 1.0}
+        self.assertTrue(release_gates.sampling_matches(launcher))
+        for key, value in (("temperature", 0.0), ("top_k", 1), ("top_p", 0.9), ("repeat_penalty", 1.05)):
+            with self.subTest(key=key):
+                self.assertFalse(release_gates.sampling_matches({**launcher, key: value}))
+
+    def test_sampled_request_leaves_sampling_to_the_server(self):
+        settings = {"temperature": 1.0, "top_k": 20, "top_p": 0.949999988079071, "min_p": 0.0,
+                    "presence_penalty": 0.0, "repeat_penalty": 1.0, "seed": 1234}
+        sent = []
+
+        def reply(settings):
+            def urlopen(request, timeout):
+                sent.append(request)
+                return io.BytesIO(json.dumps({"content": "hello", "generation_settings": settings}).encode())
+            return urlopen
+
+        complete = release_gates.make_sampled_completion(9940)
+        with patch.object(release_gates.urllib.request, "urlopen", reply(settings)):
+            result = complete("prompt", 64, True)
+        body = json.loads(sent[0].data)
+        self.assertEqual(sent[0].full_url, "http://127.0.0.1:9940/completion")
+        self.assertEqual(set(body), {"prompt", "n_predict", "seed", "cache_prompt", "stream",
+                                     "ignore_eos", "return_tokens"})
+        self.assertEqual((body["n_predict"], body["seed"], body["ignore_eos"], body["cache_prompt"]),
+                         (64, 1234, False, False))
+        self.assertEqual(result["content_sha256"], hashlib.sha256(b"hello").hexdigest())
+        self.assertGreaterEqual(result["wall_s"], 0)
+        for changed in ({**settings, "temperature": 0.0, "top_k": 1}, {**settings, "seed": 7}):
+            with self.subTest(changed=changed), patch.object(release_gates.urllib.request, "urlopen", reply(changed)):
+                with self.assertRaisesRegex(ValueError, "launcher sampling"):
+                    complete("prompt", 64, True)
+
+    def test_launcher_configs_change_only_the_draft_depth(self):
+        source = json.loads((profiles.HERE / "launcher-source.json").read_text())
+        recipe_id = json.loads((profiles.HERE / "protocol.json").read_text())["control_recipe"]
+        paths = {"d27": "target.gguf", "d27_dfl": "draft.gguf", "d27_mmproj": "projector.gguf"}
+        runner = SimpleNamespace(matrix=SimpleNamespace(P=paths, PORT=9940))
+        catalog = {"models": [{"id": "qwen/qwen3.8-27b", "recipes": [{"id": recipe_id, "serve": source["serve"]}]}]}
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / "catalog.json"
+            path.write_text(json.dumps(catalog), encoding="utf-8")
+            configs, recipe = release_gates.launcher_configs(runner, path)
+            self.assertEqual(recipe, recipe_id)
+            self.assertEqual([config[0] for config in configs],
+                             ["P7 q27 launcher dflash7", "P4 q27 launcher dflash4"])
+            differences = [(a, b) for a, b in zip(configs[0][1], configs[1][1]) if a != b]
+            self.assertEqual(differences, [("7", "4")])
+            catalog["models"][0]["recipes"][0]["serve"]["command"] += " --extra"
+            path.write_text(json.dumps(catalog), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "launcher command changed"):
+                release_gates.launcher_configs(runner, path)
+
+    def test_scoring_helpers(self):
+        responses = [{"wall_s": 6.0, "timings": {"predicted_n": 100}}, {"wall_s": 4.0, "timings": {"predicted_n": 300}}]
+        self.assertAlmostEqual(release_gates.seconds_per_token(responses), 0.025)
+        self.assertAlmostEqual(release_gates.reduction(10.0, 9.0), 10.0)
+        self.assertAlmostEqual(release_gates.identical_fraction([1, 2, 3], [1, 2, 4]), 2 / 3)
+
+    def test_script_is_ascii(self):
+        self.assertTrue(Path(release_gates.__file__).read_text(encoding="utf-8").isascii())
 
 
 class SSMDispatchTests(unittest.TestCase):

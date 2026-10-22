@@ -1,0 +1,82 @@
+{
+  "candidate": "27b-dflash4",
+  "protocol_requirement": "Independently review every unique full response against all supplied facts and caveats before promotion (prose_profile.py protocol text).",
+  "reviewer": "Manual semantic review by the campaign assistant after the automated literal checks. Not a third-party human review.",
+  "scope": "All 32 measured and warm-up responses of 27b-complete-prose.json (4 arms x 8 responses). They collapse to 2 unique texts, identical in the depth-7 and depth-4 arms.",
+  "arms_identical": true,
+  "cases": {
+    "incident": {
+      "content_sha256": "fcd7167db1d389e873bfc455907c7d6c1275c97b3f1204df7bbf2f322133c009",
+      "words": 349,
+      "text": "Spruce-Gateway release 4.8.2 was deployed on May 14, 2032. Following the deployment, a specific sequence of operational errors occurred between 10:05 UTC and 10:17 UTC, resulting in a total incident duration of 12 minutes. During this window, the system processed 1200 requests, of which 72 resulted in failures, establishing a failure rate of 6%. The root cause of these errors was identified as a configuration change introduced in the release, which altered the timeout setting from 2000 ms to 500 ms. This reduction in the timeout value proved insufficient for the operational requirements, leading to the observed failures.\n\nTo resolve the issue, the timeout value was restored to its previous setting of 2000 ms. This immediate configuration adjustment successfully ended the errors, confirming the causal link between the timeout change and the service disruption. It is important to note that no database corruption or data loss was observed during the incident, indicating that the failure was isolated to request handling timeouts rather than data integrity issues. Although version 4.8.1 is designated as the rollback option for this release, no software rollback was performed. The operational response relied solely on reverting the specific configuration parameter rather than reverting the entire software version.\n\nThe incident has established specific operational implications for future deployments. The next rollout will follow a phased expansion strategy, beginning at 5% of traffic, then increasing to 25%, and finally reaching 100%. Each stage of this expansion is subject to strict quality gates. Specifically, each expansion requires an error rate below 1% sustained for 30 minutes before proceeding to the next phase. This policy ensures that any potential issues are detected and contained within a limited traffic segment before broader exposure. The sequence underscores the importance of monitoring error rates during gradual rollouts and highlights that configuration changes, such as timeout adjustments, can have significant operational impacts even when software versions remain unchanged. The successful mitigation through configuration restoration, rather than a full rollback, demonstrates a targeted approach to incident resolution that minimizes disruption while preserving the integrity of the deployed release.",
+      "required_items": [
+        {"fact": "Release 4.8.2 was deployed on May 14, 2032.", "evidence": ["Spruce-Gateway release 4.8.2 was deployed on May 14, 2032."], "verdict": "faithful"},
+        {"fact": "Errors occurred from 10:05 UTC to 10:17 UTC, a duration of 12 minutes.", "evidence": ["between 10:05 UTC and 10:17 UTC, resulting in a total incident duration of 12 minutes"], "verdict": "faithful"},
+        {"fact": "1200 requests, 72 failures, a 6% failure rate.", "evidence": ["the system processed 1200 requests, of which 72 resulted in failures, establishing a failure rate of 6%"], "verdict": "faithful"},
+        {"fact": "The deployment changed the timeout from 2000 ms to 500 ms.", "evidence": ["altered the timeout setting from 2000 ms to 500 ms"], "verdict": "faithful"},
+        {"fact": "Restoring 2000 ms ended the errors.", "evidence": ["the timeout value was restored to its previous setting of 2000 ms. This immediate configuration adjustment successfully ended the errors"], "verdict": "faithful"},
+        {"fact": "No database corruption or data loss was observed.", "evidence": ["no database corruption or data loss was observed during the incident"], "verdict": "faithful"},
+        {"fact": "Version 4.8.1 is the rollback option, but no software rollback was performed.", "evidence": ["version 4.8.1 is designated as the rollback option for this release, no software rollback was performed"], "verdict": "faithful"},
+        {"fact": "The next rollout starts at 5%, then 25%, then 100%.", "evidence": ["beginning at 5% of traffic, then increasing to 25%, and finally reaching 100%"], "verdict": "faithful_with_added_specificity"},
+        {"fact": "Each expansion requires an error rate below 1% for 30 minutes.", "evidence": ["each expansion requires an error rate below 1% sustained for 30 minutes"], "verdict": "faithful"}
+      ],
+      "unsupported_additions": [
+        {"quote": "The root cause of these errors was identified as a configuration change introduced in the release", "kind": "stronger_claim", "issue": "The source states the change and that restoring 2000 ms ended the errors. It reports no root-cause finding."},
+        {"quote": "This reduction in the timeout value proved insufficient for the operational requirements, leading to the observed failures.", "kind": "invented_cause", "issue": "No requirement or insufficiency appears in the source."},
+        {"quote": "confirming the causal link between the timeout change and the service disruption", "kind": "stronger_claim", "issue": "The source does not say a causal link was confirmed."},
+        {"quote": "indicating that the failure was isolated to request handling timeouts rather than data integrity issues", "kind": "invented_cause", "issue": "The source only says no corruption or data loss was observed."},
+        {"quote": "beginning at 5% of traffic", "kind": "unsupported_specificity", "issue": "The source gives percentages without naming traffic."},
+        {"quote": "This policy ensures that any potential issues are detected and contained within a limited traffic segment before broader exposure.", "kind": "invented_benefit", "issue": "The source states only the staged percentages and the gate."},
+        {"quote": "demonstrates a targeted approach to incident resolution that minimizes disruption while preserving the integrity of the deployed release", "kind": "invented_benefit", "issue": "No such benefit is in the source."}
+      ],
+      "borderline": [
+        {"quote": "highlights that configuration changes, such as timeout adjustments, can have significant operational impacts even when software versions remain unchanged", "note": "Generic implication; the prompt asks for operational implications."}
+      ]
+    },
+    "cache_policy": {
+      "content_sha256": "28d12f2c627b970deb4719d2d270d940a4b8bd0d3dd539e0c227fd3b7c29d13e",
+      "words": 350,
+      "text": "Birch-Cache operates under policy version 2.6.0, defining a system with a maximum capacity of 240 entries. Each entry is assigned a fixed Time-To-Live (TTL) of 90 seconds. A critical operational characteristic is that a cache hit does not extend this TTL; the timer continues to run from the initial insertion regardless of subsequent access frequency. When the cache reaches its full capacity of 240 entries, the system manages space by evicting the least recently used entry. It is important to note that this eviction strategy is distinct from removing the oldest inserted entry, meaning recency of access, not insertion order, determines which item is discarded. Furthermore, the system prioritizes the removal of expired entries before initiating any capacity-based eviction, ensuring that stale data is cleared first.\n\nKey management within Birch-Cache is strictly case-sensitive. Consequently, keys such as Order-A and order-a are treated as entirely different identifiers and do not share cache state. The caching mechanism also includes specific rules regarding data integrity and updates. Failed fetches are never cached, preventing the storage of error states or null values. Conversely, a successful write operation immediately invalidates the matching key, ensuring that subsequent reads retrieve the most current data rather than a stale cached value. Regarding deployment architecture, every instance starts with an empty cache. There is no shared cache across processes, meaning each process maintains its own isolated state and does not benefit from entries populated by other processes.\n\nPerformance metrics from a specific measurement window indicate that the system processed 800 reads. Of these, 600 resulted in hits and 200 resulted in misses, yielding a hit rate of 75%. However, it is crucial to interpret these figures with caution. The provided measurements do not establish any specific latency improvements or monetary savings. Therefore, while the hit rate offers a baseline for cache efficiency, it cannot be used to infer broader performance benefits or cost reductions without additional data. The operational implications of these policies require careful consideration, particularly regarding the non-extending TTL and the immediate invalidation on writes, which may impact cache warmth and consistency in high-throughput environments.",
+      "required_items": [
+        {"fact": "Policy version 2.6.0.", "evidence": ["Birch-Cache operates under policy version 2.6.0"], "verdict": "faithful"},
+        {"fact": "Capacity is 240 entries.", "evidence": ["a maximum capacity of 240 entries"], "verdict": "faithful"},
+        {"fact": "Fixed TTL is 90 seconds.", "evidence": ["a fixed Time-To-Live (TTL) of 90 seconds"], "verdict": "faithful"},
+        {"fact": "A hit does not extend the TTL.", "evidence": ["a cache hit does not extend this TTL"], "verdict": "faithful"},
+        {"fact": "At capacity it evicts the least recently used entry, not the oldest inserted entry.", "evidence": ["evicting the least recently used entry", "this eviction strategy is distinct from removing the oldest inserted entry"], "verdict": "faithful"},
+        {"fact": "Expired entries are removed before capacity eviction.", "evidence": ["the system prioritizes the removal of expired entries before initiating any capacity-based eviction"], "verdict": "faithful"},
+        {"fact": "Keys are case-sensitive: Order-A and order-a are different keys.", "evidence": ["Key management within Birch-Cache is strictly case-sensitive", "keys such as Order-A and order-a are treated as entirely different identifiers"], "verdict": "faithful"},
+        {"fact": "Failed fetches are never cached.", "evidence": ["Failed fetches are never cached"], "verdict": "faithful"},
+        {"fact": "A successful write invalidates the matching key immediately.", "evidence": ["a successful write operation immediately invalidates the matching key"], "verdict": "faithful"},
+        {"fact": "A deployment starts with an empty cache.", "evidence": ["every instance starts with an empty cache"], "verdict": "wording_drift"},
+        {"fact": "No cache is shared across processes.", "evidence": ["There is no shared cache across processes"], "verdict": "faithful"},
+        {"fact": "800 reads, 600 hits, 200 misses, a 75% hit rate.", "evidence": ["the system processed 800 reads. Of these, 600 resulted in hits and 200 resulted in misses, yielding a hit rate of 75%"], "verdict": "faithful"},
+        {"fact": "The measurements do not establish a latency or monetary saving.", "evidence": ["The provided measurements do not establish any specific latency improvements or monetary savings"], "verdict": "faithful"}
+      ],
+      "unsupported_additions": [
+        {"quote": "the timer continues to run from the initial insertion regardless of subsequent access frequency", "kind": "unsupported_specificity", "issue": "The source says the TTL is fixed and not extended by hits. It does not name insertion as the start."},
+        {"quote": "ensuring that stale data is cleared first", "kind": "invented_benefit", "issue": "No such rationale is in the source."},
+        {"quote": "preventing the storage of error states or null values", "kind": "invented_benefit", "issue": "The source only says failed fetches are never cached."},
+        {"quote": "ensuring that subsequent reads retrieve the most current data rather than a stale cached value", "kind": "invented_benefit", "issue": "No such benefit is in the source."},
+        {"quote": "every instance starts with an empty cache", "kind": "wording_drift", "issue": "The source says a deployment starts with an empty cache."},
+        {"quote": "which may impact cache warmth and consistency in high-throughput environments", "kind": "invented_implication", "issue": "No workload class or warmth or consistency effect is in the source."}
+      ],
+      "borderline": [
+        {"quote": "each process maintains its own isolated state and does not benefit from entries populated by other processes", "note": "Direct inference from no cache shared across processes."},
+        {"quote": "the hit rate offers a baseline for cache efficiency", "note": "Evaluative framing; the caveat that no latency or monetary saving is established is kept."}
+      ]
+    }
+  },
+  "findings": {
+    "required_item_coverage": "incident 9 of 9, cache_policy 13 of 13. Every identifier and numeric literal is exact, matching the automated check.",
+    "added_specificity_or_drift": "incident: 'of traffic' added to the rollout percentages. cache_policy: 'deployment' became 'instance'.",
+    "constraint_adherence": "Both texts break the instruction 'Do not invent events, causes or benefits' (incident: 7 flagged additions, cache_policy: 6). In absolute terms neither text is a clean pass.",
+    "differential_quality_change": "None. Depth 7 and depth 4 produced byte-identical text for both cases in every arm and repeat, so the draft-depth change cannot be the cause of any flagged addition."
+  },
+  "result": "no_candidate_attributable_quality_change",
+  "promotion_blocking": false,
+  "limits": [
+    "Greedy decoding with --reasoning off, two fixtures. The launcher's stochastic sampling and reasoning-on generation were not measured.",
+    "The flagged additions are a property of the model and prompt, not of the draft depth. They are disclosed, not endorsed.",
+    "The reviewer is the campaign assistant, not an independent human. A human spot check of the two texts is recommended."
+  ]
+}

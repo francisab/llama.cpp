@@ -1,0 +1,804 @@
+{
+  "candidate": "lookup-rollback-capacity",
+  "qualified": false,
+  "runs": [
+    {
+      "quality_passed": true,
+      "quality": [
+        {
+          "phase": "warmups",
+          "case": "worker_timeouts",
+          "passed": true
+        },
+        {
+          "phase": "warmups",
+          "case": "buffer_sizes",
+          "passed": true
+        },
+        {
+          "phase": "rows",
+          "case": "worker_timeouts",
+          "passed": true
+        },
+        {
+          "phase": "rows",
+          "case": "worker_timeouts",
+          "passed": true
+        },
+        {
+          "phase": "rows",
+          "case": "worker_timeouts",
+          "passed": true
+        },
+        {
+          "phase": "rows",
+          "case": "buffer_sizes",
+          "passed": true
+        },
+        {
+          "phase": "rows",
+          "case": "buffer_sizes",
+          "passed": true
+        },
+        {
+          "phase": "rows",
+          "case": "buffer_sizes",
+          "passed": true
+        }
+      ],
+      "total_request_seconds": [
+        37.27651369999967,
+        37.30388009999979,
+        37.22554629999968
+      ],
+      "median_total_seconds": 37.27651369999967,
+      "load_seconds": 34.74957200000017,
+      "ready_memory_mib": 78764,
+      "rows": [
+        {
+          "case": "worker_timeouts",
+          "repeat": 1,
+          "wall_s": 18.762019299999793,
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 1072,
+            "prompt_ms": 1785.221,
+            "prompt_per_token_ms": 1.6653180970149253,
+            "prompt_per_second": 600.4858782189992,
+            "predicted_n": 1043,
+            "predicted_ms": 16756.646,
+            "predicted_per_token_ms": 16.08123416506718,
+            "predicted_per_second": 62.18428198578641,
+            "draft_n": 783,
+            "draft_n_accepted": 782
+          },
+          "content_sha256": "5ec8043e85f50af703ed1977b6f5db56c2c9067274206d1310a8944e017f78ab"
+        },
+        {
+          "case": "buffer_sizes",
+          "repeat": 1,
+          "wall_s": 18.514494399999876,
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 1085,
+            "prompt_ms": 1828.281,
+            "prompt_per_token_ms": 1.6850516129032258,
+            "prompt_per_second": 593.4536321276653,
+            "predicted_n": 1043,
+            "predicted_ms": 16513.856,
+            "predicted_per_token_ms": 15.848230326295585,
+            "predicted_per_second": 63.09852768487263,
+            "draft_n": 783,
+            "draft_n_accepted": 781
+          },
+          "content_sha256": "7a570e1be0a9089e1e4432b2367b9195a5a4b5256e14a0edacb385d0ebe1f3a1"
+        },
+        {
+          "case": "buffer_sizes",
+          "repeat": 2,
+          "wall_s": 18.642286899999817,
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 1085,
+            "prompt_ms": 1819.805,
+            "prompt_per_token_ms": 1.6772396313364055,
+            "prompt_per_second": 596.2177266245559,
+            "predicted_n": 1043,
+            "predicted_ms": 16816.75,
+            "predicted_per_token_ms": 16.13891554702495,
+            "predicted_per_second": 61.96203190271604,
+            "draft_n": 783,
+            "draft_n_accepted": 781
+          },
+          "content_sha256": "7a570e1be0a9089e1e4432b2367b9195a5a4b5256e14a0edacb385d0ebe1f3a1"
+        },
+        {
+          "case": "worker_timeouts",
+          "repeat": 2,
+          "wall_s": 18.66159319999997,
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 1072,
+            "prompt_ms": 1785.934,
+            "prompt_per_token_ms": 1.6659832089552238,
+            "prompt_per_second": 600.2461457142314,
+            "predicted_n": 1043,
+            "predicted_ms": 16737.257,
+            "predicted_per_token_ms": 16.062626679462575,
+            "predicted_per_second": 62.25631834415878,
+            "draft_n": 783,
+            "draft_n_accepted": 782
+          },
+          "content_sha256": "5ec8043e85f50af703ed1977b6f5db56c2c9067274206d1310a8944e017f78ab"
+        },
+        {
+          "case": "worker_timeouts",
+          "repeat": 3,
+          "wall_s": 18.60756689999971,
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 1072,
+            "prompt_ms": 1782.9950000000001,
+            "prompt_per_token_ms": 1.6632416044776122,
+            "prompt_per_second": 601.2355615130721,
+            "predicted_n": 1043,
+            "predicted_ms": 16793.94,
+            "predicted_per_token_ms": 16.117024952015353,
+            "predicted_per_second": 62.0461904710866,
+            "draft_n": 783,
+            "draft_n_accepted": 782
+          },
+          "content_sha256": "5ec8043e85f50af703ed1977b6f5db56c2c9067274206d1310a8944e017f78ab"
+        },
+        {
+          "case": "buffer_sizes",
+          "repeat": 3,
+          "wall_s": 18.617979399999967,
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 1085,
+            "prompt_ms": 1843.614,
+            "prompt_per_token_ms": 1.6991834101382488,
+            "prompt_per_second": 588.5179869538852,
+            "predicted_n": 1043,
+            "predicted_ms": 16616.585,
+            "predicted_per_token_ms": 15.946818618042226,
+            "predicted_per_second": 62.70843256902667,
+            "draft_n": 783,
+            "draft_n_accepted": 781
+          },
+          "content_sha256": "7a570e1be0a9089e1e4432b2367b9195a5a4b5256e14a0edacb385d0ebe1f3a1"
+        }
+      ]
+    },
+    {
+      "quality_passed": true,
+      "quality": [
+        {
+          "phase": "warmups",
+          "case": "worker_timeouts",
+          "passed": true
+        },
+        {
+          "phase": "warmups",
+          "case": "buffer_sizes",
+          "passed": true
+        },
+        {
+          "phase": "rows",
+          "case": "worker_timeouts",
+          "passed": true
+        },
+        {
+          "phase": "rows",
+          "case": "worker_timeouts",
+          "passed": true
+        },
+        {
+          "phase": "rows",
+          "case": "worker_timeouts",
+          "passed": true
+        },
+        {
+          "phase": "rows",
+          "case": "buffer_sizes",
+          "passed": true
+        },
+        {
+          "phase": "rows",
+          "case": "buffer_sizes",
+          "passed": true
+        },
+        {
+          "phase": "rows",
+          "case": "buffer_sizes",
+          "passed": true
+        }
+      ],
+      "total_request_seconds": [
+        36.8893108000002,
+        37.42584379999971,
+        36.758863100000326
+      ],
+      "median_total_seconds": 36.8893108000002,
+      "load_seconds": 33.19772849999981,
+      "ready_memory_mib": 79777,
+      "rows": [
+        {
+          "case": "worker_timeouts",
+          "repeat": 1,
+          "wall_s": 18.292241999999987,
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 1072,
+            "prompt_ms": 1893.4850000000001,
+            "prompt_per_token_ms": 1.7663106343283583,
+            "prompt_per_second": 566.1518311473288,
+            "predicted_n": 1043,
+            "predicted_ms": 16221.605,
+            "predicted_per_token_ms": 15.567759117082533,
+            "predicted_per_second": 64.23532073429233,
+            "draft_n": 1338,
+            "draft_n_accepted": 893
+          },
+          "content_sha256": "5ec8043e85f50af703ed1977b6f5db56c2c9067274206d1310a8944e017f78ab"
+        },
+        {
+          "case": "buffer_sizes",
+          "repeat": 1,
+          "wall_s": 18.597068800000216,
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 1085,
+            "prompt_ms": 1897.142,
+            "prompt_per_token_ms": 1.7485179723502304,
+            "prompt_per_second": 571.9129089967962,
+            "predicted_n": 1043,
+            "predicted_ms": 16556.197,
+            "predicted_per_token_ms": 15.888864683301344,
+            "predicted_per_second": 62.93715881732985,
+            "draft_n": 1353,
+            "draft_n_accepted": 888
+          },
+          "content_sha256": "7a570e1be0a9089e1e4432b2367b9195a5a4b5256e14a0edacb385d0ebe1f3a1"
+        },
+        {
+          "case": "buffer_sizes",
+          "repeat": 2,
+          "wall_s": 18.897762000000057,
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 1085,
+            "prompt_ms": 1975.877,
+            "prompt_per_token_ms": 1.8210847926267282,
+            "prompt_per_second": 549.1232500808502,
+            "predicted_n": 1043,
+            "predicted_ms": 16907.443,
+            "predicted_per_token_ms": 16.225952975047985,
+            "predicted_per_second": 61.62966215530048,
+            "draft_n": 1353,
+            "draft_n_accepted": 888
+          },
+          "content_sha256": "7a570e1be0a9089e1e4432b2367b9195a5a4b5256e14a0edacb385d0ebe1f3a1"
+        },
+        {
+          "case": "worker_timeouts",
+          "repeat": 2,
+          "wall_s": 18.528081799999654,
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 1072,
+            "prompt_ms": 2045.634,
+            "prompt_per_token_ms": 1.908240671641791,
+            "prompt_per_second": 524.0429128573342,
+            "predicted_n": 1043,
+            "predicted_ms": 16328.117,
+            "predicted_per_token_ms": 15.66997792706334,
+            "predicted_per_second": 63.816299209516934,
+            "draft_n": 1338,
+            "draft_n_accepted": 893
+          },
+          "content_sha256": "5ec8043e85f50af703ed1977b6f5db56c2c9067274206d1310a8944e017f78ab"
+        },
+        {
+          "case": "worker_timeouts",
+          "repeat": 3,
+          "wall_s": 18.18192110000018,
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 1072,
+            "prompt_ms": 1883.875,
+            "prompt_per_token_ms": 1.7573460820895523,
+            "prompt_per_second": 569.0398779112202,
+            "predicted_n": 1043,
+            "predicted_ms": 16281.685,
+            "predicted_per_token_ms": 15.625417466410749,
+            "predicted_per_second": 63.99829010326634,
+            "draft_n": 1338,
+            "draft_n_accepted": 893
+          },
+          "content_sha256": "5ec8043e85f50af703ed1977b6f5db56c2c9067274206d1310a8944e017f78ab"
+        },
+        {
+          "case": "buffer_sizes",
+          "repeat": 3,
+          "wall_s": 18.576942000000145,
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 1085,
+            "prompt_ms": 1858.345,
+            "prompt_per_token_ms": 1.7127603686635946,
+            "prompt_per_second": 583.852836798334,
+            "predicted_n": 1043,
+            "predicted_ms": 16582.838,
+            "predicted_per_token_ms": 15.914431861804223,
+            "predicted_per_second": 62.83604772596826,
+            "draft_n": 1353,
+            "draft_n_accepted": 888
+          },
+          "content_sha256": "7a570e1be0a9089e1e4432b2367b9195a5a4b5256e14a0edacb385d0ebe1f3a1"
+        }
+      ]
+    },
+    {
+      "quality_passed": true,
+      "quality": [
+        {
+          "phase": "warmups",
+          "case": "worker_timeouts",
+          "passed": true
+        },
+        {
+          "phase": "warmups",
+          "case": "buffer_sizes",
+          "passed": true
+        },
+        {
+          "phase": "rows",
+          "case": "worker_timeouts",
+          "passed": true
+        },
+        {
+          "phase": "rows",
+          "case": "worker_timeouts",
+          "passed": true
+        },
+        {
+          "phase": "rows",
+          "case": "worker_timeouts",
+          "passed": true
+        },
+        {
+          "phase": "rows",
+          "case": "buffer_sizes",
+          "passed": true
+        },
+        {
+          "phase": "rows",
+          "case": "buffer_sizes",
+          "passed": true
+        },
+        {
+          "phase": "rows",
+          "case": "buffer_sizes",
+          "passed": true
+        }
+      ],
+      "total_request_seconds": [
+        36.885325100000045,
+        36.93200850000039,
+        36.555397500000254
+      ],
+      "median_total_seconds": 36.885325100000045,
+      "load_seconds": 35.22962920000009,
+      "ready_memory_mib": 79720,
+      "rows": [
+        {
+          "case": "worker_timeouts",
+          "repeat": 1,
+          "wall_s": 18.187820999999985,
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 1072,
+            "prompt_ms": 1847.929,
+            "prompt_per_token_ms": 1.7238143656716418,
+            "prompt_per_second": 580.1088678190558,
+            "predicted_n": 1043,
+            "predicted_ms": 16181.472,
+            "predicted_per_token_ms": 15.529243761996161,
+            "predicted_per_second": 64.39463603805636,
+            "draft_n": 1338,
+            "draft_n_accepted": 893
+          },
+          "content_sha256": "5ec8043e85f50af703ed1977b6f5db56c2c9067274206d1310a8944e017f78ab"
+        },
+        {
+          "case": "buffer_sizes",
+          "repeat": 1,
+          "wall_s": 18.69750410000006,
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 1085,
+            "prompt_ms": 1907.855,
+            "prompt_per_token_ms": 1.7583917050691245,
+            "prompt_per_second": 568.7014998519279,
+            "predicted_n": 1043,
+            "predicted_ms": 16681.242000000002,
+            "predicted_per_token_ms": 16.00886948176584,
+            "predicted_per_second": 62.46537278219451,
+            "draft_n": 1353,
+            "draft_n_accepted": 888
+          },
+          "content_sha256": "7a570e1be0a9089e1e4432b2367b9195a5a4b5256e14a0edacb385d0ebe1f3a1"
+        },
+        {
+          "case": "buffer_sizes",
+          "repeat": 2,
+          "wall_s": 18.470355700000255,
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 1085,
+            "prompt_ms": 1887.8310000000001,
+            "prompt_per_token_ms": 1.739936405529954,
+            "prompt_per_second": 574.7336493573841,
+            "predicted_n": 1043,
+            "predicted_ms": 16568.251,
+            "predicted_per_token_ms": 15.900432821497121,
+            "predicted_per_second": 62.89136976498002,
+            "draft_n": 1353,
+            "draft_n_accepted": 888
+          },
+          "content_sha256": "7a570e1be0a9089e1e4432b2367b9195a5a4b5256e14a0edacb385d0ebe1f3a1"
+        },
+        {
+          "case": "worker_timeouts",
+          "repeat": 2,
+          "wall_s": 18.461652800000138,
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 1072,
+            "prompt_ms": 1884.9,
+            "prompt_per_token_ms": 1.7583022388059701,
+            "prompt_per_second": 568.7304366279378,
+            "predicted_n": 1043,
+            "predicted_ms": 16417.757,
+            "predicted_per_token_ms": 15.756004798464494,
+            "predicted_per_second": 63.46786592102684,
+            "draft_n": 1338,
+            "draft_n_accepted": 893
+          },
+          "content_sha256": "5ec8043e85f50af703ed1977b6f5db56c2c9067274206d1310a8944e017f78ab"
+        },
+        {
+          "case": "worker_timeouts",
+          "repeat": 3,
+          "wall_s": 18.000355200000286,
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 1072,
+            "prompt_ms": 1821.722,
+            "prompt_per_token_ms": 1.6993675373134327,
+            "prompt_per_second": 588.4542207867062,
+            "predicted_n": 1043,
+            "predicted_ms": 16165.12,
+            "predicted_per_token_ms": 15.513550863723609,
+            "predicted_per_second": 64.45977512075382,
+            "draft_n": 1338,
+            "draft_n_accepted": 893
+          },
+          "content_sha256": "5ec8043e85f50af703ed1977b6f5db56c2c9067274206d1310a8944e017f78ab"
+        },
+        {
+          "case": "buffer_sizes",
+          "repeat": 3,
+          "wall_s": 18.55504229999997,
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 1085,
+            "prompt_ms": 1929.727,
+            "prompt_per_token_ms": 1.7785502304147467,
+            "prompt_per_second": 562.2556973084794,
+            "predicted_n": 1043,
+            "predicted_ms": 16488.408,
+            "predicted_per_token_ms": 15.823808061420346,
+            "predicted_per_second": 63.195913153046675,
+            "draft_n": 1353,
+            "draft_n_accepted": 888
+          },
+          "content_sha256": "7a570e1be0a9089e1e4432b2367b9195a5a4b5256e14a0edacb385d0ebe1f3a1"
+        }
+      ]
+    },
+    {
+      "quality_passed": true,
+      "quality": [
+        {
+          "phase": "warmups",
+          "case": "worker_timeouts",
+          "passed": true
+        },
+        {
+          "phase": "warmups",
+          "case": "buffer_sizes",
+          "passed": true
+        },
+        {
+          "phase": "rows",
+          "case": "worker_timeouts",
+          "passed": true
+        },
+        {
+          "phase": "rows",
+          "case": "worker_timeouts",
+          "passed": true
+        },
+        {
+          "phase": "rows",
+          "case": "worker_timeouts",
+          "passed": true
+        },
+        {
+          "phase": "rows",
+          "case": "buffer_sizes",
+          "passed": true
+        },
+        {
+          "phase": "rows",
+          "case": "buffer_sizes",
+          "passed": true
+        },
+        {
+          "phase": "rows",
+          "case": "buffer_sizes",
+          "passed": true
+        }
+      ],
+      "total_request_seconds": [
+        37.63722650000045,
+        37.215133499999865,
+        37.46963259999984
+      ],
+      "median_total_seconds": 37.46963259999984,
+      "load_seconds": 34.64508319999959,
+      "ready_memory_mib": 78677,
+      "rows": [
+        {
+          "case": "worker_timeouts",
+          "repeat": 1,
+          "wall_s": 18.90026680000028,
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 1072,
+            "prompt_ms": 1780.0910000000001,
+            "prompt_per_token_ms": 1.6605326492537316,
+            "prompt_per_second": 602.2164035434143,
+            "predicted_n": 1043,
+            "predicted_ms": 16896.203,
+            "predicted_per_token_ms": 16.2151660268714,
+            "predicted_per_second": 61.67066056202094,
+            "draft_n": 783,
+            "draft_n_accepted": 782
+          },
+          "content_sha256": "5ec8043e85f50af703ed1977b6f5db56c2c9067274206d1310a8944e017f78ab"
+        },
+        {
+          "case": "buffer_sizes",
+          "repeat": 1,
+          "wall_s": 18.73695970000017,
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 1085,
+            "prompt_ms": 1783.9560000000001,
+            "prompt_per_token_ms": 1.6441990783410139,
+            "prompt_per_second": 608.1988569224801,
+            "predicted_n": 1043,
+            "predicted_ms": 16735.170000000002,
+            "predicted_per_token_ms": 16.06062380038388,
+            "predicted_per_second": 62.26408216946705,
+            "draft_n": 783,
+            "draft_n_accepted": 781
+          },
+          "content_sha256": "7a570e1be0a9089e1e4432b2367b9195a5a4b5256e14a0edacb385d0ebe1f3a1"
+        },
+        {
+          "case": "buffer_sizes",
+          "repeat": 2,
+          "wall_s": 18.47385579999991,
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 1085,
+            "prompt_ms": 1839.115,
+            "prompt_per_token_ms": 1.695036866359447,
+            "prompt_per_second": 589.957669857513,
+            "predicted_n": 1043,
+            "predicted_ms": 16622.892,
+            "predicted_per_token_ms": 15.952871401151631,
+            "predicted_per_second": 62.684639953144135,
+            "draft_n": 783,
+            "draft_n_accepted": 781
+          },
+          "content_sha256": "7a570e1be0a9089e1e4432b2367b9195a5a4b5256e14a0edacb385d0ebe1f3a1"
+        },
+        {
+          "case": "worker_timeouts",
+          "repeat": 2,
+          "wall_s": 18.741277699999955,
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 1072,
+            "prompt_ms": 1798.193,
+            "prompt_per_token_ms": 1.6774188432835822,
+            "prompt_per_second": 596.1540279602913,
+            "predicted_n": 1043,
+            "predicted_ms": 16721.841,
+            "predicted_per_token_ms": 16.047832053742802,
+            "predicted_per_second": 62.31371294584131,
+            "draft_n": 783,
+            "draft_n_accepted": 782
+          },
+          "content_sha256": "5ec8043e85f50af703ed1977b6f5db56c2c9067274206d1310a8944e017f78ab"
+        },
+        {
+          "case": "worker_timeouts",
+          "repeat": 3,
+          "wall_s": 18.659705699999904,
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 1072,
+            "prompt_ms": 1855.156,
+            "prompt_per_token_ms": 1.7305559701492537,
+            "prompt_per_second": 577.8489787381762,
+            "predicted_n": 1043,
+            "predicted_ms": 16792.502,
+            "predicted_per_token_ms": 16.11564491362764,
+            "predicted_per_second": 62.05150370087792,
+            "draft_n": 783,
+            "draft_n_accepted": 782
+          },
+          "content_sha256": "5ec8043e85f50af703ed1977b6f5db56c2c9067274206d1310a8944e017f78ab"
+        },
+        {
+          "case": "buffer_sizes",
+          "repeat": 3,
+          "wall_s": 18.809926899999937,
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 1085,
+            "prompt_ms": 1835.181,
+            "prompt_per_token_ms": 1.6914110599078342,
+            "prompt_per_second": 591.2223371972574,
+            "predicted_n": 1043,
+            "predicted_ms": 16814.78,
+            "predicted_per_token_ms": 16.137024952015356,
+            "predicted_per_second": 61.96929130205689,
+            "draft_n": 783,
+            "draft_n_accepted": 781
+          },
+          "content_sha256": "7a570e1be0a9089e1e4432b2367b9195a5a4b5256e14a0edacb385d0ebe1f3a1"
+        }
+      ]
+    }
+  ],
+  "comparison": {
+    "passed": false,
+    "pairs": [
+      {
+        "latency_reduction_percent": 1.038731527083414,
+        "separated": false
+      },
+      {
+        "latency_reduction_percent": 1.5594161443680643,
+        "separated": true
+      }
+    ],
+    "control_reload_drift_percent": 0.5180712487073973
+  },
+  "additional_ready_memory_mib": [
+    1013,
+    1043
+  ],
+  "deployment_changed": false,
+  "runtime_sha256": {
+    "cublas64_13.dll": "49e8fa23d88ac0cbae27e200fc092b894dd55b4de5cb4293993986e29fb9b65a",
+    "cublasLt64_13.dll": "daf579ae36bb3c85e2340c57a1994f634e07c6f55ef70dd4cdc26695de21c752",
+    "cudart64_13.dll": "bd927ddf03823eeead7c8b261a8669d96764b89109311f4ab6accde8b7d97ec2",
+    "ggml-base.dll": "78a8ee0bbfa83221d579166779edbb2bf81c1440e02185a17d83dbbd3a59bfc7",
+    "ggml-cpu.dll": "04540c35427ee8c8eddb867c048302120bce5a76732fb886054da31e579c26cc",
+    "ggml-cuda.dll": "898fb56c5a64f75e945e0823efa9a773cbdec66e5de9f1f253a771911b172c9f",
+    "ggml-rpc-server.exe": "ff31fa6df8f0fd44e6266d08ef1b891c30ae3555bb43d00bda78cc4197cf30db",
+    "ggml-rpc.dll": "62f5d72e6b1c909c1a8f05737acf7205a43f7ef9319cd53fdaea9f55b7e4bced",
+    "ggml.dll": "7444aa6d23f780f05230b4b2d71d2ef424853b2da302fe584afde956ef4d801e",
+    "libomp.dll": "b13ebedc0cff13097516f9d291a2414e1a97d6ab49269307e03c5df55a60d7fd",
+    "llama-batched-bench-impl.dll": "3f9ca458697e5c3e4afbfef4d8c468d71d5f094ab4c9d65fd8834dbbf7c582db",
+    "llama-batched-bench.exe": "04ecabbbab8d09c0058b2b585770289195496d15a0cb7b2fb5eded4030feb45e",
+    "llama-bench-impl.dll": "9c9475ffdae8ec9865d7c227997ee1e940cfa0499f9a989f773cb14a32c4736f",
+    "llama-bench.exe": "0c4bec770ab595dd18b02f52b28d4bfb06b5bf7e5b743fa8f4f8671d768454a3",
+    "llama-cli-impl.dll": "851561d7d1435dd1f6b7a341d0066c548e94ff6a6e41dd2cabab99c8d383110b",
+    "llama-cli.exe": "4837bd989efebc8a4895a34067ac958f2aa472506818df4ab5f62338297db72f",
+    "llama-common.dll": "b2fa9b52c99c9d77f7b964ba283ad1a1de5eaf59cd19252984e41d8e03775e1c",
+    "llama-completion-impl.dll": "fe1963907d4b8df1c36ca2419be924132f6b58c7f9ecafe4684be47314ed677c",
+    "llama-completion.exe": "bedc0ff8f5efc2c8bfb63796013be612f96ceaf565ab9dda921fd738dd40b28b",
+    "llama-fit-params-impl.dll": "57b80a677aebfda1f236d72a62bec0682d71f228da39dedc3bccc9a0ec34c22c",
+    "llama-fit-params.exe": "3c7fa3a1264cfa753d0485850ba492091a94e609379cca443c9512a249df8e2f",
+    "llama-gemma3-cli.exe": "5bfbcde68d39a583ab1986230b5feee8b39021dadce7f80fe4c16cc31f1d4638",
+    "llama-gguf-split.exe": "514c2a1e815f22ab9585b4ba50ac5a679d7d34b38a055b916e5e8d8f82bf0fd1",
+    "llama-imatrix.exe": "23237fedaf108aac86483d518e77aea366d8d4a055d73410b28f56e171ef22bd",
+    "llama-llava-cli.exe": "5bfbcde68d39a583ab1986230b5feee8b39021dadce7f80fe4c16cc31f1d4638",
+    "llama-minicpmv-cli.exe": "5bfbcde68d39a583ab1986230b5feee8b39021dadce7f80fe4c16cc31f1d4638",
+    "llama-mtmd-cli.exe": "2693563d096287bbd5db947a9414ee39a46ec2f5c95cab052faf04a49ddf00eb",
+    "llama-mtmd-debug.exe": "86643be38cca782fe22d48b8057f8390d771da9dd64820b41f7c3903d01f90e6",
+    "llama-perplexity-impl.dll": "4ce712ee63f8522d82bfea0e7acdd93ab9e055b69ca6bfe24232539028154698",
+    "llama-perplexity.exe": "04c8ae729a7ef367eb8b9831f7bae6712095a37a7f4675143610092d958baabd",
+    "llama-quantize-impl.dll": "1877d61a18a47a8dd6cbf4544b17adc68cd3f9f9d24615d1362d16d84935c873",
+    "llama-quantize.exe": "36e8b5eb6039ec2a6e86366e24a385eb3913022356b6f1944f6f0ec8d72c7146",
+    "llama-qwen2vl-cli.exe": "5bfbcde68d39a583ab1986230b5feee8b39021dadce7f80fe4c16cc31f1d4638",
+    "llama-results.exe": "aec63861566748030920b658f836c59fc7351e0d1156fb19a535a9c430c326cd",
+    "llama-server-impl.dll": "c5a14ce5f4fd040637f78a68aed59c6c7f414546d63596cd53eaef4b1c7d20f9",
+    "llama-server.exe": "b575a9a6c70587568b97a9edbbe0c084d73cea067de40cb08091a5dd399528fd",
+    "llama-tokenize.exe": "6e36d63fc3f304d470e1546370ed1835c3bf8ca9386fd030ed1bcab3e0eeb0d7",
+    "llama-tts.exe": "4a46b2dce291c00ae7f9e3296e98a9fde546486df8e7122359753e88caaf88af",
+    "llama.dll": "d2eeb4d523556424f6ec643737fe7ac2cfbd1a2e61cdfc1bd6eb08be37b1231b",
+    "llama.exe": "5c224ee632770ccfcd39695054611219f01fe19a5d818c817d12c352ea6183ab",
+    "mtmd.dll": "0e066445858363e309ea6c4b1cf440e7f10c7079de79f55a468804853cafd54b"
+  },
+  "candidate_runtime_sha256": {
+    "cublas64_13.dll": "49e8fa23d88ac0cbae27e200fc092b894dd55b4de5cb4293993986e29fb9b65a",
+    "cublasLt64_13.dll": "daf579ae36bb3c85e2340c57a1994f634e07c6f55ef70dd4cdc26695de21c752",
+    "cudart64_13.dll": "bd927ddf03823eeead7c8b261a8669d96764b89109311f4ab6accde8b7d97ec2",
+    "ggml-base.dll": "78a8ee0bbfa83221d579166779edbb2bf81c1440e02185a17d83dbbd3a59bfc7",
+    "ggml-cpu.dll": "04540c35427ee8c8eddb867c048302120bce5a76732fb886054da31e579c26cc",
+    "ggml-cuda.dll": "898fb56c5a64f75e945e0823efa9a773cbdec66e5de9f1f253a771911b172c9f",
+    "ggml-rpc-server.exe": "ff31fa6df8f0fd44e6266d08ef1b891c30ae3555bb43d00bda78cc4197cf30db",
+    "ggml-rpc.dll": "62f5d72e6b1c909c1a8f05737acf7205a43f7ef9319cd53fdaea9f55b7e4bced",
+    "ggml.dll": "7444aa6d23f780f05230b4b2d71d2ef424853b2da302fe584afde956ef4d801e",
+    "libomp.dll": "b13ebedc0cff13097516f9d291a2414e1a97d6ab49269307e03c5df55a60d7fd",
+    "llama-batched-bench-impl.dll": "3f9ca458697e5c3e4afbfef4d8c468d71d5f094ab4c9d65fd8834dbbf7c582db",
+    "llama-batched-bench.exe": "04ecabbbab8d09c0058b2b585770289195496d15a0cb7b2fb5eded4030feb45e",
+    "llama-bench-impl.dll": "9c9475ffdae8ec9865d7c227997ee1e940cfa0499f9a989f773cb14a32c4736f",
+    "llama-bench.exe": "0c4bec770ab595dd18b02f52b28d4bfb06b5bf7e5b743fa8f4f8671d768454a3",
+    "llama-cli-impl.dll": "851561d7d1435dd1f6b7a341d0066c548e94ff6a6e41dd2cabab99c8d383110b",
+    "llama-cli.exe": "4837bd989efebc8a4895a34067ac958f2aa472506818df4ab5f62338297db72f",
+    "llama-common.dll": "6f6f9d547b7487f0cdbcb8fd394c88dd4af6ac807bc692b5158f666e13ec2f7b",
+    "llama-completion-impl.dll": "fe1963907d4b8df1c36ca2419be924132f6b58c7f9ecafe4684be47314ed677c",
+    "llama-completion.exe": "bedc0ff8f5efc2c8bfb63796013be612f96ceaf565ab9dda921fd738dd40b28b",
+    "llama-fit-params-impl.dll": "57b80a677aebfda1f236d72a62bec0682d71f228da39dedc3bccc9a0ec34c22c",
+    "llama-fit-params.exe": "3c7fa3a1264cfa753d0485850ba492091a94e609379cca443c9512a249df8e2f",
+    "llama-gemma3-cli.exe": "5bfbcde68d39a583ab1986230b5feee8b39021dadce7f80fe4c16cc31f1d4638",
+    "llama-gguf-split.exe": "514c2a1e815f22ab9585b4ba50ac5a679d7d34b38a055b916e5e8d8f82bf0fd1",
+    "llama-imatrix.exe": "23237fedaf108aac86483d518e77aea366d8d4a055d73410b28f56e171ef22bd",
+    "llama-llava-cli.exe": "5bfbcde68d39a583ab1986230b5feee8b39021dadce7f80fe4c16cc31f1d4638",
+    "llama-minicpmv-cli.exe": "5bfbcde68d39a583ab1986230b5feee8b39021dadce7f80fe4c16cc31f1d4638",
+    "llama-mtmd-cli.exe": "2693563d096287bbd5db947a9414ee39a46ec2f5c95cab052faf04a49ddf00eb",
+    "llama-mtmd-debug.exe": "86643be38cca782fe22d48b8057f8390d771da9dd64820b41f7c3903d01f90e6",
+    "llama-perplexity-impl.dll": "4ce712ee63f8522d82bfea0e7acdd93ab9e055b69ca6bfe24232539028154698",
+    "llama-perplexity.exe": "04c8ae729a7ef367eb8b9831f7bae6712095a37a7f4675143610092d958baabd",
+    "llama-quantize-impl.dll": "1877d61a18a47a8dd6cbf4544b17adc68cd3f9f9d24615d1362d16d84935c873",
+    "llama-quantize.exe": "36e8b5eb6039ec2a6e86366e24a385eb3913022356b6f1944f6f0ec8d72c7146",
+    "llama-qwen2vl-cli.exe": "5bfbcde68d39a583ab1986230b5feee8b39021dadce7f80fe4c16cc31f1d4638",
+    "llama-results.exe": "aec63861566748030920b658f836c59fc7351e0d1156fb19a535a9c430c326cd",
+    "llama-server-impl.dll": "c5a14ce5f4fd040637f78a68aed59c6c7f414546d63596cd53eaef4b1c7d20f9",
+    "llama-server.exe": "b575a9a6c70587568b97a9edbbe0c084d73cea067de40cb08091a5dd399528fd",
+    "llama-tokenize.exe": "6e36d63fc3f304d470e1546370ed1835c3bf8ca9386fd030ed1bcab3e0eeb0d7",
+    "llama-tts.exe": "4a46b2dce291c00ae7f9e3296e98a9fde546486df8e7122359753e88caaf88af",
+    "llama.dll": "d2eeb4d523556424f6ec643737fe7ac2cfbd1a2e61cdfc1bd6eb08be37b1231b",
+    "llama.exe": "5c224ee632770ccfcd39695054611219f01fe19a5d818c817d12c352ea6183ab",
+    "mtmd.dll": "0e066445858363e309ea6c4b1cf440e7f10c7079de79f55a468804853cafd54b"
+  },
+  "draft_sha256": "ee2207b567710b4f73035b83ed214ba470ee17a94355c678e17fd3c58e7ccd84",
+  "protocol": {
+    "parent_protocol_sha256": "ed6ecc5e9ba1379881029790f690ea6724e069ccf3e408365f66a520afd41755",
+    "script_sha256": "73491aac865d84be46fdabf51a24fdfd7f75aa8b14af47e5ab18394cf817b8e4",
+    "repetitions": 3,
+    "order": [
+      "control",
+      "candidate",
+      "candidate",
+      "control"
+    ],
+    "maximum_new_tokens": 4096,
+    "natural_eos_required": true,
+    "maximum_added_ready_memory_mib": 2048,
+    "score": "Every key, value, type and array order in the complete edited JSON must match.",
+    "scope": "Two fresh twelve-worker full JSON edits; not the historical 512-token prefix cases."
+  }
+}
