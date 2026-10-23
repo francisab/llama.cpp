@@ -130,6 +130,7 @@ def main():
     parser.add_argument("--work", required=True, type=Path)
     parser.add_argument("--dataset", required=True, type=Path)
     parser.add_argument("--runtime", required=True, type=Path)
+    parser.add_argument("--candidate-dir", type=Path, help="prebuilt BF16-derived candidate from bf16_nvfp4.py")
     args = parser.parse_args()
     public = Path(__file__).parent
     protocol = json.loads((public / "protocol.json").read_text())["nvfp4_precision_preflight"]
@@ -146,7 +147,11 @@ def main():
     result["runtime_sha256"] = baseline_manifest
     result["protocol_sha256"] = sha(public / "protocol.json")
     result["script_sha256"] = sha(Path(__file__))
-    save(public / f"nvfp4-{args.case}-precision.json", result)
+    name = f"nvfp4-{args.case}-precision.json"
+    if args.candidate_dir is not None:
+        result["bf16_protocol_sha256"] = sha(public / "bf16-nvfp4-protocol.json")
+        name = f"nvfp4-bf16-{args.case}-precision.json"
+    save(public / name, result)
     print(json.dumps(result, indent=2), flush=True)
 
 
@@ -164,6 +169,94 @@ def evaluate(args, protocol):
         if match and int(match[1]) < layers:
             selected[name] = tensor
     require(len(selected) == expected, f"Expected {expected} selected tensors, got {len(selected)}")
+    if args.candidate_dir is None:
+        candidate_files, audit = requantize(args, protocol, source_files, sources, before, selected)
+        label = "NVFP4 from existing quantized GGUF, not BF16"
+    else:
+        candidate_files, audit = audit_prebuilt(args.candidate_dir, sources, before, selected)
+        label = "Scaled per-expert NVFP4 from original BF16 (bf16-nvfp4-protocol.json)"
+    print("Full tensor/metadata audit passed", flush=True)
+    reference = args.work / "baseline.kld"
+    common = [
+        str(args.runtime / "llama-perplexity.exe"), "-f", str(args.dataset),
+        "-c", "1024", "-b", "1024", "-ub", "512", "-ngl", "99", "-fa", "on",
+        "-lzm", "on", "--chunks", "16", "-t", "20", "-tb", "20",
+        "--kl-divergence-base", str(reference),
+    ]
+    run([*common, "-m", str(source_files[0])], args.work, "reference", protocol["timeout_per_process_seconds"])
+    require(reference.is_file() and reference.stat().st_size > 0, "No reference logits")
+    run([*common, "-m", str(source_files[0]), "--kl-divergence"], args.work,
+        "calibration", protocol["timeout_per_process_seconds"])
+    calibration = parse_metrics((args.work / "calibration.log").read_text(encoding="utf-8"))
+    original_ppl = validate_calibration(
+        calibration, (args.work / "reference.log").read_text(encoding="utf-8"), protocol)
+    run([*common, "-m", str(candidate_files[0]), "--kl-divergence"], args.work,
+        "candidate", protocol["timeout_per_process_seconds"])
+    metrics = parse_metrics((args.work / "candidate.log").read_text(encoding="utf-8"))
+    passed, ppl_ratio = precision_passes(metrics, calibration, protocol)
+    return {
+        "case": args.case, "candidate": label,
+        "status": "development_precision_pass" if passed else "development_precision_fail",
+        "decision": "Continue held-out quality validation" if passed else "Do not enable this candidate",
+        "speed_measured": False, "deployment_changed": False,
+        "conversion": audit, "calibration": calibration, "metrics": metrics,
+        "actual_ppl_ratio": ppl_ratio, "reference_printed_actual_ppl": original_ppl,
+    }
+
+
+def audit_prebuilt(candidate_dir, sources, before, selected):
+    """Allow only NVFP4 selected payloads plus one F32 per-expert scale per selected tensor."""
+    candidate_files = sorted(candidate_dir.glob("*.gguf"))
+    require(len(candidate_files) == len(sources), "Unexpected candidate shard count")
+    candidates = [GGUFReader(str(path)) for path in candidate_files]
+    after = tensors(candidates)
+    scales = {name.removesuffix(".weight") + ".scale": name for name in selected}
+    require(after.keys() == before.keys() | scales.keys(), "Unexpected tensor names")
+    for source, candidate in zip(sources, candidates):
+        require(source.fields.keys() == candidate.fields.keys(), "Metadata fields changed")
+        for name in source.fields:
+            if name.startswith("GGUF.") or name == "split.tensors.count":
+                continue
+            a, b = source.fields[name], candidate.fields[name]
+            require(a.types == b.types and a.contents() == b.contents(), f"Metadata changed: {name}")
+    unchanged, changed = [], []
+    for name in sorted(after):
+        b = after[name]
+        if name in scales:
+            n_expert = int(before[scales[name]].shape[2])
+            values = b.data.reshape(-1)
+            require(b.tensor_type == GGMLQuantizationType.F32 and list(b.shape) == [n_expert],
+                    f"Wrong scale tensor: {name}")
+            require(bool((values > 0).all()) and bool(abs(values).max() < float("inf")), f"Invalid scale values: {name}")
+            changed.append([name, None, hashlib.sha256(b.data).hexdigest()])
+            continue
+        a = before[name]
+        require(list(a.shape) == list(b.shape), f"Shape changed: {name}")
+        digest_b = hashlib.sha256(b.data).hexdigest()
+        if name in selected:
+            require(b.tensor_type == GGMLQuantizationType.NVFP4, f"Selected tensor is not NVFP4: {name}")
+            changed.append([name, hashlib.sha256(a.data).hexdigest(), digest_b])
+        else:
+            digest_a = hashlib.sha256(a.data).hexdigest()
+            require(a.tensor_type == b.tensor_type and a.n_bytes == b.n_bytes and digest_a == digest_b,
+                    f"Unselected payload changed: {name}")
+            unchanged.append([name, digest_a])
+    build = json.loads((candidate_dir.parent / "build.json").read_text())
+    return candidate_files, {
+        "source_filenames": [Path(reader.data.filename).name for reader in sources],
+        "candidate_filenames": [path.name for path in candidate_files],
+        "candidate_bytes": sum(path.stat().st_size for path in candidate_files),
+        "changed_tensors": len(changed), "scale_tensors": len(scales),
+        "unchanged_payloads_verified": len(unchanged),
+        "metadata_unchanged_except": ["split.tensors.count"],
+        "build_script_sha256": build["script_sha256"], "build_protocol_sha256": build["protocol_sha256"],
+        "mapping_check": build["mapping_check"],
+        "unchanged_payload_manifest_sha256": hashlib.sha256(json.dumps(unchanged).encode()).hexdigest(),
+        "changed_payload_manifest_sha256": hashlib.sha256(json.dumps(changed).encode()).hexdigest(),
+    }
+
+
+def requantize(args, protocol, source_files, sources, before, selected):
     desired = {
         name: GGMLQuantizationType.NVFP4 if name in selected else tensor.tensor_type
         for name, tensor in before.items()
@@ -220,33 +313,7 @@ def evaluate(args, protocol):
     }
     save(args.work / "conversion-audit.json", audit)
     save(args.work / "payload-manifest.json", {"changed": changed, "unchanged": unchanged})
-    print("Full tensor/metadata audit passed", flush=True)
-    reference = args.work / "baseline.kld"
-    common = [
-        str(args.runtime / "llama-perplexity.exe"), "-f", str(args.dataset),
-        "-c", "1024", "-b", "1024", "-ub", "512", "-ngl", "99", "-fa", "on",
-        "-lzm", "on", "--chunks", "16", "-t", "20", "-tb", "20",
-        "--kl-divergence-base", str(reference),
-    ]
-    run([*common, "-m", str(source_files[0])], args.work, "reference", protocol["timeout_per_process_seconds"])
-    require(reference.is_file() and reference.stat().st_size > 0, "No reference logits")
-    run([*common, "-m", str(source_files[0]), "--kl-divergence"], args.work,
-        "calibration", protocol["timeout_per_process_seconds"])
-    calibration = parse_metrics((args.work / "calibration.log").read_text(encoding="utf-8"))
-    original_ppl = validate_calibration(
-        calibration, (args.work / "reference.log").read_text(encoding="utf-8"), protocol)
-    run([*common, "-m", str(candidate_files[0]), "--kl-divergence"], args.work,
-        "candidate", protocol["timeout_per_process_seconds"])
-    metrics = parse_metrics((args.work / "candidate.log").read_text(encoding="utf-8"))
-    passed, ppl_ratio = precision_passes(metrics, calibration, protocol)
-    return {
-        "case": args.case, "candidate": "NVFP4 from existing quantized GGUF, not BF16",
-        "status": "development_precision_pass" if passed else "development_precision_fail",
-        "decision": "Continue held-out quality validation" if passed else "Do not enable this requantized candidate",
-        "speed_measured": False, "deployment_changed": False,
-        "conversion": audit, "calibration": calibration, "metrics": metrics,
-        "actual_ppl_ratio": ppl_ratio, "reference_printed_actual_ppl": original_ppl,
-    }
+    return candidate_files, audit
 
 
 if __name__ == "__main__":

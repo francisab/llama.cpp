@@ -1,0 +1,23 @@
+{
+  "declared": "2026-10-23, before any BF16-derived candidate was built or scored",
+  "parent_protocol": "protocol.json, section nvfp4_precision_preflight",
+  "parent_protocol_sha256": "ed6ecc5e9ba1379881029790f690ea6724e069ccf3e408365f66a520afd41755",
+  "question": "Do NVFP4 expert weights quantized from the original BF16 checkpoints, with a per-expert F32 scale, pass the unchanged precision gates that the requantized candidates failed?",
+  "sources": {
+    "nemotron": {"repository": "nvidia/NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-BF16", "revision": "1f8953f7f0935358e3605150d22bc15df062061c"},
+    "flash-next": {"repository": "Qwen/Qwen3.8-Flash-Next", "revision": "de4b8e4d43b917e7706784d8bb445c9af86a3540"},
+    "integrity": "All 195 safetensors files matched their pinned Git LFS SHA-256 before use."
+  },
+  "selection": "Same expert tensors as the requantized screens (Nemotron 80 ffn_up/down_exps in layers 0-87, MTP layer excluded; Flash-Next 144 ffn_gate/up/down_exps in layers 0-47). Every other tensor payload and all metadata except split.tensors.count stay byte-identical to the original GGUF.",
+  "encoder": {
+    "name": "scaled per-expert NVFP4",
+    "per_expert_scale": "s_e = amax(|W_e|) / (6 * 240), stored as blk.N.ffn_X_exps.scale (F32, n_expert), the existing optional loader tensor",
+    "weights": "ggml_quantize_chunk(GGML_TYPE_NVFP4) of W_e / s_e from the installed ggml-base.dll; no imatrix",
+    "cap_reason": "ggml_fp32_to_ue4m3 maps every block scale of 256 or more to 448, so 240 is the largest exact UE4M3 block scale",
+    "alternative_not_run": "Plain unscaled NVFP4 from BF16 was considered and not selected; only its per-expert reconstruction error is reported as a diagnostic."
+  },
+  "mapping_check": "Before a build, sampled experts must match the original GGUF experts in shape, and their BF16 values must correlate with the dequantized original tensors at Pearson r >= 0.95.",
+  "gates": "Unchanged from the parent: actual-PPL ratio <= 1.01 and mean KL <= 0.01 against the same-model calibration, calibration |KL| <= 0.001 and actual PPL within 0.01%, same corpus, chunks, context, batch and runtime.",
+  "order": ["nemotron", "flash-next"],
+  "stop": "A failed model is documented and not enabled. No subset narrowing, scale-cap sweep, activation-precision change or threshold relaxation. A pass only allows held-out quality and speed validation; it enables nothing."
+}
