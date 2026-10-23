@@ -1,0 +1,43 @@
+{
+  "base_commit": "9ff0d7e90",
+  "cand_commit": "9ff0d7e90",
+  "model_type": "nemotron_h_moe 120B.A12B Q4_K - Medium",
+  "bench_args": "-fa 1 -ngl 99 -ub 2048 -p 2048 -n 32 -r 2",
+  "rounds": 6,
+  "tests": [
+    {
+      "test": "tg32",
+      "base_median": 27.387549999999997,
+      "cand_median": 27.74215,
+      "ratio": 1.0129474889137584,
+      "base_range": [
+        26.1019,
+        28.9916
+      ],
+      "cand_range": [
+        26.423,
+        28.2296
+      ],
+      "n_base": 12,
+      "n_cand": 12
+    },
+    {
+      "test": "pp2048",
+      "base_median": 737.5235,
+      "cand_median": 758.244,
+      "ratio": 1.0280946979994536,
+      "base_range": [
+        675.493,
+        852.016
+      ],
+      "cand_range": [
+        712.482,
+        845.095
+      ],
+      "n_base": 12,
+      "n_cand": 12
+    }
+  ],
+  "base_model_filename": "NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-Q4_K_M-00001-of-00002.gguf",
+  "cand_model_filename": "NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-Q4_K_M-00001-of-00002.gguf"
+}

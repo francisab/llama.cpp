@@ -1,0 +1,5 @@
+Mean PPL(Q)                   :   5.571424 ±   0.146330
+Mean PPL(Q)/PPL(base)         :   1.001973 ±   0.001171
+Mean    KLD:   0.002783 ±   0.000312
+Maximum KLD:   2.281156
+Same top p: 97.860 ± 0.160 %

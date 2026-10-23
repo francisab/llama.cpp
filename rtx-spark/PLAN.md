@@ -1282,6 +1282,17 @@ Both fail, so neither is enabled and no speed was measured. The BF16 source cut 
 
 The 27B control itself moved from 24.53 to 29.58 tok/s on rust256 between its two arms, so only the acceptance changes are reliable. The deployed runtime and launcher are unchanged. Evidence: `results/upstream-sync-20261023/`.
 
+**Open upstream CUDA PRs.** Each is another author's patch, screened on b11845 (or its own base) with alternating rounds; per-round ratios pair adjacent arms, so drift cancels.
+
+| PR | Workload | Result | Correctness | Decision |
+|---|---|---|---|---|
+| [ggml-org/llama.cpp#31047](https://github.com/ggml-org/llama.cpp/pull/31047) MoE layout for MMQ/MMF | Flash-Next pp2048, 8 rounds | candidate faster in 8/8 rounds, paired geomean +6.03% (median about +4.2%; one round +22%); tg32 +0.60% | mean KL 0.000000, 100% same top token | **advance** |
+| #31047 | Nemotron pp2048, 6 rounds | +1.55% (3/6 wins), tg32 +0.02% | not separately run | neutral |
+| [ggml-org/llama.cpp#31004](https://github.com/ggml-org/llama.cpp/pull/31004) graph shape keying (PR head vs its parent 339f3242c; does not apply to b11845) | 27B DFlash2 server ABBA | +4.27% / -2.01% | identical outputs 6/6 | no gain |
+| [ggml-org/llama.cpp#30797](https://github.com/ggml-org/llama.cpp/pull/30797) Q5_K MMA | 27B pp2048, 8 rounds | -1.05% (3/8 wins) | mean KL 0.002783, 97.86% same top token | reject |
+
+**Deployment (b11845 + deployed #30380 diff + #31047).** Release-like 42-file build, version `build 11845, commit 9ff0d7e90`. The English/code quality suite (natural EOS, scored) passed for both the old runtime and the candidate on Flash-Next U1 (MTP3, dynamic vocabulary, Q4_K head), 27B D2 (DFlash2 depth 7) and Nemotron N2 (MTP3). Deployed to the install directory with every file hash-verified, the launcher catalog hash unchanged and the previous b11756 + #30380 + #30640 runtime kept as a renamed backup with a rollback script. A post-deploy server smoke test on the installed runtime completed for U1, D2 and N2. What to expect: Flash-Next prompt processing about 4-6% faster on long prompts and about 490 MiB less ready GPU memory; decode and the other two models unchanged within noise. These gains are upstream work, not ours. Evidence: `results/upstream-sync-20261023/` (PR screens, KL checks, quality scores).
+
 ## 3. Source-verified feature status and reference lessons
 
 The following status is verified in this checkout. This table supersedes the porting assumptions in the initial reference inventory below.

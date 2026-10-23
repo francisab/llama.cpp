@@ -1,0 +1,87 @@
+{
+  "passed": true,
+  "cases": [
+    "code",
+    "locale_json",
+    "identifiers",
+    "document"
+  ],
+  "files": [
+    {
+      "path": "<work>\\N2-control\\server_N2_en-us-quality.json",
+      "cases": [
+        "code",
+        "locale_json",
+        "identifiers",
+        "document"
+      ],
+      "passed": true,
+      "scores": [
+        {
+          "phase": "warmups",
+          "case": "code",
+          "tokens": 2021,
+          "content_sha256": "d9e700519acc7a38db8598eb79ebb98952de7b8db31c7d3834acc79fcece24ed",
+          "passed": true,
+          "assertions": 231
+        },
+        {
+          "phase": "warmups",
+          "case": "locale_json",
+          "tokens": 410,
+          "content_sha256": "9034cf49377b141139b80169144d7aca3b73d510a7348ec6fe549ba9e79def7b",
+          "passed": true,
+          "assertions": 6
+        },
+        {
+          "phase": "warmups",
+          "case": "identifiers",
+          "tokens": 312,
+          "content_sha256": "9ce776cb8eeb9d6e08a611bb21b283b1d46d518de58cbc4c8e18c443625731fa",
+          "passed": true,
+          "assertions": 4
+        },
+        {
+          "phase": "warmups",
+          "case": "document",
+          "tokens": 291,
+          "content_sha256": "43d292add31523aa6a71a411d506a8d679efd9bdad6751e2c21747a9d4c2a96e",
+          "passed": true,
+          "assertions": 4
+        },
+        {
+          "phase": "rows",
+          "case": "code",
+          "tokens": 2021,
+          "content_sha256": "d9e700519acc7a38db8598eb79ebb98952de7b8db31c7d3834acc79fcece24ed",
+          "passed": true,
+          "assertions": 231
+        },
+        {
+          "phase": "rows",
+          "case": "locale_json",
+          "tokens": 410,
+          "content_sha256": "9034cf49377b141139b80169144d7aca3b73d510a7348ec6fe549ba9e79def7b",
+          "passed": true,
+          "assertions": 6
+        },
+        {
+          "phase": "rows",
+          "case": "identifiers",
+          "tokens": 312,
+          "content_sha256": "9ce776cb8eeb9d6e08a611bb21b283b1d46d518de58cbc4c8e18c443625731fa",
+          "passed": true,
+          "assertions": 4
+        },
+        {
+          "phase": "rows",
+          "case": "document",
+          "tokens": 291,
+          "content_sha256": "43d292add31523aa6a71a411d506a8d679efd9bdad6751e2c21747a9d4c2a96e",
+          "passed": true,
+          "assertions": 4
+        }
+      ]
+    }
+  ]
+}
