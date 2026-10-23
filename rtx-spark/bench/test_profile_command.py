@@ -27,11 +27,17 @@ ProfileError = tool.ProfileError
 CONTROL_TOKENS = ["llama-server.exe", "-m", "C:\\models\\nemotron super.gguf", "--mmproj", "C:\\models\\mm.gguf",
                   "--fit", "off", "--host", "127.0.0.1", "--port", "9940", "-c", "262144", "-np", "1", "-fa", "on",
                   "-ngl", "999", "-b", "4096", "-ub", "4096", "--spec-type", "draft-mtp", "--spec-draft-n-max", "3"]
+DFLASH_CONTROL_TOKENS = CONTROL_TOKENS[:-4] + [
+    "--spec-type", "draft-dflash", "--spec-draft-n-max", "5", "-md", "C:\\models\\draft model.gguf",
+    "--spec-draft-ngl", "999",
+]
 CONTROL_TEXT = ('llama-server.exe -m "C:\\models\\nemotron super.gguf" --mmproj C:\\models\\mm.gguf --fit off '
                 "--host 127.0.0.1 --port 9940 -c 262144 -np 1 -fa on -ngl 999 -b 4096 -ub 4096 "
                 "--spec-type draft-mtp --spec-draft-n-max 3")
+DFLASH_CONTROL_TEXT = tool.render_command(DFLASH_CONTROL_TOKENS)
 CANDIDATE_TOKENS = CONTROL_TOKENS[:-2]
 CANDIDATE_TOKENS[CANDIDATE_TOKENS.index("draft-mtp")] = "none"
+DFLASH_CANDIDATE_TOKENS = DFLASH_CONTROL_TOKENS[:-8] + ["--spec-type", "none"]
 
 
 def body(rendered):
@@ -120,10 +126,18 @@ class ShippedProfileTests(unittest.TestCase):
     def test_renders_the_no_speculation_command(self):
         rendered = tool.render_profile(self.profile, CONTROL_TEXT)
         self.assertEqual(tool.split_command(body(rendered)), CANDIDATE_TOKENS)
+        self.assertIn("# Control variant: campaign MTP3", rendered)
         self.assertIn("--spec-type draft-mtp -> none", rendered)
         self.assertIn("remove --spec-draft-n-max 3", rendered)
         self.assertEqual(sum(line.startswith("# Avoid when:") for line in rendered.splitlines()),
                          len(self.profile["avoid_when"]))
+
+    def test_renders_the_no_speculation_command_from_launcher_dflash5(self):
+        rendered = tool.render_profile(self.profile, DFLASH_CONTROL_TEXT)
+        self.assertEqual(tool.split_command(body(rendered)), DFLASH_CANDIDATE_TOKENS)
+        self.assertIn("# Control variant: launcher DFlash5", rendered)
+        self.assertIn("remove -md and its value", rendered)
+        self.assertNotIn("-md", body(rendered))
 
     def test_refuses_a_command_that_is_not_the_validated_control(self):
         variants = [CONTROL_TEXT.replace("-ub 4096", "-ub 512"),
@@ -135,6 +149,18 @@ class ShippedProfileTests(unittest.TestCase):
                     CONTROL_TEXT.replace("--spec-type draft-mtp", "--spec-type none")]
         for text in variants:
             with self.subTest(text=text[-60:]), self.assertRaises(ProfileError):
+                tool.render_profile(self.profile, text)
+
+    def test_refuses_a_mismatched_launcher_dflash5_command(self):
+        variants = [DFLASH_CONTROL_TEXT.replace("-ub 4096", "-ub 512"),
+                    DFLASH_CONTROL_TEXT.replace("--spec-draft-n-max 5", "--spec-draft-n-max 4"),
+                    DFLASH_CONTROL_TEXT.replace(" -md ", " "),
+                    DFLASH_CONTROL_TEXT.replace("--spec-draft-ngl 999", "--spec-draft-ngl 1")]
+        missing_draft_path = list(DFLASH_CONTROL_TOKENS)
+        missing_draft_path.remove("C:\\models\\draft model.gguf")
+        variants.append(tool.render_command(missing_draft_path))
+        for text in variants:
+            with self.subTest(text=text[-70:]), self.assertRaises(ProfileError):
                 tool.render_profile(self.profile, text)
 
     def test_refuses_the_already_edited_command(self):
@@ -202,6 +228,7 @@ class ShippedDataTests(unittest.TestCase):
     def setUp(self):
         self.profile = tool.load_profiles()[PROFILE_ID]
         self.speed = json.loads((EVIDENCE / "long-nemotron-nospec.json").read_text())
+        self.dflash5 = json.loads((EVIDENCE / "nemotron-dflash5-comparison.json").read_text())
 
     def test_measured_numbers_match_the_speed_evidence(self):
         measured, comparison = self.profile["measured"], self.speed["comparison"]
@@ -225,6 +252,31 @@ class ShippedDataTests(unittest.TestCase):
             self.assertGreater(pair["cached_short_wall_s"][1], 1.5 * pair["cached_short_wall_s"][0])
             self.assertGreater(pair["generation_512_wall_s"][1], 1.4 * pair["generation_512_wall_s"][0])
             self.assertGreater(pair["ready_memory_mib"][0] - pair["ready_memory_mib"][1], 4500)
+
+    def test_launcher_dflash5_comparison_matches_its_evidence(self):
+        measured = self.profile["measured"]["launcher_dflash5"]
+        comparison = self.dflash5["comparison"]
+        self.assertTrue(self.dflash5["qualified"] and comparison["passed"])
+        self.assertFalse(self.dflash5["deployment_changed"])
+        self.assertAlmostEqual(measured["control_reload_drift_percent"],
+                               comparison["control_reload_drift_percent"], delta=0.0006)
+        self.assertEqual([(pair["control_run"], pair["candidate_run"]) for pair in measured["pairs"]],
+                         [(0, 1), (3, 2)])
+        for pair, reference in zip(measured["pairs"], comparison["pairs"]):
+            self.assertTrue(reference["separated"])
+            self.assertAlmostEqual(pair["latency_reduction_percent"],
+                                   reference["latency_reduction_percent"], delta=0.0006)
+            self.assertGreaterEqual(pair["latency_reduction_percent"], 3.0)
+            self.assertGreater(pair["cached_short_wall_s"][1], 1.7 * pair["cached_short_wall_s"][0])
+            self.assertGreater(pair["generation_512_wall_s"][1], 1.15 * pair["generation_512_wall_s"][0])
+            self.assertGreater(pair["ready_memory_mib"][0] - pair["ready_memory_mib"][1], 6000)
+            runs = (self.dflash5["runs"][pair["control_run"]], self.dflash5["runs"][pair["candidate_run"]])
+            self.assertTrue(all(run["quality_passed"] for run in runs))
+            self.assertTrue(all(run["quality_passed_checks"] == run["quality_total_checks"] == 16 for run in runs))
+            for key, metric in self.METRICS.items():
+                for stated, run in zip(pair[key], runs):
+                    with self.subTest(key=key):
+                        self.assertAlmostEqual(stated, metric(run), delta=0.0006)
 
     def test_quality_statements_match_the_release_records(self):
         strict = json.loads((EVIDENCE / "nemotron-release-gates.json").read_text())

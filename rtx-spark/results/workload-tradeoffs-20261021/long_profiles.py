@@ -23,6 +23,24 @@ EXPECTED = {"record": "Spruce-826", "version": "18.4.7", "date": "11/02/2031", "
 PRIMARY = ("reference8k", "reference24k")
 
 
+def sampling_options(profile):
+    if profile == "launcher":
+        return {"temperature": 1.0, "top_p": 0.95, "seed": 1234}
+    if profile == "greedy":
+        return {"temperature": 0.0, "top_k": 1, "seed": 1234}
+    raise ValueError(f"Unknown sampling profile: {profile}")
+
+
+def register_dflash5_config(matrix):
+    if any(name.split()[0] == "N6" for name, _, _ in matrix.CONFIGS):
+        return
+    args = matrix.nem + [
+        "-b", "4096", "-ub", "4096", "--spec-type", "draft-dflash", "--spec-draft-n-max", "5",
+        "-md", matrix.P["nem_dfl"], "--spec-draft-ngl", "999",
+    ]
+    matrix.CONFIGS.append(("N6 nem dflash5 ub4096 launcher", args, "decode"))
+
+
 def cases():
     docs = heldout_suite.long_context().rsplit("\n\nSummarize the main build", 1)[0]
     result = []
@@ -85,11 +103,11 @@ def read_stream(lines, start, clock=time.perf_counter):
     return final
 
 
-def completion(prompt, count, allow_eos=False):
+def completion(prompt, count, allow_eos=False, sampling="greedy"):
     import run_rebaseline as runner
     force_length = "GENERATION_GUARD" in prompt
     body = {
-        "prompt": prompt, "n_predict": count, "temperature": 0.0, "top_k": 1, "seed": 1234,
+        "prompt": prompt, "n_predict": count, **sampling_options(sampling),
         "cache_prompt": "CACHED_GUARD" in prompt, "stream": True,
         "ignore_eos": force_length or not allow_eos, "return_tokens": True,
     }
@@ -166,9 +184,16 @@ def main():
     parser.add_argument("--work", required=True, type=Path)
     parser.add_argument("--candidate-runtime", type=Path)
     parser.add_argument("--draft", type=Path)
+    parser.add_argument("--sampling", choices=["greedy", "launcher"], default="greedy")
+    parser.add_argument("--control-tag", choices=["N2", "N6"], default="N2")
+    parser.add_argument("--result-path", type=Path)
     args = parser.parse_args()
     if args.candidate == "compact-prefill" and (args.candidate_runtime is None or args.draft is None):
         parser.error("compact-prefill requires a matched candidate runtime and draft")
+    if args.candidate != "nemotron-nospec" and args.control_tag != "N2":
+        parser.error("--control-tag applies only to nemotron-nospec")
+    if args.control_tag == "N6":
+        register_dflash5_config(runner.matrix)
     args.work.mkdir(parents=True, exist_ok=False)
     baseline = runtime_manifest(Path(runner.matrix.EXE).parent)
     candidate_manifest = runtime_manifest(args.candidate_runtime) if args.candidate_runtime else None
@@ -179,10 +204,13 @@ def main():
                 or correctness["results"][1]["runtime_sha256"] != candidate_manifest):
             raise ValueError("Compact runtime does not match the CPU-reference-validated pair")
     runner.matrix.SUITES["decode"] = cases()
-    runner.completion = completion
+    runner.completion = lambda prompt, count, allow_eos=False: completion(
+        prompt, count, allow_eos, sampling=args.sampling)
     protocol = {
         "parent_protocol_sha256": sha(HERE / "protocol.json"), "script_sha256": sha(Path(__file__)),
         "candidate": args.candidate, "primary_cases": list(PRIMARY), "cases": cases(),
+        "sampling_profile": args.sampling, "sampling": sampling_options(args.sampling),
+        "control_tag": args.control_tag,
         "weighting": "Sum complete request wall times, one request per primary case per repetition; guards excluded and reported separately.",
         "order": ["control", "candidate", "candidate", "control"], "repetitions": 3,
         "primary_quality": "Exact complete natural-EOS record extraction",
@@ -201,7 +229,7 @@ def main():
             extra = ["--reasoning", "off"]
             exe = None
             if args.candidate == "nemotron-nospec":
-                tag, draft = ("N1" if candidate else "N2"), None
+                tag, draft = ("N1" if candidate else args.control_tag), None
             else:
                 tag, draft = "U1", args.draft
                 extra += ["--spec-draft-vocab-dynamic", "16384"]
@@ -237,7 +265,8 @@ def main():
         "draft_sha256": draft_hash,
         "scope": "Synthetic record extraction from pinned public project documentation, not arbitrary long-context quality",
     }
-    with (HERE / f"long-{args.candidate}.json").open("x", encoding="utf-8") as stream:
+    result_path = args.result_path or HERE / f"long-{args.candidate}.json"
+    with result_path.open("x", encoding="utf-8") as stream:
         json.dump(result, stream, indent=2)
         stream.write("\n")
     print(json.dumps({"candidate": args.candidate, "qualified": qualified, "comparison": comparison}), flush=True)

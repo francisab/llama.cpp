@@ -49,16 +49,47 @@ def value_index(tokens, flag):
 
 
 def check_control(profile, tokens):
-    for flag, value in profile["control"]["requires"]:
-        if tokens[value_index(tokens, flag)] != value:
+    control = profile["control"]
+    variants = control.get("variants")
+    if not variants:
+        for flag, value in control["requires"]:
+            if tokens[value_index(tokens, flag)] != value:
+                raise ProfileError(f"The validated control uses {flag} {value}")
+        return None
+
+    matches = []
+    errors = []
+    for variant in variants:
+        try:
+            check_requirements(variant["requires"], tokens)
+        except ProfileError as error:
+            errors.append(f"{variant['name']}: {error}")
+        else:
+            matches.append(variant)
+    if len(matches) == 1:
+        return matches[0]
+    if len(matches) > 1:
+        raise ProfileError("The command matches more than one validated control")
+    raise ProfileError("The command does not match a validated control: " + "; ".join(errors))
+
+
+def check_requirements(requires, tokens):
+    for flag, value in requires:
+        actual = tokens[value_index(tokens, flag)]
+        if value == "*":
+            if not actual or actual.startswith("-"):
+                raise ProfileError(f"The validated control requires a value for {flag}")
+        elif actual != value:
             raise ProfileError(f"The validated control uses {flag} {value}")
 
 
-def apply_edits(profile, tokens):
+def apply_edits(profile, tokens, edits=None):
     tokens = list(tokens)
-    for edit in profile["edits"]:
+    for edit in profile["edits"] if edits is None else edits:
         index = value_index(tokens, edit["flag"])
-        if tokens[index] != edit["from"]:
+        if edit["from"] == "*" and (not tokens[index] or tokens[index].startswith("-")):
+            raise ProfileError(f"Expected a value for {edit['flag']}")
+        if edit["from"] != "*" and tokens[index] != edit["from"]:
             raise ProfileError(f"Expected {edit['flag']} {edit['from']}")
         if "to" in edit:
             tokens[index] = edit["to"]
@@ -87,17 +118,22 @@ def render_command(tokens):
 def describe_edit(edit):
     if "to" in edit:
         return f"{edit['flag']} {edit['from']} -> {edit['to']}"
+    if edit["from"] == "*":
+        return f"remove {edit['flag']} and its value"
     return f"remove {edit['flag']} {edit['from']}"
 
 
 def render_profile(profile, text):
     tokens = split_command(text)
-    check_control(profile, tokens)
+    variant = check_control(profile, tokens)
+    edits = profile["edits"] if variant is None else variant.get("edits", profile["edits"])
     header = [f"# Opt-in profile {profile['id']}: {profile['title']}",
-              "# Edits to the validated control: " + "; ".join(describe_edit(edit) for edit in profile["edits"])]
+              "# Edits to the validated control: " + "; ".join(describe_edit(edit) for edit in edits)]
+    if variant is not None:
+        header.append(f"# Control variant: {variant['name']}")
     header += [f"# Use when: {item}" for item in profile["use_when"]]
     header += [f"# Avoid when: {item}" for item in profile["avoid_when"]]
-    return "\n".join(header) + "\n" + render_command(apply_edits(profile, tokens))
+    return "\n".join(header) + "\n" + render_command(apply_edits(profile, tokens, edits))
 
 
 def main(argv=None):

@@ -1,0 +1,102 @@
+{
+  "schema": 1,
+  "candidate": "No speculative decoding",
+  "qualified": true,
+  "deployment_changed": false,
+  "control": {
+    "launcher_tag": "N6",
+    "spec_type": "draft-dflash",
+    "draft_tokens": 5,
+    "batch": 4096,
+    "ubatch": 4096
+  },
+  "protocol": {
+    "sampling": {
+      "temperature": 1.0,
+      "top_p": 0.95,
+      "seed": 1234,
+      "top_k": "server default"
+    },
+    "order": ["control", "candidate", "candidate", "control"],
+    "primary_cases": ["reference8k", "reference24k"],
+    "prompt_tokens": [9073, 26933],
+    "output_tokens": 50,
+    "repetitions": 3,
+    "weighting": "Sum complete request wall times per repetition; report the median.",
+    "quality": "Exact complete natural-EOS record extraction; every warmup and measured check passed."
+  },
+  "runs": [
+    {
+      "arm": "control",
+      "median_total_seconds": 49.231499,
+      "ready_memory_mib": 81073,
+      "quality_passed": true,
+      "quality_passed_checks": 16,
+      "quality_total_checks": 16,
+      "cases": {
+        "cached_guard": [{"wall_s": 0.997496}],
+        "generation_guard": [{"wall_s": 15.882367}]
+      }
+    },
+    {
+      "arm": "candidate",
+      "median_total_seconds": 44.923150,
+      "ready_memory_mib": 74710,
+      "quality_passed": true,
+      "quality_passed_checks": 16,
+      "quality_total_checks": 16,
+      "cases": {
+        "cached_guard": [{"wall_s": 1.751181}],
+        "generation_guard": [{"wall_s": 18.645924}]
+      }
+    },
+    {
+      "arm": "candidate",
+      "median_total_seconds": 43.912771,
+      "ready_memory_mib": 74882,
+      "quality_passed": true,
+      "quality_passed_checks": 16,
+      "quality_total_checks": 16,
+      "cases": {
+        "cached_guard": [{"wall_s": 1.706921}],
+        "generation_guard": [{"wall_s": 18.224263}]
+      }
+    },
+    {
+      "arm": "control",
+      "median_total_seconds": 47.024321,
+      "ready_memory_mib": 81304,
+      "quality_passed": true,
+      "quality_passed_checks": 16,
+      "quality_total_checks": 16,
+      "cases": {
+        "cached_guard": [{"wall_s": 0.981676}],
+        "generation_guard": [{"wall_s": 15.293558}]
+      }
+    }
+  ],
+  "comparison": {
+    "passed": true,
+    "gate": "At least 3% lower summed median latency in both launch orders with separated ranges.",
+    "control_reload_drift_percent": 4.693694,
+    "pairs": [
+      {
+        "control_run": 0,
+        "candidate_run": 1,
+        "latency_reduction_percent": 8.751204,
+        "separated": true
+      },
+      {
+        "control_run": 3,
+        "candidate_run": 2,
+        "latency_reduction_percent": 6.616896,
+        "separated": true
+      }
+    ]
+  },
+  "caveats": [
+    "This result covers two synthetic uncached record-extraction prompts with 50-token outputs, not arbitrary long-context quality.",
+    "The cached 4-token-suffix guard and forced 512-token generation guard were slower without speculation; see the per-arm medians.",
+    "An earlier attempt used greedy request sampling instead of the declared launcher sampling and stopped at the DFlash5 control. It is excluded; the qualifying run used the matched launcher sampling above."
+  ]
+}

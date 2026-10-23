@@ -106,6 +106,30 @@ class FullEditTests(unittest.TestCase):
 
 
 class StreamTimingTests(unittest.TestCase):
+    def test_sampling_profiles_match_the_declared_server_settings(self):
+        self.assertEqual(long_profiles.sampling_options("greedy"),
+                         {"temperature": 0.0, "top_k": 1, "seed": 1234})
+        self.assertEqual(long_profiles.sampling_options("launcher"),
+                         {"temperature": 1.0, "top_p": 0.95, "seed": 1234})
+        with self.assertRaises(ValueError):
+            long_profiles.sampling_options("other")
+
+    def test_dflash5_config_uses_the_launcher_depth_and_ubatch(self):
+        matrix = SimpleNamespace(
+            CONFIGS=[],
+            nem=["nemotron", "-c", "262144"],
+            P={"nem_dfl": "draft.gguf"},
+        )
+        long_profiles.register_dflash5_config(matrix)
+        self.assertEqual(len(matrix.CONFIGS), 1)
+        name, args, suite = matrix.CONFIGS[0]
+        self.assertEqual(name.split()[0], "N6")
+        self.assertEqual(suite, "decode")
+        self.assertEqual(args[-12:], [
+            "-b", "4096", "-ub", "4096", "--spec-type", "draft-dflash",
+            "--spec-draft-n-max", "5", "-md", "draft.gguf", "--spec-draft-ngl", "999",
+        ])
+
     def test_cached_guard_is_primed_in_every_rotated_order(self):
         cases = long_profiles.cases()
         for offset in range(3):

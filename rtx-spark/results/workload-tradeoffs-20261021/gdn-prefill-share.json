@@ -1,0 +1,31 @@
+{
+  "trace_sha256": "159847b099b57a42c19655a0d59a986df14cff7c808d5e12bb9ffa67b85c325",
+  "profile_script_sha256": "bf2510a20049308f28401cab36d0642ba809e8c7fdc44a32498faca010ec5cc",
+  "model": "Qwen3.8-Flash-Next UD-IQ4_XS with its Q8_0 MTP draft",
+  "prompt_chars": 10000,
+  "prompt_tokens": 2734,
+  "prompt_eval_ms": 4939.51,
+  "cuda_kernel_activity": {
+    "prompt_kernel_sum_ms": 3578.244059,
+    "gdn_path": {
+      "gdn_single": {
+        "calls": 203,
+        "sum_ms": 57.32576
+      },
+      "ssm_conv_long_token_f32": {
+        "calls": 203,
+        "sum_ms": 32.556128
+      },
+      "sum_ms": 89.881888,
+      "share_of_prompt_kernel_sum_percent": 2.5119,
+      "share_of_prompt_eval_wall_percent": 1.8197
+    }
+  },
+  "method": "The prompt interval follows the application log from request start through the prompt-eval completion. GPU kernel time is the sum of CUPTI kernel durations, not GPU wall time; overlapping kernels are counted separately. The GDN-path total includes gdn_single and ssm_conv_long_token_f32 only. Decode kernels are excluded.",
+  "decision": "No measured GDN hot-path gap. Do not review or port PR 26001 on this evidence; revisit only if a representative longer-prompt trace shows materially greater GDN share.",
+  "limitations": [
+    "One 10000-character prompt profile, with 2734 actual tokens.",
+    "This is an operator-share measurement, not a speed comparison or a model-throughput claim.",
+    "Other generic kernels are not attributed to GDN."
+  ]
+}

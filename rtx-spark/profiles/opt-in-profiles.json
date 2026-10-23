@@ -6,8 +6,31 @@
       "id": "nemotron-nospec-long-input",
       "title": "Nemotron 3.5 Super: no speculative decoding for long uncached inputs with short outputs",
       "control": {
-        "description": "Campaign default: native MTP3 with -b 4096 -ub 4096 (run_matrix.py config N2). The launcher's experimental DFlash recipe is not this control.",
-        "requires": [["--spec-type", "draft-mtp"], ["--spec-draft-n-max", "3"], ["-b", "4096"], ["-ub", "4096"]]
+        "description": "Validated controls: campaign MTP3 with -b 4096 -ub 4096 (run_matrix.py config N2), or the launcher's DFlash5 recipe with -b 4096 -ub 4096.",
+        "requires": [["--spec-type", "draft-mtp"], ["--spec-draft-n-max", "3"], ["-b", "4096"], ["-ub", "4096"]],
+        "variants": [
+          {
+            "name": "campaign MTP3",
+            "requires": [["--spec-type", "draft-mtp"], ["--spec-draft-n-max", "3"], ["-b", "4096"], ["-ub", "4096"]]
+          },
+          {
+            "name": "launcher DFlash5",
+            "requires": [
+              ["--spec-type", "draft-dflash"],
+              ["--spec-draft-n-max", "5"],
+              ["-b", "4096"],
+              ["-ub", "4096"],
+              ["-md", "*"],
+              ["--spec-draft-ngl", "999"]
+            ],
+            "edits": [
+              {"flag": "--spec-type", "from": "draft-dflash", "to": "none"},
+              {"flag": "--spec-draft-n-max", "from": "5"},
+              {"flag": "-md", "from": "*"},
+              {"flag": "--spec-draft-ngl", "from": "999"}
+            ]
+          }
+        ]
       },
       "edits": [
         {"flag": "--spec-type", "from": "draft-mtp", "to": "none"},
@@ -15,12 +38,12 @@
       ],
       "use_when": [
         "Most requests carry long uncached inputs (about 9k tokens or more) and return short outputs (tens of tokens), such as record extraction, classification or a short answer over a document.",
-        "About 4.5 GiB less resident GPU memory is useful."
+        "About 4.5 GiB less resident GPU memory than MTP3, or 6.2 GiB less than DFlash5, is useful."
       ],
       "avoid_when": [
-        "Outputs are long. Estimated break-even is an output of 0.7-0.9% of the uncached prompt tokens (about 80 tokens at 9k, about 180-210 at 27k).",
-        "Chat with cached prefixes and short replies: a cached 4-token-suffix request took 1.10-1.15 s with MTP3 and 1.78 s without.",
-        "Generation-heavy use: 512 forced tokens took 13.4-13.5 s with MTP3 and 18.9-19.1 s without; decode falls from about 44-50 to about 28-30 tokens/s."
+        "Outputs are long. The MTP3 estimate breaks even near 0.7-0.9% of uncached prompt tokens (about 80 tokens at 9k, about 180-210 at 27k); the DFlash5 comparison only tested 50-token outputs.",
+        "Chat with cached prefixes and short replies: the cached 4-token-suffix request took 1.10-1.15 s with MTP3 and 1.78 s without, or 0.98-1.00 s with DFlash5 and 1.71-1.75 s without.",
+        "Generation-heavy use: 512 forced tokens took 13.4-13.5 s with MTP3 and 18.9-19.1 s without, or 15.3-15.9 s with DFlash5 and 18.2-18.6 s without."
       ],
       "measured": {
         "workload": "Two uncached synthetic record-extraction requests (9,073 and 26,933 prompt tokens, 50 output tokens); complete-request wall time summed per repetition, median of 3. Arm order control, candidate, candidate, control; each pair is the first and last arm against the nearest candidate arm.",
@@ -45,10 +68,36 @@
           }
         ],
         "control_reload_drift_percent": 0.137,
-        "gate": "At least 3% lower latency in both orders with separated ranges; passed."
+        "gate": "At least 3% lower latency in both orders with separated ranges; passed.",
+        "launcher_dflash5": {
+          "workload": "Same two uncached record-extraction requests and 50 natural-EOS output tokens, using the launcher's temperature 1.0, top-p 0.95, seed 1234 and server-default top-k.",
+          "pairs": [
+            {
+              "control_run": 0,
+              "candidate_run": 1,
+              "total_s": [49.231499, 44.923150],
+              "latency_reduction_percent": 8.751204,
+              "ready_memory_mib": [81073, 74710],
+              "cached_short_wall_s": [0.997496, 1.751181],
+              "generation_512_wall_s": [15.882367, 18.645924]
+            },
+            {
+              "control_run": 3,
+              "candidate_run": 2,
+              "total_s": [47.024321, 43.912771],
+              "latency_reduction_percent": 6.616896,
+              "ready_memory_mib": [81304, 74882],
+              "cached_short_wall_s": [0.981676, 1.706921],
+              "generation_512_wall_s": [15.293558, 18.224263]
+            }
+          ],
+          "control_reload_drift_percent": 4.693694,
+          "gate": "At least 3% lower latency in both orders with separated ranges; passed."
+        }
       },
       "evidence": [
         "results/workload-tradeoffs-20261021/long-nemotron-nospec.json",
+        "results/workload-tradeoffs-20261021/nemotron-dflash5-comparison.json",
         "results/workload-tradeoffs-20261021/long-nemotron-nospec-invalid-display-off.json",
         "results/workload-tradeoffs-20261021/nemotron-release-gates.json",
         "results/workload-tradeoffs-20261021/nemotron-release-gates-non-inferiority.json",
@@ -56,7 +105,7 @@
         "results/workload-tradeoffs-20261021/release_gates.py"
       ],
       "limits": [
-        "The control is campaign MTP3, not the launcher's DFlash5 recipe. The no-speculation setting was not compared with that recipe.",
+        "Both campaign MTP3 and the launcher's DFlash5 recipe were tested as controls. The renderer validates the speculation, batch, ubatch and DFlash offload flags, but does not validate model identity or sampling; it does not change the launcher catalog or installed runtime.",
         "The workload is synthetic record extraction from pinned public project documents at two prompt sizes, not arbitrary long-context quality.",
         "Quality covers four English and code checks. The model fails the en-US spelling check (cancelled, aluminium, grey) with identical output under both settings, so this is a model limitation, not a profile effect.",
         "The strict quality rule failed in all arms because of that shared failure. The owner then approved a non-inferiority rule after the strict result (post hoc revision); under it the profile loses no check that the control passes. Both results are kept.",
