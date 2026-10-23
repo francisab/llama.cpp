@@ -1,0 +1,132 @@
+{
+ "base": {
+  "name": "U1 qfn mtp3 ub512",
+  "args": [
+   "llama-server.exe",
+   "-m",
+   "Qwen3.8-Flash-Next-UD-IQ4_XS-00001-of-00003.gguf",
+   "--mmproj",
+   "mmproj-BF16.gguf",
+   "-lzm",
+   "on",
+   "--host",
+   "127.0.0.1",
+   "--port",
+   "9940",
+   "-c",
+   "262144",
+   "-np",
+   "1",
+   "-fa",
+   "on",
+   "-ngl",
+   "999",
+   "-b",
+   "2048",
+   "-ub",
+   "512",
+   "--spec-type",
+   "draft-mtp",
+   "--spec-draft-n-max",
+   "3",
+   "-md",
+   "mtp-Qwen3.8-Flash-Next-Q8_0-output-Q4_K.gguf",
+   "--spec-draft-ngl",
+   "999",
+   "--spec-draft-vocab-dynamic",
+   "16384",
+   "--metrics"
+  ],
+  "load_s": 30.632469799995306,
+  "gpu_memory_ready_mib": 79393
+ },
+ "cand": {
+  "name": "U1 qfn mtp3 ub512",
+  "args": [
+   "llama-server.exe",
+   "-m",
+   "Qwen3.8-Flash-Next-UD-IQ4_XS-00001-of-00003.gguf",
+   "--mmproj",
+   "mmproj-BF16.gguf",
+   "-lzm",
+   "on",
+   "--host",
+   "127.0.0.1",
+   "--port",
+   "9940",
+   "-c",
+   "262144",
+   "-np",
+   "1",
+   "-fa",
+   "on",
+   "-ngl",
+   "999",
+   "-b",
+   "2048",
+   "-ub",
+   "512",
+   "--spec-type",
+   "draft-mtp",
+   "--spec-draft-n-max",
+   "3",
+   "-md",
+   "mtp-Qwen3.8-Flash-Next-Q8_0-output-Q4_K.gguf",
+   "--spec-draft-ngl",
+   "999",
+   "--spec-draft-vocab-dynamic",
+   "16384",
+   "--spec-draft-sampling",
+   "probabilistic",
+   "--metrics"
+  ],
+  "load_s": 28.650618799998483,
+  "gpu_memory_ready_mib": 79355
+ },
+ "cases": [
+  {
+   "case": "json256",
+   "base_tg_median": 50.16705629747058,
+   "cand_tg_median": 52.260480993170475,
+   "ratio": 1.0417290718292642,
+   "base_tg_range": [
+    49.92810353091548,
+    50.505820746325504
+   ],
+   "cand_tg_range": [
+    48.58243133540149,
+    53.00827136908932
+   ],
+   "base_accept": 0.6550387596899225,
+   "cand_accept": 0.6885026737967914
+  },
+  {
+   "case": "rust256",
+   "base_tg_median": 61.03099297425569,
+   "cand_tg_median": 53.42307851851728,
+   "ratio": 0.8753434265939667,
+   "base_tg_range": [
+    60.653098291081115,
+    61.883425701424365
+   ],
+   "cand_tg_range": [
+    52.00111506704779,
+    55.71987455817417
+   ],
+   "base_accept": 0.893719806763285,
+   "cand_accept": 0.7363253856942497
+  }
+ ],
+ "geomean_ratio": 0.954919208790765,
+ "identical_outputs": [
+  0,
+  6
+ ],
+ "screen": {
+  "decision": "reject",
+  "reason": "rust256 exceeds the regression limit",
+  "quality_checked": false,
+  "min_gain_pct": 3.0,
+  "max_regression_pct": 3.0
+ }
+}

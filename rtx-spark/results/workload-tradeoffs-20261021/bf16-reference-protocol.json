@@ -1,0 +1,17 @@
+{
+  "declared": "2026-10-23, before any 27B BF16-derived candidate was built or scored",
+  "parent_protocol": "protocol.json, section nvfp4_precision_preflight",
+  "parent_protocol_sha256": "ed6ecc5e9ba1379881029790f690ea6724e069ccf3e408365f66a520afd41755",
+  "why_new": "The parent gate measures KL against the quantized GGUF. That also counts movement toward the BF16 model as divergence (BF16-derived Flash-Next NVFP4 had PPL 2.1% below its quantized reference but failed KL). This protocol scores both the deployed GGUF and the candidate against BF16 logits. It applies only to 27B, the one model whose BF16 weights fit in memory; earlier Nemotron and Flash-Next decisions stay unchanged.",
+  "sources": {
+    "27b": {"repository": "Qwen/Qwen3.8-27B", "revision": "1d4bf0f2ff6012fd82039f2fa52739d0dd7c60c0"},
+    "integrity": "All 18 safetensors files must match their pinned Git LFS SHA-256 before use."
+  },
+  "selection": "All 192 dense FFN tensors (ffn_gate/up/down) in layers 0-63; MTP layer 64 excluded. Every other tensor payload and all metadata except tensor count stay byte-identical to the deployed UD-Q4_K_M GGUF.",
+  "encoder": "Per-tensor scale s = amax(|W|) / (6 * 240) stored as blk.N.ffn_X.scale (F32, shape 1), the existing optional loader tensor; weights via ggml_quantize_chunk(NVFP4) of W / s from the installed ggml-base.dll; no imatrix.",
+  "reference": "BF16 GGUF converted from the pinned checkpoint with the repository converter (--outtype bf16), fully GPU resident.",
+  "runs": "Same corpus, chunks, context, batch, flags and runtime as the parent: reference (BF16), calibration (BF16 against itself), control (deployed UD-Q4_K_M GGUF), candidate.",
+  "calibration": "Unchanged from the parent: |mean KL| <= 0.001 and actual PPL within 0.01% of the reference pass.",
+  "gate": "Non-inferiority against the deployed model, no margin: candidate mean KL to BF16 <= control mean KL to BF16, and candidate actual PPL <= control actual PPL.",
+  "stop": "A failure is documented and not enabled. No scale-cap sweep, subset narrowing or margin added after scoring. A pass only allows full-model speed and quality checks; it enables nothing."
+}

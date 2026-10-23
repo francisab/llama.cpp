@@ -31,6 +31,7 @@ MIN_CORRELATION = 0.95
 SOURCES = {
     "nemotron": "nemotron-3.5-super-vl",
     "flash-next": "qwen3.8-flash-next",
+    "27b": "qwen3.8-27b",
 }
 
 
@@ -70,7 +71,12 @@ def bf16_to_f32(values):
 
 
 def expert_source(case, safetensors, name):
-    """Return (n_expert, rows, cols, fetch(e) -> uint16 [rows, cols]) for one GGUF expert tensor."""
+    """Return (n_expert, rows, cols, fetch(e) -> uint16 [rows, cols]) for one GGUF FFN tensor; dense tensors have one expert."""
+    if case == "27b":
+        match = re.fullmatch(r"blk\.(\d+)\.ffn_(gate|up|down)\.weight", name)
+        require(match, f"Not a dense FFN tensor: {name}")
+        full = safetensors.tensor(f"model.language_model.layers.{match[1]}.mlp.{match[2]}_proj.weight")
+        return 1, full.shape[0], full.shape[1], lambda e: full
     match = re.fullmatch(r"blk\.(\d+)\.ffn_(gate|up|down)_exps\.weight", name)
     require(match, f"Not an expert tensor: {name}")
     layer, kind = int(match[1]), match[2]
@@ -125,6 +131,12 @@ def relative_rmse(estimate, reference):
     return float(np.sqrt(np.mean((estimate - reference) ** 2)) / max(np.sqrt(np.mean(reference ** 2)), 1e-30))
 
 
+def dims(tensor):
+    """(cols, rows, n_expert) for a 3-D expert tensor or a 2-D dense tensor (one expert)."""
+    shape = [int(x) for x in tensor.shape]
+    return (shape[0], shape[1], shape[2]) if len(shape) == 3 else (shape[0], shape[1], 1)
+
+
 def select(case, before):
     key, layers, _, expected, pattern = CASES[case]
     selected = [name for name in before if (m := re.fullmatch(pattern, name)) and int(m[1]) < layers]
@@ -138,7 +150,7 @@ def check(case, quantizer, safetensors, before, selected, samples):
     rows = []
     for name in names:
         tensor = before[name]
-        cols, out_rows, n_expert = (int(x) for x in tensor.shape)
+        cols, out_rows, n_expert = dims(tensor)
         count, src_rows, src_cols, fetch = expert_source(case, safetensors, name)
         require((count, src_rows, src_cols) == (n_expert, out_rows, cols),
                 f"{name}: BF16 shape {(count, src_rows, src_cols)} != GGUF {(n_expert, out_rows, cols)}")
@@ -164,7 +176,7 @@ def check(case, quantizer, safetensors, before, selected, samples):
 
 
 def build_tensor(quantizer, case, safetensors, tensor, threads):
-    cols, rows, n_expert = (int(x) for x in tensor.shape)
+    cols, rows, n_expert = dims(tensor)
     count, src_rows, src_cols, fetch = expert_source(case, safetensors, tensor.name)
     require((count, src_rows, src_cols) == (n_expert, rows, cols), f"Shape mismatch: {tensor.name}")
     per_expert = rows * cols // NVFP4_BLOCK * NVFP4_BYTES
@@ -232,12 +244,15 @@ def main():
     parser.add_argument("--out", required=True, type=Path)
     parser.add_argument("--check-only", action="store_true")
     parser.add_argument("--threads", type=int, default=16)
+    parser.add_argument("--protocol", default="bf16-nvfp4-protocol.json")
     args = parser.parse_args()
-    protocol_path = HERE / "bf16-nvfp4-protocol.json"
+    protocol_path = HERE / args.protocol
     protocol = json.loads(protocol_path.read_text())
     require(protocol["parent_protocol_sha256"] == sha(HERE / "protocol.json"), "Parent protocol changed")
     folder = SOURCES[args.case]
-    safetensors = Safetensors(args.source_root / (folder + "-bf16"), args.source_root / folder / "model.safetensors.index.json")
+    weights = args.source_root / (folder + "-bf16")
+    index = weights / "model.safetensors.index.json"
+    safetensors = Safetensors(weights, index if index.exists() else args.source_root / folder / "model.safetensors.index.json")
     key = CASES[args.case][0]
     source_files = shards(Path(json.loads((ROOT / "rtx-spark" / "results" / "model_paths.json").read_text())[key]))
     readers = [GGUFReader(str(path)) for path in source_files]
@@ -280,10 +295,11 @@ def main():
         for tensor in reader.tensors:
             shape = [int(x) for x in tensor.shape]
             if tensor.name in chosen:
-                size = shape[0] * shape[1] * shape[2] // NVFP4_BLOCK * NVFP4_BYTES
+                cols, rows, n_expert = dims(tensor)
+                size = cols * rows * n_expert // NVFP4_BLOCK * NVFP4_BYTES
                 layout.append((tensor.name, shape, GGMLQuantizationType.NVFP4, size, None))
-                layout.append((tensor.name.removesuffix(".weight") + ".scale", [shape[2]],
-                               GGMLQuantizationType.F32, shape[2] * 4, None))
+                layout.append((tensor.name.removesuffix(".weight") + ".scale", [n_expert],
+                               GGMLQuantizationType.F32, n_expert * 4, None))
             else:
                 layout.append((tensor.name, shape, tensor.tensor_type, tensor.n_bytes, tensor.data))
         suffix = f"-{index + 1:05d}-of-{len(readers):05d}.gguf" if len(readers) > 1 else ".gguf"

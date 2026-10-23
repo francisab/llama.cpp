@@ -158,7 +158,7 @@ The survey also confirmed `--spec-draft-n-ubatch` in the installed b11756 binary
 ## Folder layout
 - `PLAN.md`: full analysis, measurements, reference-project evaluation, roadmap, risks, sources.
 - `bench/`: harness.
-  - `run_rebaseline.py`: repeated native/server benchmarks, raw samples and generated token IDs, isolated logs, and GPU telemetry. Refuses to overwrite an existing result. Server mode accepts `--exe PATH` (custom build) and `--extra-args="..."` (one-variable A/B flags).
+  - `run_rebaseline.py`: repeated native/server benchmarks, raw samples and generated token IDs, isolated logs, and GPU telemetry. Refuses to overwrite an existing result. Server mode accepts `--exe PATH` (custom build), `--extra-args="..."` (one-variable A/B flags) and `--sampling launcher` (the Qwen launcher's temperature 1.0, top-p 0.95, top-k 20, min-p 0 with a fixed seed; default greedy).
   - `compare_speed.py`: matched server speed comparison of two `server_*.json` files: per-case median tok/s, ratio, acceptance, geomean, load time, GPU memory and the count of token-identical outputs. `--out` keeps file names only. `--screen` checks matching fixed-length samples and emits an advance/park/reject speed decision.
   - `ab_llamabench.py`: paired `llama-bench` A/B for `q27`, `qfn`, or `nem`, reversing base/candidate order every round. Accepts `--base-model`/`--cand-model` for model-only comparisons, `--bench-args="..."`, `--rounds`, and `--dry-run`. `--screen prefill|decode` adds early stopping, a time budget and `screen.json`. Writes per-round JSON and `summary.json` with paths reduced to file names.
   - `test_fast_screen.py`: dependency-free tests for triage, reverse-order confirmation, model overrides, early stopping, timeouts and malformed/incomplete results.

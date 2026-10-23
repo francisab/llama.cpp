@@ -1245,11 +1245,42 @@ Control reload drift was 0.14%, the ranges separated and all task checks passed.
 | Flash-Next (144 tensors) | 0.978578 | 0.160775 | 90.50% | 1.006837 / 0.130035 |
 
 Both fail, so neither is enabled and no speed was measured. The BF16 source cut the Nemotron PPL gap from 3.7% to 1.1%, and Flash-Next scores 2.1% lower PPL than its own UD-IQ4_XS reference. Mean KL, however, is measured against the quantized GGUF, not the BF16 model, so it also counts movement toward the BF16 model as divergence. A KL gate against BF16 (or a high-precision proxy) logits would be a new, separately declared protocol; this result does not justify relaxing the frozen gate. The Flash-Next candidate is also larger (NVFP4 replaces 3.44-bpw IQ3_S experts), so it is not a size-matched comparison. Evidence: `nvfp4-bf16-nemotron-precision.json`, `nvfp4-bf16-flash-next-precision.json`.
+
+   **27B against BF16 logits (closes the NVFP4 track).** To remove the quantized-reference objection, `bf16-reference-protocol.json` was declared before any 27B build. 27B is the one model whose BF16 weights fit in memory: [Qwen/Qwen3.8-27B](https://huggingface.co/Qwen/Qwen3.8-27B/tree/1d4bf0f2ff6012fd82039f2fa52739d0dd7c60c0) at `1d4bf0f2ff6012fd82039f2fa52739d0dd7c60c0` (18 shards, 51.75 GiB, all SHA-256 verified), converted with the repository converter to a 54.66 GB BF16 GGUF. All 192 dense FFN tensors were rebuilt as NVFP4 with one per-tensor `.scale` (sampled tensors correlate at r 0.996-0.9998 with the deployed weights). `bf16_reference_gate.py` scores the deployed GGUF (control) and the candidate against the same BF16 logits; the gate is non-inferiority on both mean KL and actual PPL.
+
+   | Against BF16 (PPL 5.5889) | Mean KL | Actual PPL | Same top token |
+   |---|---:|---:|---:|
+   | Deployed UD-Q4_K_M | 0.010281 | 5.560534 | 95.96% |
+   | NVFP4 FFN candidate | 0.044512 | 5.659747 | 91.43% |
+
+   The candidate is inferior: 4.3x the control's KL and 1.8% higher PPL. The deployed dynamic quant is already close to BF16, and it keeps some FFN tensors at higher precision (for example `blk.63.ffn_up` is Q6_K, relative weight RMSE 0.019 against 0.095 for NVFP4). NVFP4 with the stock ggml encoder is therefore closed for all three models; reopening it would need a better encoder (for example per-block scale search or importance weighting), not another gate. Evidence: `nvfp4-bf16ref-27b-precision.json`.
 2. Q8_0 hardware-counter attribution remains blocked by the driver `ResourceUnavailable` error. Do not retry elevation or change driver policy, services or clocks without a separately agreed diagnosis.
 3. Compact routed prefill remains parked: the unchanged control failed one shuffled IQ3_S n512 reference case (NMSE 0.000614 against 0.0005), and its random draw cannot be replayed. No candidate speed run is warranted because the compact prototype already missed the reverse-order 5% full-model gate in section 2.42. Do not raise tolerance or promote it.
 4. MMVQ row-tail correctness (section 2.45) is resolved: retain the correctness fix in source, but do not deploy or claim a speed gain; the corrected operator screen is -7.34% across 22 cases, while the limited actual-MTP diagnostic is token-identical and does not clear that cost.
 5. Flash-Next gated-delta-net prefill is resolved for the measured trace: the identified path accounts for 2.51% of summed prompt-kernel durations; no #26001 differential review or port is justified without a future profile showing a larger gap.
 6. 27B DFlash4 stays parked. The frozen launcher-sampling gate already failed; any new profile requires a separate protocol and human review.
+
+### 2.60 Upstream sync, sampled speculation and thermal noise (2026-10-23) [S]
+
+**Measurement noise.** Same-binary 27B `llama-bench` runs (pp2048, tg128, `-r 2`) back to back fell from 765 to 610 to 552 tok/s (-28%) with SM clocks dropping from 2366 to 1625 MHz at 65-70 C GPU temperature and 20-38 W. The only active clock-event reason was "Reliability"; GPU thermal and power caps were inactive, and the machine was on AC. Cooling the GPU to 55 C before each run did not make runs repeatable (747, 867, 746 tok/s). A two-arm native screen on this machine is therefore dominated by run order: the deployed build looked 28% faster when it ran first and 17% slower when it ran second. Comparisons below use alternating order with several rounds or ABBA server pairs, and small differences are treated as noise.
+
+**Power plan (roadmap item `power-mode-and-memory-carveout`).** The active plan had been switched from Balanced to High performance at 12:01 by a 32-bit `powercfg.exe` (not by this campaign). Four alternating blocks of three 27B runs (High performance, Balanced, High performance, Balanced; GPU cooled to 55 C first) gave medians of pp2048 843.58 vs 887.48 tok/s and tg128 14.71 vs 15.57 tok/s for High performance vs Balanced, with overlapping ranges (Balanced 778.84-920.53, High performance 787.17-874.48). Not separated, so no plan is recommended; High performance was restored. Disk idle shutdown and PCIe ASPM were set to off on AC (user approved) after repeated external-drive dropouts.
+
+**Upstream sync (b11845 + the deployed #30380 diff).** Built natively (`C:\src` scratch, release-like layout, 42 files); #30640 and [ggml-org/llama.cpp#30663](https://github.com/ggml-org/llama.cpp/pull/30663) are upstream there. The #30380 diff needed one manual merge with upstream's Hadamard `cur_mm` change in `build_lora_mm`.
+
+| Comparison | Pair A | Pair B | Notes | Decision |
+|---|---:|---:|---|---|
+| 27B native, 8 alternating rounds | tg128 +2.70%, pp2048 -1.02% | (pooled) | ranges overlap heavily | no change |
+| Flash-Next U1 server (MTP3, dynamic vocab, Q4_K head), greedy | +3.66% | +0.35% | identical outputs 4/4; ready memory -490 MiB | park |
+
+**Probabilistic draft sampling under the launcher's sampling** (temperature 1.0, top-p 0.95, top-k 20; `run_rebaseline.py --sampling launcher`, new). One variable, ABBA, three repetitions per case:
+
+| Candidate | json256 | rust256 | Acceptance (json / rust) | Decision |
+|---|---|---|---|---|
+| Flash-Next MTP3, deployed build, `--spec-draft-sampling probabilistic` | +3.62% / +4.17% | -7.97% / -12.47% | 0.655 -> 0.689 / 0.894 -> 0.736 | reject |
+| 27B DFlash2, b11845 build (#30663), `--spec-draft-sampling probabilistic` | +1.36% / -4.88% | +25.81% / +9.18% | 0.503 -> 0.458 / 0.337 -> 0.369 | reject (code-only gain, JSON loss) |
+
+The 27B control itself moved from 24.53 to 29.58 tok/s on rust256 between its two arms, so only the acceptance changes are reliable. The deployed runtime and launcher are unchanged. Evidence: `results/upstream-sync-20261023/`.
 
 ## 3. Source-verified feature status and reference lessons
 

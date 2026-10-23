@@ -57,10 +57,17 @@ def metric_delta(before, after):
     return {name: after[name] - before.get(name, 0.0) for name in sorted(after)}
 
 
+SAMPLING = {
+    "greedy": {"temperature": 0.0, "top_k": 1, "seed": 1234},
+    # Qwen launcher recipes: --temp 1.0 --top-p 0.95 --top-k 20 --min-p 0.0
+    "launcher": {"temperature": 1.0, "top_p": 0.95, "top_k": 20, "min_p": 0.0, "seed": 1234},
+}
+sampling = SAMPLING["greedy"]
+
+
 def completion(prompt, count, allow_eos=False):
     body = {
-        "prompt": prompt, "n_predict": count, "temperature": 0.0, "top_k": 1,
-        "seed": 1234, "cache_prompt": False, "stream": False,
+        "prompt": prompt, "n_predict": count, **sampling, "cache_prompt": False, "stream": False,
         "ignore_eos": not allow_eos, "return_tokens": True,
     }
     request = urllib.request.Request(
@@ -282,9 +289,15 @@ def main():
     parser.add_argument("--bench", choices=list(BENCH_PROFILES), default="base", help="llama-bench profile")
     parser.add_argument("--exe", type=Path, help="llama-server executable to use instead of the installed one")
     parser.add_argument("--extra-args", default="", help="Extra server arguments, space separated")
+    parser.add_argument("--sampling", choices=list(SAMPLING), default="greedy",
+                        help="Request sampling; 'launcher' uses the Qwen launcher recipe (server mode)")
     args = parser.parse_args()
     if args.repetitions < 1:
         parser.error("--repetitions must be positive")
+    if args.mode == "plain" and args.sampling != "greedy":
+        parser.error("--sampling requires server mode")
+    global sampling
+    sampling = SAMPLING[args.sampling]
     if args.mode == "plain" and (args.allow_eos or args.draft_model is not None or args.spec_metrics
                                  or args.exe is not None or args.extra_args):
         parser.error("--allow-eos, --draft-model, --spec-metrics, --exe and --extra-args require server mode")

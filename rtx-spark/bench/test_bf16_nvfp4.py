@@ -4,6 +4,7 @@ from pathlib import Path
 import platform
 import sys
 import tempfile
+from types import SimpleNamespace
 import unittest
 
 import numpy as np
@@ -130,6 +131,29 @@ class MappingTests(unittest.TestCase):
         np.testing.assert_array_equal(fetch(1), full[1, :4])
         _, _, _, fetch = builder.expert_source("flash-next", fake, "blk.3.ffn_up_exps.weight")
         np.testing.assert_array_equal(fetch(1), full[1, 4:])
+
+    def test_dense_27b_is_one_expert(self):
+        full = np.arange(4 * 64, dtype=np.uint16).reshape(4, 64)
+
+        class Fake:
+            def tensor(self, name):
+                self.name = name
+                return full
+
+        fake = Fake()
+        count, rows, cols, fetch = builder.expert_source("27b", fake, "blk.7.ffn_down.weight")
+        self.assertEqual((count, rows, cols), (1, 4, 64))
+        self.assertEqual(fake.name, "model.language_model.layers.7.mlp.down_proj.weight")
+        np.testing.assert_array_equal(fetch(0), full)
+        tensor = SimpleNamespace(shape=np.array([64, 4], dtype=np.uint64))
+        self.assertEqual(builder.dims(tensor), (64, 4, 1))
+
+    def test_non_inferiority_needs_both_metrics(self):
+        gate = load_module("bf16_reference_gate", "workload-tradeoffs-20261021", "bf16_reference_gate.py")
+        control = {"mean_kl_nats": 0.02, "ppl": 6.0}
+        self.assertTrue(gate.non_inferior({"mean_kl_nats": 0.02, "ppl": 6.0}, control))
+        self.assertFalse(gate.non_inferior({"mean_kl_nats": 0.019, "ppl": 6.01}, control))
+        self.assertFalse(gate.non_inferior({"mean_kl_nats": 0.021, "ppl": 5.9}, control))
 
     def test_bf16_decode(self):
         values = np.array([1.0, -2.5, 0.0], dtype=np.float32)

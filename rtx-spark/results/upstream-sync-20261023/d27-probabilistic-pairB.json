@@ -1,0 +1,124 @@
+{
+ "base": {
+  "name": "D2 q27 dflash7 ub2048",
+  "args": [
+   "llama-server.exe",
+   "-m",
+   "Qwen3.8-27B-UD-Q4_K_M.gguf",
+   "--mmproj",
+   "mmproj-F16.gguf",
+   "--host",
+   "127.0.0.1",
+   "--port",
+   "9940",
+   "-c",
+   "262144",
+   "-np",
+   "1",
+   "-fa",
+   "on",
+   "-ngl",
+   "999",
+   "-b",
+   "2048",
+   "-ub",
+   "2048",
+   "--spec-type",
+   "draft-dflash",
+   "--spec-draft-n-max",
+   "7",
+   "-md",
+   "Qwen3.8-27B-DFlash2-Q4_K_M.gguf",
+   "--spec-draft-ngl",
+   "999",
+   "--metrics"
+  ],
+  "load_s": 24.719615599999088,
+  "gpu_memory_ready_mib": 42405
+ },
+ "cand": {
+  "name": "D2 q27 dflash7 ub2048",
+  "args": [
+   "llama-server.exe",
+   "-m",
+   "Qwen3.8-27B-UD-Q4_K_M.gguf",
+   "--mmproj",
+   "mmproj-F16.gguf",
+   "--host",
+   "127.0.0.1",
+   "--port",
+   "9940",
+   "-c",
+   "262144",
+   "-np",
+   "1",
+   "-fa",
+   "on",
+   "-ngl",
+   "999",
+   "-b",
+   "2048",
+   "-ub",
+   "2048",
+   "--spec-type",
+   "draft-dflash",
+   "--spec-draft-n-max",
+   "7",
+   "-md",
+   "Qwen3.8-27B-DFlash2-Q4_K_M.gguf",
+   "--spec-draft-ngl",
+   "999",
+   "--spec-draft-sampling",
+   "probabilistic",
+   "--metrics"
+  ],
+  "load_s": 26.677712300006533,
+  "gpu_memory_ready_mib": 42110
+ },
+ "cases": [
+  {
+   "case": "json256",
+   "base_tg_median": 40.302263817670664,
+   "cand_tg_median": 38.33551695444613,
+   "ratio": 0.9512000895998748,
+   "base_tg_range": [
+    37.68122452453683,
+    43.42975135530629
+   ],
+   "cand_tg_range": [
+    32.16479272061547,
+    39.08084908125522
+   ],
+   "base_accept": 0.5025380710659898,
+   "cand_accept": 0.45754716981132076
+  },
+  {
+   "case": "rust256",
+   "base_tg_median": 29.58010861815885,
+   "cand_tg_median": 32.29610078409866,
+   "ratio": 1.0918181944833192,
+   "base_tg_range": [
+    29.253203569946244,
+    31.374965410638623
+   ],
+   "cand_tg_range": [
+    31.19526301766092,
+    33.20303853375382
+   ],
+   "base_accept": 0.3370998116760829,
+   "cand_accept": 0.3689516129032258
+  }
+ ],
+ "geomean_ratio": 1.0190866324406904,
+ "identical_outputs": [
+  0,
+  6
+ ],
+ "screen": {
+  "decision": "reject",
+  "reason": "json256 exceeds the regression limit",
+  "quality_checked": false,
+  "min_gain_pct": 3.0,
+  "max_regression_pct": 3.0
+ }
+}

@@ -223,7 +223,8 @@ def audit_prebuilt(candidate_dir, sources, before, selected):
     for name in sorted(after):
         b = after[name]
         if name in scales:
-            n_expert = int(before[scales[name]].shape[2])
+            source = before[scales[name]]
+            n_expert = int(source.shape[2]) if len(source.shape) == 3 else 1
             values = b.data.reshape(-1)
             require(b.tensor_type == GGMLQuantizationType.F32 and list(b.shape) == [n_expert],
                     f"Wrong scale tensor: {name}")
