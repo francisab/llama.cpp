@@ -1,0 +1,122 @@
+{
+ "base": {
+  "name": "D2 q27 dflash7 ub2048",
+  "args": [
+   "llama-server.exe",
+   "-m",
+   "Qwen3.8-27B-UD-Q4_K_M.gguf",
+   "--mmproj",
+   "mmproj-F16.gguf",
+   "--host",
+   "127.0.0.1",
+   "--port",
+   "9940",
+   "-c",
+   "262144",
+   "-np",
+   "1",
+   "-fa",
+   "on",
+   "-ngl",
+   "999",
+   "-b",
+   "2048",
+   "-ub",
+   "2048",
+   "--spec-type",
+   "draft-dflash",
+   "--spec-draft-n-max",
+   "7",
+   "-md",
+   "Qwen3.8-27B-DFlash2-Q4_K_M.gguf",
+   "--spec-draft-ngl",
+   "999",
+   "--metrics"
+  ],
+  "load_s": 13.635683599990443,
+  "gpu_memory_ready_mib": 41240
+ },
+ "cand": {
+  "name": "D2 q27 dflash7 ub2048",
+  "args": [
+   "llama-server.exe",
+   "-m",
+   "Qwen3.8-27B-UD-Q4_K_M.gguf",
+   "--mmproj",
+   "mmproj-F16.gguf",
+   "--host",
+   "127.0.0.1",
+   "--port",
+   "9940",
+   "-c",
+   "262144",
+   "-np",
+   "1",
+   "-fa",
+   "on",
+   "-ngl",
+   "999",
+   "-b",
+   "2048",
+   "-ub",
+   "2048",
+   "--spec-type",
+   "draft-dflash",
+   "--spec-draft-n-max",
+   "7",
+   "-md",
+   "Qwen3.8-27B-DFlash2-Q4_K_M.gguf",
+   "--spec-draft-ngl",
+   "999",
+   "--metrics"
+  ],
+  "load_s": 14.124422399996547,
+  "gpu_memory_ready_mib": 41240
+ },
+ "cases": [
+  {
+   "case": "json256",
+   "base_tg_median": 43.92993399484349,
+   "cand_tg_median": 42.90806282884613,
+   "ratio": 0.9767386136724606,
+   "base_tg_range": [
+    40.69805300514423,
+    44.467393106926295
+   ],
+   "cand_tg_range": [
+    40.37910117070891,
+    43.58241280441033
+   ],
+   "base_accept": 0.5249343832020997,
+   "cand_accept": 0.5249343832020997
+  },
+  {
+   "case": "rust256",
+   "base_tg_median": 37.26867661267775,
+   "cand_tg_median": 36.47697637622267,
+   "ratio": 0.9787569533342173,
+   "base_tg_range": [
+    37.061604816904044,
+    40.29373659936981
+   ],
+   "cand_tg_range": [
+    35.2400162960891,
+    37.63241074403851
+   ],
+   "base_accept": 0.4222222222222222,
+   "cand_accept": 0.4222222222222222
+  }
+ ],
+ "geomean_ratio": 0.9777472627023532,
+ "identical_outputs": [
+  6,
+  6
+ ],
+ "screen": {
+  "decision": "park",
+  "reason": "json256 is below the minimum gain",
+  "quality_checked": false,
+  "min_gain_pct": 3.0,
+  "max_regression_pct": 3.0
+ }
+}

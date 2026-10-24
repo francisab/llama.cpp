@@ -26,7 +26,7 @@
     {"id":"gdn-producer-fusion","sections":["2.24"],"decision":"defer","reason":"Rust/JSON tradeoff exists, but outputs and acceptance change; needs integration and precision validation before any enablement."},
     {"id":"q5-draft-head","sections":["2.25","2.59"],"decision":"validated_not_enabled","profile":"code-generation","reason":"The earlier gain did not replicate in the reverse-order screen: median latency -0.26% and -1.95%, control drift 0.77%, 74-121 MiB more ready memory.","evidence":"configuration-q5-head.json"},
     {"id":"q8-two-warps","sections":["2.27"],"decision":"keep_parked","reason":"No separated net improvement and output changes; the hardware-counter diagnosis remains unresolved."},
-    {"id":"q8-mmq-blanket","sections":["2.29"],"decision":"defer","reason":"Large shape-dependent wins and losses need real-model time weighting; a geometric mean is not an enablement decision."},
+    {"id":"q8-mmq-blanket","sections":["2.29","2.60"],"decision":"keep_disabled","reason":"Real-model test of the winning shapes only (exact-shape dispatch, section 2.60): Flash-Next U1 -1.16% and -2.71%; MMQ numerics change outputs and draft acceptance, which outweighs the kernel saving."},
     {"id":"q8-mmq-row-rule","sections":["2.30"],"decision":"keep_disabled","reason":"Fresh-shape aggregate is negative; the proposed rule fails beyond its development shapes."},
     {"id":"routed-small-batch-mmq","sections":["2.32"],"decision":"keep_disabled","reason":"Both actual MTP workloads lose 13-16%; no offsetting end-to-end gain shown."},
     {"id":"rank-alignment","sections":["2.33"],"decision":"defer","reason":"Only a reuse estimate exists, not an implemented correct speed candidate; later cache-reuse evidence limits headroom."},

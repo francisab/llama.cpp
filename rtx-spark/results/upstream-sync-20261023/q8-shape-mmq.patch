@@ -1,0 +1,20 @@
+diff --git a/ggml/src/ggml-cuda/ggml-cuda.cu b/ggml/src/ggml-cuda/ggml-cuda.cu
+index 454d17d78..4393a8e6c 100644
+--- a/ggml/src/ggml-cuda/ggml-cuda.cu
++++ b/ggml/src/ggml-cuda/ggml-cuda.cu
+@@ -2017,6 +2017,15 @@ static void ggml_cuda_mul_mat(ggml_backend_cuda_context & ctx, const ggml_tensor
+         ggml_cuda_mul_mat_f(ctx, src0, src1, nullptr, dst);
+         return;
+     }
++    // local experiment: on GB10 the 4-column Q8_0 shapes below run faster with MMQ (operator screen)
++    if (src0->type == GGML_TYPE_Q8_0 && ne11 == 4 && ne12 == 1 && ne13 == 1 && cc == GGML_CUDA_CC_DGX_SPARK &&
++            ((ne00 == 320 && ne01 == 10240) || (ne00 == 2560 && ne01 == 6144) || (ne00 == 6144 && ne01 == 2560))) {
++        static const bool off = getenv("GGML_CUDA_Q8_SHAPE_MMQ_OFF") != nullptr;
++        if (!off) {
++            ggml_cuda_mul_mat_q(ctx, src0, src1, nullptr, dst);
++            return;
++        }
++    }
+     if (ggml_cuda_should_use_mmvq(src0->type, cc, ne11)) {
+         ggml_cuda_mul_mat_vec_q(ctx, src0, src1, nullptr, dst);
+         return;
