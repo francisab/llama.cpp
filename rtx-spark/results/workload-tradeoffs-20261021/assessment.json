@@ -18,7 +18,7 @@
     {"id":"q6-target-unweighted","sections":["2.17","2.20"],"decision":"precision_blocked","reason":"Mean KL 0.038966 exceeds the unchanged 0.01 gate despite faster decode and bounded task passes."},
     {"id":"q6-target-weighted","sections":["2.21"],"decision":"precision_blocked","reason":"Mean KL 0.035893 exceeds the unchanged 0.01 gate."},
     {"id":"q6-target-protected-qkv","sections":["2.21"],"decision":"precision_blocked","reason":"Mean KL 0.033887 exceeds the unchanged 0.01 gate."},
-    {"id":"glu-quantization-fusion","sections":["2.18"],"decision":"keep_parked","reason":"Opposite-order full-model results show no separated speed improvement, not a discarded prefill/decode tradeoff."},
+    {"id":"glu-quantization-fusion","sections":["2.18","2.60"],"decision":"deployed","reason":"Re-screened on b11845 + #31047 with 8 alternating rounds: 27B pp2048 +4.66% (7/8 wins), Flash-Next +1.29% (6/8), decode unchanged, logits identical, quality passed. Deployed with backup and rollback (upstream PR #30489)."},
     {"id":"cuda-graph-chunking","sections":["2.19"],"decision":"keep_parked","reason":"Small repeated gains overlap; no independently justified workload-specific benefit yet."},
     {"id":"sampling-penalty-fusion","sections":["2.22"],"decision":"inapplicable","reason":"Requires active backend penalties absent from the frozen recipe; no measured matching bottleneck."},
     {"id":"q8-kv-fallback-kernel","sections":["2.22"],"decision":"inapplicable","reason":"Changed fallback is bypassed by the deployed Blackwell/head-size dispatch."},

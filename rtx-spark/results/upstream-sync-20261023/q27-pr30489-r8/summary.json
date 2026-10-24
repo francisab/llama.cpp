@@ -1,0 +1,43 @@
+{
+  "base_commit": "9ff0d7e90",
+  "cand_commit": "9ff0d7e90",
+  "model_type": "qwen35 27B Q4_K - Medium",
+  "bench_args": "-fa 1 -ngl 99 -ub 2048 -p 2048 -n 32 -r 2",
+  "rounds": 8,
+  "tests": [
+    {
+      "test": "tg32",
+      "base_median": 16.3356,
+      "cand_median": 16.3569,
+      "ratio": 1.0013039006831705,
+      "base_range": [
+        16.1501,
+        16.5615
+      ],
+      "cand_range": [
+        15.971,
+        16.4536
+      ],
+      "n_base": 16,
+      "n_cand": 16
+    },
+    {
+      "test": "pp2048",
+      "base_median": 919.6195,
+      "cand_median": 955.826,
+      "ratio": 1.0393711747086702,
+      "base_range": [
+        818.773,
+        981.251
+      ],
+      "cand_range": [
+        852.166,
+        1011.94
+      ],
+      "n_base": 16,
+      "n_cand": 16
+    }
+  ],
+  "base_model_filename": "Qwen3.8-27B-UD-Q4_K_M.gguf",
+  "cand_model_filename": "Qwen3.8-27B-UD-Q4_K_M.gguf"
+}
