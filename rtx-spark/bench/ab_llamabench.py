@@ -103,6 +103,18 @@ def screen_decision(tests, goal, min_gain, max_regression):
             return {"decision": "park", "reason": f"{test['test']} sample ranges overlap"}
     return {"decision": "advance", "reason": "Speed screen only; correctness and quality are not established"}
 
+def paired(round_rows):
+    """Per-round candidate/base ratios; adjacent arms share drift, so this is steadier than pooled medians."""
+    result = []
+    keys = sorted(set.intersection(*(set(collect(b)) & set(collect(c)) for b, c in round_rows)))
+    for key in keys:
+        ratios = [statistics.median(collect(c)[key]) / statistics.median(collect(b)[key]) for b, c in round_rows]
+        result.append({"test": test_label(key), "ratios": ratios,
+                       "geomean": math.exp(statistics.mean(math.log(r) for r in ratios)),
+                       "median": statistics.median(ratios), "wins": sum(r > 1 for r in ratios),
+                       "rounds": len(ratios)})
+    return result
+
 def save(path, value):
     path.write_text(json.dumps(value, indent=2, allow_nan=False) + "\n", encoding="utf-8")
 
@@ -159,6 +171,7 @@ def main(argv=None):
     args.out.mkdir(parents=True, exist_ok=True)
     all_rows = {"base": [], "cand": []}
     pair_rows = {}
+    round_rows = []
     deadline = time.monotonic() + args.budget if args.screen else None
     outcome = {"decision": "running", "reason": "No complete pair"}
     if args.screen:
@@ -183,9 +196,14 @@ def main(argv=None):
             all_rows[side].extend(rows)
             pair_rows[side] = rows
             if len(pair_rows) == 2:
+                round_rows.append((pair_rows["base"], pair_rows["cand"]))
                 summary = summarize(all_rows["base"], all_rows["cand"], args.bench_args, i)
                 summary["base_model_filename"] = Path(base_model).name
                 summary["cand_model_filename"] = Path(cand_model).name
+                summary["paired"] = paired(round_rows)
+                for row in summary["paired"]:
+                    print(f"paired {row['test']:10} geomean {(row['geomean'] - 1) * 100:+.2f}% "
+                          f"median {(row['median'] - 1) * 100:+.2f}% wins {row['wins']}/{row['rounds']}", flush=True)
                 save(args.out / "summary.json", summary)
                 if args.screen:
                     pair = summarize(pair_rows["base"], pair_rows["cand"], args.bench_args, 1)
