@@ -59,15 +59,16 @@ def workload():
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("tag", choices=["U1"])
-    parser.add_argument("--draft-model", type=Path, required=True)
+    parser.add_argument("tag", choices=["U1", "D2", "N2"])
+    parser.add_argument("--draft-model", type=Path, help="Replace the config's external draft GGUF")
     parser.add_argument("--extra-args", default="")
     parser.add_argument("--minutes", type=float, default=20)
     parser.add_argument("--out", type=Path, required=True)
     args = parser.parse_args()
     configs = {name.split()[0]: list(a) for name, a, _ in matrix.CONFIGS}
     command = [matrix.EXE] + configs[args.tag] + args.extra_args.split()
-    command[command.index("-md") + 1] = str(args.draft_model.resolve(strict=True))
+    if args.draft_model is not None:
+        command[command.index("-md") + 1] = str(args.draft_model.resolve(strict=True))
     args.out.mkdir(parents=True, exist_ok=False)
     log = (args.out / "server.log").open("w")
     proc = subprocess.Popen(command, stdout=log, stderr=subprocess.STDOUT, creationflags=subprocess.CREATE_NO_WINDOW)
