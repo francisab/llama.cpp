@@ -1309,6 +1309,18 @@ The 27B control itself moved from 24.53 to 29.58 tok/s on rust256 between its tw
 
 **Alternative Flash-Next quantization (model change).** Unsloth's UD-Q3_K_XL at the same repository revision (`766911a6`, 83.80 GiB vs 87.24 GiB, all 3 shards SHA-256 verified) keeps every tensor type of the deployed UD-IQ4_XS except the 94 routed gate/up expert tensors, which drop from IQ3_S to IQ3_XXS; despite the name, the experts are not K-quants. Gate declared before measuring: actual PPL at most 1.01x the deployed model and at least +3% decode in both server pairs. PPL 2.217669 vs 2.2029 (ratio 1.0067, passes; mean KL to the deployed model 0.163, informational). Native, same binary, 6 alternating rounds: tg64 +1.51% and pp2048 +2.05% (6/6 wins each). Server U1 (MTP3, Q4_K head, dynamic vocabulary) ABBA: +4.24% then +1.02%, acceptance 0.716 -> 0.723 (json) and 0.781 -> 0.811 (rust), ready memory 3.5 GiB lower. The second pair misses the gate, so it is parked: a memory-saving option with a small quality cost, not a speed upgrade.
 
+**Upstream sync to b11852 (deployed).** The `rtx-spark-engine` branch was rebased (not merged) onto upstream master `7894e8b92` (55 commits replayed cleanly; the earlier upstream merge commit dropped as redundant; previous head kept locally as a backup branch) and pushed with a lease on the old head. On the rebased branch the carried C++ changes build, and CUDA `test-backend-ops` passes MUL_MAT 2469/2469 and MUL_MAT_ID 963/963. Upstream added 7 commits since b11845; none changes NVIDIA kernels (an MMQ `static_assert` and an AMD-only type fix), the rest are TTS/multimodal, Hexagon, and concurrent `-hf` downloads across processes ([ggml-org/llama.cpp#29312](https://github.com/ggml-org/llama.cpp/pull/29312)). The runtime was rebuilt as b11852 + #30380 diff + #31047 + #30489 (both still open upstream; all applied cleanly) and compared with the deployed b11845 build:
+
+| Check | Result |
+|---|---|
+| Logits (Flash-Next, 27B) | mean KL 0.000000, 100% same top token |
+| Flash-Next, 6 alternating rounds | pp2048 +0.27% (3/6), tg64 -0.18% (2/6) |
+| 27B, 6 rounds | pp2048 -5.07% (1/6), tg64 -1.52% |
+| 27B confirmation, 8 rounds | pp2048 -0.99% (median -0.23%, 4/8), tg64 -0.64% (3/8); per-round swings of -8.6% to +6.2% |
+| English/code quality U1, D2, N2 | all pass |
+
+The first 27B reading did not repeat and the NVIDIA kernel sources are identical, so it is treated as thermal noise. Net impact is neutral; the build was deployed to keep the runtime aligned with the rebased branch (backup and rollback kept; post-deploy smoke passed on U1, D2 and N2). Evidence: `results/upstream-sync-20261023/up7894-*`, `kl-up7894-*`, `quality-up7894-*`.
+
 **Launcher gap (action item outside this repository).** The LocalModelDeployer catalog was regenerated on 2026-10-21 23:08 and no longer contains the earlier Flash-Next recipe edits: it launches the original Q8_0 MTP head from `ggml-org/Qwen3.8-Flash-Next-GGUF` without `--spec-draft-vocab-dynamic 16384`. The app's per-recipe options cover only context size, parallel slots and sampling, and the catalog is generated, so it was not hand-edited. Until the app supports a custom draft model and extra arguments, launches from the app do not get the Q4_K head (+4.5%) or the dynamic draft vocabulary (+3.3%); the new runtime's #31047 prefill gain does apply.
 
 ## 3. Source-verified feature status and reference lessons
