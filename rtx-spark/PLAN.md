@@ -1353,6 +1353,20 @@ Prompt processing is about 27-29% faster with identical outputs; decode, specula
 
 #31047 changes only the MoE (MUL_MAT_ID) path, so it carries the MoE models and does nothing for dense 27B; #30489 fuses the GLU into MMQ activation quantization and helps every gated FFN by 2-3.5%. On Flash-Next the two do not add up (6.14% both vs 6.14% + 2.08%), and on 27B the "both" figure is below #30489 alone; differences of about 2 points are within this machine's run-to-run drift. Decode is unaffected by either patch. Nemotron was not re-run: its squared-ReLU FFN has no GLU, and #31047 measured +1.55% (3/6) there earlier. Evidence: `results/mai-code-flash-20261027/patch-isolation/`.
 
+### 2.62 Upstream check at b11968 (2026-10-28) [S]
+
+Upstream master moved 117 commits past our b11852 base. Relevant merges: [ggml-org/llama.cpp#29948](https://github.com/ggml-org/llama.cpp/pull/29948) (dense FFN gate/up + GLU fused in MMQ) and [ggml-org/llama.cpp#31188](https://github.com/ggml-org/llama.cpp/pull/31188) (the same for MoE `MUL_MAT_ID`). Both fuse the GLU that our carried #30489 fuses into activation quantization, so #30489 is superseded and conflicts. #31047 (still open; head `bea596f39`) conflicts in 21 hunks with #31188's MoE kernel changes and is not hand-merged; #30380's diff still applies cleanly.
+
+Official b11968 (one commit behind head; the last commit is CPU-only; release digests verified) vs the deployed runtime (b11852 + #30380 + #31047 + #30489), native, 6 alternating rounds, `-ub 2048 -p 2048 -n 64`:
+
+| Model | pp2048 | tg64 |
+|---|---|---|
+| MAI-Code-1.1-Flash | **-21.51%** (0/6 wins) | -3.10% (median -0.49%) |
+| Qwen3.8-Flash-Next | -4.95% (1/6) | **+3.58%** (6/6) |
+| Qwen3.8-27B | +0.90% (3/6) | +0.35% |
+| Nemotron 3.5 Super VL | +1.07% (4/6) | +0.91% (median -0.58%) |
+
+#31188 does not replace #31047's MoE prefill gain, and upstream brings a separated Flash-Next target-decode gain (source commit not isolated). Syncing to plain upstream plus #30380 would trade MAI prefill -21% and Flash-Next prefill -5% for Flash-Next decode +3.6%, so the sync is deferred until #31047 is rebased onto post-#31188 master; then build upstream + #30380 + #31047, drop #30489, and re-measure. Evidence: `results/upstream-sync-20261028/`.
 ## 3. Source-verified feature status and reference lessons
 
 The following status is verified in this checkout. This table supersedes the porting assumptions in the initial reference inventory below.

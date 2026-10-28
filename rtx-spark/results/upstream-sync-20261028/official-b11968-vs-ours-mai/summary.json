@@ -1,0 +1,75 @@
+{
+  "base_commit": "7894e8b92",
+  "cand_commit": "ac8e1694d",
+  "model_type": "maion-coder ?B Q2_K - Medium",
+  "bench_args": "-fa 1 -ngl 99 -ub 2048 -p 2048 -n 64 -r 2",
+  "rounds": 6,
+  "tests": [
+    {
+      "test": "tg64",
+      "base_median": 67.86865,
+      "cand_median": 66.7072,
+      "ratio": 0.9828867967758309,
+      "base_range": [
+        58.2523,
+        73.4975
+      ],
+      "cand_range": [
+        56.2158,
+        74.0115
+      ],
+      "n_base": 12,
+      "n_cand": 12
+    },
+    {
+      "test": "pp2048",
+      "base_median": 1835.2849999999999,
+      "cand_median": 1475.875,
+      "ratio": 0.8041666553151147,
+      "base_range": [
+        1769.16,
+        1946.49
+      ],
+      "cand_range": [
+        1249.2,
+        1539.3
+      ],
+      "n_base": 12,
+      "n_cand": 12
+    }
+  ],
+  "base_model_filename": "MAI-Code-1.1-Flash-Q2-XS.gguf",
+  "cand_model_filename": "MAI-Code-1.1-Flash-Q2-XS.gguf",
+  "paired": [
+    {
+      "test": "tg64",
+      "ratios": [
+        1.0350107503979231,
+        0.9959487658259338,
+        0.9744620225631507,
+        0.9942142795983022,
+        0.809955060684153,
+        1.0232846763128598
+      ],
+      "geomean": 0.9689782477492435,
+      "median": 0.995081522712118,
+      "wins": 2,
+      "rounds": 6
+    },
+    {
+      "test": "pp2048",
+      "ratios": [
+        0.8276862860326709,
+        0.8452225625633473,
+        0.6769147677588602,
+        0.7838455607712154,
+        0.7739137294156688,
+        0.8139060626877332
+      ],
+      "geomean": 0.7848946363508698,
+      "median": 0.7988758117294743,
+      "wins": 0,
+      "rounds": 6
+    }
+  ]
+}
