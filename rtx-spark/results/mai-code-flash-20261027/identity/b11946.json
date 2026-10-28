@@ -1,0 +1,63 @@
+{
+ "label": "b11946",
+ "exe_version": [
+  "version: 0.7.0-dev (build 11946, commit 8ca4060b7)",
+  "built with Clang 20.1.8 for Windows arm64"
+ ],
+ "load_s": 18.6,
+ "ready_gpu_mib": 67010,
+ "rows": [
+  {
+   "case": "py_lru",
+   "rep": 0,
+   "wall_s": 3.596,
+   "prompt_n": 101,
+   "prompt_tps": 339.31331048847676,
+   "predicted_n": 256,
+   "decode_tps": 77.67359362820666,
+   "draft_n": 342,
+   "draft_accepted": 140,
+   "chars": 1082,
+   "sha": "eda208fc35e183f9"
+  },
+  {
+   "case": "rust_parse",
+   "rep": 0,
+   "wall_s": 3.297,
+   "prompt_n": 97,
+   "prompt_tps": 310.96820109704447,
+   "predicted_n": 256,
+   "decode_tps": 85.86526426802892,
+   "draft_n": 302,
+   "draft_accepted": 153,
+   "chars": 1248,
+   "sha": "fcca00c8784f0629"
+  },
+  {
+   "case": "ts_api",
+   "rep": 0,
+   "wall_s": 3.649,
+   "prompt_n": 101,
+   "prompt_tps": 303.46095719397766,
+   "predicted_n": 256,
+   "decode_tps": 77.53307393705957,
+   "draft_n": 322,
+   "draft_accepted": 147,
+   "chars": 1121,
+   "sha": "5d0b2baf9c9ce221"
+  },
+  {
+   "case": "long8k",
+   "rep": 0,
+   "wall_s": 7.341,
+   "prompt_n": 8182,
+   "prompt_tps": 1260.237504403207,
+   "predicted_n": 64,
+   "decode_tps": 75.7724277365573,
+   "draft_n": 67,
+   "draft_accepted": 39,
+   "chars": 264,
+   "sha": "4752a883d4f1f388"
+  }
+ ]
+}

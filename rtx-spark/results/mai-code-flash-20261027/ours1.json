@@ -1,0 +1,155 @@
+{
+ "label": "ours1",
+ "exe_version": [
+  "version: 0.7.0-dev (build 11852, commit 7894e8b92)",
+  "built with Clang 20.1.8 for Windows arm64"
+ ],
+ "load_s": 22.7,
+ "ready_gpu_mib": 66967,
+ "rows": [
+  {
+   "case": "py_lru",
+   "rep": 0,
+   "wall_s": 3.469,
+   "prompt_n": 101,
+   "prompt_tps": 690.0792566274938,
+   "predicted_n": 256,
+   "decode_tps": 77.31257839268059,
+   "draft_n": 342,
+   "draft_accepted": 140,
+   "sha": "e3b0c44298fc1c14"
+  },
+  {
+   "case": "py_lru",
+   "rep": 1,
+   "wall_s": 3.519,
+   "prompt_n": 101,
+   "prompt_tps": 694.2010158703974,
+   "predicted_n": 256,
+   "decode_tps": 75.682522798247,
+   "draft_n": 342,
+   "draft_accepted": 140,
+   "sha": "e3b0c44298fc1c14"
+  },
+  {
+   "case": "py_lru",
+   "rep": 2,
+   "wall_s": 3.487,
+   "prompt_n": 101,
+   "prompt_tps": 688.1374639749818,
+   "predicted_n": 256,
+   "decode_tps": 76.44865708190379,
+   "draft_n": 342,
+   "draft_accepted": 140,
+   "sha": "e3b0c44298fc1c14"
+  },
+  {
+   "case": "rust_parse",
+   "rep": 0,
+   "wall_s": 3.225,
+   "prompt_n": 97,
+   "prompt_tps": 652.3990799155243,
+   "predicted_n": 256,
+   "decode_tps": 83.34218503599239,
+   "draft_n": 302,
+   "draft_accepted": 153,
+   "sha": "e3b0c44298fc1c14"
+  },
+  {
+   "case": "rust_parse",
+   "rep": 1,
+   "wall_s": 3.193,
+   "prompt_n": 97,
+   "prompt_tps": 638.111715599529,
+   "predicted_n": 256,
+   "decode_tps": 83.96496389012641,
+   "draft_n": 302,
+   "draft_accepted": 153,
+   "sha": "e3b0c44298fc1c14"
+  },
+  {
+   "case": "rust_parse",
+   "rep": 2,
+   "wall_s": 3.187,
+   "prompt_n": 97,
+   "prompt_tps": 620.7086316894154,
+   "predicted_n": 256,
+   "decode_tps": 84.27255926839521,
+   "draft_n": 302,
+   "draft_accepted": 153,
+   "sha": "e3b0c44298fc1c14"
+  },
+  {
+   "case": "ts_api",
+   "rep": 0,
+   "wall_s": 3.455,
+   "prompt_n": 101,
+   "prompt_tps": 616.2106098044599,
+   "predicted_n": 256,
+   "decode_tps": 77.79242783760846,
+   "draft_n": 322,
+   "draft_accepted": 147,
+   "sha": "e3b0c44298fc1c14"
+  },
+  {
+   "case": "ts_api",
+   "rep": 1,
+   "wall_s": 3.373,
+   "prompt_n": 101,
+   "prompt_tps": 665.6429385829055,
+   "predicted_n": 256,
+   "decode_tps": 79.28382146775806,
+   "draft_n": 322,
+   "draft_accepted": 147,
+   "sha": "e3b0c44298fc1c14"
+  },
+  {
+   "case": "ts_api",
+   "rep": 2,
+   "wall_s": 3.435,
+   "prompt_n": 101,
+   "prompt_tps": 659.3980544493046,
+   "predicted_n": 256,
+   "decode_tps": 77.80958986412614,
+   "draft_n": 322,
+   "draft_accepted": 147,
+   "sha": "e3b0c44298fc1c14"
+  },
+  {
+   "case": "long8k",
+   "rep": 0,
+   "wall_s": 6.091,
+   "prompt_n": 8182,
+   "prompt_tps": 1564.589413837342,
+   "predicted_n": 64,
+   "decode_tps": 75.7478294639819,
+   "draft_n": 67,
+   "draft_accepted": 39,
+   "sha": "e3b0c44298fc1c14"
+  },
+  {
+   "case": "long8k",
+   "rep": 1,
+   "wall_s": 5.89,
+   "prompt_n": 8182,
+   "prompt_tps": 1628.6677370515738,
+   "predicted_n": 64,
+   "decode_tps": 75.29670487277247,
+   "draft_n": 67,
+   "draft_accepted": 39,
+   "sha": "e3b0c44298fc1c14"
+  },
+  {
+   "case": "long8k",
+   "rep": 2,
+   "wall_s": 5.988,
+   "prompt_n": 8182,
+   "prompt_tps": 1597.2064698769825,
+   "predicted_n": 64,
+   "decode_tps": 75.39618902183616,
+   "draft_n": 67,
+   "draft_accepted": 39,
+   "sha": "e3b0c44298fc1c14"
+  }
+ ]
+}

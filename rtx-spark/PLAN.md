@@ -1325,6 +1325,24 @@ The first 27B reading did not repeat and the NVIDIA kernel sources are identical
 
 **Launcher gap (action item outside this repository).** The LocalModelDeployer catalog was regenerated on 2026-10-21 23:08 and no longer contains the earlier Flash-Next recipe edits: it launches the original Q8_0 MTP head from `ggml-org/Qwen3.8-Flash-Next-GGUF` without `--spec-draft-vocab-dynamic 16384`. The app's per-recipe options cover only context size, parallel slots and sampling, and the catalog is generated, so it was not hand-edited. Until the app supports a custom draft model and extra arguments, launches from the app do not get the Q4_K head (+4.5%) or the dynamic draft vocabulary (+3.3%); the new runtime's #31047 prefill gain does apply.
 
+### 2.61 MAI-Code-1.1-Flash on this runtime vs official llama.cpp (2026-10-27) [S]
+
+MAI-Code-1.1-Flash (arch `maion-coder`, 42 layers, 512 experts with 8 active, Q2_K/Q3_K/Q4_K, 52.44 GiB) with its DFlash draft (`dflash-v3-lc1`, 0.36 GiB), launched with the user's exact command (`--spec-type draft-dflash --spec-draft-n-max 3 --spec-draft-p-min 0.2`, `-b 2048 -ub 2048`, `-c 262145`, `-fa on`, `--fit off --no-host --ctx-checkpoints 0 -np 1 -lv 4`). Compared runtimes: this fork's `b11852-rtxspark.1` (installed), the official ggml-org b11852 (same base) and the then-latest official b11946; official zips were checked against their GitHub SHA-256 digests.
+
+**Outputs.** Greedy chat outputs, including the reasoning text, are identical across all three runtimes for three coding prompts (256 tokens) and an 8,182-token document summary.
+
+**Server, balanced order** (ours, b11852, b11946, b11946, b11852, ours; one warmup and three measured requests per case, medians):
+
+| Runtime | Decode py / rust / ts (tok/s) | 8,182-token prompt (tok/s) | Draft acceptance | Ready memory |
+|---|---|---|---:|---:|
+| This fork, runs 1 and 2 | 76.4-77.4 / 84.0-84.6 / 77.3-77.8 | 1597, 1614 | 0.455 | 66.97 GB |
+| Official b11852, runs 1 and 2 | 76.0-76.6 / 84.1-84.7 / 74.8-78.2 | 1259, 1250 | 0.455 | 67.01 GB |
+| Official b11946, runs 1 and 2 | 76.7-77.5 / 80.9-82.5 / 77.3-78.0 | 1251, 1257 | 0.455 | 67.01 GB |
+
+**Native target-only, 6 alternating rounds** (`-ub 2048 -p 2048 -n 64`): pp2048 +28.71% vs official b11852 and +27.24% vs official b11946 (6/6 wins each); tg64 -0.35% and +0.02% (no change).
+
+Prompt processing is about 27-29% faster with identical outputs; decode, speculation acceptance, load time and memory are unchanged. The gain comes from the carried MoE patches (#31047 MMQ layout and #30489 GLU fusion; not separated here), which apply to this 512-expert gated-FFN model more strongly than to Flash-Next (+5-7%). This is other authors' upstream work. Evidence and harness: `results/mai-code-flash-20261027/` (set `MAI_MODEL_DIR` to run `mai_ab.py`).
+
 ## 3. Source-verified feature status and reference lessons
 
 The following status is verified in this checkout. This table supersedes the porting assumptions in the initial reference inventory below.
