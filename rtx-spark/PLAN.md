@@ -1343,6 +1343,16 @@ MAI-Code-1.1-Flash (arch `maion-coder`, 42 layers, 512 experts with 8 active, Q2
 
 Prompt processing is about 27-29% faster with identical outputs; decode, speculation acceptance, load time and memory are unchanged. The gain comes from the carried MoE patches (#31047 MMQ layout and #30489 GLU fusion; not separated here), which apply to this 512-expert gated-FFN model more strongly than to Flash-Next (+5-7%). This is other authors' upstream work. Evidence and harness: `results/mai-code-flash-20261027/` (set `MAI_MODEL_DIR` to run `mai_ab.py`).
 
+**Per-patch isolation.** Four `ggml-cuda.dll` builds from the same b11852 tree (MSVC 14.44, CUDA 13.4, `121a-real`): base, #31047 only, #30489 only, and both (the installed DLL); each was swapped into a copy of the installed runtime, so only the CUDA backend differs. #31047 needed a 3-way apply on b11852 (an upstream `static_assert` sits next to its hunk). Native `llama-bench`, 6 alternating rounds against base, `-ub 2048 -p 2048 -n 64`, per-round paired geomean:
+
+| Model | #31047 only, pp2048 | #30489 only, pp2048 | Both, pp2048 | tg64 (all variants) |
+|---|---|---|---|---|
+| MAI-Code-1.1-Flash (512 experts, gated) | **+24.62%** (6/6) | +2.38% (6/6) | +26.63% (6/6) | -0.6% to +0.5% |
+| Qwen3.8-Flash-Next (512 experts, gated) | **+6.14%** (6/6) | +2.08% (6/6) | +6.14% (6/6) | -0.5% to +0.1% |
+| Qwen3.8-27B (dense) | -1.63% (3/6, noise) | **+3.49%** (6/6) | +1.76% (6/6) | -0.1% to +0.3% |
+
+#31047 changes only the MoE (MUL_MAT_ID) path, so it carries the MoE models and does nothing for dense 27B; #30489 fuses the GLU into MMQ activation quantization and helps every gated FFN by 2-3.5%. On Flash-Next the two do not add up (6.14% both vs 6.14% + 2.08%), and on 27B the "both" figure is below #30489 alone; differences of about 2 points are within this machine's run-to-run drift. Decode is unaffected by either patch. Nemotron was not re-run: its squared-ReLU FFN has no GLU, and #31047 measured +1.55% (3/6) there earlier. Evidence: `results/mai-code-flash-20261027/patch-isolation/`.
+
 ## 3. Source-verified feature status and reference lessons
 
 The following status is verified in this checkout. This table supersedes the porting assumptions in the initial reference inventory below.
