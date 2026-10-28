@@ -1,0 +1,123 @@
+{
+ "base": {
+  "name": "U1 qfn mtp3 ub512",
+  "args": [
+   "llama-server.exe",
+   "-m",
+   "Qwen3.8-Flash-Next-UD-IQ4_XS-00001-of-00003.gguf",
+   "--mmproj",
+   "mmproj-BF16.gguf",
+   "-lzm",
+   "on",
+   "--host",
+   "127.0.0.1",
+   "--port",
+   "9940",
+   "-c",
+   "262144",
+   "-np",
+   "1",
+   "-fa",
+   "on",
+   "-ngl",
+   "999",
+   "-b",
+   "2048",
+   "-ub",
+   "512",
+   "--spec-type",
+   "draft-mtp",
+   "--spec-draft-n-max",
+   "3",
+   "-md",
+   "mtp-Qwen3.8-Flash-Next-Q8_0-output-Q4_K.gguf",
+   "--spec-draft-ngl",
+   "999",
+   "--spec-draft-vocab-dynamic",
+   "16384",
+   "--metrics"
+  ],
+  "load_s": 55.3409535000028,
+  "gpu_memory_ready_mib": 78461
+ },
+ "cand": {
+  "name": "U1 qfn mtp3 ub512",
+  "args": [
+   "llama-server.exe",
+   "-m",
+   "Qwen3.8-Flash-Next-UD-IQ4_XS-00001-of-00003.gguf",
+   "--mmproj",
+   "mmproj-BF16.gguf",
+   "-lzm",
+   "on",
+   "--host",
+   "127.0.0.1",
+   "--port",
+   "9940",
+   "-c",
+   "262144",
+   "-np",
+   "1",
+   "-fa",
+   "on",
+   "-ngl",
+   "999",
+   "-b",
+   "2048",
+   "-ub",
+   "512",
+   "--spec-type",
+   "draft-mtp",
+   "--spec-draft-n-max",
+   "3",
+   "-md",
+   "mtp-Qwen3.8-Flash-Next-Q8_0-output-Q4_K.gguf",
+   "--spec-draft-ngl",
+   "999",
+   "--spec-draft-vocab-dynamic",
+   "16384",
+   "--metrics"
+  ],
+  "load_s": 55.31953400000202,
+  "gpu_memory_ready_mib": 78462
+ },
+ "cases": [
+  {
+   "case": "json256",
+   "base_tg_median": 51.755404240522935,
+   "cand_tg_median": 49.11793630867413,
+   "ratio": 0.9490397578658318,
+   "base_tg_range": [
+    51.716417183966044,
+    51.794391297079834
+   ],
+   "cand_tg_range": [
+    49.08182344170985,
+    49.154049175638406
+   ],
+   "base_accept": 0.7160493827160493,
+   "cand_accept": 0.6660117878192534
+  },
+  {
+   "case": "rust256",
+   "base_tg_median": 53.43969512934862,
+   "cand_tg_median": 55.04382762036552,
+   "ratio": 1.0300176205559213,
+   "base_tg_range": [
+    52.09979542146997,
+    54.779594837227265
+   ],
+   "cand_tg_range": [
+    54.70217774732571,
+    55.385477493405325
+   ],
+   "base_accept": 0.7807017543859649,
+   "cand_accept": 0.8108108108108109
+  }
+ ],
+ "geomean_ratio": 0.9886999915090178,
+ "identical_outputs": [
+  0,
+  4
+ ]
+}

@@ -1367,6 +1367,22 @@ Official b11968 (one commit behind head; the last commit is CPU-only; release di
 | Nemotron 3.5 Super VL | +1.07% (4/6) | +0.91% (median -0.58%) |
 
 #31188 does not replace #31047's MoE prefill gain, and upstream brings a separated Flash-Next target-decode gain (source commit not isolated). Syncing to plain upstream plus #30380 would trade MAI prefill -21% and Flash-Next prefill -5% for Flash-Next decode +3.6%, so the sync is deferred until #31047 is rebased onto post-#31188 master; then build upstream + #30380 + #31047, drop #30489, and re-measure. Evidence: `results/upstream-sync-20261028/`.
+### 2.63 Carry-forward build on b11969 (2026-10-28) [S]
+
+To keep #31047 on current upstream, upstream head `c3df4b7e2` (b11969) was built with #31188 and #29948 reverted (both reverts clean; #29948 rewrote the MMQ code that #31047 changes, and #30489 covers the same dense GLU fusion), then #31047 (head `bea596f39`, 3-way), #30489 (same chunk-cut merge as section 2.60) and the #30380 diff applied. Release-like build (LLVM 20.1.8 and CMake/Ninja reinstalled from official ARM64 releases, digests verified after `C:\buildtools` was found deleted); `test-backend-ops` MUL_MAT 2490/2490 and MUL_MAT_ID 931/931.
+
+**Logits vs the deployed runtime** (12 chunks of a fixed text corpus): MAI-Code mean KL 0.000000 (99.98% same top token); 27B 0.002435 (96.56%); Flash-Next **0.031473** (90.97%), PPL ratio 0.9948. Official b11968 gives exactly the same Flash-Next KL, so the shift is an upstream numerics change on `qwen4exp` (commit not isolated), not the carried patches.
+
+**Native speed, 6 alternating rounds:**
+
+| Model | vs deployed pp2048 / tg64 | vs official b11968 pp2048 / tg64 |
+|---|---|---|
+| MAI-Code-1.1-Flash | -0.58% / -0.36% | **+26.18%** (6/6) / -0.94% |
+| Qwen3.8-Flash-Next | +0.67% / **+2.68%** (6/6) | **+6.04%** (6/6) / +4.13% (median +0.01%) |
+| Qwen3.8-27B | -0.06% / -0.55% | |
+| Nemotron | +0.10% / -0.37% | |
+
+English/code quality passes for U1, D2 and N2. **Flash-Next server (MTP3, Q4_K head, dynamic vocabulary), ABBA vs deployed:** -7.68% and -1.13% (json256 -14.69% / -5.10% with acceptance 0.716 -> 0.666; rust256 -0.10% / +3.00% with acceptance 0.781 -> 0.811). The upstream logit change moves draft acceptance by more than the target-decode gain, so the build is not deployed. The carry-forward method works (MAI-Code keeps +26% over official), but syncing has no speed benefit for these workloads until the Flash-Next acceptance change is understood. Evidence: `results/upstream-sync-20261028/b11969-carry-*`.
 ## 3. Source-verified feature status and reference lessons
 
 The following status is verified in this checkout. This table supersedes the porting assumptions in the initial reference inventory below.

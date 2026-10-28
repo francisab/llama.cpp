@@ -1,0 +1,75 @@
+{
+  "base_commit": "ac8e1694d",
+  "cand_commit": "6681129ef",
+  "model_type": "qwen4exp A3B IQ4_XS - 4.25 bpw",
+  "bench_args": "-fa 1 -ngl 99 -ub 2048 -p 2048 -n 64 -r 2",
+  "rounds": 6,
+  "tests": [
+    {
+      "test": "tg64",
+      "base_median": 30.30625,
+      "cand_median": 30.65795,
+      "ratio": 1.0116048669828832,
+      "base_range": [
+        20.6549,
+        32.1173
+      ],
+      "cand_range": [
+        28.8678,
+        32.1295
+      ],
+      "n_base": 12,
+      "n_cand": 12
+    },
+    {
+      "test": "pp2048",
+      "base_median": 686.586,
+      "cand_median": 728.7675,
+      "ratio": 1.0614365862397428,
+      "base_range": [
+        665.594,
+        704.602
+      ],
+      "cand_range": [
+        705.497,
+        762.907
+      ],
+      "n_base": 12,
+      "n_cand": 12
+    }
+  ],
+  "base_model_filename": "Qwen3.8-Flash-Next-UD-IQ4_XS-00001-of-00003.gguf",
+  "cand_model_filename": "Qwen3.8-Flash-Next-UD-IQ4_XS-00001-of-00003.gguf",
+  "paired": [
+    {
+      "test": "tg64",
+      "ratios": [
+        0.9986460460313008,
+        1.3077010497604995,
+        1.0015049743624556,
+        0.9943880784761251,
+        0.960970009349371,
+        1.0201832286145531
+      ],
+      "geomean": 1.0413247293086092,
+      "median": 1.0000755101968781,
+      "wins": 3,
+      "rounds": 6
+    },
+    {
+      "test": "pp2048",
+      "ratios": [
+        1.0698695766947839,
+        1.085024708241026,
+        1.054008672508412,
+        1.0494885619470804,
+        1.07257086739177,
+        1.032139230028012
+      ],
+      "geomean": 1.060374903097601,
+      "median": 1.061939124601598,
+      "wins": 6,
+      "rounds": 6
+    }
+  ]
+}
